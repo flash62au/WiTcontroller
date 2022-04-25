@@ -52,3 +52,4 @@ build/*.*
 *.cpp
 build/sketch/WiTcontroller.ino.cpp
 build/WiTcontroller.ino.bin
+build/sketch/actions.h
