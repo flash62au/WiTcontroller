@@ -3,10 +3,10 @@
 Currently functioning:
 - Connects to the first available SSID (of three you can specify) with the specified password
 - Autoconncts to the first found wiThrottle Protocol Server
+- Rudimentary on-the-fly consists
 - Assign commands directly to the 1-9 and A,B,C,D keys (see list below)
-- Rudimentary on-the-fly consists  (max 10 locos)
 - Command menu (see below)
- - including the ability to select and deselect locos via the keypad
+  - including the ability to select and deselect locos via the keypad
 
 ToDo:
 - automatically cycle through a list of possible SSIDs, till it finds a working one
