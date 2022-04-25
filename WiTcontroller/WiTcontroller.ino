@@ -54,8 +54,6 @@ const int speedStepMultiplier = 2;  // for 'fast' speed steps
 TrackPower trackPower = PowerUnknown;
 
 #define MAX_LOCOS     10  // maximum number of locos that can be added to the consist
-String currentLocos[MAX_LOCOS] = {"", "", "", "", "", "", "", "", "", ""};
-int currentLocoCount = 0;
 
 #define ROTARY_ENCODER_A_PIN 33
 #define ROTARY_ENCODER_B_PIN 32
@@ -135,7 +133,7 @@ void rotary_onButtonClick() {
     return;
   }
   lastTimePressed = millis();
-  if (currentLocoCount > 0) {
+  if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
     wiThrottleProtocol.setSpeed(0);
     currentSpeed = 0;
   }
@@ -156,7 +154,7 @@ void rotary_loop() {
       Serial.print("Corrected Encoder From: "); Serial.print(lastEncoderValue);
       Serial.print(" to: "); Serial.println(encoderValue);
     }
-    if (currentLocoCount > 0) {
+    if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
       if (encoderValue > lastEncoderValue) {
         if (abs(encoderValue-lastEncoderValue)<50) {
           speedDown(speedStep);
@@ -370,8 +368,6 @@ void doMenu() {
           loco = menuCommand.substring(1, menuCommand.length());
           loco = getLocoWithLength(loco);
           Serial.print("add Loco: "); Serial.println(loco);
-          currentLocos[getFirstBlankLocoIndex()] = loco;
-          currentLocoCount++;
           wiThrottleProtocol.addLocomotive(loco);
         }
         break;
@@ -381,13 +377,8 @@ void doMenu() {
         if (loco!="") { // a loco is specified
           loco = getLocoWithLength(loco);
           Serial.print("release Loco: "); Serial.println(loco);
-          int index = currrentLocoIndex(loco);
-          if (index >= 0 ) {
-            Serial.print("Releaseing loco: "); Serial.println(currentLocos[index]);
-            currentLocos[index] = "";
-            currentLocoCount--;
-            wiThrottleProtocol.releaseLocomotive(loco);
-          }
+          wiThrottleProtocol.releaseLocomotive(loco);
+          // }
         } else { //not loco speciffied so release all
           releaseAllLocos();
         }
@@ -437,30 +428,6 @@ String getLocoWithLength(String loco) {
   return loco;
 }
 
-int currrentLocoIndex(String loco) {
-  int index = -1;
-  if (loco != "") {
-    for (int i=0; i<MAX_LOCOS; i++) {
-      if (currentLocos[i]==loco) {
-        index = i;
-        break;
-      }
-    }
-  }
-  return index;
-}
-
-int getFirstBlankLocoIndex() {
-  int index = -1;
-  for (int i=0; i<MAX_LOCOS; i++) {
-    if (currentLocos[i]=="") {
-      index = i;
-      break;
-    }
-  }
-  return index;
-}
-
 void connectFirstWitServer() {
   // find the first WiT server
   while (firstWitServerPort==0) {
@@ -498,11 +465,10 @@ void disconnectWitServer() {
   wiThrottleProtocol.disconnect();
   Serial.println("Disconnected from wiThrottle server\n");
   witConnected = false;
-  currentLocoCount = 0;
 }
 
 void speedDown(int amt) {
-  if (currentLocoCount>0) {
+  if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
     int newSpeed = currentSpeed - amt;
     if (newSpeed <0) { newSpeed = 0; }
     wiThrottleProtocol.setSpeed(newSpeed);
@@ -512,7 +478,7 @@ void speedDown(int amt) {
 }
 
 void speedUp(int amt) {
-  if (currentLocoCount>0) {
+  if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
     int newSpeed = currentSpeed + amt;
     if (newSpeed >128) { newSpeed = 126; }
     wiThrottleProtocol.setSpeed(newSpeed);
@@ -522,20 +488,15 @@ void speedUp(int amt) {
 }
 
 void releaseAllLocos() {
-  if (currentLocoCount>0) {
-    for (int index=0; index<MAX_LOCOS; index++) {
-      if (currentLocos[index]!="") {
-        Serial.print("Releaseing loco: "); Serial.println(currentLocos[index]);
-        wiThrottleProtocol.releaseLocomotive(currentLocos[index]);
-        currentLocos[index] = "";
-        currentLocoCount--;
-      }
-    }
+  if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
+    for(int index=0;index<wiThrottleProtocol.getNumberOfLocomotives();index++) {
+      wiThrottleProtocol.releaseLocomotive(wiThrottleProtocol.getLocomotiveAtPosition(index));
+    } 
   }
 }
 
 void toggleDirection() {
-  if (currentLocoCount>0) {
+  if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
     Direction direction = Reverse;
     if (currentDirection == Reverse) {
       direction = Forward;
@@ -545,7 +506,7 @@ void toggleDirection() {
 }
 
 void changeDirection(Direction direction) {
-  if (currentLocoCount>0) {
+  if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
     wiThrottleProtocol.setDirection(direction);
     currentDirection = direction;
     Serial.print("Change direction: "); Serial.println( (direction==Forward) ? "Forward" : "Reverse");
@@ -553,7 +514,7 @@ void changeDirection(Direction direction) {
 }
 
 void doFunction(int functionNumber, boolean pressed) {
-  if (currentLocoCount>0) {
+  if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
     wiThrottleProtocol.setFunction(functionNumber, pressed );
     Serial.print("fn: "); Serial.print(functionNumber); Serial.println( (pressed) ? " Pressed" : " Released");
   }
