@@ -5,8 +5,10 @@ Currently functioning:
 - Autoconncts to the first found wiThrottle Protocol Server
 - Rudimentary on-the-fly consists
 - Assign commands directly to the 1-9 and A,B,C,D keys (see list below)
-- Command menu (see below)
-  - including the ability to select and deselect locos via the keypad
+- Command menu (see below for full list) including:
+  - Able to select and deselect locos by their DCC address, via the keypad
+  - Power On/Off
+  - Disconnect / Reconnect
 
 ToDo:
 - automatically cycle through a list of possible SSIDs, till it finds a working one
@@ -25,7 +27,7 @@ Command menu:
  - 2 = release loco:
   - Followed by the loco number, followed by \# to release an individual loco.  e.g. to deselect the loco 99 you would press '\*299\#'
   - Othewise followed directly by \#  to release all e.g. '\*2\#'
- - 3 = C1hange direction.  Followed by \# to complete.  e.g. forward '\*21\#'  reverse '\*20\#'
+ - 3 = Change direction.  Followed by \# to complete.  e.g. forward '\*21\#'  reverse '\*20\#'
  - 0 = Function button. Followed by \# to complete.  e.g. to select function 12 you would press '\*012\#'
  - 8 = Power On/Off. Followed by \# to complete.
  - 9 = Disconnect/reconnect. Followed by \# to complete.  
