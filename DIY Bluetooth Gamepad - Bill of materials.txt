@@ -1,0 +1,9 @@
+DIY Bluetooth Keypad for Engine Driver - Bill of material
+AUD$11.50 - WeMos Lite LOLIN32  (ESP32 Arduino with LiPo charger)
+AUD$ 8.30 - 3x4 Keypad
+AUD$11.90 - Polymer Lithium Ion Battery LiPo 400mAh 3.7V 502535 JST Connector
+AUD$ 4.95 - KY-040 Rotary Encoder Module
+AUD$ 3.45 - 83 x 54 x 31mm Jiffy Box
+AUD$ 3.95 - Knob
+          + 2 screws
+AUD$44.05 - TOTAL
