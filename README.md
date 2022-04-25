@@ -1,7 +1,7 @@
 # WiTcontroller
 
 Currently functioning:
-- Connects to specified SSID with specified password
+- Connects to the first available SSID (of three you can specify) with the specified password
 - Autoconncts to the first found wiThrottle Protocol Server
 - Assign commands directly to the 1-9 and A,B,C,D keys (see list below)
 - Rudimentary on-the-fly consists  (max 10 locos)

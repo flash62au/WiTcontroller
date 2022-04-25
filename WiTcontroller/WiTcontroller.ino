@@ -14,9 +14,14 @@
 #include <Keypad.h>               // https://www.arduinolibraries.info/libraries/keypad
 #include "actions.h"
 
-const char* ssid     = "pra";
-const char* password = "...";
 const char* deviceName = "WiT Controller";
+
+const char* ssid0     = "RMCQ";
+const char* password0 = "...";
+const char* ssid1     = "pra";
+const char* password1 = "startiderising";
+const char* ssid2     = "RMCQnscaleEXHIBITION";
+const char* password2 = "...";
 
 // 4x4 keypad
 int buttonActions[14] = { SPEED_STOP,   // 0
@@ -194,18 +199,35 @@ void keypadEvent(KeypadEvent key){
 
 void setup() {
   Serial.begin(115200);
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(250);
-    Serial.print(".");
-  }
-  Serial.println(""); Serial.print("Connected to "); Serial.println(ssid);
-  Serial.print("IP address: "); Serial.println(WiFi.localIP());
+  Serial.println("Start"); 
 
-  if (!MDNS.begin("ESP32_Browser")) {
-    Serial.println("Error setting up MDNS responder!");
-    while(1){
-      delay(1000);
+  // connect to the wifi.  loop through the configured SSIDs till we get a connection
+  int index = 99;
+  boolean connected = false;
+  while (!connected) {
+    index++;
+    if (index >= 3) index = 0;  // go back to the first and try again
+
+    Serial.println(""); Serial.print(" Trying SSID number: "); Serial.println(index);
+
+    double startTime = millis();
+    double nowTime = startTime;
+    switch (index) {
+      case 0: { WiFi.begin(ssid0, password0); break; }
+      case 1: { WiFi.begin(ssid1, password1); break; }
+      case 2: { WiFi.begin(ssid2, password2); break; }
+    }
+    while ( (WiFi.status() != WL_CONNECTED) && ((nowTime-startTime) <= 10000) ) { // try for 10 seconds
+      delay(250);
+      Serial.print(".");
+      nowTime = millis();
+    }
+    Serial.println("");
+    if (WiFi.status() == WL_CONNECTED) {
+      Serial.print("Connected. IP address: "); Serial.println(WiFi.localIP());
+      connected = true;
+    } else {
+      WiFi.disconnect();
     }
   }
 
@@ -218,6 +240,13 @@ void setup() {
 
   keypad.addEventListener(keypadEvent); // Add an event listener for this keypad
 
+  // setup the bonjour listener
+  if (!MDNS.begin("ESP32_Browser")) {
+    Serial.println("Error setting up MDNS responder!");
+    while(1){
+      delay(1000);
+    }
+  }
   connectFirstWitServer();
 }
 
@@ -531,4 +560,15 @@ void powerToggle() {
   } else {
     powerOnOff(PowerOn);
   }
+}
+
+char* stringToCharArray(String str) {
+  int len = str.length();
+  char ret[len];
+  for(int i = 0; i < len; ++i) {
+    Serial.print(str.substring(i,1));
+      ret[i] = str.substring(i,1).toInt();
+  }
+  Serial.println("");
+  return ret;
 }
