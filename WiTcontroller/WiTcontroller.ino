@@ -16,13 +16,17 @@
 
 const char* deviceName = "WiT Controller";
 
+// enter the SSIDs and passwords of up to three networks you wish to try to connect to.
+// It will try for 10 seconds to connect before moving to the next.
+// leave the values blank/empty if you dont all three.  ssid0 must not be blank
 const char* ssid0     = "RMCQ";
 const char* password0 = "...";
 const char* ssid1     = "pra";
-const char* password1 = "startiderising";
+const char* password1 = "...";
 const char* ssid2     = "RMCQnscaleEXHIBITION";
 const char* password2 = "...";
 
+// configure the keypad buttons to perform the actions you wish
 // 4x4 keypad
 int buttonActions[14] = { SPEED_STOP,   // 0
                          FUNCTION_0,    // 1 - lights
@@ -205,6 +209,7 @@ void setup() {
   int index = 99;
   boolean connected = false;
   while (!connected) {
+    boolean proceed = true;
     index++;
     if (index >= 3) index = 0;  // go back to the first and try again
 
@@ -214,20 +219,22 @@ void setup() {
     double nowTime = startTime;
     switch (index) {
       case 0: { WiFi.begin(ssid0, password0); break; }
-      case 1: { WiFi.begin(ssid1, password1); break; }
-      case 2: { WiFi.begin(ssid2, password2); break; }
+      case 1: { if (ssid1!="") {WiFi.begin(ssid1, password1); break;} else {proceed=false;} }
+      case 2: { if (ssid2!="") {WiFi.begin(ssid2, password2); break;} else {proceed=false;} }
     }
-    while ( (WiFi.status() != WL_CONNECTED) && ((nowTime-startTime) <= 10000) ) { // try for 10 seconds
-      delay(250);
-      Serial.print(".");
-      nowTime = millis();
-    }
-    Serial.println("");
-    if (WiFi.status() == WL_CONNECTED) {
-      Serial.print("Connected. IP address: "); Serial.println(WiFi.localIP());
-      connected = true;
-    } else {
-      WiFi.disconnect();
+    if (proceed) { // not blank
+      while ( (WiFi.status() != WL_CONNECTED) && ((nowTime-startTime) <= 10000) ) { // try for 10 seconds
+        delay(250);
+        Serial.print(".");
+        nowTime = millis();
+      }
+      Serial.println("");
+      if (WiFi.status() == WL_CONNECTED) {
+        Serial.print("Connected. IP address: "); Serial.println(WiFi.localIP());
+        connected = true;
+      } else {
+        WiFi.disconnect();
+      }
     }
   }
 
