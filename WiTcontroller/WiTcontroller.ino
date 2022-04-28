@@ -26,6 +26,9 @@ const char* password1 = "...";
 const char* ssid2     = "RMCQnscaleEXHIBITION";
 const char* password2 = "...";
 
+const String turnoutPrefixs[3] = {"...", "NT", "NT"};  // required if you wish to use turnouts  
+// this the prefix of all turnout system names, for three wiThrottle servers on the three networks above
+
 // configure the keypad buttons to perform the actions you wish
 // 4x4 keypad
 int buttonActions[14] = { SPEED_STOP,   // 0
@@ -61,6 +64,7 @@ Direction currentDirection;
 const int speedStep = 4;
 const int speedStepMultiplier = 2;  // for 'fast' speed steps
 TrackPower trackPower = PowerUnknown;
+String turnoutPrefix;
 
 #define MAX_LOCOS     10  // maximum number of locos that can be added to the consist
 
@@ -218,9 +222,21 @@ void setup() {
     double startTime = millis();
     double nowTime = startTime;
     switch (index) {
-      case 0: { WiFi.begin(ssid0, password0); break; }
-      case 1: { if (ssid1!="") {WiFi.begin(ssid1, password1); break;} else {proceed=false;} }
-      case 2: { if (ssid2!="") {WiFi.begin(ssid2, password2); break;} else {proceed=false;} }
+      case 0: { 
+          WiFi.begin(ssid0, password0); 
+          turnoutPrefix = turnoutPrefixs[0];
+          break; 
+        }
+      case 1: { if (ssid1!="") {
+          WiFi.begin(ssid1, password1); 
+          turnoutPrefix = turnoutPrefixs[1];
+          break;
+        } else {proceed=false;} }
+      case 2: { if (ssid2!="") {
+          WiFi.begin(ssid2, password2);         
+          turnoutPrefix = turnoutPrefixs[2];
+          break;
+        } else {proceed=false;} }
     }
     if (proceed) { // not blank
       while ( (WiFi.status() != WL_CONNECTED) && ((nowTime-startTime) <= 10000) ) { // try for 10 seconds
@@ -414,7 +430,6 @@ void doMenu() {
           loco = getLocoWithLength(loco);
           Serial.print("release Loco: "); Serial.println(loco);
           wiThrottleProtocol.releaseLocomotive(loco);
-          // }
         } else { //not loco speciffied so release all
           releaseAllLocos();
         }
@@ -422,6 +437,22 @@ void doMenu() {
       }
     case '3': { // change direction
         toggleDirection();
+        break;
+      }
+    case '5': {  // throw turnout
+        String turnout = turnoutPrefix + menuCommand.substring(1, menuCommand.length());
+        if (turnout!="") { // a loco is specified
+          Serial.print("throw turnout: "); Serial.println(turnout);
+          wiThrottleProtocol.setTurnout(turnout, TurnoutThrow);
+        }
+        break;
+      }
+    case '6': {  // close turnout
+        String turnout = turnoutPrefix + menuCommand.substring(1, menuCommand.length());
+        if (turnout!="") { // a loco is specified
+          Serial.print("close turnout: "); Serial.println(turnout);
+          wiThrottleProtocol.setTurnout(turnout, TurnoutClose);
+        }
         break;
       }
     case '0': { // function button

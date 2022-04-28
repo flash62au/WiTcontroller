@@ -28,11 +28,12 @@ Command menu:
   - Followed by the loco number, followed by \# to release an individual loco.  e.g. to deselect the loco 99 you would press '\*299\#'
   - Othewise followed directly by \#  to release all e.g. '\*2\#'
  - 3 = Change direction.  Followed by \# to complete.  e.g. forward '\*21\#'  reverse '\*20\#'
- - 0 = Function button. Followed by \# to complete.  e.g. to select function 12 you would press '\*012\#'
+ - 5 = Throw turnout.  Followed by \# to complete.  e.g. Throw turnout XX12 '\*512\#'  (where XX is a prefix defined in the sketch) 
+ - 6 = Close turnout.  Followed by \# to complete.  e.g. Close turnout XX12 '\*612\#'  (where XX is a prefix defined in the sketch)
+ - 0 = Function button. Followed by the loco number, Followed by \# to complete.  e.g. to make loco 99 the lead loco you would press '\*499\#'
  - 8 = Power On/Off. Followed by \# to complete.
  - 9 = Disconnect/reconnect. Followed by \# to complete.  
 Pressing '\*' again before the '\#' will terminate the current command (but not start a new command)
-other things could be added to the menu \*4 - \*7 
 
 Allowed assigments for the 0-9 and A,B,C,D keys:
 - FUNCTION_NULL   - don't do anything
