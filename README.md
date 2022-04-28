@@ -30,6 +30,7 @@ Command menu:
  - 3 = Change direction.  Followed by \# to complete.  e.g. forward '\*21\#'  reverse '\*20\#'
  - 5 = Throw turnout.  Followed by \# to complete.  e.g. Throw turnout XX12 '\*512\#'  (where XX is a prefix defined in the sketch) 
  - 6 = Close turnout.  Followed by \# to complete.  e.g. Close turnout XX12 '\*612\#'  (where XX is a prefix defined in the sketch)
+ - 7 = Set Route.  Followed by \# to complete.  e.g. to Set route XX:XX:0012 '\*60012\#'  (where \'XX:XX:\' is a prefix defined in the sketch)
  - 0 = Function button. Followed by the loco number, Followed by \# to complete.  e.g. to make loco 99 the lead loco you would press '\*499\#'
  - 8 = Power On/Off. Followed by \# to complete.
  - 9 = Disconnect/reconnect. Followed by \# to complete.  

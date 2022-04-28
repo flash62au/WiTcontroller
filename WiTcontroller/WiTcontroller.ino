@@ -13,58 +13,15 @@
 #include <AiEsp32RotaryEncoder.h> // https://github.com/igorantolic/ai-esp32-rotary-encoder
 #include <Keypad.h>               // https://www.arduinolibraries.info/libraries/keypad
 #include "actions.h"
-
-const char* deviceName = "WiT Controller";
-
-// enter the SSIDs and passwords of up to three networks you wish to try to connect to.
-// It will try for 10 seconds to connect before moving to the next.
-// leave the values blank/empty if you dont all three.  ssid0 must not be blank
-const char* ssid0     = "RMCQ";
-const char* password0 = "...";
-const char* ssid1     = "pra";
-const char* password1 = "...";
-const char* ssid2     = "RMCQnscaleEXHIBITION";
-const char* password2 = "...";
-
-const String turnoutPrefixs[3] = {"...", "NT", "NT"};  // required if you wish to use turnouts  
-// this the prefix of all turnout system names, for three wiThrottle servers on the three networks above
-
-// configure the keypad buttons to perform the actions you wish
-// 4x4 keypad
-int buttonActions[14] = { SPEED_STOP,   // 0
-                         FUNCTION_0,    // 1 - lights
-                         FUNCTION_1,    // 2 - bell
-                         FUNCTION_2,    // 3 - horn
-                         FUNCTION_NULL, // 4
-                         SPEED_UP,      // 5
-                         FUNCTION_NULL, // 6
-                         DIRECTION_REVERSE, // 7
-                         SPEED_DOWN,    // 8
-                         DIRECTION_FORWARD  // 9
-                         FUNCTION_NULL, // A
-                         FUNCTION_NULL, // B
-                         FUNCTION_NULL, // C
-                         FUNCTION_NULL // D
-};
-// 4x3 keypad
-// int buttonActions[10] = { SPEED_STOP,   // 0
-//                          FUNCTION_0,    // 1 - lights
-//                          FUNCTION_1,    // 2 - bell
-//                          FUNCTION_2,    // 3 - horn
-//                          FUNCTION_NULL, // 4
-//                          SPEED_UP,      // 5
-//                          FUNCTION_NULL, // 6
-//                          DIRECTION_REVERSE, // 7
-//                          SPEED_DOWN,    // 8
-//                          DIRECTION_FORWARD  // 9
-// };
+#include "config.h"
 
 int currentSpeed = 0;
 Direction currentDirection;
 const int speedStep = 4;
 const int speedStepMultiplier = 2;  // for 'fast' speed steps
 TrackPower trackPower = PowerUnknown;
-String turnoutPrefix;
+String turnoutPrefix = "";
+String routePrefix = "";
 
 #define MAX_LOCOS     10  // maximum number of locos that can be added to the consist
 
@@ -224,17 +181,20 @@ void setup() {
     switch (index) {
       case 0: { 
           WiFi.begin(ssid0, password0); 
-          turnoutPrefix = turnoutPrefixs[0];
+          turnoutPrefix = turnoutPrefixes[0];
+          routePrefix = routePrefixes[0];
           break; 
         }
       case 1: { if (ssid1!="") {
           WiFi.begin(ssid1, password1); 
-          turnoutPrefix = turnoutPrefixs[1];
+          turnoutPrefix = turnoutPrefixes[1];
+          routePrefix = routePrefixes[1];
           break;
         } else {proceed=false;} }
       case 2: { if (ssid2!="") {
           WiFi.begin(ssid2, password2);         
-          turnoutPrefix = turnoutPrefixs[2];
+          turnoutPrefix = turnoutPrefixes[2];
+          routePrefix = routePrefixes[2];
           break;
         } else {proceed=false;} }
     }
@@ -441,7 +401,7 @@ void doMenu() {
       }
     case '5': {  // throw turnout
         String turnout = turnoutPrefix + menuCommand.substring(1, menuCommand.length());
-        if (turnout!="") { // a loco is specified
+        if (!turnout.equals("")) { // a turnout is specified
           Serial.print("throw turnout: "); Serial.println(turnout);
           wiThrottleProtocol.setTurnout(turnout, TurnoutThrow);
         }
@@ -449,9 +409,30 @@ void doMenu() {
       }
     case '6': {  // close turnout
         String turnout = turnoutPrefix + menuCommand.substring(1, menuCommand.length());
-        if (turnout!="") { // a loco is specified
+        if (!turnout.equals("")) { // a turnout is specified
           Serial.print("close turnout: "); Serial.println(turnout);
           wiThrottleProtocol.setTurnout(turnout, TurnoutClose);
+        }
+        break;
+      }
+    case '7': {  // route
+        String route = routePrefix + menuCommand.substring(1, menuCommand.length());
+        if (!route.equals("")) { // a loco is specified
+          Serial.print("route: "); Serial.println(route);
+          wiThrottleProtocol.setRoute(route);
+        }
+        break;
+      }
+    case '8': {
+        powerToggle();
+        Serial.println("Power toggle");
+        break;
+      }
+    case '9': { // disconnect/reconnect
+        if (witConnected) {
+          disconnectWitServer();
+        } else {
+          connectFirstWitServer();
         }
         break;
       }
@@ -465,18 +446,6 @@ void doMenu() {
         }
         break;
       }
-    case '9': { // disconnect/reconnect
-        if (witConnected) {
-          disconnectWitServer();
-        } else {
-          connectFirstWitServer();
-        }
-        break;
-      }
-    case '8': {
-      powerToggle();
-      break;
-    }
   }
 }
 
