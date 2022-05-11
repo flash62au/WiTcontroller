@@ -25,9 +25,16 @@ String routePrefix = "";
 
 #define MAX_LOCOS     10  // maximum number of locos that can be added to the consist
 
-#define ROTARY_ENCODER_A_PIN 33
-#define ROTARY_ENCODER_B_PIN 32
-#define ROTARY_ENCODER_BUTTON_PIN 27
+// large EPS32
+// #define ROTARY_ENCODER_A_PIN 33
+// #define ROTARY_ENCODER_B_PIN 32
+// #define ROTARY_ENCODER_BUTTON_PIN 27
+
+// Small ESP32
+#define ROTARY_ENCODER_A_PIN 12
+#define ROTARY_ENCODER_B_PIN 14
+#define ROTARY_ENCODER_BUTTON_PIN 13
+
 #define ROTARY_ENCODER_VCC_PIN -1 /* 27 put -1 of Rotary encoder Vcc is connected directly to 3,3V; else you can use declared output pin for powering rotary encoder */
 #define ROTARY_ENCODER_STEPS 4 //depending on your encoder - try 1,2 or 4 to get expected behaviour
 
@@ -35,26 +42,30 @@ bool circleValues = true;
 int encoderValue = 0;
 int lastEncoderValue = 0;
 
+// 4x4 keaypad
+// #define ROW_NUM     4 // four rows
+// #define COLUMN_NUM  4 // four columns
+// char keys[ROW_NUM][COLUMN_NUM] = {
+//   {'1', '2', '3', 'A'},
+//   {'4', '5', '6', 'B'},
+//   {'7', '8', '9', 'C'},
+//   {'*', '0', '#', 'D'}
+// };
+// byte pin_rows[ROW_NUM]      = {19, 18, 5, 17}; // connect to the row pins
+// byte pin_column[COLUMN_NUM] = {16, 4, 2, 15};   // connect to the column pins
+
+// 4x3 keypad
 #define ROW_NUM     4 // four rows
-#define COLUMN_NUM  4 // four columns
+#define COLUMN_NUM  3 // four columns
 char keys[ROW_NUM][COLUMN_NUM] = {
-  {'1', '2', '3', 'A'},
-  {'4', '5', '6', 'B'},
-  {'7', '8', '9', 'C'},
-  {'*', '0', '#', 'D'}
+ {'1', '2', '3'},
+ {'4', '5', '6'},
+ {'7', '8', '9'},
+ {'*', '0', '#'}
 };
-byte pin_rows[ROW_NUM]      = {19, 18, 5, 17}; // connect to the row pins
-byte pin_column[COLUMN_NUM] = {16, 4, 2, 15};   // connect to the column pins
-//#define ROW_NUM     4 // four rows
-//#define COLUMN_NUM  3 // four columns
-//char keys[ROW_NUM][COLUMN_NUM] = {
-//  {'1', '2', '3'},
-//  {'4', '5', '6'},
-//  {'7', '8', '9'},
-//  {'*', '0', '#'}
-//};
-//byte pin_rows[ROW_NUM]      = {19, 18, 17, 16}; // GIOP19, GIOP18, GIOP5, GIOP17 connect to the row pins
-//byte pin_column[COLUMN_NUM] = { 4, 0, 2};   // GIOP16, GIOP4, GIOP0 connect to the column pins
+byte pin_rows[ROW_NUM]      = {19, 18, 17, 16}; // GIOP19, GIOP18, GIOP5, GIOP17 connect to the row pins
+byte pin_column[COLUMN_NUM] = { 4, 0, 2};   // GIOP16, GIOP4, GIOP0 connect to the column pins
+
 Keypad keypad = Keypad( makeKeymap(keys), pin_rows, pin_column, ROW_NUM, COLUMN_NUM );
 boolean menuCommandStarted = false;
 String menuCommand = "";
