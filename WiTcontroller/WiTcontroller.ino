@@ -70,6 +70,8 @@ Keypad keypad = Keypad( makeKeymap(keys), pin_rows, pin_column, ROW_NUM, COLUMN_
 boolean menuCommandStarted = false;
 String menuCommand = "";
 
+int ssidIndex = 99;
+
 // WiThrottleProtocol Delegate class
 class MyDelegate : public WiThrottleProtocolDelegate {
   
@@ -173,57 +175,12 @@ void keypadEvent(KeypadEvent key){
   }
 }
 
+
 void setup() {
   Serial.begin(115200);
+
+  delay(1000);
   Serial.println("Start"); 
-
-  // connect to the wifi.  loop through the configured SSIDs till we get a connection
-  int index = 99;
-  boolean connected = false;
-  while (!connected) {
-    boolean proceed = true;
-    index++;
-    if (index >= 3) index = 0;  // go back to the first and try again
-
-    Serial.println(""); Serial.print(" Trying SSID number: "); Serial.println(index);
-
-    double startTime = millis();
-    double nowTime = startTime;
-    switch (index) {
-      case 0: { 
-          WiFi.begin(ssid0, password0); 
-          turnoutPrefix = turnoutPrefixes[0];
-          routePrefix = routePrefixes[0];
-          break; 
-        }
-      case 1: { if (ssid1!="") {
-          WiFi.begin(ssid1, password1); 
-          turnoutPrefix = turnoutPrefixes[1];
-          routePrefix = routePrefixes[1];
-          break;
-        } else {proceed=false;} }
-      case 2: { if (ssid2!="") {
-          WiFi.begin(ssid2, password2);         
-          turnoutPrefix = turnoutPrefixes[2];
-          routePrefix = routePrefixes[2];
-          break;
-        } else {proceed=false;} }
-    }
-    if (proceed) { // not blank
-      while ( (WiFi.status() != WL_CONNECTED) && ((nowTime-startTime) <= 10000) ) { // try for 10 seconds
-        delay(250);
-        Serial.print(".");
-        nowTime = millis();
-      }
-      Serial.println("");
-      if (WiFi.status() == WL_CONNECTED) {
-        Serial.print("Connected. IP address: "); Serial.println(WiFi.localIP());
-        connected = true;
-      } else {
-        WiFi.disconnect();
-      }
-    }
-  }
 
   rotaryEncoder.begin();  //initialize rotary encoder
   rotaryEncoder.setup(readEncoderISR);
@@ -234,13 +191,7 @@ void setup() {
 
   keypad.addEventListener(keypadEvent); // Add an event listener for this keypad
 
-  // setup the bonjour listener
-  if (!MDNS.begin("ESP32_Browser")) {
-    Serial.println("Error setting up MDNS responder!");
-    while(1){
-      delay(1000);
-    }
-  }
+  connectNetwork();
   connectFirstWitServer();
 }
 
@@ -255,7 +206,7 @@ void loop() {
 }
 
 void browseService(const char * service, const char * proto){
-  Serial.printf("Browsing for service _%s._%s.local. ... ", service, proto);
+  Serial.printf("Browsing for service _%s._%s.local. on %s ... ", service, proto, ssids[ssidIndex]);
   int n = MDNS.queryService(service, proto);
   if (n == 0) {
     Serial.println("no services found");
@@ -473,6 +424,59 @@ String getLocoWithLength(String loco) {
     loco = "L" + loco;
   }
   return loco;
+}
+
+
+void connectNetwork() {
+  for (int i=0; i<10; i++) {
+    Serial.println(); 
+  } 
+  Serial.println("Start - Network Connection "); 
+
+  // connect to the wifi.  loop through the configured SSIDs till we get a connection
+  boolean connected = false;
+  while (!connected) {
+    ssidIndex++;
+    // if (index >= 3) index = 0;  // go back to the first and try again
+    if (ssidIndex >= maxSsids) ssidIndex = 0;  // go back to the first and try again
+
+    Serial.println(""); 
+    Serial.print("Trying SSID number: "); Serial.println(ssidIndex);
+
+    double startTime = millis();
+    double nowTime = startTime;
+
+    const char *cSsid = ssids[ssidIndex].c_str();
+    const char *cPassword = passwords[ssidIndex].c_str();
+
+    if (cSsid!="") {
+      Serial.print("Trying Network "); Serial.println(cSsid);
+      WiFi.begin(cSsid, cPassword); 
+      turnoutPrefix = turnoutPrefixes[1];
+      routePrefix = routePrefixes[1];
+
+      while ( (WiFi.status() != WL_CONNECTED) && ((nowTime-startTime) <= 10000) ) { // try for 10 seconds
+        delay(250);
+        Serial.print(".");
+        nowTime = millis();
+      }
+      Serial.println("");
+      if (WiFi.status() == WL_CONNECTED) {
+        Serial.print("Connected. IP address: "); Serial.println(WiFi.localIP());
+        connected = true;
+      } else {
+        WiFi.disconnect();
+      }
+    }
+  }
+
+  // setup the bonjour listener
+  if (!MDNS.begin("ESP32_Browser")) {
+    Serial.println("Error setting up MDNS responder!");
+    while(1){
+      delay(1000);
+    }
+  }
 }
 
 void connectFirstWitServer() {
