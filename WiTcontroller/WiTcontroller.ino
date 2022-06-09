@@ -74,18 +74,30 @@ String menuCommand = "";
 
 int ssidIndex = 99;
 
+// String menu[10][3] = {
+//   {"","",""}
+//   {"Add Loco","",""} 
+//   {"Drop Loco", "",""}
+//   {"Toggle Dir", "",""}
+//   {"","",""}
+//   {"Throw Point","",""}
+//   {"Close Point", "", ""}
+//   {"Route", "",""}
+//   {"Trk Power" "","",}
+//   {"Disconnect","#.Disconnect","9#.Sleep"}
+// }
+
 #ifdef U8X8_HAVE_HW_SPI
-#include <SPI.h>
+#include <SPI.h>                       // add to include path [Arduino install]\hardware\arduino\avr\libraries\SPI\src
 #endif
 #ifdef U8X8_HAVE_HW_I2C
-#include <Wire.h>
+#include <Wire.h>                      // add to include path [Arduino install]\hardware\arduino\avr\libraries\Wire\src
 #endif
 
 // Please UNCOMMENT one of the contructor lines below
 // U8g2 Contructor List (Frame Buffer)
 // The complete list is available here: https://github.com/olikraus/u8g2/wiki/u8g2setupcpp
 // Please update the pin numbers according to your setup. Use U8X8_PIN_NONE if the reset pin is not connected
-
 U8G2_SSD1312_128X64_NONAME_F_SW_I2C u8g2(U8G2_MIRROR, /* clock=*/ 22, /* data=*/ 23, /* reset=*/ U8X8_PIN_NONE);
 
 // WiThrottleProtocol Delegate class
@@ -96,7 +108,7 @@ class MyDelegate : public WiThrottleProtocolDelegate {
       Serial.print("Received version: "); Serial.println(version);  
     }
     void receivedServerDescription(String description) {
-      Serial.print("Received description: "); Serial.println(description); 
+      Serial.print("Received description: "); Serial.println(description);
     }
     void receivedSpeed(int speed) {             // Vnnn
       currentSpeed = speed;
@@ -216,7 +228,7 @@ void setup() {
 void loop() {
   // parse incoming messages
   wiThrottleProtocol.check();
-  
+
   char key = keypad.getKey();
   rotary_loop();
   
@@ -618,16 +630,16 @@ void powerToggle() {
   }
 }
 
-char* stringToCharArray(String str) {
-  int len = str.length();
-  char ret[len];
-  for(int i = 0; i < len; ++i) {
-    Serial.print(str.substring(i,1));
-      ret[i] = str.substring(i,1).toInt();
-  }
-  Serial.println("");
-  return ret;
-}
+// char* stringToCharArray(String str, char* ret) {
+//   int len = str.length();
+//   char ret[len];
+//   for(int i = 0; i < len; ++i) {
+//     Serial.print(str.substring(i,1));
+//       ret[i] = str.substring(i,1).toInt();
+//   }
+//   Serial.println("");
+//   return ret;
+// }
 
 void writeOledMenu(String soFar) {
   if (soFar == "") { // nothing entered yet
@@ -662,10 +674,14 @@ void writeOled(String line1, String line2, String line3, String line4, String li
   u8g2.clearBuffer();					// clear the internal memory
   // u8g2.setFont(u8g2_font_ncenB08_tr);	// choose a suitable font
   u8g2.setFont(u8g2_font_helvB08_te);	// choose a suitable font
-  u8g2.drawStr(0,10, cLine1);	// write something to the internal memory
-  u8g2.drawStr(0,20, cLine2);	// write something to the internal memory
-  u8g2.drawStr(0,30, cLine3);	// write something to the internal memory
-  u8g2.drawStr(0,40, cLine4);	// write something to the internal memory
-  u8g2.drawStr(0,50, cLine5);	// write something to the internal memory
+  u8g2.drawStr(0,10, cLine1);
+  u8g2.drawStr(0,20, cLine2);
+  u8g2.drawStr(0,30, cLine3);	
+  u8g2.drawStr(0,40, cLine4);	
+  u8g2.drawStr(0,50, cLine5);	
   u8g2.sendBuffer();					// transfer internal memory to the display
 }
+
+// void deepSleepStart() {
+//   esp_deep_sleep_start();
+// }
