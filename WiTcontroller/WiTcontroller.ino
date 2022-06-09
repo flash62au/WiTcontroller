@@ -74,18 +74,18 @@ String menuCommand = "";
 
 int ssidIndex = 99;
 
-// String menu[10][3] = {
-//   {"","",""}
-//   {"Add Loco","",""} 
-//   {"Drop Loco", "",""}
-//   {"Toggle Dir", "",""}
-//   {"","",""}
-//   {"Throw Point","",""}
-//   {"Close Point", "", ""}
-//   {"Route", "",""}
-//   {"Trk Power" "","",}
-//   {"Disconnect","#.Disconnect","9#.Sleep"}
-// }
+const String menuText[10][3] = {
+  {"Function","",""},
+  {"Add Loco","",""},
+  {"Drop Loco", "",""},
+  {"Toggle Dir", "",""},
+  {"","",""},
+  {"Throw Point","",""},
+  {"Close Point", "", ""},
+  {"Route", "",""},
+  {"Trk Power" "","",},
+  {"Disconnect","#.Disconnect","9#.Sleep"}
+};
 
 #ifdef U8X8_HAVE_HW_SPI
 #include <SPI.h>                       // add to include path [Arduino install]\hardware\arduino\avr\libraries\SPI\src
@@ -643,7 +643,9 @@ void powerToggle() {
 
 void writeOledMenu(String soFar) {
   if (soFar == "") { // nothing entered yet
-    writeOled("Loco- 1=Select 2=Deselect", "3=Toggle Dir", "Point- 5=Throw 6=Close", "7=Route", "8=Power 9=Disconnect");
+//    writeOled("Loco- 1=Select 2=Deselect", "3=Toggle Dir", "Point- 5=Throw 6=Close", "7=Route", "8=Power 9=Disconnect");
+    writeOled("1."+menuText[1][0], "2."+menuText[2][0], "3."+menuText[3][0], "4."+menuText[4][0], "5."+menuText[5][0], 
+              "6."+menuText[6][0], "7."+menuText[7][0], "8."+menuText[8][0], "9."+menuText[9][0], "0."+menuText[0][0]); 
   } else {
     writeOled("Menu:", menuCommand, "", "", "");
   }
@@ -665,20 +667,40 @@ void writeOledSpeed() {
 }
 
 void writeOled(String line1, String line2, String line3, String line4, String line5) {
+  writeOled(line1, line2, line3, line4, line5,
+            "", "", "", "", "");
+}
+
+void writeOled(String line1, String line2, String line3, String line4, String line5,
+               String line6, String line7, String line8, String line9, String line10) {
   const char *cLine1 = line1.c_str();
   const char *cLine2 = line2.c_str();
   const char *cLine3 = line3.c_str();
   const char *cLine4 = line4.c_str();
   const char *cLine5 = line5.c_str();
+  const char *cLine6 = line6.c_str();
+  const char *cLine7 = line7.c_str();
+  const char *cLine8 = line8.c_str();
+  const char *cLine9 = line9.c_str();
+  const char *cLine10 = line10.c_str();
 
   u8g2.clearBuffer();					// clear the internal memory
-  // u8g2.setFont(u8g2_font_ncenB08_tr);	// choose a suitable font
-  u8g2.setFont(u8g2_font_helvB08_te);	// choose a suitable font
+
+  // u8g2.setFont(u8g2_font_ncenB08_tr);	// serif bold
+  // u8g2.setFont(u8g2_font_helvB08_te);	// helv bold
+  // u8g2.setFont(u8g2_font_helvB08_tf);	// helv
+  u8g2.setFont(u8g2_font_NokiaSmallPlain_tf); // small
+  
   u8g2.drawStr(0,10, cLine1);
   u8g2.drawStr(0,20, cLine2);
   u8g2.drawStr(0,30, cLine3);	
   u8g2.drawStr(0,40, cLine4);	
   u8g2.drawStr(0,50, cLine5);	
+  u8g2.drawStr(64,10, cLine6);	
+  u8g2.drawStr(64,20, cLine7);	
+  u8g2.drawStr(64,30, cLine8);	
+  u8g2.drawStr(64,40, cLine9);	
+  u8g2.drawStr(64,50, cLine10);	
   u8g2.sendBuffer();					// transfer internal memory to the display
 }
 
