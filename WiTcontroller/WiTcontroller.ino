@@ -14,6 +14,8 @@
 #include <Keypad.h>               // https://www.arduinolibraries.info/libraries/keypad
 #include "actions.h"
 #include "config.h"
+#include <U8g2lib.h>
+#include <string>
 
 int currentSpeed = 0;
 Direction currentDirection;
@@ -71,6 +73,20 @@ boolean menuCommandStarted = false;
 String menuCommand = "";
 
 int ssidIndex = 99;
+
+#ifdef U8X8_HAVE_HW_SPI
+#include <SPI.h>
+#endif
+#ifdef U8X8_HAVE_HW_I2C
+#include <Wire.h>
+#endif
+
+// Please UNCOMMENT one of the contructor lines below
+// U8g2 Contructor List (Frame Buffer)
+// The complete list is available here: https://github.com/olikraus/u8g2/wiki/u8g2setupcpp
+// Please update the pin numbers according to your setup. Use U8X8_PIN_NONE if the reset pin is not connected
+
+U8G2_SSD1312_128X64_NONAME_F_SW_I2C u8g2(U8G2_MIRROR, /* clock=*/ 22, /* data=*/ 23, /* reset=*/ U8X8_PIN_NONE);
 
 // WiThrottleProtocol Delegate class
 class MyDelegate : public WiThrottleProtocolDelegate {
@@ -178,6 +194,8 @@ void keypadEvent(KeypadEvent key){
 
 void setup() {
   Serial.begin(115200);
+  u8g2.begin();
+  writeOled("Start","","");
 
   delay(1000);
   Serial.println("Start"); 
@@ -207,9 +225,11 @@ void loop() {
 
 void browseService(const char * service, const char * proto){
   Serial.printf("Browsing for service _%s._%s.local. on %s ... ", service, proto, ssids[ssidIndex]);
+  writeOled("ssids[ssidIndex]", "Browsing for service", "");
   int n = MDNS.queryService(service, proto);
   if (n == 0) {
     Serial.println("no services found");
+    writeOled("ssids[ssidIndex]", "no services found", "");
   } else {
     Serial.print(n);
     Serial.println(" service(s) found");
@@ -451,6 +471,7 @@ void connectNetwork() {
 
     if (cSsid!="") {
       Serial.print("Trying Network "); Serial.println(cSsid);
+      writeOled("Trying", ssids[ssidIndex], "");
       WiFi.begin(cSsid, cPassword); 
       turnoutPrefix = turnoutPrefixes[1];
       routePrefix = routePrefixes[1];
@@ -463,6 +484,7 @@ void connectNetwork() {
       Serial.println("");
       if (WiFi.status() == WL_CONNECTED) {
         Serial.print("Connected. IP address: "); Serial.println(WiFi.localIP());
+        writeOled("Connected", "IP address", WiFi.localIP().toString());
         connected = true;
       } else {
         WiFi.disconnect();
@@ -495,6 +517,7 @@ void connectFirstWitServer() {
   Serial.println("Connected to the server");
   Serial.println(firstWitServerIP);
   Serial.println(firstWitServerPort);
+  writeOled("Connected To", firstWitServerIP.toString(), "");
     
   // Uncomment for logging on Serial
 //    wiThrottleProtocol.setLogStream(&Serial);
@@ -515,6 +538,7 @@ void disconnectWitServer() {
   releaseAllLocos();
   wiThrottleProtocol.disconnect();
   Serial.println("Disconnected from wiThrottle server\n");
+  writeOled("Disconnected", "", "");
   witConnected = false;
 }
 
@@ -525,6 +549,7 @@ void speedDown(int amt) {
     wiThrottleProtocol.setSpeed(newSpeed);
     currentSpeed = newSpeed;
     Serial.print("Speed Down: "); Serial.println(amt);
+    writeOledSpeed();
   }
 }
 
@@ -535,6 +560,7 @@ void speedUp(int amt) {
     wiThrottleProtocol.setSpeed(newSpeed);
     currentSpeed = newSpeed;
     Serial.print("Speed Up: "); Serial.println(amt);
+    writeOledSpeed();
   }
 }
 
@@ -593,4 +619,32 @@ char* stringToCharArray(String str) {
   }
   Serial.println("");
   return ret;
+}
+
+void writeOledSpeed() {
+  String sLocos = "";
+  String sSpeed = "";
+  String sDirection = "";
+
+  if (wiThrottleProtocol.getNumberOfLocomotives() > 0 ) {
+    for (int i=0; i < wiThrottleProtocol.getNumberOfLocomotives(); i++) {
+      sLocos = sLocos + " " + wiThrottleProtocol.getLocomotiveAtPosition(i);
+    }
+    sSpeed = String(currentSpeed);
+    sDirection = (currentDirection==Forward) ? "Forward" : "Reverse";
+  }
+  writeOled(sLocos, sDirection, sSpeed);
+}
+
+void writeOled(String line1, String line2, String line3) {
+  const char *cLine1 = line1.c_str();
+  const char *cLine2 = line2.c_str();
+  const char *cLine3 = line3.c_str();
+
+  u8g2.clearBuffer();					// clear the internal memory
+  u8g2.setFont(u8g2_font_ncenB08_tr);	// choose a suitable font
+  u8g2.drawStr(0,10, cLine1);	// write something to the internal memory
+  u8g2.drawStr(0,20, cLine2);	// write something to the internal memory
+  u8g2.drawStr(0,30, cLine3);	// write something to the internal memory
+  u8g2.sendBuffer();					// transfer internal memory to the display
 }
