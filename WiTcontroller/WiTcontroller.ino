@@ -195,7 +195,7 @@ void keypadEvent(KeypadEvent key){
 void setup() {
   Serial.begin(115200);
   u8g2.begin();
-  writeOled("Start","","");
+  writeOled("WiTcontroller","Start","", "", "");
 
   delay(1000);
   Serial.println("Start"); 
@@ -225,11 +225,11 @@ void loop() {
 
 void browseService(const char * service, const char * proto){
   Serial.printf("Browsing for service _%s._%s.local. on %s ... ", service, proto, ssids[ssidIndex]);
-  writeOled("ssids[ssidIndex]", "Browsing for service", "");
+  writeOled(ssids[ssidIndex], "Browsing for service", "", "", "");
   int n = MDNS.queryService(service, proto);
   if (n == 0) {
     Serial.println("no services found");
-    writeOled("ssids[ssidIndex]", "no services found", "");
+    writeOled(ssids[ssidIndex], "no services found", "", "", "");
   } else {
     Serial.print(n);
     Serial.println(" service(s) found");
@@ -254,6 +254,7 @@ void doKeyPress(char key, boolean pressed) {
         } else {
           menuCommandStarted = true;
           Serial.println("Command started");
+          writeOledMenu("");
         }
         break;
       case '#': // end of command
@@ -274,6 +275,7 @@ void doKeyPress(char key, boolean pressed) {
       case '9':
         if (menuCommandStarted) { // appeand to the string
           menuCommand += key;
+          writeOledMenu(menuCommand);
         } else{
           doDirectCommand(key, true);
         }
@@ -363,6 +365,7 @@ void doMenu() {
           loco = getLocoWithLength(loco);
           Serial.print("add Loco: "); Serial.println(loco);
           wiThrottleProtocol.addLocomotive(loco);
+          writeOledSpeed();
         }
         break;
       }
@@ -372,9 +375,10 @@ void doMenu() {
           loco = getLocoWithLength(loco);
           Serial.print("release Loco: "); Serial.println(loco);
           wiThrottleProtocol.releaseLocomotive(loco);
-        } else { //not loco speciffied so release all
+        } else { //not loco specified so release all
           releaseAllLocos();
         }
+        writeOledSpeed();
         break;
       }
     case '3': { // change direction
@@ -471,7 +475,7 @@ void connectNetwork() {
 
     if (cSsid!="") {
       Serial.print("Trying Network "); Serial.println(cSsid);
-      writeOled("Trying", ssids[ssidIndex], "");
+      writeOled("Trying", ssids[ssidIndex], "", "", "");
       WiFi.begin(cSsid, cPassword); 
       turnoutPrefix = turnoutPrefixes[1];
       routePrefix = routePrefixes[1];
@@ -484,7 +488,7 @@ void connectNetwork() {
       Serial.println("");
       if (WiFi.status() == WL_CONNECTED) {
         Serial.print("Connected. IP address: "); Serial.println(WiFi.localIP());
-        writeOled("Connected", "IP address", WiFi.localIP().toString());
+        writeOled("Connected", "IP address", WiFi.localIP().toString(), "", "");
         connected = true;
       } else {
         WiFi.disconnect();
@@ -512,12 +516,13 @@ void connectFirstWitServer() {
   Serial.println("Connecting to the server...");
   if (!client.connect(firstWitServerIP, firstWitServerPort)) {
     Serial.println("connection failed");
+    writeOled("Connection failed", firstWitServerIP.toString(), String(firstWitServerPort), "", "");
     while(1) delay(1000);
   }
   Serial.println("Connected to the server");
   Serial.println(firstWitServerIP);
   Serial.println(firstWitServerPort);
-  writeOled("Connected To", firstWitServerIP.toString(), "");
+  writeOled("Connected To", firstWitServerIP.toString(), String(firstWitServerPort), "", "");
     
   // Uncomment for logging on Serial
 //    wiThrottleProtocol.setLogStream(&Serial);
@@ -538,7 +543,7 @@ void disconnectWitServer() {
   releaseAllLocos();
   wiThrottleProtocol.disconnect();
   Serial.println("Disconnected from wiThrottle server\n");
-  writeOled("Disconnected", "", "");
+  writeOled("Disconnected", "", "", "", "");
   witConnected = false;
 }
 
@@ -568,6 +573,7 @@ void releaseAllLocos() {
   if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
     for(int index=0;index<wiThrottleProtocol.getNumberOfLocomotives();index++) {
       wiThrottleProtocol.releaseLocomotive(wiThrottleProtocol.getLocomotiveAtPosition(index));
+      writeOledSpeed();
     } 
   }
 }
@@ -579,6 +585,7 @@ void toggleDirection() {
       direction = Forward;
     }
     changeDirection(direction);
+    writeOledSpeed();
   }
 }
 
@@ -587,6 +594,7 @@ void changeDirection(Direction direction) {
     wiThrottleProtocol.setDirection(direction);
     currentDirection = direction;
     Serial.print("Change direction: "); Serial.println( (direction==Forward) ? "Forward" : "Reverse");
+    writeOledSpeed(); 
   }
 }
 
@@ -621,6 +629,14 @@ char* stringToCharArray(String str) {
   return ret;
 }
 
+void writeOledMenu(String soFar) {
+  if (soFar == "") { // nothing entered yet
+    writeOled("Loco- 1=Select 2=Deselect", "3=Toggle Dir", "Point- 5=Throw 6=Close", "7=Route", "8=Power 9=Disconnect");
+  } else {
+    writeOled("Menu:", menuCommand, "", "", "");
+  }
+}
+
 void writeOledSpeed() {
   String sLocos = "";
   String sSpeed = "";
@@ -633,18 +649,23 @@ void writeOledSpeed() {
     sSpeed = String(currentSpeed);
     sDirection = (currentDirection==Forward) ? "Forward" : "Reverse";
   }
-  writeOled(sLocos, sDirection, sSpeed);
+  writeOled("Locos:",sLocos, "Dir:   " + sDirection, "Speed: " + sSpeed, "");
 }
 
-void writeOled(String line1, String line2, String line3) {
+void writeOled(String line1, String line2, String line3, String line4, String line5) {
   const char *cLine1 = line1.c_str();
   const char *cLine2 = line2.c_str();
   const char *cLine3 = line3.c_str();
+  const char *cLine4 = line4.c_str();
+  const char *cLine5 = line5.c_str();
 
   u8g2.clearBuffer();					// clear the internal memory
-  u8g2.setFont(u8g2_font_ncenB08_tr);	// choose a suitable font
+  // u8g2.setFont(u8g2_font_ncenB08_tr);	// choose a suitable font
+  u8g2.setFont(u8g2_font_helvB08_te);	// choose a suitable font
   u8g2.drawStr(0,10, cLine1);	// write something to the internal memory
   u8g2.drawStr(0,20, cLine2);	// write something to the internal memory
   u8g2.drawStr(0,30, cLine3);	// write something to the internal memory
+  u8g2.drawStr(0,40, cLine4);	// write something to the internal memory
+  u8g2.drawStr(0,50, cLine5);	// write something to the internal memory
   u8g2.sendBuffer();					// transfer internal memory to the display
 }
