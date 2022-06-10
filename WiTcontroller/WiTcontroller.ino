@@ -79,12 +79,12 @@ const String menuText[10][3] = {
   {"Add Loco","",""},
   {"Drop Loco", "",""},
   {"Toggle Dir", "",""},
-  {"","",""},
+  {"Sleep","",""},
   {"Throw Point","",""},
   {"Close Point", "", ""},
   {"Route", "",""},
   {"Trk Power" "","",},
-  {"Disconnect","#.Disconnect","9#.Sleep"}
+  {"Dis/connect","#.Dis/connect","9#.Sleep"}
 };
 
 #ifdef U8X8_HAVE_HW_SPI
@@ -223,6 +223,9 @@ void setup() {
 
   connectNetwork();
   connectFirstWitServer();
+
+  esp_sleep_enable_ext0_wakeup(GPIO_NUM_13,0); //1 = High, 0 = Low
+
 }
 
 void loop() {
@@ -398,7 +401,11 @@ void doMenu() {
         toggleDirection();
         break;
       }
-    case '5': {  // throw turnout
+     case '4': { // deep sleep
+        deepSleepStart();
+        break;
+      }
+   case '5': {  // throw turnout
         String turnout = turnoutPrefix + menuCommand.substring(1, menuCommand.length());
         if (!turnout.equals("")) { // a turnout is specified
           Serial.print("throw turnout: "); Serial.println(turnout);
@@ -721,6 +728,11 @@ void writeOled(String line1, String line2, String line3, String line4, String li
   u8g2.sendBuffer();					// transfer internal memory to the display
 }
 
-// void deepSleepStart() {
-//   esp_deep_sleep_start();
-// }
+void writeOledDirectCommands() {
+
+}
+
+void deepSleepStart() {
+  u8g2.setPowerSave(1);
+  esp_deep_sleep_start();
+}
