@@ -9,6 +9,7 @@ const int maxSsids = 3;
 const String ssids[maxSsids] = {"Network1", "Network2", "Network3"};
 const String passwords[maxSsids] = {"password1", "password2", "password3"};
 
+
 const String turnoutPrefixes[maxSsids] = {"NT", "NT", "NT"};  // required if you wish to use turnouts  
 // this the prefix of all turnout system names for YOUR, for three wiThrottle servers on the three networks above
 
@@ -46,3 +47,9 @@ int buttonActions[10] = { E_STOP,   // 0
                          DIRECTION_FORWARD  // 9
 };
 
+const String directCommandText[4][3] = {
+    {"1.F0", "2.F1", "3.F2"},
+    {"4.", "5.V Up", "6."}, 
+    {"7.Rev", "8.V Down", "9.Fwd"},
+    {"*.Menu", "E Stop", "#.End Menu"}
+};

@@ -13,6 +13,7 @@
 #include <AiEsp32RotaryEncoder.h> // https://github.com/igorantolic/ai-esp32-rotary-encoder
 #include <Keypad.h>               // https://www.arduinolibraries.info/libraries/keypad
 #include "actions.h"
+#include "static.h"
 #include "config.h"
 #include <U8g2lib.h>
 #include <string>
@@ -79,12 +80,12 @@ const String menuText[10][3] = {
   {"Add Loco","",""},
   {"Drop Loco", "",""},
   {"Toggle Dir", "",""},
-  {"Sleep","",""},
+  {"","",""},
   {"Throw Point","",""},
   {"Close Point", "", ""},
   {"Route", "",""},
   {"Trk Power" "","",},
-  {"Dis/connect","#.Dis/connect","9#.Sleep"}
+  {"Dis/connect","#.Dis/connect","9,#.Sleep"}
 };
 
 #ifdef U8X8_HAVE_HW_SPI
@@ -99,6 +100,9 @@ const String menuText[10][3] = {
 // The complete list is available here: https://github.com/olikraus/u8g2/wiki/u8g2setupcpp
 // Please update the pin numbers according to your setup. Use U8X8_PIN_NONE if the reset pin is not connected
 U8G2_SSD1312_128X64_NONAME_F_SW_I2C u8g2(U8G2_MIRROR, /* clock=*/ 22, /* data=*/ 23, /* reset=*/ U8X8_PIN_NONE);
+
+String oledText[18] = {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""};
+
 
 // WiThrottleProtocol Delegate class
 class MyDelegate : public WiThrottleProtocolDelegate {
@@ -207,7 +211,9 @@ void keypadEvent(KeypadEvent key){
 void setup() {
   Serial.begin(115200);
   u8g2.begin();
-  writeOled("WiTcontroller","Start","", "", "");
+
+  clearOledArray(); oledText[0] = appName; oledText[1] = appVersion; oledText[2] = msg_start;
+  writeOledArray(false);
 
   delay(1000);
   Serial.println("Start"); 
@@ -240,19 +246,29 @@ void loop() {
 
 void browseService(const char * service, const char * proto){
   Serial.printf("Browsing for service _%s._%s.local. on %s ... ", service, proto, ssids[ssidIndex]);
-  writeOled(ssids[ssidIndex], "Browsing for service", "", "", "");
+  clearOledArray(); oledText[0] = ssids[ssidIndex];   oledText[1] = msg_browsing_for_service;
+  writeOledArray(false);
+
   int n = MDNS.queryService(service, proto);
   if (n == 0) {
-    Serial.println("no services found");
-    writeOled(ssids[ssidIndex], "no services found", "", "", "");
+    oledText[1] = msg_no_services_found;
+    writeOledArray(false);
+    Serial.println(oledText[1]);
+   
   } else {
     Serial.print(n);
-    Serial.println(" service(s) found");
+    Serial.println(msg_services_found);
+    clearOledArray(); oledText[0] = msg_services_found;
+ 
     for (int i = 0; i < n; ++i) {
       // Print details for each service found
       Serial.print("  "); Serial.print(i + 1); Serial.print(": "); Serial.print(MDNS.hostname(i));
       Serial.print(" ("); Serial.print(MDNS.IP(i)); Serial.print(":"); Serial.print(MDNS.port(i)); Serial.println(")");
+      if (i<5) {
+        oledText[i+1] = String(i+1) + ": " + MDNS.hostname(i) + " (" + String(MDNS.IP(i)) + ":" + String(MDNS.port(i)) + ")";
+      }
     }
+    writeOledArray(false);
     firstWitServerIP = MDNS.IP(0);
     firstWitServerPort = MDNS.port(0);
   }
@@ -276,8 +292,9 @@ void doKeyPress(char key, boolean pressed) {
       case '#': // end of command
         if ((menuCommandStarted) && (menuCommand.length()>=1)) {
           doMenu();
-        }  // otherwise nothing to do
-        resetMenu();
+        } else {
+          writeOledDirectCommands();
+        }
         break;
       case '0':
       case '1':
@@ -401,10 +418,9 @@ void doMenu() {
         toggleDirection();
         break;
       }
-     case '4': { // deep sleep
-        deepSleepStart();
-        break;
-      }
+    //  case '4': { // 
+    //     break;
+    //   }
    case '5': {  // throw turnout
         String turnout = turnoutPrefix + menuCommand.substring(1, menuCommand.length());
         if (!turnout.equals("")) { // a turnout is specified
@@ -434,11 +450,18 @@ void doMenu() {
         Serial.println("Power toggle");
         break;
       }
-    case '9': { // disconnect/reconnect
-        if (witConnected) {
-          disconnectWitServer();
-        } else {
-          connectFirstWitServer();
+    case '9': { // disconnect/reconnect/sleep
+        String subcommand = menuCommand.substring(1, menuCommand.length());
+        if (subcommand.equals("")) { // no subcommand is specified   
+          if (witConnected) {
+            disconnectWitServer();
+          } else {
+            connectFirstWitServer();
+          }
+        } else { // subcommand
+          if (subcommand.equals("9")) { // sleep
+            deepSleepStart();
+          }
         }
         break;
       }
@@ -495,7 +518,9 @@ void connectNetwork() {
 
     if (cSsid!="") {
       Serial.print("Trying Network "); Serial.println(cSsid);
-      writeOled("Trying", ssids[ssidIndex], "", "", "");
+      clearOledArray(); oledText[0] = ssids[ssidIndex]; oledText[1] =  msg_trying_to_connect;
+      writeOledArray(false);
+
       WiFi.begin(cSsid, cPassword); 
       turnoutPrefix = turnoutPrefixes[1];
       routePrefix = routePrefixes[1];
@@ -508,7 +533,9 @@ void connectNetwork() {
       Serial.println("");
       if (WiFi.status() == WL_CONNECTED) {
         Serial.print("Connected. IP address: "); Serial.println(WiFi.localIP());
-        writeOled("Connected", "IP address", WiFi.localIP().toString(), "", "");
+        oledText[1] = msg_connected; 
+        oledText[2] = msg_address_label + String(WiFi.localIP());
+        writeOledArray(false);
         connected = true;
       } else {
         WiFi.disconnect();
@@ -534,17 +561,21 @@ void connectFirstWitServer() {
 
   // connect
   Serial.println("Connecting to the server...");
+  clearOledArray(); oledText[0] = firstWitServerIP.toString() + " " + String(firstWitServerPort); oledText[1] + "connecting...";
+  writeOledArray(false);
+
   if (!client.connect(firstWitServerIP, firstWitServerPort)) {
-    Serial.println("connection failed");
-    writeOled("Connection failed", firstWitServerIP.toString(), String(firstWitServerPort), "", "");
+    Serial.println(msg_connection_failed);
+    oledText[1] = msg_connection_failed;
+    writeOledArray(false);
     while(1) delay(1000);
   }
-  Serial.println("Connected to the server");
-  Serial.println(firstWitServerIP);
-  Serial.println(firstWitServerPort);
-  writeOled("Connected To", firstWitServerIP.toString(), String(firstWitServerPort), "", "",
-            "", "", "", "", "*.Menu");
-    
+  Serial.print("Connected to server: ");
+  Serial.println(firstWitServerIP); Serial.println(firstWitServerPort);
+  oledText[1] = msg_connected;
+  oledText[11] = menu_menu;
+  writeOledArray(false);
+
   // Uncomment for logging on Serial
 //    wiThrottleProtocol.setLogStream(&Serial);
   
@@ -564,7 +595,8 @@ void disconnectWitServer() {
   releaseAllLocos();
   wiThrottleProtocol.disconnect();
   Serial.println("Disconnected from wiThrottle server\n");
-  writeOled("Disconnected", "", "", "", "");
+  clearOledArray(); oledText[0] = msg_disconnected;
+  writeOledArray(false);
   witConnected = false;
 }
 
@@ -665,12 +697,21 @@ void powerToggle() {
 
 void writeOledMenu(String soFar) {
   if (soFar == "") { // nothing entered yet
-//    writeOled("Loco- 1=Select 2=Deselect", "3=Toggle Dir", "Point- 5=Throw 6=Close", "7=Route", "8=Power 9=Disconnect");
-    writeOled("1."+menuText[1][0], "2."+menuText[2][0], "3."+menuText[3][0], "4."+menuText[4][0], "5."+menuText[5][0], 
-              "6."+menuText[6][0], "7."+menuText[7][0], "8."+menuText[8][0], "9."+menuText[9][0], "0."+menuText[0][0]); 
+    clearOledArray();
+    for (int i=1; i<10; i++) {
+      oledText[i-1] = String(i) + "." + menuText[i][0];
+    }
+    oledText[9] = "0." + menuText[0][0];
+    writeOledArray(false);
   } else {
     int cmd = menuCommand.substring(0, 1).toInt();
-    writeOled("Menu: " + menuText[cmd][0], menuCommand.substring(1, menuCommand.length()), "", "", "#.Finish","","","","","*.Cancel");
+    String subMenuText1 = (menuText[cmd][1]=="") ? menu_finish : menuText[cmd][1];
+    String subMenuText2 = (menuText[cmd][2]=="") ? "" : menuText[cmd][2];
+
+    clearOledArray();
+    oledText[0] = "Menu: " + menuText[cmd][0]; oledText[1] =  menuCommand.substring(1, menuCommand.length());
+    oledText[4] = subMenuText2; oledText[5] = subMenuText1; oledText[11] = menu_cancel;
+    writeOledArray(false);
   }
 }
 
@@ -684,29 +725,15 @@ void writeOledSpeed() {
       sLocos = sLocos + " " + wiThrottleProtocol.getLocomotiveAtPosition(i);
     }
     sSpeed = String(currentSpeed);
-    sDirection = (currentDirection==Forward) ? "Forward" : "Reverse";
+    sDirection = (currentDirection==Forward) ? direction_forward : direction_reverse;
   }
-  writeOled("Locos:",sLocos, "", "Speed: " + sSpeed, "",
-            sDirection, "", "", "", "*.Menu");
+
+  clearOledArray();
+  oledText[0] = msg_locos_label; oledText[1] = sLocos; oledText[2] = msg_speed_label + sSpeed; oledText[6] = sDirection; oledText[11] = menu_menu;
+  writeOledArray(false);
 }
 
-void writeOled(String line1, String line2, String line3, String line4, String line5) {
-  writeOled(line1, line2, line3, line4, line5,
-            "", "", "", "", "");
-}
-
-void writeOled(String line1, String line2, String line3, String line4, String line5,
-               String line6, String line7, String line8, String line9, String line10) {
-  const char *cLine1 = line1.c_str();
-  const char *cLine2 = line2.c_str();
-  const char *cLine3 = line3.c_str();
-  const char *cLine4 = line4.c_str();
-  const char *cLine5 = line5.c_str();
-  const char *cLine6 = line6.c_str();
-  const char *cLine7 = line7.c_str();
-  const char *cLine8 = line8.c_str();
-  const char *cLine9 = line9.c_str();
-  const char *cLine10 = line10.c_str();
+void writeOledArray(boolean isThreeColums) {
 
   u8g2.clearBuffer();					// clear the internal memory
 
@@ -715,21 +742,50 @@ void writeOled(String line1, String line2, String line3, String line4, String li
   // u8g2.setFont(u8g2_font_helvB08_tf);	// helv
   u8g2.setFont(u8g2_font_NokiaSmallPlain_tf); // small
   
-  u8g2.drawStr(0,10, cLine1);
-  u8g2.drawStr(0,20, cLine2);
-  u8g2.drawStr(0,30, cLine3);	
-  u8g2.drawStr(0,40, cLine4);	
-  u8g2.drawStr(0,50, cLine5);	
-  u8g2.drawStr(64,10, cLine6);	
-  u8g2.drawStr(64,20, cLine7);	
-  u8g2.drawStr(64,30, cLine8);	
-  u8g2.drawStr(64,40, cLine9);	
-  u8g2.drawStr(64,50, cLine10);	
+  int x=0;
+  int y=10;
+  int xInc = 64; 
+  int max = 12;
+  if (isThreeColums) {
+    xInc = 42;
+    max = 18;
+  }
+
+  for (int i=0; i < max; i++) {
+    const char *cLine1 = oledText[i].c_str();
+    u8g2.drawStr(x,y, cLine1);
+    y = y + 10;
+    if ((i==5) || (i==11)) {
+      x=x+xInc;
+      y=10;
+    }
+  }
   u8g2.sendBuffer();					// transfer internal memory to the display
 }
 
-void writeOledDirectCommands() {
+void clearOledArray() {
+  for (int i=0; i < 15; i++) {
+    oledText[i] = "";
+  }
+}
 
+void writeOledDirectCommands() {
+  clearOledArray();
+  oledText[0] = direct_command_list;
+  for (int i=0; i < 4; i++) {
+    oledText[i+1] = directCommandText[i][0];
+  }
+  int j = 0;
+  for (int i=6; i < 10; i++) {
+    oledText[i+1] = directCommandText[j][1];
+    j++;
+  }
+  j=0;
+  for (int i=12; i < 16; i++) {
+    oledText[i+1] = directCommandText[j][2];
+    j++;
+  }
+  writeOledArray(true);
 }
 
 void deepSleepStart() {
