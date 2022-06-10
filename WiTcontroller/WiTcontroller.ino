@@ -262,7 +262,8 @@ void doKeyPress(char key, boolean pressed) {
       case '*':  // menu command
         menuCommand = "";
         if (menuCommandStarted) { // then cancel the menu
-          menuCommandStarted = false;
+          menuCommandStarted = false; 
+          writeOledSpeed();
         } else {
           menuCommandStarted = true;
           Serial.println("Command started");
@@ -344,7 +345,7 @@ void doDirectCommand (char key, boolean pressed) {
               break; 
             }
             case E_STOP: {
-              wiThrottleProtocol.emergencyStop();
+              speedEstop();
               break; 
             }
             case POWER_ON: {
@@ -534,7 +535,8 @@ void connectFirstWitServer() {
   Serial.println("Connected to the server");
   Serial.println(firstWitServerIP);
   Serial.println(firstWitServerPort);
-  writeOled("Connected To", firstWitServerIP.toString(), String(firstWitServerPort), "", "");
+  writeOled("Connected To", firstWitServerIP.toString(), String(firstWitServerPort), "", "",
+            "", "", "", "", "*.Menu");
     
   // Uncomment for logging on Serial
 //    wiThrottleProtocol.setLogStream(&Serial);
@@ -559,24 +561,37 @@ void disconnectWitServer() {
   witConnected = false;
 }
 
+void speedEstop() {
+  wiThrottleProtocol.emergencyStop();
+  currentSpeed = 0;
+  Serial.println("Speed EStop"); 
+  writeOledSpeed();
+}
+
 void speedDown(int amt) {
   if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
     int newSpeed = currentSpeed - amt;
-    if (newSpeed <0) { newSpeed = 0; }
-    wiThrottleProtocol.setSpeed(newSpeed);
-    currentSpeed = newSpeed;
     Serial.print("Speed Down: "); Serial.println(amt);
-    writeOledSpeed();
+    speedSet(newSpeed);
   }
 }
 
 void speedUp(int amt) {
   if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
     int newSpeed = currentSpeed + amt;
+    Serial.print("Speed Up: "); Serial.println(amt);
+    speedSet(newSpeed);
+  }
+}
+
+void speedSet(int amt) {
+  if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
+    int newSpeed = amt;
     if (newSpeed >128) { newSpeed = 126; }
+    if (newSpeed <0) { newSpeed = 0; }
     wiThrottleProtocol.setSpeed(newSpeed);
     currentSpeed = newSpeed;
-    Serial.print("Speed Up: "); Serial.println(amt);
+    Serial.print("Speed Set: "); Serial.println(newSpeed);
     writeOledSpeed();
   }
 }
@@ -647,7 +662,8 @@ void writeOledMenu(String soFar) {
     writeOled("1."+menuText[1][0], "2."+menuText[2][0], "3."+menuText[3][0], "4."+menuText[4][0], "5."+menuText[5][0], 
               "6."+menuText[6][0], "7."+menuText[7][0], "8."+menuText[8][0], "9."+menuText[9][0], "0."+menuText[0][0]); 
   } else {
-    writeOled("Menu:", menuCommand, "", "", "");
+    int cmd = menuCommand.substring(0, 1).toInt();
+    writeOled("Menu: " + menuText[cmd][0], menuCommand.substring(1, menuCommand.length()), "", "", "#.Finish","","","","","*.Cancel");
   }
 }
 
@@ -663,7 +679,8 @@ void writeOledSpeed() {
     sSpeed = String(currentSpeed);
     sDirection = (currentDirection==Forward) ? "Forward" : "Reverse";
   }
-  writeOled("Locos:",sLocos, "Dir:   " + sDirection, "Speed: " + sSpeed, "");
+  writeOled("Locos:",sLocos, "", "Speed: " + sSpeed, "",
+            sDirection, "", "", "", "*.Menu");
 }
 
 void writeOled(String line1, String line2, String line3, String line4, String line5) {

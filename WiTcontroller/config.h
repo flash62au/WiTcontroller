@@ -34,7 +34,7 @@ const String routePrefixes[maxSsids] = {"IO:AUTO:", "IO:AUTO:", "IO:AUTO:"};  //
 // };
 
 //4x3 keypad
-int buttonActions[10] = { SPEED_STOP,   // 0
+int buttonActions[10] = { E_STOP,   // 0
                          FUNCTION_0,    // 1 - lights
                          FUNCTION_1,    // 2 - bell
                          FUNCTION_2,    // 3 - horn
