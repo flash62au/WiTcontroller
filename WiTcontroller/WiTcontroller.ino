@@ -172,15 +172,19 @@ void rotary_loop() {
     if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
       if (encoderValue > lastEncoderValue) {
         if (abs(encoderValue-lastEncoderValue)<50) {
-          speedDown(speedStep);
+          // speedDown(speedStep);
+          encoderSpeedChange(true, speedStep);
         } else {
-          speedDown(speedStep*speedStepMultiplier);
+          // speedDown(speedStep*speedStepMultiplier);
+          encoderSpeedChange(true, speedStep*speedStepMultiplier);
         }
       } else {
         if (abs(encoderValue-lastEncoderValue)<50) {
-          speedUp(speedStep);
+          // speedUp(speedStep);
+          encoderSpeedChange(false, speedStep);
         } else {
-          speedUp(speedStep*speedStepMultiplier);
+          // speedUp(speedStep*speedStepMultiplier);
+          encoderSpeedChange(false, speedStep*speedStepMultiplier);
         }
       } 
     }
@@ -192,6 +196,22 @@ void rotary_loop() {
   }
 }
 
+void encoderSpeedChange(boolean rotationIsClockwise, int speedChange) {
+  if (encoderRotationClockwiseIsIncreaseSpeed) {
+    if (rotationIsClockwise) {
+      speedUp(speedChange);
+    } else {
+      speedDown(speedChange);
+    }
+  } else {
+    if (rotationIsClockwise) {
+      speedDown(speedChange);
+    } else {
+      speedUp(speedChange);
+    }
+  }
+}
+ 
 void keypadEvent(KeypadEvent key){
   switch (keypad.getState()){
   case PRESSED:
