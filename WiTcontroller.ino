@@ -41,7 +41,7 @@ String routePrefix = "";
 #define ROTARY_ENCODER_BUTTON_PIN 13
 
 #define ROTARY_ENCODER_VCC_PIN -1 /* 27 put -1 of Rotary encoder Vcc is connected directly to 3,3V; else you can use declared output pin for powering rotary encoder */
-#define ROTARY_ENCODER_STEPS 4 //depending on your encoder - try 1,2 or 4 to get expected behaviour
+#define ROTARY_ENCODER_STEPS 2 //depending on your encoder - try 1,2 or 4 to get expected behaviour
 
 bool circleValues = true;
 int encoderValue = 0;
@@ -158,10 +158,15 @@ void rotary_onButtonClick() {
   }
   lastTimePressed = millis();
   if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
-    wiThrottleProtocol.setSpeed(0);
+    if (currentSpeed!=0) {
+      wiThrottleProtocol.setSpeed(0);
+    } else {
+      if (toggleDirectionOnEncoderButtonPressWhenStationary) toggleDirection();
+    }
     currentSpeed = 0;
   }
   Serial.println("encoder button pressed");
+  writeOledSpeed();
 }
 
 void rotary_loop() {
@@ -324,18 +329,13 @@ void doKeyPress(char key, boolean pressed) {
     } else {  // keypadUser type = KEYPAD_USE_SELECT_WITHROTTLE_SERVER
         Serial.print("key... "); Serial.println(key);
         switch (key){
-          case '0':
           case '1':
           case '2':
           case '3':
           case '4':
+          case '5':
             selectWitServer(key - '0');
             break;
-          // case '5':
-          // case '6':
-          // case '7':
-          // case '8':
-          // case '9':
           default:  // do nothing 
             break;
         }
@@ -534,8 +534,7 @@ void connectNetwork() {
     // if (index >= 3) index = 0;  // go back to the first and try again
     if (ssidIndex >= maxSsids) ssidIndex = 0;  // go back to the first and try again
 
-    Serial.println(""); 
-    Serial.print("Trying SSID number: "); Serial.println(ssidIndex);
+    Serial.println("");  Serial.print("Trying SSID number: "); Serial.println(ssidIndex);
 
     double startTime = millis();
     double nowTime = startTime;
@@ -557,6 +556,7 @@ void connectNetwork() {
         Serial.print(".");
         nowTime = millis();
       }
+
       Serial.println("");
       if (WiFi.status() == WL_CONNECTED) {
         Serial.print("Connected. IP address: "); Serial.println(WiFi.localIP());
@@ -616,7 +616,7 @@ void browseWitService(){
       // Print details for each service found
       Serial.print("  "); Serial.print(i+1); Serial.print(": "); Serial.print(MDNS.hostname(i));
       Serial.print(" ("); Serial.print(MDNS.IP(i)); Serial.print(":"); Serial.print(MDNS.port(i)); Serial.println(")");
-      if (i<5) {
+      if (i<5) {  // only have room for 5
         oledText[i] = String(i+1) + ": " + MDNS.IP(i).toString() + ":" + String(MDNS.port(i));
       }
     }
@@ -770,17 +770,6 @@ void powerToggle() {
     powerOnOff(PowerOn);
   }
 }
-
-// char* stringToCharArray(String str, char* ret) {
-//   int len = str.length();
-//   char ret[len];
-//   for(int i = 0; i < len; ++i) {
-//     Serial.print(str.substring(i,1));
-//       ret[i] = str.substring(i,1).toInt();
-//   }
-//   Serial.println("");
-//   return ret;
-// }
 
 void writeOledMenu(String soFar) {
   if (soFar == "") { // nothing entered yet

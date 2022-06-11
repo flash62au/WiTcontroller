@@ -8,6 +8,9 @@ const String turnoutPrefixes[maxSsids] = {"NT", "NT", "NT"};  // required if you
 const boolean encoderRotationClockwiseIsIncreaseSpeed = false;
 // false = Counterclockwise  true = clockwise
 
+const boolean toggleDirectionOnEncoderButtonPressWhenStationary = true;
+// true = if the locos(s) are stationary, clicking the encoder button will toggle the direction
+
 const String routePrefixes[maxSsids] = {"IO:AUTO:", "IO:AUTO:", "IO:AUTO:"};  // required if you wish to use routes  
 // this is the prefix of all route system names for YOUR system, for three wiThrottle servers on the three networks above
 
