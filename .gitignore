@@ -31,7 +31,7 @@
 *.out
 *.app
 
-.vscode/c_cpp_properties.json
+.vscode
 *.cache
 *.d
 *.o
@@ -53,3 +53,5 @@ build/*.*
 build/sketch/WiTcontroller.ino.cpp
 build/WiTcontroller.ino.bin
 build/sketch/actions.h
+
+.pio
