@@ -21,7 +21,7 @@
 #include "config.h"
 
 int currentSpeed = 0;
-Direction currentDirection;
+Direction currentDirection = Forward;
 const int speedStep = 4;
 const int speedStepMultiplier = 2;  // for 'fast' speed steps
 TrackPower trackPower = PowerUnknown;
@@ -811,7 +811,7 @@ void writeOledSpeed() {
 
   const char *cSpeed = sSpeed.c_str();
   u8g2.setFont(u8g2_font_inb21_mn); // big
-  u8g2.drawStr(40,45, cSpeed);
+  u8g2.drawStr(35,45, cSpeed);
   u8g2.sendBuffer();
 }
 
