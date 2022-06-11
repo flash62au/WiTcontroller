@@ -70,6 +70,8 @@ byte pin_rows[ROW_NUM]      = {19, 18, 17, 16}; // GIOP19, GIOP18, GIOP5, GIOP17
 byte pin_column[COLUMN_NUM] = { 4, 0, 2};   // GIOP16, GIOP4, GIOP0 connect to the column pins
 
 Keypad keypad = Keypad( makeKeymap(keys), pin_rows, pin_column, ROW_NUM, COLUMN_NUM );
+const int keypadDebounceTime = 50;   // in miliseconds
+
 boolean menuCommandStarted = false;
 String menuCommand = "";
 
@@ -95,11 +97,11 @@ const String menuText[10][3] = {
 #include <Wire.h>                      // add to include path [Arduino install]\hardware\arduino\avr\libraries\Wire\src
 #endif
 
-// Please UNCOMMENT one of the contructor lines below
+// Please select a contructor line for below depending on your display
 // U8g2 Contructor List (Frame Buffer)
 // The complete list is available here: https://github.com/olikraus/u8g2/wiki/u8g2setupcpp
 // Please update the pin numbers according to your setup. Use U8X8_PIN_NONE if the reset pin is not connected
-U8G2_SSD1312_128X64_NONAME_F_SW_I2C u8g2(U8G2_MIRROR, /* clock=*/ 22, /* data=*/ 23, /* reset=*/ U8X8_PIN_NONE);
+U8G2_SSD1312_128X64_NONAME_F_SW_I2C u8g2(U8G2_MIRROR_VERTICAL, /* clock=*/ 22, /* data=*/ 23, /* reset=*/ U8X8_PIN_NONE);
 
 String oledText[18] = {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""};
 
@@ -246,6 +248,7 @@ void setup() {
   rotaryEncoder.setAcceleration(100); //or set the value - larger number = more accelearation; 0 or 1 means disabled acceleration
 
   keypad.addEventListener(keypadEvent); // Add an event listener for this keypad
+  keypad.setDebounceTime(keypadDebounceTime);
 
   connectNetwork();
   connectFirstWitServer();
@@ -496,6 +499,7 @@ void doMenu() {
         break;
       }
   }
+  menuCommandStarted = false; 
 }
 
 void resetMenu() {
