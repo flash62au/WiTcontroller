@@ -2,13 +2,6 @@
 
 const char* deviceName = "WiT Controller";
 
-// enter the SSIDs and passwords of as many networks you wish to try to connect to.
-// It will try for 10 seconds to connect before moving to the next.  
-// It will cycle back to the beginnig if all fail
-const int maxSsids = 3;
-const String ssids[maxSsids] = {"Network1", "Network2", "Network3"};
-const String passwords[maxSsids] = {"password1", "password2", "password3"};
-
 const String turnoutPrefixes[maxSsids] = {"NT", "NT", "NT"};  // required if you wish to use turnouts  
 // this the prefix of all turnout system names for YOUR, for three wiThrottle servers on the three networks above
 

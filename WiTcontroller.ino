@@ -12,11 +12,13 @@
 #include <WiThrottleProtocol.h>   // https://github.com/flash62au/WiThrottleProtocol
 #include <AiEsp32RotaryEncoder.h> // https://github.com/igorantolic/ai-esp32-rotary-encoder
 #include <Keypad.h>               // https://www.arduinolibraries.info/libraries/keypad
-#include "actions.h"
-#include "static.h"
-#include "config.h"
 #include <U8g2lib.h>
 #include <string>
+
+#include "actions.h"
+#include "static.h"
+#include "config_network.h"
+#include "config.h"
 
 int currentSpeed = 0;
 Direction currentDirection;
@@ -72,6 +74,8 @@ byte pin_column[COLUMN_NUM] = { 4, 0, 2};   // GIOP16, GIOP4, GIOP0 connect to t
 Keypad keypad = Keypad( makeKeymap(keys), pin_rows, pin_column, ROW_NUM, COLUMN_NUM );
 const int keypadDebounceTime = 50;   // in miliseconds
 
+int keypadUseType = KEYPAD_USE_OPERATION;
+
 boolean menuCommandStarted = false;
 String menuCommand = "";
 
@@ -101,10 +105,10 @@ const String menuText[10][3] = {
 // U8g2 Contructor List (Frame Buffer)
 // The complete list is available here: https://github.com/olikraus/u8g2/wiki/u8g2setupcpp
 // Please update the pin numbers according to your setup. Use U8X8_PIN_NONE if the reset pin is not connected
-U8G2_SSD1312_128X64_NONAME_F_SW_I2C u8g2(U8G2_MIRROR_VERTICAL, /* clock=*/ 22, /* data=*/ 23, /* reset=*/ U8X8_PIN_NONE);
+// U8G2_SSD1312_128X64_NONAME_F_SW_I2C u8g2(U8G2_MIRROR_VERTICAL, /* clock=*/ 22, /* data=*/ 23, /* reset=*/ U8X8_PIN_NONE);
+U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, /* clock=*/ 22, /* data=*/ 23, /* reset=*/ U8X8_PIN_NONE);
 
 String oledText[18] = {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""};
-
 
 // WiThrottleProtocol Delegate class
 class MyDelegate : public WiThrottleProtocolDelegate {
@@ -131,12 +135,15 @@ class MyDelegate : public WiThrottleProtocolDelegate {
     }
 };
 
-IPAddress firstWitServerIP;
-int firstWitServerPort = 0;
+IPAddress selectedWitServerIP;
+int selectedWitServerPort = 0;
+int noOfWitServices = 0;
+int witConnectionState = WIT_CONNECTION_STATE_DISCONNECTED;
+
 WiFiClient client;
 WiThrottleProtocol wiThrottleProtocol;
 MyDelegate myDelegate;
-boolean witConnected = false;
+
 int deviceId = random(1000,9999);
 
 AiEsp32RotaryEncoder rotaryEncoder = AiEsp32RotaryEncoder(ROTARY_ENCODER_A_PIN, ROTARY_ENCODER_B_PIN, ROTARY_ENCODER_BUTTON_PIN, ROTARY_ENCODER_VCC_PIN, ROTARY_ENCODER_STEPS);
@@ -251,101 +258,97 @@ void setup() {
   keypad.setDebounceTime(keypadDebounceTime);
 
   connectNetwork();
-  connectFirstWitServer();
 
   esp_sleep_enable_ext0_wakeup(GPIO_NUM_13,0); //1 = High, 0 = Low
-
 }
 
 void loop() {
-  // parse incoming messages
-  wiThrottleProtocol.check();
-
+  
+  if (witConnectionState != WIT_CONNECTION_STATE_CONNECTED) {
+    witService();
+  } else {
+    keypadUseType = KEYPAD_USE_OPERATION;
+    wiThrottleProtocol.check();    // parse incoming messages
+  }
   char key = keypad.getKey();
   rotary_loop();
-  
+
   delay(100);
 }
 
-void browseService(const char * service, const char * proto){
-  Serial.printf("Browsing for service _%s._%s.local. on %s ... ", service, proto, ssids[ssidIndex]);
-  clearOledArray(); oledText[0] = ssids[ssidIndex];   oledText[1] = msg_browsing_for_service;
-  writeOledArray(false);
-
-  int n = MDNS.queryService(service, proto);
-  if (n == 0) {
-    oledText[1] = msg_no_services_found;
-    writeOledArray(false);
-    Serial.println(oledText[1]);
-   
-  } else {
-    Serial.print(n);
-    Serial.println(msg_services_found);
-    clearOledArray(); oledText[0] = msg_services_found;
- 
-    for (int i = 0; i < n; ++i) {
-      // Print details for each service found
-      Serial.print("  "); Serial.print(i + 1); Serial.print(": "); Serial.print(MDNS.hostname(i));
-      Serial.print(" ("); Serial.print(MDNS.IP(i)); Serial.print(":"); Serial.print(MDNS.port(i)); Serial.println(")");
-      if (i<5) {
-        oledText[i+1] = String(i+1) + ": " + MDNS.hostname(i) + " (" + String(MDNS.IP(i)) + ":" + String(MDNS.port(i)) + ")";
-      }
-    }
-    writeOledArray(false);
-    firstWitServerIP = MDNS.IP(0);
-    firstWitServerPort = MDNS.port(0);
-  }
-  Serial.println();
-}
 
 void doKeyPress(char key, boolean pressed) {
   if (pressed)  { //pressed
-    switch (key){
-      case '*':  // menu command
-        menuCommand = "";
-        if (menuCommandStarted) { // then cancel the menu
-          menuCommandStarted = false; 
-          writeOledSpeed();
-        } else {
-          menuCommandStarted = true;
-          Serial.println("Command started");
-          writeOledMenu("");
-        }
-        break;
-      case '#': // end of command
-        if ((menuCommandStarted) && (menuCommand.length()>=1)) {
-          doMenu();
-        } else {
-          writeOledDirectCommands();
-        }
-        break;
-      case '0':
-      case '1':
-      case '2':
-      case '3':
-      case '4':
-      case '5':
-      case '6':
-      case '7':
-      case '8':
-      case '9':
-        if (menuCommandStarted) { // appeand to the string
-          menuCommand += key;
-          writeOledMenu(menuCommand);
-        } else{
+    if (keypadUseType == KEYPAD_USE_OPERATION) {
+      switch (key){
+        case '*':  // menu command
+          menuCommand = "";
+          if (menuCommandStarted) { // then cancel the menu
+            menuCommandStarted = false; 
+            writeOledSpeed();
+          } else {
+            menuCommandStarted = true;
+            Serial.println("Command started");
+            writeOledMenu("");
+          }
+          break;
+        case '#': // end of command
+          if ((menuCommandStarted) && (menuCommand.length()>=1)) {
+            doMenu();
+          } else {
+            writeOledDirectCommands();
+          }
+          break;
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+          if (menuCommandStarted) { // appeand to the string
+            menuCommand += key;
+            writeOledMenu(menuCommand);
+          } else{
+            doDirectCommand(key, true);
+          }
+          break;
+        default: { //A, B, C, D
           doDirectCommand(key, true);
+          break;
         }
-        break;
-      default: { //A, B, C, D
-        doDirectCommand(key, true);
-        break;
       }
+    } else {  // keypadUser type = KEYPAD_USE_SELECT_WITHROTTLE_SERVER
+        Serial.print("key... "); Serial.println(key);
+        switch (key){
+          case '0':
+          case '1':
+          case '2':
+          case '3':
+          case '4':
+            selectWitServer(key - '0');
+            break;
+          // case '5':
+          // case '6':
+          // case '7':
+          // case '8':
+          // case '9':
+          default:  // do nothing 
+            break;
+        }
     }
   } else {  // released
-    if ( (!menuCommandStarted) && (key>='0') && (key<='D')) { // only process releases for the numeric keys + A,B,C,D and only if a menu command has not be started
-      Serial.println("Process key release");
-      doDirectCommand(key, false);
-    }
+    if (keypadUseType == KEYPAD_USE_OPERATION) {
+      if ( (!menuCommandStarted) && (key>='0') && (key<='D')) { // only process releases for the numeric keys + A,B,C,D and only if a menu command has not be started
+        Serial.println("Process key release");
+        doDirectCommand(key, false);
+      }
+    } // else {  // keypadUser type = KEYPAD_USE_SELECT_WITHROTTLE_SERVER
+      // do nothing
+    // }
   }
 }
 
@@ -476,10 +479,11 @@ void doMenu() {
     case '9': { // disconnect/reconnect/sleep
         String subcommand = menuCommand.substring(1, menuCommand.length());
         if (subcommand.equals("")) { // no subcommand is specified   
-          if (witConnected) {
+          if (witConnectionState == WIT_CONNECTION_STATE_CONNECTED) {
+            witConnectionState == WIT_CONNECTION_STATE_DISCONNECTED;
             disconnectWitServer();
           } else {
-            connectFirstWitServer();
+            connectWitServer();
           }
         } else { // subcommand
           if (subcommand.equals("9")) { // sleep
@@ -516,7 +520,6 @@ String getLocoWithLength(String loco) {
   }
   return loco;
 }
-
 
 void connectNetwork() {
   for (int i=0; i<10; i++) {
@@ -576,26 +579,86 @@ void connectNetwork() {
   }
 }
 
-void connectFirstWitServer() {
-  // find the first WiT server
-  while (firstWitServerPort==0) {
-    browseService("withrottle", "tcp");
-    delay(1000);
-  }
+void witService() {
+  keypadUseType = KEYPAD_USE_SELECT_WITHROTTLE_SERVER;
+  Serial.println("witService()");
 
-  // connect
-  Serial.println("Connecting to the server...");
-  clearOledArray(); oledText[0] = firstWitServerIP.toString() + " " + String(firstWitServerPort); oledText[1] + "connecting...";
+  if (witConnectionState == WIT_CONNECTION_STATE_DISCONNECTED) {
+    browseWitService(); 
+  }
+  
+  if (witConnectionState == WIT_CONNECTION_STATE_SELECTED) {
+    connectWitServer();
+  }
+}
+
+void browseWitService(){
+  Serial.println("browseWitService()");
+
+  const char * service = "withrottle";
+  const char * proto= "tcp";
+
+  Serial.printf("Browsing for service _%s._%s.local. on %s ... ", service, proto, ssids[ssidIndex]);
+  clearOledArray(); oledText[0] = ssids[ssidIndex];   oledText[1] = msg_browsing_for_service;
   writeOledArray(false);
 
-  if (!client.connect(firstWitServerIP, firstWitServerPort)) {
+  noOfWitServices = MDNS.queryService(service, proto);
+  if (noOfWitServices == 0) {
+    oledText[1] = msg_no_services_found;
+    writeOledArray(false);
+    Serial.println(oledText[1]);
+  
+  } else {
+    Serial.print(noOfWitServices);  Serial.println(msg_services_found);
+    clearOledArray(); oledText[0] = msg_services_found;
+
+    for (int i = 0; i < noOfWitServices; ++i) {
+      // Print details for each service found
+      Serial.print("  "); Serial.print(i+1); Serial.print(": "); Serial.print(MDNS.hostname(i));
+      Serial.print(" ("); Serial.print(MDNS.IP(i)); Serial.print(":"); Serial.print(MDNS.port(i)); Serial.println(")");
+      if (i<5) {
+        oledText[i] = String(i+1) + ": " + MDNS.IP(i).toString() + ":" + String(MDNS.port(i));
+      }
+    }
+
+    if (noOfWitServices > 0) {
+      oledText[11] = msg_select_wit_service;
+    }
+    writeOledArray(false);
+
+    if (noOfWitServices == 1) {
+      selectedWitServerIP = MDNS.IP(0);
+      selectedWitServerPort = MDNS.port(0);
+      witConnectionState = WIT_CONNECTION_STATE_SELECTED;
+    } else {
+      witConnectionState = WIT_CONNECTION_STATE_SELECTION_REQUIRED;
+    }
+  }
+}
+
+void selectWitServer(int selection) {
+  Serial.print("selectWitServer() "); Serial.println(selection);
+
+  int correctedCollection = selection - 1; 
+  if ((correctedCollection>=0) && (correctedCollection < noOfWitServices)) {
+    witConnectionState = WIT_CONNECTION_STATE_SELECTED;
+    selectedWitServerIP = MDNS.IP(correctedCollection);
+    selectedWitServerPort = MDNS.port(correctedCollection);
+  }
+}
+
+void connectWitServer() {
+  Serial.println("Connecting to the server...");
+  clearOledArray(); oledText[0] = selectedWitServerIP.toString() + " " + String(selectedWitServerPort); oledText[1] + "connecting...";
+  writeOledArray(false);
+
+  if (!client.connect(selectedWitServerIP, selectedWitServerPort)) {
     Serial.println(msg_connection_failed);
     oledText[1] = msg_connection_failed;
     writeOledArray(false);
     while(1) delay(1000);
   }
-  Serial.print("Connected to server: ");
-  Serial.println(firstWitServerIP); Serial.println(firstWitServerPort);
+  Serial.print("Connected to server: ");   Serial.println(selectedWitServerIP); Serial.println(selectedWitServerPort);
   oledText[1] = msg_connected;
   oledText[11] = menu_menu;
   writeOledArray(false);
@@ -612,7 +675,7 @@ void connectFirstWitServer() {
   wiThrottleProtocol.setDeviceName(deviceName);  
   wiThrottleProtocol.setDeviceID(""+deviceId);  
 
-  witConnected = true;
+  witConnectionState = WIT_CONNECTION_STATE_CONNECTED;
 }
 
 void disconnectWitServer() {
@@ -621,7 +684,7 @@ void disconnectWitServer() {
   Serial.println("Disconnected from wiThrottle server\n");
   clearOledArray(); oledText[0] = msg_disconnected;
   writeOledArray(false);
-  witConnected = false;
+  witConnectionState = WIT_CONNECTION_STATE_DISCONNECTED;
 }
 
 void speedEstop() {

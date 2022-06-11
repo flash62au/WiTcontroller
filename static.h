@@ -23,3 +23,13 @@ const String msg_connection_failed = "Connection failed";
 const String msg_disconnected = "Disconnected";
 const String msg_locos_label = "Locos: ";
 const String msg_speed_label = "Speed: ";
+
+const String msg_select_wit_service = "[ Select ]";
+
+#define KEYPAD_USE_OPERATION 0
+#define KEYPAD_USE_SELECT_WITHROTTLE_SERVER 1
+
+#define WIT_CONNECTION_STATE_DISCONNECTED 0
+#define WIT_CONNECTION_STATE_CONNECTED 1
+#define WIT_CONNECTION_STATE_SELECTION_REQUIRED 2
+#define WIT_CONNECTION_STATE_SELECTED 3

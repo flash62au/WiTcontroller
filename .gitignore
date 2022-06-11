@@ -48,6 +48,8 @@
 
 build\*.*
 build/*.*
+build/sketch/*.*
+build\sketch\*.*
 ./build/*.*
 *.cpp
 build/sketch/WiTcontroller.ino.cpp
