@@ -58,3 +58,4 @@ build/sketch/actions.h
 
 .pio
 
+config_network.h
