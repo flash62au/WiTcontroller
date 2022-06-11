@@ -805,11 +805,21 @@ void writeOledSpeed() {
   }
 
   clearOledArray();
-  oledText[0] = msg_locos_label; oledText[1] = sLocos; oledText[2] = msg_speed_label + sSpeed; oledText[6] = sDirection; oledText[11] = menu_menu;
-  writeOledArray(false);
+  // oledText[0] = msg_locos_label; oledText[1] = sLocos; oledText[2] = msg_speed_label + sSpeed; oledText[6] = sDirection; oledText[11] = menu_menu;
+  oledText[0] = msg_locos_label; oledText[1] = sLocos; oledText[2] = msg_speed_label; oledText[6] = sDirection; oledText[11] = menu_menu;
+  writeOledArray(false, false);
+
+  const char *cSpeed = sSpeed.c_str();
+  u8g2.setFont(u8g2_font_inb21_mn); // big
+  u8g2.drawStr(40,45, cSpeed);
+  u8g2.sendBuffer();
 }
 
 void writeOledArray(boolean isThreeColums) {
+  writeOledArray(isThreeColums, true);
+}
+
+void writeOledArray(boolean isThreeColums, boolean sendBuffer) {
 
   u8g2.clearBuffer();					// clear the internal memory
 
@@ -836,7 +846,8 @@ void writeOledArray(boolean isThreeColums) {
       y=10;
     }
   }
-  u8g2.sendBuffer();					// transfer internal memory to the display
+
+  if (sendBuffer) u8g2.sendBuffer();					// transfer internal memory to the display
 }
 
 void clearOledArray() {
