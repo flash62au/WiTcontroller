@@ -35,3 +35,9 @@ int rosterIndex[10];
 String rosterName[10]; 
 int rosterAddress[10];
 char rosterLength[10];
+
+// turnout variables
+int turnoutListSize = 0;
+
+// route variables
+int routeListSize = 0;

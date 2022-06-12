@@ -38,16 +38,156 @@ const String msg_select_wit_service = "[ Select ]";
 #define MAX_LOCOS     10  // maximum number of locos that can be added to the consist
 
 const String menuText[10][3] = {
-  {"Function","",""},
-  {"Add Loco","#=roster","no+#.Select"},
-  {"Drop Loco", "",""},
-  {"Toggle Dir", "",""},
-  {"","",""},
-  {"Throw Point","",""},
-  {"Close Point", "", ""},
-  {"Route", "",""},
-  {"Trk Power" "","",},
-  {"Dis/connect","#.Dis/connect","9,#.Sleep"}
+  {"Function","",""},                          //0
+  {"Add Loco","no,#.Select","#=roster"},       //1
+  {"Drop Loco", "",""},                        //2
+  {"Toggle Dir", "",""},                       //3
+  {"","",""},                                  //4
+  {"Throw Point","",""},                       //5
+  {"Close Point", "", ""},                     //6
+  {"Route", "",""},                            //7
+  {"Trk Power" "","",},                        //8 
+  {"Dis/connect","9,#.Sleep","#.Dis/connect"}, //9
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 };
 
 // speed increase for each click of the encoder 

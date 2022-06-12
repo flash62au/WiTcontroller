@@ -53,16 +53,31 @@ class MyDelegate : public WiThrottleProtocolDelegate {
       rosterSize = size;
     }
     void receivedRosterEntry(int index, String name, int address, char length) {
-      Serial.print("Received Roster Entry: "); Serial.print(index); 
-      Serial.print(". name: "); Serial.println(name); 
-      Serial.print("addr: "); Serial.println(address); 
-      Serial.print("len: "); Serial.println(length);
+      // Serial.print("Received Roster Entry: "); Serial.print(index); 
+      // Serial.print(". name: "); Serial.println(name); 
+      // Serial.pr
+      // int(" addr: "); Serial.println(address); 
+      // Serial.print(" len: "); Serial.println(length);
       if (index < 10) {
         rosterIndex[index] = index; 
         rosterName[index] = name; 
         rosterAddress[index] = address;
         rosterLength[index] = length;
       }
+    }
+    void receivedTurnoutEntries(int size) {
+      Serial.print("Received Turnout Entries. Size: "); Serial.println(size);
+      turnoutListSize = size;
+    }
+    void receivedTurnoutEntry(int index, String sysName, String userName, int state) {
+      Serial.print("Received Turnout Entry: "); Serial.print(index); 
+      Serial.print(". sysName: "); Serial.print(sysName); 
+      Serial.print(" userName: "); Serial.print(userName); 
+      Serial.print(" state: "); Serial.println(state);
+    }
+    void receivedRouteEntries(int size) {
+      Serial.print("Received Route Entries. Size: "); Serial.println(size);
+      routeListSize = size;
     }
 };
 
@@ -736,7 +751,7 @@ void writeOledRoster(String soFar) {
     clearOledArray();
     int j = 0;
     for (int i=0; i<10 && i<rosterSize; i++) {
-      j = (i<5) ? j=i : j = j+1;
+      j = (i<5) ? j=i : j = i+1;
       oledText[j] = String(rosterIndex[i]) + "." + rosterName[i].substring(0,10);
     }
     oledText[5] = "*.Cancel";
@@ -750,10 +765,13 @@ void writeOledRoster(String soFar) {
 void writeOledMenu(String soFar) {
   if (soFar == "") { // nothing entered yet
     clearOledArray();
+    int j = 0;
     for (int i=1; i<10; i++) {
-      oledText[i-1] = String(i) + "." + menuText[i][0];
+      j = (i<6) ? j=i : j = i+1;
+      oledText[j-1] = String(i) + "." + menuText[i][0];
     }
-    oledText[9] = "0." + menuText[0][0];
+    oledText[10] = "0." + menuText[0][0];
+    oledText[11] = menu_cancel;
     writeOledArray(false);
   } else {
     int cmd = menuCommand.substring(0, 1).toInt();
@@ -822,6 +840,8 @@ void writeOledArray(boolean isThreeColums, boolean sendBuffer) {
       y=10;
     }
   }
+
+  u8g2.drawHLine(0,51,128);
 
   if (sendBuffer) u8g2.sendBuffer();					// transfer internal memory to the display
 }
