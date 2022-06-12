@@ -28,8 +28,28 @@ const String msg_select_wit_service = "[ Select ]";
 
 #define KEYPAD_USE_OPERATION 0
 #define KEYPAD_USE_SELECT_WITHROTTLE_SERVER 1
+#define KEYPAD_USE_SELECT_ROSTER 2
 
 #define WIT_CONNECTION_STATE_DISCONNECTED 0
 #define WIT_CONNECTION_STATE_CONNECTED 1
 #define WIT_CONNECTION_STATE_SELECTION_REQUIRED 2
 #define WIT_CONNECTION_STATE_SELECTED 3
+
+#define MAX_LOCOS     10  // maximum number of locos that can be added to the consist
+
+const String menuText[10][3] = {
+  {"Function","",""},
+  {"Add Loco","#=roster","no+#.Select"},
+  {"Drop Loco", "",""},
+  {"Toggle Dir", "",""},
+  {"","",""},
+  {"Throw Point","",""},
+  {"Close Point", "", ""},
+  {"Route", "",""},
+  {"Trk Power" "","",},
+  {"Dis/connect","#.Dis/connect","9,#.Sleep"}
+};
+
+// speed increase for each click of the encoder 
+const int speedStep = 4;
+const int speedStepMultiplier = 2;  // for 'fast' speed steps

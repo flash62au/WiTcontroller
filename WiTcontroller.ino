@@ -3,7 +3,7 @@
  * gamepad for the JMRI or any wiThrottle server.
 
   Instructions:
-  - Update WiFi SSID and password as necessary.
+  - Update WiFi SSIDs and passwords as necessary in config_network.h.
   - Flash the sketch 
  */
 
@@ -15,136 +15,230 @@
 #include <U8g2lib.h>
 #include <string>
 
+// #include "static.h"   // included in WiTcontroller.h
+#include "WiTcontroller.h"
 #include "actions.h"
-#include "static.h"
 #include "config_network.h"
+#include "config_keypad_etc.h"   // keypad, encoder, oled display
 #include "config.h"
-
-int currentSpeed = 0;
-Direction currentDirection = Forward;
-const int speedStep = 4;
-const int speedStepMultiplier = 2;  // for 'fast' speed steps
-TrackPower trackPower = PowerUnknown;
-String turnoutPrefix = "";
-String routePrefix = "";
-
-#define MAX_LOCOS     10  // maximum number of locos that can be added to the consist
-
-// large EPS32
-// #define ROTARY_ENCODER_A_PIN 33
-// #define ROTARY_ENCODER_B_PIN 32
-// #define ROTARY_ENCODER_BUTTON_PIN 27
-
-// Small ESP32
-#define ROTARY_ENCODER_A_PIN 12
-#define ROTARY_ENCODER_B_PIN 14
-#define ROTARY_ENCODER_BUTTON_PIN 13
-
-#define ROTARY_ENCODER_VCC_PIN -1 /* 27 put -1 of Rotary encoder Vcc is connected directly to 3,3V; else you can use declared output pin for powering rotary encoder */
-#define ROTARY_ENCODER_STEPS 2 //depending on your encoder - try 1,2 or 4 to get expected behaviour
-
-bool circleValues = true;
-int encoderValue = 0;
-int lastEncoderValue = 0;
-
-// 4x4 keaypad
-// #define ROW_NUM     4 // four rows
-// #define COLUMN_NUM  4 // four columns
-// char keys[ROW_NUM][COLUMN_NUM] = {
-//   {'1', '2', '3', 'A'},
-//   {'4', '5', '6', 'B'},
-//   {'7', '8', '9', 'C'},
-//   {'*', '0', '#', 'D'}
-// };
-// byte pin_rows[ROW_NUM]      = {19, 18, 5, 17}; // connect to the row pins
-// byte pin_column[COLUMN_NUM] = {16, 4, 2, 15};   // connect to the column pins
-
-// 4x3 keypad
-#define ROW_NUM     4 // four rows
-#define COLUMN_NUM  3 // four columns
-char keys[ROW_NUM][COLUMN_NUM] = {
- {'1', '2', '3'},
- {'4', '5', '6'},
- {'7', '8', '9'},
- {'*', '0', '#'}
-};
-byte pin_rows[ROW_NUM]      = {19, 18, 17, 16}; // GIOP19, GIOP18, GIOP5, GIOP17 connect to the row pins
-byte pin_column[COLUMN_NUM] = { 4, 0, 2};   // GIOP16, GIOP4, GIOP0 connect to the column pins
-
-Keypad keypad = Keypad( makeKeymap(keys), pin_rows, pin_column, ROW_NUM, COLUMN_NUM );
-const int keypadDebounceTime = 50;   // in miliseconds
-
-int keypadUseType = KEYPAD_USE_OPERATION;
-
-boolean menuCommandStarted = false;
-String menuCommand = "";
-
-int ssidIndex = 99;
-
-const String menuText[10][3] = {
-  {"Function","",""},
-  {"Add Loco","",""},
-  {"Drop Loco", "",""},
-  {"Toggle Dir", "",""},
-  {"","",""},
-  {"Throw Point","",""},
-  {"Close Point", "", ""},
-  {"Route", "",""},
-  {"Trk Power" "","",},
-  {"Dis/connect","#.Dis/connect","9,#.Sleep"}
-};
-
-#ifdef U8X8_HAVE_HW_SPI
-#include <SPI.h>                       // add to include path [Arduino install]\hardware\arduino\avr\libraries\SPI\src
-#endif
-#ifdef U8X8_HAVE_HW_I2C
-#include <Wire.h>                      // add to include path [Arduino install]\hardware\arduino\avr\libraries\Wire\src
-#endif
-
-// Please select a contructor line for below depending on your display
-// U8g2 Contructor List (Frame Buffer)
-// The complete list is available here: https://github.com/olikraus/u8g2/wiki/u8g2setupcpp
-// Please update the pin numbers according to your setup. Use U8X8_PIN_NONE if the reset pin is not connected
-// U8G2_SSD1312_128X64_NONAME_F_SW_I2C u8g2(U8G2_MIRROR_VERTICAL, /* clock=*/ 22, /* data=*/ 23, /* reset=*/ U8X8_PIN_NONE);
-U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, /* clock=*/ 22, /* data=*/ 23, /* reset=*/ U8X8_PIN_NONE);
-
-String oledText[18] = {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""};
 
 // WiThrottleProtocol Delegate class
 class MyDelegate : public WiThrottleProtocolDelegate {
   
   public:
-    void receivedVersion(String version) {     
-      Serial.print("Received version: "); Serial.println(version);  
+    void receivedVersion(String version) {    
+      Serial.printf("Received Version: %s\n",version); 
     }
     void receivedServerDescription(String description) {
-      Serial.print("Received description: "); Serial.println(description);
+      Serial.print("Received Description: ");
+      Serial.println(description);
     }
     void receivedSpeed(int speed) {             // Vnnn
       currentSpeed = speed;
-      Serial.print("Speed: "); Serial.println(speed); 
+      Serial.print("Received Speed: "); Serial.println(speed); 
     }
     void receivedDirection(Direction dir) {     // R{0,1}
       currentDirection = dir;
+      Serial.print("Received Direction: "); Serial.println(dir); 
     }
-    // void receivedFunctionState(uint8_t func, bool state) { 
-    //   Serial.print("Received Fn: "); Serial.print(func); Serial.print(" State: "); Serial.println( (state) ? "True" : "False" );
-    // }
+    void receivedFunctionState(uint8_t func, bool state) { 
+      Serial.print("Received Fn: "); Serial.print(func); Serial.print(" State: "); Serial.println( (state) ? "True" : "False" );
+    }
     void receivedTrackPower(TrackPower state) { 
+      Serial.print("Received TrackPower: "); Serial.println(state);
       trackPower = state;
     }
+    void receivedRosterEntries(int size) {
+      Serial.print("Received Roster Entries. Size: "); Serial.println(size);
+      rosterSize = size;
+    }
+    void receivedRosterEntry(int index, String name, int address, char length) {
+      Serial.print("Received Roster Entry: "); Serial.print(index); 
+      Serial.print(". name: "); Serial.println(name); 
+      Serial.print("addr: "); Serial.println(address); 
+      Serial.print("len: "); Serial.println(length);
+      if (index < 10) {
+        rosterIndex[index] = index; 
+        rosterName[index] = name; 
+        rosterAddress[index] = address;
+        rosterLength[index] = length;
+      }
+    }
 };
-
-IPAddress selectedWitServerIP;
-int selectedWitServerPort = 0;
-int noOfWitServices = 0;
-int witConnectionState = WIT_CONNECTION_STATE_DISCONNECTED;
 
 WiFiClient client;
 WiThrottleProtocol wiThrottleProtocol;
 MyDelegate myDelegate;
-
 int deviceId = random(1000,9999);
+
+void connectNetwork() {
+  for (int i=0; i<10; i++) {
+    Serial.println(); 
+  } 
+  Serial.println("Start - Network Connection "); 
+
+  // connect to the wifi.  loop through the configured SSIDs till we get a connection
+  boolean connected = false;
+  while (!connected) {
+    ssidIndex++;
+    // if (index >= 3) index = 0;  // go back to the first and try again
+    if (ssidIndex >= maxSsids) ssidIndex = 0;  // go back to the first and try again
+
+    Serial.println("");  Serial.print("Trying SSID number: "); Serial.println(ssidIndex);
+
+    double startTime = millis();
+    double nowTime = startTime;
+
+    const char *cSsid = ssids[ssidIndex].c_str();
+    const char *cPassword = passwords[ssidIndex].c_str();
+
+    if (cSsid!="") {
+      Serial.print("Trying Network "); Serial.println(cSsid);
+      clearOledArray(); oledText[0] = ssids[ssidIndex]; oledText[1] =  msg_trying_to_connect;
+      writeOledArray(false);
+
+      WiFi.begin(cSsid, cPassword); 
+      turnoutPrefix = turnoutPrefixes[1];
+      routePrefix = routePrefixes[1];
+
+      while ( (WiFi.status() != WL_CONNECTED) && ((nowTime-startTime) <= 10000) ) { // try for 10 seconds
+        delay(250);
+        Serial.print(".");
+        nowTime = millis();
+      }
+
+      Serial.println("");
+      if (WiFi.status() == WL_CONNECTED) {
+        Serial.print("Connected. IP address: "); Serial.println(WiFi.localIP());
+        oledText[1] = msg_connected; 
+        oledText[2] = msg_address_label + String(WiFi.localIP());
+        writeOledArray(false);
+        connected = true;
+      } else {
+        WiFi.disconnect();
+      }
+    }
+  }
+
+  // setup the bonjour listener
+  if (!MDNS.begin("ESP32_Browser")) {
+    Serial.println("Error setting up MDNS responder!");
+    while(1){
+      delay(1000);
+    }
+  }
+}
+
+void witService() {
+  keypadUseType = KEYPAD_USE_SELECT_WITHROTTLE_SERVER;
+
+  if (witConnectionState == WIT_CONNECTION_STATE_DISCONNECTED) {
+    browseWitService(); 
+  }
+  
+  if (witConnectionState == WIT_CONNECTION_STATE_SELECTED) {
+    connectWitServer();
+  }
+}
+
+void browseWitService(){
+  Serial.println("browseWitService()");
+
+  const char * service = "withrottle";
+  const char * proto= "tcp";
+
+  Serial.printf("Browsing for service _%s._%s.local. on %s ... ", service, proto, ssids[ssidIndex]);
+  clearOledArray(); oledText[0] = ssids[ssidIndex];   oledText[1] = msg_browsing_for_service;
+  writeOledArray(false);
+
+  noOfWitServices = MDNS.queryService(service, proto);
+  if (noOfWitServices == 0) {
+    oledText[1] = msg_no_services_found;
+    writeOledArray(false);
+    Serial.println(oledText[1]);
+  
+  } else {
+    Serial.print(noOfWitServices);  Serial.println(msg_services_found);
+    clearOledArray(); oledText[0] = msg_services_found;
+
+    for (int i = 0; i < noOfWitServices; ++i) {
+      // Print details for each service found
+      Serial.print("  "); Serial.print(i+1); Serial.print(": "); Serial.print(MDNS.hostname(i));
+      Serial.print(" ("); Serial.print(MDNS.IP(i)); Serial.print(":"); Serial.print(MDNS.port(i)); Serial.println(")");
+      if (i<5) {  // only have room for 5
+        oledText[i] = String(i+1) + ": " + MDNS.IP(i).toString() + ":" + String(MDNS.port(i));
+      }
+    }
+
+    if (noOfWitServices > 0) {
+      oledText[11] = msg_select_wit_service;
+    }
+    writeOledArray(false);
+
+    if (noOfWitServices == 1) {
+      selectedWitServerIP = MDNS.IP(0);
+      selectedWitServerPort = MDNS.port(0);
+      witConnectionState = WIT_CONNECTION_STATE_SELECTED;
+    } else {
+      witConnectionState = WIT_CONNECTION_STATE_SELECTION_REQUIRED;
+    }
+  }
+}
+
+void selectWitServer(int selection) {
+  Serial.print("selectWitServer() "); Serial.println(selection);
+
+  int correctedCollection = selection - 1; 
+  if ((correctedCollection>=0) && (correctedCollection < noOfWitServices)) {
+    witConnectionState = WIT_CONNECTION_STATE_SELECTED;
+    selectedWitServerIP = MDNS.IP(correctedCollection);
+    selectedWitServerPort = MDNS.port(correctedCollection);
+    keypadUseType = KEYPAD_USE_OPERATION;
+  }
+}
+
+void connectWitServer() {
+  // Pass the delegate instance to wiThrottleProtocol
+  wiThrottleProtocol.setDelegate(&myDelegate);
+  // Uncomment for logging on Serial
+  // wiThrottleProtocol.setLogStream(&Serial);
+
+  Serial.println("Connecting to the server...");
+  clearOledArray(); oledText[0] = selectedWitServerIP.toString() + " " + String(selectedWitServerPort); oledText[1] + "connecting...";
+  writeOledArray(false);
+
+  if (!client.connect(selectedWitServerIP, selectedWitServerPort)) {
+    Serial.println(msg_connection_failed);
+    oledText[1] = msg_connection_failed;
+    writeOledArray(false);
+    while(1) delay(1000);
+  }
+  Serial.print("Connected to server: ");   Serial.println(selectedWitServerIP); Serial.println(selectedWitServerPort);
+
+  // Pass the communication to WiThrottle
+  wiThrottleProtocol.connect(&client);
+  Serial.println("WiThrottle connected");
+
+  wiThrottleProtocol.setDeviceName(deviceName);  
+  wiThrottleProtocol.setDeviceID(String(deviceId));  
+
+  witConnectionState = WIT_CONNECTION_STATE_CONNECTED;
+
+  oledText[1] = msg_connected;
+  oledText[11] = menu_menu;
+  writeOledArray(false);
+
+  keypadUseType = KEYPAD_USE_OPERATION;
+}
+
+void disconnectWitServer() {
+  releaseAllLocos();
+  wiThrottleProtocol.disconnect();
+  Serial.println("Disconnected from wiThrottle server\n");
+  clearOledArray(); oledText[0] = msg_disconnected;
+  writeOledArray(false);
+  witConnectionState = WIT_CONNECTION_STATE_DISCONNECTED;
+}
 
 AiEsp32RotaryEncoder rotaryEncoder = AiEsp32RotaryEncoder(ROTARY_ENCODER_A_PIN, ROTARY_ENCODER_B_PIN, ROTARY_ENCODER_BUTTON_PIN, ROTARY_ENCODER_VCC_PIN, ROTARY_ENCODER_STEPS);
 void IRAM_ATTR readEncoderISR() {
@@ -172,16 +266,14 @@ void rotary_onButtonClick() {
 void rotary_loop() {
   if (rotaryEncoder.encoderChanged()) {   //don't print anything unless value changed
     encoderValue = rotaryEncoder.readEncoder();
-     Serial.print("Encoder From: "); Serial.print(lastEncoderValue);
-     Serial.print(" to: "); Serial.println(encoderValue);
+     Serial.print("Encoder From: "); Serial.print(lastEncoderValue);  Serial.print(" to: "); Serial.println(encoderValue);
     if (abs(encoderValue-lastEncoderValue) > 800) { // must have passed through zero
       if (encoderValue > 800) {
         lastEncoderValue = 1001; 
       } else {
         lastEncoderValue = 0; 
       }
-      Serial.print("Corrected Encoder From: "); Serial.print(lastEncoderValue);
-      Serial.print(" to: "); Serial.println(encoderValue);
+      Serial.print("Corrected Encoder From: "); Serial.print(lastEncoderValue); Serial.print(" to: "); Serial.println(encoderValue);
     }
     if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
       if (encoderValue > lastEncoderValue) {
@@ -241,7 +333,6 @@ void keypadEvent(KeypadEvent key){
   }
 }
 
-
 void setup() {
   Serial.begin(115200);
   u8g2.begin();
@@ -272,7 +363,6 @@ void loop() {
   if (witConnectionState != WIT_CONNECTION_STATE_CONNECTED) {
     witService();
   } else {
-    keypadUseType = KEYPAD_USE_OPERATION;
     wiThrottleProtocol.check();    // parse incoming messages
   }
   char key = keypad.getKey();
@@ -284,72 +374,91 @@ void loop() {
 
 void doKeyPress(char key, boolean pressed) {
   if (pressed)  { //pressed
-    if (keypadUseType == KEYPAD_USE_OPERATION) {
-      switch (key){
-        case '*':  // menu command
-          menuCommand = "";
-          if (menuCommandStarted) { // then cancel the menu
-            menuCommandStarted = false; 
-            writeOledSpeed();
-          } else {
-            menuCommandStarted = true;
-            Serial.println("Command started");
-            writeOledMenu("");
-          }
-          break;
-        case '#': // end of command
-          if ((menuCommandStarted) && (menuCommand.length()>=1)) {
-            doMenu();
-          } else {
-            writeOledDirectCommands();
-          }
-          break;
-        case '0':
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
-          if (menuCommandStarted) { // appeand to the string
-            menuCommand += key;
-            writeOledMenu(menuCommand);
-          } else{
+    switch (keypadUseType) {
+      case KEYPAD_USE_OPERATION:
+        Serial.print("key operation... "); Serial.println(key);
+        switch (key) {
+          case '*':  // menu command
+            menuCommand = "";
+            if (menuCommandStarted) { // then cancel the menu
+              resetMenu();
+              writeOledSpeed();
+            } else {
+              menuCommandStarted = true;
+              Serial.println("Command started");
+              writeOledMenu("");
+            }
+            break;
+
+          case '#': // end of command
+            if ((menuCommandStarted) && (menuCommand.length()>=1)) {
+              doMenu();
+            } else {
+              writeOledDirectCommands();
+            }
+            break;
+
+          case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
+            if (menuCommandStarted) { // appeand to the string
+              menuCommand += key;
+              writeOledMenu(menuCommand);
+            } else {
+              doDirectCommand(key, true);
+            }
+            break;
+
+          default:  //A, B, C, D
             doDirectCommand(key, true);
-          }
-          break;
-        default: { //A, B, C, D
-          doDirectCommand(key, true);
-          break;
+            break;
         }
-      }
-    } else {  // keypadUser type = KEYPAD_USE_SELECT_WITHROTTLE_SERVER
-        Serial.print("key... "); Serial.println(key);
+        break;
+
+      case KEYPAD_USE_SELECT_WITHROTTLE_SERVER:
+        Serial.print("key wit... "); Serial.println(key);
         switch (key){
-          case '1':
-          case '2':
-          case '3':
-          case '4':
-          case '5':
+          case '1': case '2': case '3': case '4': case '5':
             selectWitServer(key - '0');
             break;
           default:  // do nothing 
             break;
         }
+        break;
+
+      case KEYPAD_USE_SELECT_ROSTER:
+        Serial.print("key Roster... "); Serial.println(key);
+        switch (key){
+          case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
+            selectRoster(key - '0');
+            break;
+          
+          case '*':  // cancel
+          case '#':  // cancel  todo: change to next page
+            resetMenu();
+            writeOledSpeed();
+            break;
+
+          default:  // do nothing 
+            break;
+        }
+        break;
     }
-  } else {  // released
-    if (keypadUseType == KEYPAD_USE_OPERATION) {
-      if ( (!menuCommandStarted) && (key>='0') && (key<='D')) { // only process releases for the numeric keys + A,B,C,D and only if a menu command has not be started
-        Serial.println("Process key release");
-        doDirectCommand(key, false);
-      }
-    } // else {  // keypadUser type = KEYPAD_USE_SELECT_WITHROTTLE_SERVER
-      // do nothing
+
+  } // else {  // released
+    // do nothing
+
+    // if (keypadUseType == KEYPAD_USE_OPERATION) {
+    //   if ( (!menuCommandStarted) && (key>='0') && (key<='D')) { // only process releases for the numeric keys + A,B,C,D and only if a menu command has not be started
+    //     Serial.println("Operation - Process key release");
+    //     doDirectCommand(key, false);
+    //   } else {
+    //     Serial.println("Non-Operation - Process key release");
+    //     if (keypadUseNonOperationComplete) {   //finished processing the menu etc.
+    //       resetMenu();
+    //     }
+    //   }
+    // } // else {  // keypadUser type = KEYPAD_USE_SELECT_WITHROTTLE_SERVER
     // }
-  }
+  // }
 }
 
 void doDirectCommand (char key, boolean pressed) {
@@ -415,6 +524,7 @@ void doDirectCommand (char key, boolean pressed) {
 void doMenu() {
   String loco = "";
   String function = "";
+  boolean result = false;
   Serial.print("Menu: "); Serial.println(menuCommand);
 
   switch (menuCommand[0]) {
@@ -425,6 +535,8 @@ void doMenu() {
           Serial.print("add Loco: "); Serial.println(loco);
           wiThrottleProtocol.addLocomotive(loco);
           writeOledSpeed();
+        } else {
+          writeOledRoster("");
         }
         break;
       }
@@ -503,13 +615,14 @@ void doMenu() {
         break;
       }
   }
-  menuCommandStarted = false; 
+  menuCommandStarted = result; 
 }
 
 void resetMenu() {
-  menuCommandStarted = false;
   menuCommand = "";
-}
+  menuCommandStarted = false;
+  if (keypadUseType != KEYPAD_USE_SELECT_WITHROTTLE_SERVER) keypadUseType = KEYPAD_USE_OPERATION; 
+ }
 
 String getLocoWithLength(String loco) {
   int locoNo = menuCommand.toInt() + 0;
@@ -519,172 +632,6 @@ String getLocoWithLength(String loco) {
     loco = "L" + loco;
   }
   return loco;
-}
-
-void connectNetwork() {
-  for (int i=0; i<10; i++) {
-    Serial.println(); 
-  } 
-  Serial.println("Start - Network Connection "); 
-
-  // connect to the wifi.  loop through the configured SSIDs till we get a connection
-  boolean connected = false;
-  while (!connected) {
-    ssidIndex++;
-    // if (index >= 3) index = 0;  // go back to the first and try again
-    if (ssidIndex >= maxSsids) ssidIndex = 0;  // go back to the first and try again
-
-    Serial.println("");  Serial.print("Trying SSID number: "); Serial.println(ssidIndex);
-
-    double startTime = millis();
-    double nowTime = startTime;
-
-    const char *cSsid = ssids[ssidIndex].c_str();
-    const char *cPassword = passwords[ssidIndex].c_str();
-
-    if (cSsid!="") {
-      Serial.print("Trying Network "); Serial.println(cSsid);
-      clearOledArray(); oledText[0] = ssids[ssidIndex]; oledText[1] =  msg_trying_to_connect;
-      writeOledArray(false);
-
-      WiFi.begin(cSsid, cPassword); 
-      turnoutPrefix = turnoutPrefixes[1];
-      routePrefix = routePrefixes[1];
-
-      while ( (WiFi.status() != WL_CONNECTED) && ((nowTime-startTime) <= 10000) ) { // try for 10 seconds
-        delay(250);
-        Serial.print(".");
-        nowTime = millis();
-      }
-
-      Serial.println("");
-      if (WiFi.status() == WL_CONNECTED) {
-        Serial.print("Connected. IP address: "); Serial.println(WiFi.localIP());
-        oledText[1] = msg_connected; 
-        oledText[2] = msg_address_label + String(WiFi.localIP());
-        writeOledArray(false);
-        connected = true;
-      } else {
-        WiFi.disconnect();
-      }
-    }
-  }
-
-  // setup the bonjour listener
-  if (!MDNS.begin("ESP32_Browser")) {
-    Serial.println("Error setting up MDNS responder!");
-    while(1){
-      delay(1000);
-    }
-  }
-}
-
-void witService() {
-  keypadUseType = KEYPAD_USE_SELECT_WITHROTTLE_SERVER;
-  Serial.println("witService()");
-
-  if (witConnectionState == WIT_CONNECTION_STATE_DISCONNECTED) {
-    browseWitService(); 
-  }
-  
-  if (witConnectionState == WIT_CONNECTION_STATE_SELECTED) {
-    connectWitServer();
-  }
-}
-
-void browseWitService(){
-  Serial.println("browseWitService()");
-
-  const char * service = "withrottle";
-  const char * proto= "tcp";
-
-  Serial.printf("Browsing for service _%s._%s.local. on %s ... ", service, proto, ssids[ssidIndex]);
-  clearOledArray(); oledText[0] = ssids[ssidIndex];   oledText[1] = msg_browsing_for_service;
-  writeOledArray(false);
-
-  noOfWitServices = MDNS.queryService(service, proto);
-  if (noOfWitServices == 0) {
-    oledText[1] = msg_no_services_found;
-    writeOledArray(false);
-    Serial.println(oledText[1]);
-  
-  } else {
-    Serial.print(noOfWitServices);  Serial.println(msg_services_found);
-    clearOledArray(); oledText[0] = msg_services_found;
-
-    for (int i = 0; i < noOfWitServices; ++i) {
-      // Print details for each service found
-      Serial.print("  "); Serial.print(i+1); Serial.print(": "); Serial.print(MDNS.hostname(i));
-      Serial.print(" ("); Serial.print(MDNS.IP(i)); Serial.print(":"); Serial.print(MDNS.port(i)); Serial.println(")");
-      if (i<5) {  // only have room for 5
-        oledText[i] = String(i+1) + ": " + MDNS.IP(i).toString() + ":" + String(MDNS.port(i));
-      }
-    }
-
-    if (noOfWitServices > 0) {
-      oledText[11] = msg_select_wit_service;
-    }
-    writeOledArray(false);
-
-    if (noOfWitServices == 1) {
-      selectedWitServerIP = MDNS.IP(0);
-      selectedWitServerPort = MDNS.port(0);
-      witConnectionState = WIT_CONNECTION_STATE_SELECTED;
-    } else {
-      witConnectionState = WIT_CONNECTION_STATE_SELECTION_REQUIRED;
-    }
-  }
-}
-
-void selectWitServer(int selection) {
-  Serial.print("selectWitServer() "); Serial.println(selection);
-
-  int correctedCollection = selection - 1; 
-  if ((correctedCollection>=0) && (correctedCollection < noOfWitServices)) {
-    witConnectionState = WIT_CONNECTION_STATE_SELECTED;
-    selectedWitServerIP = MDNS.IP(correctedCollection);
-    selectedWitServerPort = MDNS.port(correctedCollection);
-  }
-}
-
-void connectWitServer() {
-  Serial.println("Connecting to the server...");
-  clearOledArray(); oledText[0] = selectedWitServerIP.toString() + " " + String(selectedWitServerPort); oledText[1] + "connecting...";
-  writeOledArray(false);
-
-  if (!client.connect(selectedWitServerIP, selectedWitServerPort)) {
-    Serial.println(msg_connection_failed);
-    oledText[1] = msg_connection_failed;
-    writeOledArray(false);
-    while(1) delay(1000);
-  }
-  Serial.print("Connected to server: ");   Serial.println(selectedWitServerIP); Serial.println(selectedWitServerPort);
-  oledText[1] = msg_connected;
-  oledText[11] = menu_menu;
-  writeOledArray(false);
-
-  // Uncomment for logging on Serial
-//    wiThrottleProtocol.setLogStream(&Serial);
-  
-  // Pass the delegate instance to wiThrottleProtocol
-  wiThrottleProtocol.setDelegate(&myDelegate);
-
-  // Pass the communication to WiThrottle
-  wiThrottleProtocol.connect(&client);
-  Serial.println("WiThrottle connected");
-  wiThrottleProtocol.setDeviceName(deviceName);  
-  wiThrottleProtocol.setDeviceID(""+deviceId);  
-
-  witConnectionState = WIT_CONNECTION_STATE_CONNECTED;
-}
-
-void disconnectWitServer() {
-  releaseAllLocos();
-  wiThrottleProtocol.disconnect();
-  Serial.println("Disconnected from wiThrottle server\n");
-  clearOledArray(); oledText[0] = msg_disconnected;
-  writeOledArray(false);
-  witConnectionState = WIT_CONNECTION_STATE_DISCONNECTED;
 }
 
 void speedEstop() {
@@ -768,6 +715,35 @@ void powerToggle() {
     powerOnOff(PowerOff);
   } else {
     powerOnOff(PowerOn);
+  }
+}
+
+void selectRoster(int selection) {
+  Serial.print("selectRoster() "); Serial.println(selection);
+
+  if ((selection>=0) && (selection < rosterSize)) {
+    String loco = String(rosterLength[selection]) + rosterAddress[selection];
+    Serial.print("add Loco: "); Serial.println(loco);
+    wiThrottleProtocol.addLocomotive(loco);
+    writeOledSpeed();
+    keypadUseType = KEYPAD_USE_OPERATION;
+  }
+}
+
+void writeOledRoster(String soFar) {
+  keypadUseType = KEYPAD_USE_SELECT_ROSTER;
+  if (soFar == "") { // nothing entered yet
+    clearOledArray();
+    int j = 0;
+    for (int i=0; i<10 && i<rosterSize; i++) {
+      j = (i<5) ? j=i : j = j+1;
+      oledText[j] = String(rosterIndex[i]) + "." + rosterName[i].substring(0,10);
+    }
+    oledText[5] = "*.Cancel";
+    oledText[11] = "0-9.Select";
+    writeOledArray(false);
+  } else {
+    int cmd = menuCommand.substring(0, 1).toInt();
   }
 }
 
