@@ -1,4 +1,4 @@
-# WiTcontroller
+# witController
 
 Currently functioning:
 - Connects to the first available SSID (of three you can specify) with the specified password

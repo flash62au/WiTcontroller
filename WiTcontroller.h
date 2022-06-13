@@ -38,6 +38,14 @@ char rosterLength[10];
 
 // turnout variables
 int turnoutListSize = 0;
+int turnoutListIndex[10]; 
+String turnoutListSysName[10]; 
+String turnoutListUserName[10];
+int turnoutListState[10];
 
 // route variables
 int routeListSize = 0;
+int routeListIndex[10]; 
+String routeListSysName[10]; 
+String routeListUserName[10];
+int routeListState[10];

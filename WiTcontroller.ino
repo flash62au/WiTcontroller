@@ -74,16 +74,28 @@ class MyDelegate : public WiThrottleProtocolDelegate {
       // Serial.print(". sysName: "); Serial.print(sysName); 
       // Serial.print(" userName: "); Serial.print(userName); 
       // Serial.print(" state: "); Serial.println(state);
+      if (index < 10) {
+        turnoutListIndex[index] = index; 
+        turnoutListSysName[index] = sysName; 
+        turnoutListUserName[index] = userName;
+        turnoutListState[index] = state;
+      }
     }
     void receivedRouteEntries(int size) {
       Serial.print("Received Route Entries. Size: "); Serial.println(size);
       routeListSize = size;
     }
     void receivedRouteEntry(int index, String sysName, String userName, int state) {
-      Serial.print("Received Route Entry: "); Serial.print(index); 
-      Serial.print(". sysName: "); Serial.print(sysName); 
-      Serial.print(" userName: "); Serial.print(userName); 
-      Serial.print(" state: "); Serial.println(state);
+      // Serial.print("Received Route Entry: "); Serial.print(index); 
+      // Serial.print(". sysName: "); Serial.print(sysName); 
+      // Serial.print(" userName: "); Serial.print(userName); 
+      // Serial.print(" state: "); Serial.println(state);
+      if (index < 10) {
+        routeListIndex[index] = index; 
+        routeListSysName[index] = sysName; 
+        routeListUserName[index] = userName;
+        routeListState[index] = state;
+      }
     }
 };
 
@@ -222,7 +234,7 @@ void connectWitServer() {
   // Pass the delegate instance to wiThrottleProtocol
   wiThrottleProtocol.setDelegate(&myDelegate);
   // Uncomment for logging on Serial
-  wiThrottleProtocol.setLogStream(&Serial);
+  // wiThrottleProtocol.setLogStream(&Serial);
 
   Serial.println("Connecting to the server...");
   clearOledArray(); oledText[0] = selectedWitServerIP.toString() + " " + String(selectedWitServerPort); oledText[1] + "connecting...";
@@ -246,7 +258,7 @@ void connectWitServer() {
   witConnectionState = WIT_CONNECTION_STATE_CONNECTED;
 
   oledText[1] = msg_connected;
-  oledText[11] = menu_menu;
+  oledText[5] = menu_menu;
   writeOledArray(false);
 
   keypadUseType = KEYPAD_USE_OPERATION;
@@ -354,6 +366,8 @@ void keypadEvent(KeypadEvent key){
   }
 }
 
+// *********************************************************************************
+
 void setup() {
   Serial.begin(115200);
   u8g2.begin();
@@ -392,6 +406,7 @@ void loop() {
   delay(100);
 }
 
+// *********************************************************************************
 
 void doKeyPress(char key, boolean pressed) {
   if (pressed)  { //pressed
@@ -446,10 +461,27 @@ void doKeyPress(char key, boolean pressed) {
         break;
 
       case KEYPAD_USE_SELECT_ROSTER:
-        Serial.print("key Roster... "); Serial.println(key);
+      case KEYPAD_USE_SELECT_TURNOUTS_THROW:
+      case KEYPAD_USE_SELECT_TURNOUTS_CLOSE:
+      case KEYPAD_USE_SELECT_ROUTES:
+        Serial.print("key Roster/Rurnouts/Routes... "); Serial.println(key);
         switch (key){
           case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
-            selectRoster(key - '0');
+            
+            switch (keypadUseType) {
+              case KEYPAD_USE_SELECT_ROSTER:
+                selectRoster(key - '0');
+                break;
+              case KEYPAD_USE_SELECT_TURNOUTS_THROW:
+                selectTurnoutList(key - '0', TurnoutThrow);
+                break;
+              case KEYPAD_USE_SELECT_TURNOUTS_CLOSE:
+                selectTurnoutList(key - '0', TurnoutClose);
+                break;
+              case KEYPAD_USE_SELECT_ROUTES:
+                selectRouteList(key - '0');
+                break;
+            }
             break;
           
           case '*':  // cancel
@@ -581,26 +613,41 @@ void doMenu() {
     //     break;
     //   }
    case '5': {  // throw turnout
-        String turnout = turnoutPrefix + menuCommand.substring(1, menuCommand.length());
-        if (!turnout.equals("")) { // a turnout is specified
-          Serial.print("throw turnout: "); Serial.println(turnout);
-          wiThrottleProtocol.setTurnout(turnout, TurnoutThrow);
+        if (menuCommand.length()>1) {
+          String turnout = turnoutPrefix + menuCommand.substring(1, menuCommand.length());
+          // if (!turnout.equals("")) { // a turnout is specified
+            Serial.print("throw turnout: "); Serial.println(turnout);
+            wiThrottleProtocol.setTurnout(turnout, TurnoutThrow);
+          // }
+          writeOledSpeed();
+        } else {
+          writeOledTurnoutList("", TurnoutThrow);
         }
         break;
       }
     case '6': {  // close turnout
-        String turnout = turnoutPrefix + menuCommand.substring(1, menuCommand.length());
-        if (!turnout.equals("")) { // a turnout is specified
-          Serial.print("close turnout: "); Serial.println(turnout);
-          wiThrottleProtocol.setTurnout(turnout, TurnoutClose);
+        if (menuCommand.length()>1) {
+          String turnout = turnoutPrefix + menuCommand.substring(1, menuCommand.length());
+          // if (!turnout.equals("")) { // a turnout is specified
+            Serial.print("close turnout: "); Serial.println(turnout);
+            wiThrottleProtocol.setTurnout(turnout, TurnoutClose);
+          // }
+          writeOledSpeed();
+        } else {
+          writeOledTurnoutList("",TurnoutClose);
         }
         break;
       }
     case '7': {  // route
-        String route = routePrefix + menuCommand.substring(1, menuCommand.length());
-        if (!route.equals("")) { // a loco is specified
-          Serial.print("route: "); Serial.println(route);
-          wiThrottleProtocol.setRoute(route);
+        if (menuCommand.length()>1) {
+          String route = routePrefix + menuCommand.substring(1, menuCommand.length());
+          // if (!route.equals("")) { // a loco is specified
+            Serial.print("route: "); Serial.println(route);
+            wiThrottleProtocol.setRoute(route);
+          // }
+          writeOledSpeed();
+        } else {
+          writeOledRouteList("");
         }
         break;
       }
@@ -633,16 +680,22 @@ void doMenu() {
             doFunction(functionNumber, true);  // always act like latching i.e. pressed
           }
         }
+        writeOledSpeed();
         break;
       }
   }
   menuCommandStarted = result; 
 }
 
+// *********************************************************************************
+
 void resetMenu() {
+  Serial.println("resetMenu()");
   menuCommand = "";
   menuCommandStarted = false;
-  if (keypadUseType != KEYPAD_USE_SELECT_WITHROTTLE_SERVER) keypadUseType = KEYPAD_USE_OPERATION; 
+  if (keypadUseType != KEYPAD_USE_SELECT_WITHROTTLE_SERVER) {
+    keypadUseType = KEYPAD_USE_OPERATION; 
+  }
  }
 
 String getLocoWithLength(String loco) {
@@ -739,6 +792,8 @@ void powerToggle() {
   }
 }
 
+// *********************************************************************************
+
 void selectRoster(int selection) {
   Serial.print("selectRoster() "); Serial.println(selection);
 
@@ -751,6 +806,32 @@ void selectRoster(int selection) {
   }
 }
 
+void selectTurnoutList(int selection, TurnoutAction action) {
+  Serial.print("selectTurnoutList() "); Serial.println(selection);
+
+  if ((selection>=0) && (selection < turnoutListSize)) {
+    String turnout = turnoutListSysName[selection];
+    Serial.print("Turnout Selected: "); Serial.println(turnout);
+    wiThrottleProtocol.setTurnout(turnout,action);
+    writeOledSpeed();
+    keypadUseType = KEYPAD_USE_OPERATION;
+  }
+}
+
+void selectRouteList(int selection) {
+  Serial.print("selectRouteList() "); Serial.println(selection);
+
+  if ((selection>=0) && (selection < routeListSize)) {
+    String route = routeListSysName[selection];
+    Serial.print("Route Selected: "); Serial.println(route);
+    wiThrottleProtocol.setRoute(route);
+    writeOledSpeed();
+    keypadUseType = KEYPAD_USE_OPERATION;
+  }
+}
+
+// *********************************************************************************
+
 void writeOledRoster(String soFar) {
   keypadUseType = KEYPAD_USE_SELECT_ROSTER;
   if (soFar == "") { // nothing entered yet
@@ -760,8 +841,43 @@ void writeOledRoster(String soFar) {
       j = (i<5) ? j=i : j = i+1;
       oledText[j] = String(rosterIndex[i]) + "." + rosterName[i].substring(0,10);
     }
-    oledText[5] = "*.Cancel";
-    oledText[11] = "0-9.Select";
+    oledText[5] = menu_roster;
+    writeOledArray(false);
+  } else {
+    int cmd = menuCommand.substring(0, 1).toInt();
+  }
+}
+
+void writeOledTurnoutList(String soFar, TurnoutAction action) {
+  if (action == TurnoutThrow) {
+    keypadUseType = KEYPAD_USE_SELECT_TURNOUTS_THROW;
+  } else {
+    keypadUseType = KEYPAD_USE_SELECT_TURNOUTS_CLOSE;
+  }
+  if (soFar == "") { // nothing entered yet
+    clearOledArray();
+    int j = 0;
+    for (int i=0; i<10 && i<turnoutListSize; i++) {
+      j = (i<5) ? j=i : j = i+1;
+      oledText[j] = String(turnoutListIndex[i]) + "." + turnoutListUserName[i].substring(0,10);
+    }
+    oledText[5] = menu_turnout_list;
+    writeOledArray(false);
+  } else {
+    int cmd = menuCommand.substring(0, 1).toInt();
+  }
+}
+
+void writeOledRouteList(String soFar) {
+  keypadUseType = KEYPAD_USE_SELECT_ROUTES;
+  if (soFar == "") { // nothing entered yet
+    clearOledArray();
+    int j = 0;
+    for (int i=0; i<10 && i<routeListSize; i++) {
+      j = (i<5) ? j=i : j = i+1;
+      oledText[j] = String(routeListIndex[i]) + "." + routeListUserName[i].substring(0,10);
+    }
+    oledText[5] = menu_route_list;
     writeOledArray(false);
   } else {
     int cmd = menuCommand.substring(0, 1).toInt();
@@ -781,12 +897,15 @@ void writeOledMenu(String soFar) {
     writeOledArray(false);
   } else {
     int cmd = menuCommand.substring(0, 1).toInt();
-    String subMenuText1 = (menuText[cmd][1]=="") ? menu_finish : menuText[cmd][1];
-    String subMenuText2 = (menuText[cmd][2]=="") ? "" : menuText[cmd][2];
+    // String subMenuText1 = (menuText[cmd][1]=="") ? menu_finish : menuText[cmd][1];
+    // String subMenuText2 = (menuText[cmd][2]=="") ? "" : menuText[cmd][2];
 
     clearOledArray();
+    // oledText[0] = "Menu: " + menuText[cmd][0]; oledText[1] =  menuCommand.substring(1, menuCommand.length());
+    // oledText[4] = subMenuText2; oledText[5] = subMenuText1; oledText[11] = menu_cancel;
+
     oledText[0] = "Menu: " + menuText[cmd][0]; oledText[1] =  menuCommand.substring(1, menuCommand.length());
-    oledText[4] = subMenuText2; oledText[5] = subMenuText1; oledText[11] = menu_cancel;
+    oledText[5] = menuText[cmd][1];
     writeOledArray(false);
   }
 }
@@ -805,8 +924,7 @@ void writeOledSpeed() {
   }
 
   clearOledArray();
-  // oledText[0] = msg_locos_label; oledText[1] = sLocos; oledText[2] = msg_speed_label + sSpeed; oledText[6] = sDirection; oledText[11] = menu_menu;
-  oledText[0] = msg_locos_label; oledText[1] = sLocos; oledText[2] = msg_speed_label; oledText[6] = sDirection; oledText[11] = menu_menu;
+  oledText[0] = msg_locos_label; oledText[1] = sLocos; oledText[2] = msg_speed_label; oledText[6] = sDirection; oledText[5] = menu_menu;
   writeOledArray(false, false);
 
   const char *cSpeed = sSpeed.c_str();

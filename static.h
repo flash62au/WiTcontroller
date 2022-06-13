@@ -2,12 +2,15 @@ const String appName = "witController";
 const String appVersion = "Version 0.1";
 const String msg_start = "Start";
 
-const String msg_browsing_for_service ="Browsing for service";
+const String msg_browsing_for_service ="Browsing for WiT services";
 
-const String menu_menu = "*.Menu";
+const String menu_menu = "#.Keys      *.Menu";
 const String menu_finish = "#.Finish";
 const String menu_cancel = "*.Cancel";
 const String menu_show_direct = "#.Show Direct";
+const String menu_roster =  "0-9.Select *.Cancel";
+const String menu_turnout_list =  "0-9.Select *.Cancel";
+const String menu_route_list =  "0-9.Select *.Cancel";
 
 const String direct_command_list = "Direct Commands";
 
@@ -29,6 +32,9 @@ const String msg_select_wit_service = "[ Select ]";
 #define KEYPAD_USE_OPERATION 0
 #define KEYPAD_USE_SELECT_WITHROTTLE_SERVER 1
 #define KEYPAD_USE_SELECT_ROSTER 2
+#define KEYPAD_USE_SELECT_TURNOUTS_THROW 3
+#define KEYPAD_USE_SELECT_TURNOUTS_CLOSE 4
+#define KEYPAD_USE_SELECT_ROUTES 5
 
 #define WIT_CONNECTION_STATE_DISCONNECTED 0
 #define WIT_CONNECTION_STATE_CONNECTED 1
@@ -37,158 +43,19 @@ const String msg_select_wit_service = "[ Select ]";
 
 #define MAX_LOCOS     10  // maximum number of locos that can be added to the consist
 
-const String menuText[10][3] = {
-  {"Function","",""},                          //0
-  {"Add Loco","no,#.Select","#=roster"},       //1
-  {"Drop Loco", "",""},                        //2
-  {"Toggle Dir", "",""},                       //3
-  {"","",""},                                  //4
-  {"Throw Point","",""},                       //5
-  {"Close Point", "", ""},                     //6
-  {"Route", "",""},                            //7
-  {"Trk Power" "","",},                        //8 
-  {"Dis/connect","9,#.Sleep","#.Dis/connect"}, //9
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+const String menuText[10][2] = {
+  {"Function",    "no+#.Select        *.Cancel"},                //0
+  {"Add Loco",    "no+#.Add  #.Roster *.Cancel"},        //1
+  {"Drop Loco",   "no+#.One  #.All    *.Cancel"}, //2
+  {"Toggle Dir",  ""},                               //3
+  {"",""},                                          //4
+  {"Throw Point", "no+#.Throw  #.List *.Cancel"},       //5
+  {"Close Point", "no+#.Close  #.List *.Cancel"},      //6
+  {"Route",       "no+#.Select #.List *.Cancel"},            //7
+  {"Trk Power",   "#.Toggle           *.Cancel"},                  //8 
+  {"Disconnect",  "9+#.Sleep      #.Disconnect"},             //9
 };
+
 
 // speed increase for each click of the encoder 
 const int speedStep = 4;
