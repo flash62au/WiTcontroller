@@ -70,14 +70,20 @@ class MyDelegate : public WiThrottleProtocolDelegate {
       turnoutListSize = size;
     }
     void receivedTurnoutEntry(int index, String sysName, String userName, int state) {
-      Serial.print("Received Turnout Entry: "); Serial.print(index); 
-      Serial.print(". sysName: "); Serial.print(sysName); 
-      Serial.print(" userName: "); Serial.print(userName); 
-      Serial.print(" state: "); Serial.println(state);
+      // Serial.print("Received Turnout Entry: "); Serial.print(index); 
+      // Serial.print(". sysName: "); Serial.print(sysName); 
+      // Serial.print(" userName: "); Serial.print(userName); 
+      // Serial.print(" state: "); Serial.println(state);
     }
     void receivedRouteEntries(int size) {
       Serial.print("Received Route Entries. Size: "); Serial.println(size);
       routeListSize = size;
+    }
+    void receivedRouteEntry(int index, String sysName, String userName, int state) {
+      Serial.print("Received Route Entry: "); Serial.print(index); 
+      Serial.print(". sysName: "); Serial.print(sysName); 
+      Serial.print(" userName: "); Serial.print(userName); 
+      Serial.print(" state: "); Serial.println(state);
     }
 };
 
@@ -216,7 +222,7 @@ void connectWitServer() {
   // Pass the delegate instance to wiThrottleProtocol
   wiThrottleProtocol.setDelegate(&myDelegate);
   // Uncomment for logging on Serial
-  // wiThrottleProtocol.setLogStream(&Serial);
+  wiThrottleProtocol.setLogStream(&Serial);
 
   Serial.println("Connecting to the server...");
   clearOledArray(); oledText[0] = selectedWitServerIP.toString() + " " + String(selectedWitServerPort); oledText[1] + "connecting...";
