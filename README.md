@@ -1,5 +1,9 @@
 # witController
 
+important!
+- copy config_network_example.h to config_network.h 
+- edit it to include the network ssids you want to use
+
 Currently functioning:
 - Connects to the first available SSID (of three you can specify) with the specified password
 - Auto-connects to the first found wiThrottle Protocol Server if only one found, otherwise askes which to connect to
