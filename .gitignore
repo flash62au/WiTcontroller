@@ -53,7 +53,7 @@ build\sketch\*.*
 ./build/*.*
 *.cpp
 
-config_network.h
+*config_network*.h
 
 .pio
 
