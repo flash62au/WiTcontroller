@@ -17,8 +17,10 @@ const String direct_command_list = "Direct Commands";
 const String direction_forward = "Forward";
 const String direction_reverse = "Reverse";
 
+const String msg_no_ssids_found = "No ssids found";
+const String msg_ssids_found = " ssids found";
 const String msg_no_services_found = "No services found";
-const String msg_services_found = "Service(s) found";
+const String msg_services_found = " Service(s) found";
 const String msg_trying_to_connect = "Trying to Connect";
 const String msg_connected = "Connected";
 const String msg_address_label = "IP address: ";
@@ -26,20 +28,23 @@ const String msg_connection_failed = "Connection failed";
 const String msg_disconnected = "Disconnected";
 const String msg_locos_label = "Locos: ";
 const String msg_speed_label = "Speed: ";
+const String msg_start_sleep = "Starting Deep Sleep";
 
-const String msg_select_wit_service = "[ Select ]";
+const String msg_select_wit_service = "0-9.Select";
 
 #define KEYPAD_USE_OPERATION 0
-#define KEYPAD_USE_SELECT_WITHROTTLE_SERVER 1
-#define KEYPAD_USE_SELECT_ROSTER 2
-#define KEYPAD_USE_SELECT_TURNOUTS_THROW 3
-#define KEYPAD_USE_SELECT_TURNOUTS_CLOSE 4
-#define KEYPAD_USE_SELECT_ROUTES 5
+#define KEYPAD_USE_SELECT_SSID 1
+#define KEYPAD_USE_SELECT_WITHROTTLE_SERVER 2
+#define KEYPAD_USE_SELECT_ROSTER 3
+#define KEYPAD_USE_SELECT_TURNOUTS_THROW 4
+#define KEYPAD_USE_SELECT_TURNOUTS_CLOSE 5
+#define KEYPAD_USE_SELECT_ROUTES 6
 
-#define WIT_CONNECTION_STATE_DISCONNECTED 0
-#define WIT_CONNECTION_STATE_CONNECTED 1
-#define WIT_CONNECTION_STATE_SELECTION_REQUIRED 2
-#define WIT_CONNECTION_STATE_SELECTED 3
+// used for both wit and ssid
+#define CONNECTION_STATE_DISCONNECTED 0
+#define CONNECTION_STATE_CONNECTED 1
+#define CONNECTION_STATE_SELECTION_REQUIRED 2
+#define CONNECTION_STATE_SELECTED 3
 
 #define MAX_LOCOS     10  // maximum number of locos that can be added to the consist
 

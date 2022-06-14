@@ -7,7 +7,7 @@ int keypadUseType = KEYPAD_USE_OPERATION;
 boolean menuCommandStarted = false;
 String menuCommand = "";
 
-int ssidIndex = 99;
+// int ssidIndex = 99;
 
 String oledText[18] = {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""};
 
@@ -24,10 +24,15 @@ int encoderValue = 0;
 int lastEncoderValue = 0;
 
 // server variables
+// boolean ssidConnected = false;
+String selectedSsid = "";
+String selectedSsidPassword = "";
+int ssidConnectionState = CONNECTION_STATE_DISCONNECTED;
+
 IPAddress selectedWitServerIP;
 int selectedWitServerPort = 0;
 int noOfWitServices = 0;
-int witConnectionState = WIT_CONNECTION_STATE_DISCONNECTED;
+int witConnectionState = CONNECTION_STATE_DISCONNECTED;
 
 // roster variables
 int rosterSize = 0;

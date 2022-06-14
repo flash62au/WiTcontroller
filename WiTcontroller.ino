@@ -104,60 +104,127 @@ WiThrottleProtocol wiThrottleProtocol;
 MyDelegate myDelegate;
 int deviceId = random(1000,9999);
 
-void connectNetwork() {
-  for (int i=0; i<10; i++) {
-    Serial.println(); 
-  } 
-  Serial.println("Start - Network Connection "); 
 
-  // connect to the wifi.  loop through the configured SSIDs till we get a connection
-  boolean connected = false;
-  while (!connected) {
-    ssidIndex++;
-    // if (index >= 3) index = 0;  // go back to the first and try again
-    if (ssidIndex >= maxSsids) ssidIndex = 0;  // go back to the first and try again
+void ssidsLoop() {
+  keypadUseType = KEYPAD_USE_SELECT_SSID;
 
-    Serial.println("");  Serial.print("Trying SSID number: "); Serial.println(ssidIndex);
+  if (ssidConnectionState == CONNECTION_STATE_DISCONNECTED) {
+    browseSsids(); 
+  }
+  
+  if (ssidConnectionState == CONNECTION_STATE_SELECTED) {
+    connectSsid();
+  }
+}
 
-    double startTime = millis();
-    double nowTime = startTime;
+void browseSsids(){
+  Serial.println("browseSsids()");
 
-    const char *cSsid = ssids[ssidIndex].c_str();
-    const char *cPassword = passwords[ssidIndex].c_str();
+  clearOledArray(); 
+  oledText[0] = appName; oledText[6] = appVersion; 
+  writeOledArray(false);
 
-    if (cSsid!="") {
-      Serial.print("Trying Network "); Serial.println(cSsid);
-      clearOledArray(); oledText[0] = ssids[ssidIndex]; oledText[1] =  msg_trying_to_connect;
-      writeOledArray(false);
+  if (maxSsids == 0) {
+    oledText[1] = msg_no_ssids_found;
+    writeOledArray(false);
+    Serial.println(oledText[1]);
+  
+  } else {
+    Serial.print(maxSsids);  Serial.println(msg_ssids_found);
+    clearOledArray(); oledText[1] = msg_ssids_found;
 
-      WiFi.begin(cSsid, cPassword); 
-      turnoutPrefix = turnoutPrefixes[1];
-      routePrefix = routePrefixes[1];
-
-      while ( (WiFi.status() != WL_CONNECTED) && ((nowTime-startTime) <= 10000) ) { // try for 10 seconds
-        delay(250);
-        Serial.print(".");
-        nowTime = millis();
-      }
-
-      Serial.println("");
-      if (WiFi.status() == WL_CONNECTED) {
-        Serial.print("Connected. IP address: "); Serial.println(WiFi.localIP());
-        oledText[1] = msg_connected; 
-        oledText[2] = msg_address_label + String(WiFi.localIP());
-        writeOledArray(false);
-        connected = true;
-      } else {
-        WiFi.disconnect();
+    for (int i = 0; i < maxSsids; ++i) {
+      // Print details for each ssid found
+      Serial.print("  "); Serial.print(i+1); Serial.print(": "); Serial.print(ssids[i]);
+      if (i<5) {  // only have room for 5
+        oledText[i] = String(i+1) + ": " + ssids[i];
       }
     }
-  }
 
-  // setup the bonjour listener
-  if (!MDNS.begin("ESP32_Browser")) {
-    Serial.println("Error setting up MDNS responder!");
-    while(1){
-      delay(1000);
+    if (maxSsids > 0) {
+      oledText[11] = msg_select_wit_service;
+    }
+    writeOledArray(false);
+
+    if (maxSsids == 1) {
+      selectedSsid = ssids[0];
+      selectedSsidPassword = passwords[0];
+      ssidConnectionState = CONNECTION_STATE_SELECTED;
+
+      turnoutPrefix = turnoutPrefixes[0];
+      routePrefix = routePrefixes[0];
+      
+    } else {
+      ssidConnectionState = CONNECTION_STATE_SELECTION_REQUIRED;
+    }
+  }
+}
+
+void selectSsid(int selection) {
+  Serial.print("selectSsid() "); Serial.println(selection);
+
+  int correctedSelection = selection - 1; 
+  if ((correctedSelection>=0) && (correctedSelection < maxSsids)) {
+    ssidConnectionState = CONNECTION_STATE_SELECTED;
+    selectedSsid = ssids[correctedSelection];
+    selectedSsidPassword = passwords[correctedSelection];
+    
+    turnoutPrefix = turnoutPrefixes[correctedSelection];
+    routePrefix = routePrefixes[correctedSelection];
+  }
+}
+
+void connectSsid() {
+  Serial.println("Connecting to ssid...");
+  clearOledArray(); 
+  oledText[0] = appName; oledText[6] = appVersion; 
+  oledText[1] = selectedSsid; oledText[2] + "connecting...";
+  writeOledArray(false);
+
+  double startTime = millis();
+  double nowTime = startTime;
+
+  const char *cSsid = selectedSsid.c_str();
+  const char *cPassword = selectedSsidPassword.c_str();
+
+  if (cSsid!="") {
+    Serial.print("Trying Network "); Serial.println(cSsid);
+    clearOledArray(); 
+    oledText[0] = appName; oledText[6] = appVersion; 
+    oledText[1] = selectedSsid; oledText[2] =  msg_trying_to_connect;
+    writeOledArray(false);
+
+    WiFi.begin(cSsid, cPassword); 
+
+    while ( (WiFi.status() != WL_CONNECTED) && ((nowTime-startTime) <= 10000) ) { // try for 10 seconds
+      Serial.print("Trying Network ... Checking status "); Serial.println(cSsid);
+      delay(250);
+      Serial.print(".");
+      nowTime = millis();
+    }
+
+    Serial.println("");
+    if (WiFi.status() == WL_CONNECTED) {
+      Serial.print("Connected. IP address: "); Serial.println(WiFi.localIP());
+      oledText[2] = msg_connected; 
+      oledText[3] = msg_address_label + String(WiFi.localIP());
+      writeOledArray(false);
+      // ssidConnected = true;
+      ssidConnectionState = CONNECTION_STATE_CONNECTED;
+      keypadUseType = KEYPAD_USE_SELECT_WITHROTTLE_SERVER;
+
+      // setup the bonjour listener
+      if (!MDNS.begin("ESP32_Browser")) {
+        Serial.println("Error setting up MDNS responder!");
+        while(1){
+          delay(1000);
+        }
+        ssidConnectionState = CONNECTION_STATE_SELECTION_REQUIRED;
+      }
+
+    } else {
+      WiFi.disconnect();      
+      ssidConnectionState = CONNECTION_STATE_SELECTION_REQUIRED;
     }
   }
 }
@@ -165,11 +232,11 @@ void connectNetwork() {
 void witService() {
   keypadUseType = KEYPAD_USE_SELECT_WITHROTTLE_SERVER;
 
-  if (witConnectionState == WIT_CONNECTION_STATE_DISCONNECTED) {
+  if (witConnectionState == CONNECTION_STATE_DISCONNECTED) {
     browseWitService(); 
   }
   
-  if (witConnectionState == WIT_CONNECTION_STATE_SELECTED) {
+  if (witConnectionState == CONNECTION_STATE_SELECTED) {
     connectWitServer();
   }
 }
@@ -180,8 +247,10 @@ void browseWitService(){
   const char * service = "withrottle";
   const char * proto= "tcp";
 
-  Serial.printf("Browsing for service _%s._%s.local. on %s ... ", service, proto, ssids[ssidIndex]);
-  clearOledArray(); oledText[0] = ssids[ssidIndex];   oledText[1] = msg_browsing_for_service;
+  Serial.printf("Browsing for service _%s._%s.local. on %s ... ", service, proto, selectedSsid);
+  clearOledArray(); 
+  oledText[0] = appName; oledText[6] = appVersion; 
+  oledText[1] = selectedSsid;   oledText[2] = msg_browsing_for_service;
   writeOledArray(false);
 
   noOfWitServices = MDNS.queryService(service, proto);
@@ -192,7 +261,7 @@ void browseWitService(){
   
   } else {
     Serial.print(noOfWitServices);  Serial.println(msg_services_found);
-    clearOledArray(); oledText[0] = msg_services_found;
+    clearOledArray(); oledText[1] = msg_services_found;
 
     for (int i = 0; i < noOfWitServices; ++i) {
       // Print details for each service found
@@ -211,9 +280,9 @@ void browseWitService(){
     if (noOfWitServices == 1) {
       selectedWitServerIP = MDNS.IP(0);
       selectedWitServerPort = MDNS.port(0);
-      witConnectionState = WIT_CONNECTION_STATE_SELECTED;
+      witConnectionState = CONNECTION_STATE_SELECTED;
     } else {
-      witConnectionState = WIT_CONNECTION_STATE_SELECTION_REQUIRED;
+      witConnectionState = CONNECTION_STATE_SELECTION_REQUIRED;
     }
   }
 }
@@ -223,7 +292,7 @@ void selectWitServer(int selection) {
 
   int correctedCollection = selection - 1; 
   if ((correctedCollection>=0) && (correctedCollection < noOfWitServices)) {
-    witConnectionState = WIT_CONNECTION_STATE_SELECTED;
+    witConnectionState = CONNECTION_STATE_SELECTED;
     selectedWitServerIP = MDNS.IP(correctedCollection);
     selectedWitServerPort = MDNS.port(correctedCollection);
     keypadUseType = KEYPAD_USE_OPERATION;
@@ -237,12 +306,14 @@ void connectWitServer() {
   // wiThrottleProtocol.setLogStream(&Serial);
 
   Serial.println("Connecting to the server...");
-  clearOledArray(); oledText[0] = selectedWitServerIP.toString() + " " + String(selectedWitServerPort); oledText[1] + "connecting...";
+  clearOledArray(); 
+  oledText[0] = appName; oledText[6] = appVersion; 
+  oledText[1] = selectedWitServerIP.toString() + " " + String(selectedWitServerPort); oledText[2] + "connecting...";
   writeOledArray(false);
 
   if (!client.connect(selectedWitServerIP, selectedWitServerPort)) {
     Serial.println(msg_connection_failed);
-    oledText[1] = msg_connection_failed;
+    oledText[3] = msg_connection_failed;
     writeOledArray(false);
     while(1) delay(1000);
   }
@@ -255,9 +326,9 @@ void connectWitServer() {
   wiThrottleProtocol.setDeviceName(deviceName);  
   wiThrottleProtocol.setDeviceID(String(deviceId));  
 
-  witConnectionState = WIT_CONNECTION_STATE_CONNECTED;
+  witConnectionState = CONNECTION_STATE_CONNECTED;
 
-  oledText[1] = msg_connected;
+  oledText[2] = msg_connected;
   oledText[5] = menu_menu;
   writeOledArray(false);
 
@@ -270,7 +341,7 @@ void disconnectWitServer() {
   Serial.println("Disconnected from wiThrottle server\n");
   clearOledArray(); oledText[0] = msg_disconnected;
   writeOledArray(false);
-  witConnectionState = WIT_CONNECTION_STATE_DISCONNECTED;
+  witConnectionState = CONNECTION_STATE_DISCONNECTED;
 }
 
 AiEsp32RotaryEncoder rotaryEncoder = AiEsp32RotaryEncoder(ROTARY_ENCODER_A_PIN, ROTARY_ENCODER_B_PIN, ROTARY_ENCODER_BUTTON_PIN, ROTARY_ENCODER_VCC_PIN, ROTARY_ENCODER_STEPS);
@@ -279,21 +350,26 @@ void IRAM_ATTR readEncoderISR() {
 }
 
 void rotary_onButtonClick() {
-  static unsigned long lastTimePressed = 0;
-  if (millis() - lastTimePressed < 500) {   //ignore multiple press in that time milliseconds
-    return;
-  }
-  lastTimePressed = millis();
-  if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
-    if (currentSpeed!=0) {
-      wiThrottleProtocol.setSpeed(0);
-    } else {
-      if (toggleDirectionOnEncoderButtonPressWhenStationary) toggleDirection();
+  if ( (keypadUseType!=KEYPAD_USE_SELECT_WITHROTTLE_SERVER)
+       && (keypadUseType!=KEYPAD_USE_SELECT_SSID) ) {
+    static unsigned long lastTimePressed = 0;
+    if (millis() - lastTimePressed < 500) {   //ignore multiple press in that time milliseconds
+      return;
     }
-    currentSpeed = 0;
+    lastTimePressed = millis();
+    if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
+      if (currentSpeed!=0) {
+        wiThrottleProtocol.setSpeed(0);
+      } else {
+        if (toggleDirectionOnEncoderButtonPressWhenStationary) toggleDirection();
+      }
+      currentSpeed = 0;
+    }
+    Serial.println("encoder button pressed");
+    writeOledSpeed();
+  }  else {
+    deepSleepStart();
   }
-  Serial.println("encoder button pressed");
-  writeOledSpeed();
 }
 
 void rotary_loop() {
@@ -372,7 +448,7 @@ void setup() {
   Serial.begin(115200);
   u8g2.begin();
 
-  clearOledArray(); oledText[0] = appName; oledText[1] = appVersion; oledText[2] = msg_start;
+  clearOledArray(); oledText[0] = appName; oledText[6] = appVersion; oledText[2] = msg_start;
   writeOledArray(false);
 
   delay(1000);
@@ -388,17 +464,23 @@ void setup() {
   keypad.addEventListener(keypadEvent); // Add an event listener for this keypad
   keypad.setDebounceTime(keypadDebounceTime);
 
-  connectNetwork();
-
   esp_sleep_enable_ext0_wakeup(GPIO_NUM_13,0); //1 = High, 0 = Low
+
+  keypadUseType = KEYPAD_USE_SELECT_SSID;
 }
 
 void loop() {
   
-  if (witConnectionState != WIT_CONNECTION_STATE_CONNECTED) {
-    witService();
-  } else {
-    wiThrottleProtocol.check();    // parse incoming messages
+  // if (!ssidConnected) {
+  if (ssidConnectionState != CONNECTION_STATE_CONNECTED) {
+    // connectNetwork();
+    ssidsLoop();
+  } else {  
+    if (witConnectionState != CONNECTION_STATE_CONNECTED) {
+      witService();
+    } else {
+      wiThrottleProtocol.check();    // parse incoming messages
+    }
   }
   char key = keypad.getKey();
   rotary_loop();
@@ -454,6 +536,17 @@ void doKeyPress(char key, boolean pressed) {
         switch (key){
           case '1': case '2': case '3': case '4': case '5':
             selectWitServer(key - '0');
+            break;
+          default:  // do nothing 
+            break;
+        }
+        break;
+
+      case KEYPAD_USE_SELECT_SSID:
+        Serial.print("key ssid... "); Serial.println(key);
+        switch (key){
+          case '1': case '2': case '3': case '4': case '5':
+            selectSsid(key - '0');
             break;
           default:  // do nothing 
             break;
@@ -659,8 +752,8 @@ void doMenu() {
     case '9': { // disconnect/reconnect/sleep
         String subcommand = menuCommand.substring(1, menuCommand.length());
         if (subcommand.equals("")) { // no subcommand is specified   
-          if (witConnectionState == WIT_CONNECTION_STATE_CONNECTED) {
-            witConnectionState == WIT_CONNECTION_STATE_DISCONNECTED;
+          if (witConnectionState == CONNECTION_STATE_CONNECTED) {
+            witConnectionState == CONNECTION_STATE_DISCONNECTED;
             disconnectWitServer();
           } else {
             connectWitServer();
@@ -693,8 +786,12 @@ void resetMenu() {
   Serial.println("resetMenu()");
   menuCommand = "";
   menuCommandStarted = false;
-  if (keypadUseType != KEYPAD_USE_SELECT_WITHROTTLE_SERVER) {
-    keypadUseType = KEYPAD_USE_OPERATION; 
+  if (keypadUseType != KEYPAD_USE_SELECT_SSID) {
+    keypadUseType = KEYPAD_USE_SELECT_WITHROTTLE_SERVER; 
+  } else { 
+    if (keypadUseType != KEYPAD_USE_SELECT_WITHROTTLE_SERVER) {
+        keypadUseType = KEYPAD_USE_OPERATION; 
+    }
   }
  }
 
@@ -996,6 +1093,12 @@ void writeOledDirectCommands() {
 }
 
 void deepSleepStart() {
+  clearOledArray(); 
+  oledText[0] = appName; oledText[6] = appVersion; 
+  oledText[1] = msg_start_sleep;
+  writeOledArray(false);
+  delay(1000);
+
   u8g2.setPowerSave(1);
   esp_deep_sleep_start();
 }

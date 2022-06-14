@@ -2,17 +2,11 @@
 
 const char* deviceName = "WiT Controller";
 
-const String turnoutPrefixes[maxSsids] = {"NT", "NT", "NT"};  // required if you wish to use turnouts  
-// this the prefix of all turnout system names for YOUR, for three wiThrottle servers on the three networks above
-
 const boolean encoderRotationClockwiseIsIncreaseSpeed = false;
 // false = Counterclockwise  true = clockwise
 
 const boolean toggleDirectionOnEncoderButtonPressWhenStationary = true;
 // true = if the locos(s) are stationary, clicking the encoder button will toggle the direction
-
-const String routePrefixes[maxSsids] = {"IO:AUTO:", "IO:AUTO:", "IO:AUTO:"};  // required if you wish to use routes  
-// this is the prefix of all route system names for YOUR system, for three wiThrottle servers on the three networks above
 
 // configure the keypad buttons to perform the actions you wish
 // 4x4 keypad
