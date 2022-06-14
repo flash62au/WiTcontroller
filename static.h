@@ -14,8 +14,8 @@ const String menu_route_list =  "0-9.Select *.Cancel";
 
 const String direct_command_list = "Direct Commands";
 
-const String direction_forward = "Forward";
-const String direction_reverse = "Reverse";
+const String direction_forward = "          Fwd";
+const String direction_reverse = "          Rev";
 
 const String msg_no_ssids_found = "No ssids found";
 const String msg_ssids_found = " ssids found";
