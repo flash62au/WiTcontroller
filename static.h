@@ -29,6 +29,7 @@ const String msg_disconnected = "Disconnected";
 const String msg_locos_label = "Locos: ";
 const String msg_speed_label = "Speed: ";
 const String msg_start_sleep = "Starting Deep Sleep";
+const String msg_no_loco_selected = "No Loco selected";
 
 const String msg_select_wit_service = "0-9.Select";
 

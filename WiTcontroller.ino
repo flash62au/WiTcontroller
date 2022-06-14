@@ -53,11 +53,6 @@ class MyDelegate : public WiThrottleProtocolDelegate {
       rosterSize = size;
     }
     void receivedRosterEntry(int index, String name, int address, char length) {
-      // Serial.print("Received Roster Entry: "); Serial.print(index); 
-      // Serial.print(". name: "); Serial.println(name); 
-      // Serial.pr
-      // int(" addr: "); Serial.println(address); 
-      // Serial.print(" len: "); Serial.println(length);
       if (index < 10) {
         rosterIndex[index] = index; 
         rosterName[index] = name; 
@@ -70,10 +65,6 @@ class MyDelegate : public WiThrottleProtocolDelegate {
       turnoutListSize = size;
     }
     void receivedTurnoutEntry(int index, String sysName, String userName, int state) {
-      // Serial.print("Received Turnout Entry: "); Serial.print(index); 
-      // Serial.print(". sysName: "); Serial.print(sysName); 
-      // Serial.print(" userName: "); Serial.print(userName); 
-      // Serial.print(" state: "); Serial.println(state);
       if (index < 10) {
         turnoutListIndex[index] = index; 
         turnoutListSysName[index] = sysName; 
@@ -86,10 +77,6 @@ class MyDelegate : public WiThrottleProtocolDelegate {
       routeListSize = size;
     }
     void receivedRouteEntry(int index, String sysName, String userName, int state) {
-      // Serial.print("Received Route Entry: "); Serial.print(index); 
-      // Serial.print(". sysName: "); Serial.print(sysName); 
-      // Serial.print(" userName: "); Serial.print(userName); 
-      // Serial.print(" state: "); Serial.println(state);
       if (index < 10) {
         routeListIndex[index] = index; 
         routeListSysName[index] = sysName; 
@@ -121,7 +108,7 @@ void browseSsids(){
   Serial.println("browseSsids()");
 
   clearOledArray(); 
-  oledText[0] = appName; oledText[6] = appVersion; 
+  setAppnameForOled(); 
   writeOledArray(false);
 
   if (maxSsids == 0) {
@@ -134,8 +121,7 @@ void browseSsids(){
     clearOledArray(); oledText[1] = msg_ssids_found;
 
     for (int i = 0; i < maxSsids; ++i) {
-      // Print details for each ssid found
-      Serial.print("  "); Serial.print(i+1); Serial.print(": "); Serial.print(ssids[i]);
+      Serial.print(i+1); Serial.print(": "); Serial.println(ssids[i]);
       if (i<5) {  // only have room for 5
         oledText[i] = String(i+1) + ": " + ssids[i];
       }
@@ -190,7 +176,7 @@ void connectSsid() {
   if (cSsid!="") {
     Serial.print("Trying Network "); Serial.println(cSsid);
     clearOledArray(); 
-    oledText[0] = appName; oledText[6] = appVersion; 
+    setAppnameForOled(); 
     oledText[1] = selectedSsid; oledText[2] =  msg_trying_to_connect;
     writeOledArray(false);
 
@@ -307,7 +293,7 @@ void connectWitServer() {
 
   Serial.println("Connecting to the server...");
   clearOledArray(); 
-  oledText[0] = appName; oledText[6] = appVersion; 
+  setAppnameForOled(); 
   oledText[1] = selectedWitServerIP.toString() + " " + String(selectedWitServerPort); oledText[2] + "connecting...";
   writeOledArray(false);
 
@@ -786,12 +772,9 @@ void resetMenu() {
   Serial.println("resetMenu()");
   menuCommand = "";
   menuCommandStarted = false;
-  if (keypadUseType != KEYPAD_USE_SELECT_SSID) {
-    keypadUseType = KEYPAD_USE_SELECT_WITHROTTLE_SERVER; 
-  } else { 
-    if (keypadUseType != KEYPAD_USE_SELECT_WITHROTTLE_SERVER) {
-        keypadUseType = KEYPAD_USE_OPERATION; 
-    }
+  if ( (keypadUseType != KEYPAD_USE_SELECT_SSID) 
+    && (keypadUseType != KEYPAD_USE_SELECT_WITHROTTLE_SERVER) ) {
+    keypadUseType = KEYPAD_USE_OPERATION; 
   }
  }
 
@@ -929,6 +912,10 @@ void selectRouteList(int selection) {
 
 // *********************************************************************************
 
+void setAppnameForOled() {
+  oledText[0] = appName; oledText[6] = appVersion; 
+}
+
 void writeOledRoster(String soFar) {
   keypadUseType = KEYPAD_USE_SELECT_ROSTER;
   if (soFar == "") { // nothing entered yet
@@ -1012,16 +999,24 @@ void writeOledSpeed() {
   String sSpeed = "";
   String sDirection = "";
 
+  clearOledArray();
+
   if (wiThrottleProtocol.getNumberOfLocomotives() > 0 ) {
+    oledText[0] = msg_locos_label; oledText[2] = msg_speed_label;
+  
     for (int i=0; i < wiThrottleProtocol.getNumberOfLocomotives(); i++) {
       sLocos = sLocos + " " + wiThrottleProtocol.getLocomotiveAtPosition(i);
     }
     sSpeed = String(currentSpeed);
     sDirection = (currentDirection==Forward) ? direction_forward : direction_reverse;
+
+    oledText[1] = sLocos; oledText[6] = sDirection;
+  } else {
+    setAppnameForOled();
+    oledText[2] = msg_no_loco_selected;
   }
 
-  clearOledArray();
-  oledText[0] = msg_locos_label; oledText[1] = sLocos; oledText[2] = msg_speed_label; oledText[6] = sDirection; oledText[5] = menu_menu;
+  oledText[5] = menu_menu;
   writeOledArray(false, false);
 
   const char *cSpeed = sSpeed.c_str();
@@ -1094,7 +1089,7 @@ void writeOledDirectCommands() {
 
 void deepSleepStart() {
   clearOledArray(); 
-  oledText[0] = appName; oledText[6] = appVersion; 
+  setAppnameForOled();
   oledText[1] = msg_start_sleep;
   writeOledArray(false);
   delay(1000);
