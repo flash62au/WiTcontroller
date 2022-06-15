@@ -508,7 +508,7 @@ void loop() {
   char key = keypad.getKey();
   rotary_loop();
 
-  delay(100);
+  delay(5);
 }
 
 // *********************************************************************************
@@ -1081,8 +1081,11 @@ void writeOledFunctions() {
    for (int i=0; i < 5; i++) {
      if (functionStates[i]) {
       //  Serial.print("Fn On "); Serial.println(i);
+      u8g2.drawBox(119,(i+1)*10-8,8,8);
+      u8g2.setDrawColor(0);
       u8g2.setFont(u8g2_font_profont10_tf);
-      u8g2.drawStr(120, (i+1)*10, String(i).c_str());
+      u8g2.drawStr(121, (i+1)*10-1, String(i).c_str());
+      u8g2.setDrawColor(1);
     //  } else {
     //    Serial.print("Fn Off "); Serial.println(i);
      }
