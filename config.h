@@ -1,5 +1,3 @@
-#include "actions.h"
-
 const char* deviceName = "WiT Controller";
 
 const boolean encoderRotationClockwiseIsIncreaseSpeed = false;
