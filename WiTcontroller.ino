@@ -22,6 +22,14 @@
 #include "config_keypad_etc.h"   // keypad, encoder, oled display
 #include "config.h"
 
+// *********************************************************************************
+
+void displayUpdateFromWit() {
+  if ( (keypadUseType==KEYPAD_USE_OPERATION) && (!menuIsShowing) ) {
+    writeOledSpeed();
+  }
+}
+
 // WiThrottleProtocol Delegate class
 class MyDelegate : public WiThrottleProtocolDelegate {
   
@@ -36,13 +44,17 @@ class MyDelegate : public WiThrottleProtocolDelegate {
     void receivedSpeed(int speed) {             // Vnnn
       currentSpeed = speed;
       Serial.print("Received Speed: "); Serial.println(speed); 
+      displayUpdateFromWit();
     }
     void receivedDirection(Direction dir) {     // R{0,1}
       currentDirection = dir;
       Serial.print("Received Direction: "); Serial.println(dir); 
+      displayUpdateFromWit();
     }
     void receivedFunctionState(uint8_t func, bool state) { 
       Serial.print("Received Fn: "); Serial.print(func); Serial.print(" State: "); Serial.println( (state) ? "True" : "False" );
+      functionStates[func] = state;
+      // displayUpdateFromWit();
     }
     void receivedTrackPower(TrackPower state) { 
       Serial.print("Received TrackPower: "); Serial.println(state);
@@ -91,6 +103,7 @@ WiThrottleProtocol wiThrottleProtocol;
 MyDelegate myDelegate;
 int deviceId = random(1000,9999);
 
+// *********************************************************************************
 
 void ssidsLoop() {
   keypadUseType = KEYPAD_USE_SELECT_SSID;
@@ -128,7 +141,7 @@ void browseSsids(){
     }
 
     if (maxSsids > 0) {
-      oledText[11] = msg_select_wit_service;
+      oledText[5] = menu_select_ssids;
     }
     writeOledArray(false);
 
@@ -215,6 +228,8 @@ void connectSsid() {
   }
 }
 
+// *********************************************************************************
+
 void witService() {
   keypadUseType = KEYPAD_USE_SELECT_WITHROTTLE_SERVER;
 
@@ -259,7 +274,7 @@ void browseWitService(){
     }
 
     if (noOfWitServices > 0) {
-      oledText[11] = msg_select_wit_service;
+      oledText[5] = menu_select_wit_service;
     }
     writeOledArray(false);
 
@@ -329,6 +344,8 @@ void disconnectWitServer() {
   writeOledArray(false);
   witConnectionState = CONNECTION_STATE_DISCONNECTED;
 }
+
+// *********************************************************************************
 
 AiEsp32RotaryEncoder rotaryEncoder = AiEsp32RotaryEncoder(ROTARY_ENCODER_A_PIN, ROTARY_ENCODER_B_PIN, ROTARY_ENCODER_BUTTON_PIN, ROTARY_ENCODER_VCC_PIN, ROTARY_ENCODER_STEPS);
 void IRAM_ATTR readEncoderISR() {
@@ -429,6 +446,7 @@ void keypadEvent(KeypadEvent key){
 }
 
 // *********************************************************************************
+// *********************************************************************************
 
 void setup() {
   Serial.begin(115200);
@@ -474,6 +492,7 @@ void loop() {
   delay(100);
 }
 
+// *********************************************************************************
 // *********************************************************************************
 
 void doKeyPress(char key, boolean pressed) {
@@ -658,7 +677,7 @@ void doMenu() {
   String function = "";
   boolean result = false;
   Serial.print("Menu: "); Serial.println(menuCommand);
-
+  
   switch (menuCommand[0]) {
     case '1': { // select loco
         if (menuCommand.length()>1) {
@@ -917,6 +936,7 @@ void setAppnameForOled() {
 }
 
 void writeOledRoster(String soFar) {
+  menuIsShowing = true;
   keypadUseType = KEYPAD_USE_SELECT_ROSTER;
   if (soFar == "") { // nothing entered yet
     clearOledArray();
@@ -933,6 +953,7 @@ void writeOledRoster(String soFar) {
 }
 
 void writeOledTurnoutList(String soFar, TurnoutAction action) {
+  menuIsShowing = true;
   if (action == TurnoutThrow) {
     keypadUseType = KEYPAD_USE_SELECT_TURNOUTS_THROW;
   } else {
@@ -953,6 +974,7 @@ void writeOledTurnoutList(String soFar, TurnoutAction action) {
 }
 
 void writeOledRouteList(String soFar) {
+  menuIsShowing = true;
   keypadUseType = KEYPAD_USE_SELECT_ROUTES;
   if (soFar == "") { // nothing entered yet
     clearOledArray();
@@ -969,6 +991,7 @@ void writeOledRouteList(String soFar) {
 }
 
 void writeOledMenu(String soFar) {
+  menuIsShowing = true;
   if (soFar == "") { // nothing entered yet
     clearOledArray();
     int j = 0;
@@ -981,12 +1004,8 @@ void writeOledMenu(String soFar) {
     writeOledArray(false);
   } else {
     int cmd = menuCommand.substring(0, 1).toInt();
-    // String subMenuText1 = (menuText[cmd][1]=="") ? menu_finish : menuText[cmd][1];
-    // String subMenuText2 = (menuText[cmd][2]=="") ? "" : menuText[cmd][2];
 
     clearOledArray();
-    // oledText[0] = "Menu: " + menuText[cmd][0]; oledText[1] =  menuCommand.substring(1, menuCommand.length());
-    // oledText[4] = subMenuText2; oledText[5] = subMenuText1; oledText[11] = menu_cancel;
 
     oledText[0] = "Menu: " + menuText[cmd][0]; oledText[1] =  menuCommand.substring(1, menuCommand.length());
     oledText[5] = menuText[cmd][1];
@@ -995,6 +1014,7 @@ void writeOledMenu(String soFar) {
 }
 
 void writeOledSpeed() {
+  menuIsShowing = false;
   String sLocos = "";
   String sSpeed = "";
   String sDirection = "";
@@ -1085,6 +1105,7 @@ void writeOledDirectCommands() {
     j++;
   }
   writeOledArray(true);
+  menuCommandStarted = false;
 }
 
 void deepSleepStart() {

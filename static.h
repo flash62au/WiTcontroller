@@ -4,13 +4,16 @@ const String msg_start = "Start";
 
 const String msg_browsing_for_service ="Browsing for WiT services";
 
-const String menu_menu = "#.Keys      *.Menu";
+const String menu_menu = "#.Key Defs        *.Menu";
 const String menu_finish = "#.Finish";
 const String menu_cancel = "*.Cancel";
 const String menu_show_direct = "#.Show Direct";
 const String menu_roster =  "0-9.Select *.Cancel";
 const String menu_turnout_list =  "0-9.Select *.Cancel";
 const String menu_route_list =  "0-9.Select *.Cancel";
+
+const String menu_select_wit_service = "0-9.Select     Enc_Btn.Sleep";
+const String menu_select_ssids = "0-9.Select       Enc_Btn.Sleep";
 
 const String direct_command_list = "Direct Commands";
 
@@ -28,10 +31,8 @@ const String msg_connection_failed = "Connection failed";
 const String msg_disconnected = "Disconnected";
 const String msg_locos_label = "Locos: ";
 const String msg_speed_label = "Speed: ";
-const String msg_start_sleep = "Starting Deep Sleep";
+const String msg_start_sleep = "Starting Sleep  Enc_Btn.Wake";
 const String msg_no_loco_selected = "No Loco selected";
-
-const String msg_select_wit_service = "0-9.Select";
 
 #define KEYPAD_USE_OPERATION 0
 #define KEYPAD_USE_SELECT_SSID 1

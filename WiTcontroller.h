@@ -6,6 +6,7 @@ int keypadUseType = KEYPAD_USE_OPERATION;
 
 boolean menuCommandStarted = false;
 String menuCommand = "";
+boolean menuIsShowing = false;
 
 // int ssidIndex = 99;
 
@@ -54,3 +55,6 @@ int routeListIndex[10];
 String routeListSysName[10]; 
 String routeListUserName[10];
 int routeListState[10];
+
+// function states
+boolean functionStates[28];
