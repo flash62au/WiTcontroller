@@ -201,7 +201,8 @@ void connectSsid() {
 
     WiFi.begin(cSsid, cPassword); 
 
-    while ( (WiFi.status() != WL_CONNECTED) && ((nowTime-startTime) <= 10000) ) { // try for 10 seconds
+    while ( (WiFi.status() != WL_CONNECTED) 
+      && ((nowTime-startTime) <= 10000) ) { // try for 10 seconds
       Serial.print("Trying Network ... Checking status "); Serial.println(cSsid);
       delay(250);
       Serial.print(".");
@@ -228,8 +229,13 @@ void connectSsid() {
       }
 
     } else {
+      Serial.print(msg_connection_failed);
+      oledText[2] = msg_connection_failed;
+      writeOledArray(false);
+      delay(1000);
+      
       WiFi.disconnect();      
-      ssidConnectionState = CONNECTION_STATE_SELECTION_REQUIRED;
+      ssidConnectionState = CONNECTION_STATE_DISCONNECTED;
     }
   }
 }
@@ -265,6 +271,9 @@ void browseWitService(){
     oledText[1] = msg_no_services_found;
     writeOledArray(false);
     Serial.println(oledText[1]);
+    delay(5000);
+    witConnectionState = CONNECTION_STATE_DISCONNECTED;
+    ssidConnectionState = CONNECTION_STATE_DISCONNECTED;
   
   } else {
     Serial.print(noOfWitServices);  Serial.println(msg_services_found);
@@ -322,24 +331,28 @@ void connectWitServer() {
     Serial.println(msg_connection_failed);
     oledText[3] = msg_connection_failed;
     writeOledArray(false);
-    while(1) delay(1000);
+    delay(5000);
+    
+    witConnectionState = CONNECTION_STATE_DISCONNECTED;
+    ssidConnectionState = CONNECTION_STATE_DISCONNECTED;
+  } else {
+    Serial.print("Connected to server: ");   Serial.println(selectedWitServerIP); Serial.println(selectedWitServerPort);
+
+    // Pass the communication to WiThrottle
+    wiThrottleProtocol.connect(&client);
+    Serial.println("WiThrottle connected");
+
+    wiThrottleProtocol.setDeviceName(deviceName);  
+    wiThrottleProtocol.setDeviceID(String(deviceId));  
+
+    witConnectionState = CONNECTION_STATE_CONNECTED;
+
+    oledText[2] = msg_connected;
+    oledText[5] = menu_menu;
+    writeOledArray(false);
+
+    keypadUseType = KEYPAD_USE_OPERATION;
   }
-  Serial.print("Connected to server: ");   Serial.println(selectedWitServerIP); Serial.println(selectedWitServerPort);
-
-  // Pass the communication to WiThrottle
-  wiThrottleProtocol.connect(&client);
-  Serial.println("WiThrottle connected");
-
-  wiThrottleProtocol.setDeviceName(deviceName);  
-  wiThrottleProtocol.setDeviceID(String(deviceId));  
-
-  witConnectionState = CONNECTION_STATE_CONNECTED;
-
-  oledText[2] = msg_connected;
-  oledText[5] = menu_menu;
-  writeOledArray(false);
-
-  keypadUseType = KEYPAD_USE_OPERATION;
 }
 
 void disconnectWitServer() {
@@ -866,11 +879,11 @@ void releaseAllLocos() {
 
 void toggleDirection() {
   if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
-    Direction direction = Reverse;
-    if (currentDirection == Reverse) {
-      direction = Forward;
-    }
-    changeDirection(direction);
+  //   Direction direction = Reverse;
+  //   if (currentDirection == Reverse) {
+  //     direction = Forward;
+  //   }
+    changeDirection( (currentDirection == Forward) ? Reverse : Forward );
     writeOledSpeed();
   }
 }
@@ -1137,10 +1150,12 @@ void writeOledDirectCommands() {
   menuCommandStarted = false;
 }
 
+// *********************************************************************************
+
 void deepSleepStart() {
   clearOledArray(); 
   setAppnameForOled();
-  oledText[1] = msg_start_sleep;
+  oledText[2] = msg_start_sleep;
   writeOledArray(false);
   delay(1000);
 

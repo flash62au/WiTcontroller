@@ -44,7 +44,7 @@ byte pin_rows[ROW_NUM]      = {19, 18, 17, 16}; // GIOP19, GIOP18, GIOP5, GIOP17
 byte pin_column[COLUMN_NUM] = { 4, 0, 2};   // GIOP16, GIOP4, GIOP0 connect to the column pins
 
 Keypad keypad = Keypad( makeKeymap(keys), pin_rows, pin_column, ROW_NUM, COLUMN_NUM );
-const int keypadDebounceTime = 50;   // in miliseconds
+const int keypadDebounceTime = 5;   // in miliseconds
 
 // *******************************************************************************************************************
 // oled
