@@ -54,7 +54,7 @@ class MyDelegate : public WiThrottleProtocolDelegate {
     void receivedFunctionState(uint8_t func, bool state) { 
       Serial.print("Received Fn: "); Serial.print(func); Serial.print(" State: "); Serial.println( (state) ? "True" : "False" );
       if (functionStates[func] != state) {
-        functionStates[func] != state;
+        functionStates[func] = state;
         displayUpdateFromWit();
       }
     }
@@ -137,8 +137,12 @@ void browseSsids(){
 
     for (int i = 0; i < maxSsids; ++i) {
       Serial.print(i+1); Serial.print(": "); Serial.println(ssids[i]);
-      if (i<5) {  // only have room for 5
+      if (i<5) { 
         oledText[i] = String(i+1) + ": " + ssids[i];
+      } else {
+        if (i<10) {  // only have room for 10
+          oledText[i+1] = String(i+1) + ": " + ssids[i];
+        }
       }
     }
 
@@ -1049,10 +1053,25 @@ void writeOledSpeed() {
   oledText[5] = menu_menu;
   writeOledArray(false, false);
 
+  if (wiThrottleProtocol.getNumberOfLocomotives() > 0 ) {
+    writeOledFunctions();
+  }
+
   const char *cSpeed = sSpeed.c_str();
   u8g2.setFont(u8g2_font_inb21_mn); // big
   u8g2.drawStr(35,45, cSpeed);
   u8g2.sendBuffer();
+}
+
+void writeOledFunctions() {
+   for (int i=0; i < 5; i++) {
+     if (functionStates[i]) {
+      //  Serial.print("Fn On "); Serial.println(i);
+       u8g2.drawStr(120, (i+1)*10, String(i).c_str());
+    //  } else {
+    //    Serial.print("Fn Off "); Serial.println(i);
+     }
+   }
 }
 
 void writeOledArray(boolean isThreeColums) {
