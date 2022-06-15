@@ -53,8 +53,10 @@ class MyDelegate : public WiThrottleProtocolDelegate {
     }
     void receivedFunctionState(uint8_t func, bool state) { 
       Serial.print("Received Fn: "); Serial.print(func); Serial.print(" State: "); Serial.println( (state) ? "True" : "False" );
-      functionStates[func] = state;
-      // displayUpdateFromWit();
+      if (functionStates[func] != state) {
+        functionStates[func] != state;
+        displayUpdateFromWit();
+      }
     }
     void receivedTrackPower(TrackPower state) { 
       Serial.print("Received TrackPower: "); Serial.println(state);
@@ -685,6 +687,7 @@ void doMenu() {
           loco = getLocoWithLength(loco);
           Serial.print("add Loco: "); Serial.println(loco);
           wiThrottleProtocol.addLocomotive(loco);
+          resetFunctionStates();
           writeOledSpeed();
         } else {
           writeOledRoster("");
@@ -797,6 +800,12 @@ void resetMenu() {
   }
  }
 
+ void resetFunctionStates() {
+   for (int i=0; i<28; i++) {
+     functionStates[i] = false;
+   }
+ }
+
 String getLocoWithLength(String loco) {
   int locoNo = menuCommand.toInt() + 0;
   if (locoNo <= 127) {
@@ -900,6 +909,7 @@ void selectRoster(int selection) {
     String loco = String(rosterLength[selection]) + rosterAddress[selection];
     Serial.print("add Loco: "); Serial.println(loco);
     wiThrottleProtocol.addLocomotive(loco);
+    resetFunctionStates();
     writeOledSpeed();
     keypadUseType = KEYPAD_USE_OPERATION;
   }
