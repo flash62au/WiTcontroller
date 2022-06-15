@@ -1,6 +1,3 @@
-#include <WiThrottleProtocol.h>   // https://github.com/flash62au/WiThrottleProtocol
-#include <string>
-#include "static.h"
 
 int keypadUseType = KEYPAD_USE_OPERATION;
 

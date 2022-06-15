@@ -15,7 +15,7 @@
 #include <U8g2lib.h>
 #include <string>
 
-// #include "static.h"   // included in WiTcontroller.h
+#include "static.h"
 #include "WiTcontroller.h"
 #include "actions.h"
 #include "config_network.h"
