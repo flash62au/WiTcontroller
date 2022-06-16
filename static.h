@@ -4,16 +4,16 @@ const String msg_start = "Start";
 
 const String msg_browsing_for_service ="Browsing for WiT services";
 
-const String menu_menu = "#.Key Defs        *.Menu";
-const String menu_finish = "#.Finish";
-const String menu_cancel = "*.Cancel";
-const String menu_show_direct = "#.Show Direct";
-const String menu_roster =  "0-9.Select *.Cancel";
-const String menu_turnout_list =  "0-9.Select *.Cancel";
-const String menu_route_list =  "0-9.Select *.Cancel";
+const String menu_menu = "#: Key Defs       *: Menu";
+const String menu_finish = "#: Finish";
+const String menu_cancel = "*: Cancel";
+const String menu_show_direct = "#: Show Direct";
+const String menu_roster =  "0-9: Select *: Cancel";
+const String menu_turnout_list =  "0-9: Select *: Cancel";
+const String menu_route_list =  "0-9: Select *: Cancel";
 
-const String menu_select_wit_service = "0-9.Select     Enc_Btn.Sleep";
-const String menu_select_ssids = "0-9.Select       Enc_Btn.Sleep";
+const String menu_select_wit_service = "0-9: Select    Enc_Btn: Sleep";
+const String menu_select_ssids = "0-9: Select      Enc_Btn: Sleep";
 
 const String direct_command_list = "Direct Commands";
 
@@ -31,7 +31,7 @@ const String msg_connection_failed = "Connection failed";
 const String msg_disconnected = "Disconnected";
 const String msg_locos_label = "Locos: ";
 const String msg_speed_label = "Speed: ";
-const String msg_start_sleep = "Starting Sleep  Enc_Btn.Wake";
+const String msg_start_sleep = "Starting Sleep  Enc_Btn: Wake";
 const String msg_no_loco_selected = "No Loco selected";
 
 #define KEYPAD_USE_OPERATION 0
@@ -51,16 +51,16 @@ const String msg_no_loco_selected = "No Loco selected";
 #define MAX_LOCOS     10  // maximum number of locos that can be added to the consist
 
 const String menuText[10][2] = {
-  {"Function",    "no+#.Select        *.Cancel"},                //0
-  {"Add Loco",    "no+#.Add  #.Roster *.Cancel"},        //1
-  {"Drop Loco",   "no+#.One  #.All    *.Cancel"}, //2
+  {"Function",    "no+#: Select        *: Cancel"},                //0
+  {"Add Loco",    "no+#: Add  #: Roster *: Cancel"},        //1
+  {"Drop Loco",   "no+#: One  #: All    *: Cancel"}, //2
   {"Toggle Dir",  ""},                               //3
   {"",""},                                          //4
-  {"Throw Point", "no+#.Throw  #.List *.Cancel"},       //5
-  {"Close Point", "no+#.Close  #.List *.Cancel"},      //6
-  {"Route",       "no+#.Select #.List *.Cancel"},            //7
-  {"Trk Power",   "#.Toggle           *.Cancel"},                  //8 
-  {"Disconnect",  "9+#.Sleep      #.Disconnect"},             //9
+  {"Throw Point", "no+#: Throw  #: List *: Cancel"},       //5
+  {"Close Point", "no+#: Close  #: List *: Cancel"},      //6
+  {"Route",       "no+#: Select #: List *: Cancel"},            //7
+  {"Trk Power",   "#: Toggle           *: Cancel"},                  //8 
+  {"Disconnect",  "9+#: Sleep      #: Disconnect"},             //9
 };
 
 

@@ -375,7 +375,7 @@ void rotary_onButtonClick() {
   if ( (keypadUseType!=KEYPAD_USE_SELECT_WITHROTTLE_SERVER)
        && (keypadUseType!=KEYPAD_USE_SELECT_SSID) ) {
     static unsigned long lastTimePressed = 0;
-    if (millis() - lastTimePressed < 500) {   //ignore multiple press in that time milliseconds
+    if (millis() - lastTimePressed < encoderDebounceTime) {   //ignore multiple press in that time milliseconds
       return;
     }
     lastTimePressed = millis();
@@ -970,7 +970,7 @@ void writeOledRoster(String soFar) {
     int j = 0;
     for (int i=0; i<10 && i<rosterSize; i++) {
       j = (i<5) ? j=i : j = i+1;
-      oledText[j] = String(rosterIndex[i]) + "." + rosterName[i].substring(0,10);
+      oledText[j] = String(rosterIndex[i]) + ": " + rosterName[i].substring(0,10);
     }
     oledText[5] = menu_roster;
     writeOledArray(false);
@@ -991,7 +991,7 @@ void writeOledTurnoutList(String soFar, TurnoutAction action) {
     int j = 0;
     for (int i=0; i<10 && i<turnoutListSize; i++) {
       j = (i<5) ? j=i : j = i+1;
-      oledText[j] = String(turnoutListIndex[i]) + "." + turnoutListUserName[i].substring(0,10);
+      oledText[j] = String(turnoutListIndex[i]) + ": " + turnoutListUserName[i].substring(0,10);
     }
     oledText[5] = menu_turnout_list;
     writeOledArray(false);
@@ -1008,7 +1008,7 @@ void writeOledRouteList(String soFar) {
     int j = 0;
     for (int i=0; i<10 && i<routeListSize; i++) {
       j = (i<5) ? j=i : j = i+1;
-      oledText[j] = String(routeListIndex[i]) + "." + routeListUserName[i].substring(0,10);
+      oledText[j] = String(routeListIndex[i]) + ": " + routeListUserName[i].substring(0,10);
     }
     oledText[5] = menu_route_list;
     writeOledArray(false);
@@ -1024,9 +1024,9 @@ void writeOledMenu(String soFar) {
     int j = 0;
     for (int i=1; i<10; i++) {
       j = (i<6) ? j=i : j = i+1;
-      oledText[j-1] = String(i) + "." + menuText[i][0];
+      oledText[j-1] = String(i) + ": " + menuText[i][0];
     }
-    oledText[10] = "0." + menuText[0][0];
+    oledText[10] = "0: " + menuText[0][0];
     oledText[11] = menu_cancel;
     writeOledArray(false);
   } else {

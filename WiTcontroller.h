@@ -5,8 +5,6 @@ boolean menuCommandStarted = false;
 String menuCommand = "";
 boolean menuIsShowing = false;
 
-// int ssidIndex = 99;
-
 String oledText[18] = {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""};
 
 int currentSpeed = 0;

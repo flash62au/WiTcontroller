@@ -38,8 +38,8 @@ int buttonActions[10] = { E_STOP,   // 0
 };
 
 const String directCommandText[4][3] = {
-    {"1.F0", "2.F1", "3.F2"},
-    {"4.", "5.V Up", "6."}, 
-    {"7.Rev", "8.V Down", "9.Fwd"},
-    {"*.Menu", "E Stop", "#.End Menu"}
+    {"1: F0", "2: F1", "3: F2"},
+    {"4:", "5: V Up", "6: "}, 
+    {"7: Rev", "8: V Dwn", "9: Fwd"},
+    {"*: Menu", "E Stop", "#: This"}
 };
