@@ -17,11 +17,12 @@ const String menu_select_ssids = "0-9: Select      Enc_Btn: Sleep";
 
 const String direct_command_list = "Direct Commands";
 
-const String direction_forward = "          Fwd";
-const String direction_reverse = "          Rev";
+const String direction_forward = "         Fwd";
+const String direction_reverse = "         Rev";
 
 const String msg_no_ssids_found = "No ssids found";
 const String msg_ssids_found = " ssids found";
+const String msg_bounjour_setup_failed = "Unable to setup Listener";
 const String msg_no_services_found = "No services found";
 const String msg_services_found = " Service(s) found";
 const String msg_trying_to_connect = "Trying to Connect";
@@ -29,10 +30,15 @@ const String msg_connected = "Connected";
 const String msg_address_label = "IP address: ";
 const String msg_connection_failed = "Connection failed";
 const String msg_disconnected = "Disconnected";
-const String msg_locos_label = "Locos: ";
-const String msg_speed_label = "Speed: ";
 const String msg_start_sleep = "Starting Sleep  Enc_Btn: Wake";
 const String msg_no_loco_selected = "No Loco selected";
+
+// const String label_locos = "Locos: ";
+// const String label_speed = "Speed: ";
+const String label_track_power = "TRK";
+// const String label_unknown = "?";
+// const String label_on = "On" ;
+// const String label_off = "Off";
 
 #define KEYPAD_USE_OPERATION 0
 #define KEYPAD_USE_SELECT_SSID 1

@@ -22,6 +22,19 @@
 #include "config_keypad_etc.h"   // keypad, encoder, oled display
 #include "config.h"
 
+// comment out the following line to stop all console messages
+#define DEBUG 1
+
+#ifdef DEBUG
+ #define debug_print(...) Serial.print(__VA_ARGS__)
+ #define debug_println(...) Serial.println(__VA_ARGS__)
+ #define debug_printf(...) Serial.printf(__VA_ARGS__)
+#else
+ #define debug_print(...)
+ #define debug_println(...)
+ #define debug_printf(...)
+#endif
+
 // *********************************************************************************
 
 void displayUpdateFromWit() {
@@ -35,35 +48,42 @@ class MyDelegate : public WiThrottleProtocolDelegate {
   
   public:
     void receivedVersion(String version) {    
-      Serial.printf("Received Version: %s\n",version); 
+      debug_printf("Received Version: %s\n",version); 
     }
     void receivedServerDescription(String description) {
-      Serial.print("Received Description: ");
-      Serial.println(description);
+      debug_print("Received Description: ");
+      debug_println(description);
     }
     void receivedSpeed(int speed) {             // Vnnn
-      currentSpeed = speed;
-      Serial.print("Received Speed: "); Serial.println(speed); 
-      displayUpdateFromWit();
+      debug_print("Received Speed: "); debug_println(speed); 
+      if (currentSpeed != speed) {
+        currentSpeed = speed;
+        displayUpdateFromWit();
+      }
     }
     void receivedDirection(Direction dir) {     // R{0,1}
-      currentDirection = dir;
-      Serial.print("Received Direction: "); Serial.println(dir); 
-      displayUpdateFromWit();
+      debug_print("Received Direction: "); debug_println(dir); 
+      if (currentDirection != dir) {
+        currentDirection = dir;
+        displayUpdateFromWit();
+      }
     }
     void receivedFunctionState(uint8_t func, bool state) { 
-      Serial.print("Received Fn: "); Serial.print(func); Serial.print(" State: "); Serial.println( (state) ? "True" : "False" );
+      debug_print("Received Fn: "); debug_print(func); debug_print(" State: "); debug_println( (state) ? "True" : "False" );
       if (functionStates[func] != state) {
         functionStates[func] = state;
         displayUpdateFromWit();
       }
     }
     void receivedTrackPower(TrackPower state) { 
-      Serial.print("Received TrackPower: "); Serial.println(state);
-      trackPower = state;
+      debug_print("Received TrackPower: "); debug_println(state);
+      if (trackPower != state) {
+        trackPower = state;
+        displayUpdateFromWit();
+      }
     }
     void receivedRosterEntries(int size) {
-      Serial.print("Received Roster Entries. Size: "); Serial.println(size);
+      debug_print("Received Roster Entries. Size: "); debug_println(size);
       rosterSize = size;
     }
     void receivedRosterEntry(int index, String name, int address, char length) {
@@ -75,7 +95,7 @@ class MyDelegate : public WiThrottleProtocolDelegate {
       }
     }
     void receivedTurnoutEntries(int size) {
-      Serial.print("Received Turnout Entries. Size: "); Serial.println(size);
+      debug_print("Received Turnout Entries. Size: "); debug_println(size);
       turnoutListSize = size;
     }
     void receivedTurnoutEntry(int index, String sysName, String userName, int state) {
@@ -87,7 +107,7 @@ class MyDelegate : public WiThrottleProtocolDelegate {
       }
     }
     void receivedRouteEntries(int size) {
-      Serial.print("Received Route Entries. Size: "); Serial.println(size);
+      debug_print("Received Route Entries. Size: "); debug_println(size);
       routeListSize = size;
     }
     void receivedRouteEntry(int index, String sysName, String userName, int state) {
@@ -120,7 +140,7 @@ void ssidsLoop() {
 }
 
 void browseSsids(){
-  Serial.println("browseSsids()");
+  debug_println("browseSsids()");
 
   clearOledArray(); 
   setAppnameForOled(); 
@@ -129,14 +149,14 @@ void browseSsids(){
   if (maxSsids == 0) {
     oledText[1] = msg_no_ssids_found;
     writeOledArray(false);
-    Serial.println(oledText[1]);
+    debug_println(oledText[1]);
   
   } else {
-    Serial.print(maxSsids);  Serial.println(msg_ssids_found);
+    debug_print(maxSsids);  debug_println(msg_ssids_found);
     clearOledArray(); oledText[1] = msg_ssids_found;
 
     for (int i = 0; i < maxSsids; ++i) {
-      Serial.print(i+1); Serial.print(": "); Serial.println(ssids[i]);
+      debug_print(i+1); debug_print(": "); debug_println(ssids[i]);
       if (i<5) { 
         oledText[i] = String(i+1) + ": " + ssids[i];
       } else {
@@ -166,7 +186,7 @@ void browseSsids(){
 }
 
 void selectSsid(int selection) {
-  Serial.print("selectSsid() "); Serial.println(selection);
+  debug_print("selectSsid() "); debug_println(selection);
 
   int correctedSelection = selection - 1; 
   if ((correctedSelection>=0) && (correctedSelection < maxSsids)) {
@@ -180,7 +200,7 @@ void selectSsid(int selection) {
 }
 
 void connectSsid() {
-  Serial.println("Connecting to ssid...");
+  debug_println("Connecting to ssid...");
   clearOledArray(); 
   oledText[0] = appName; oledText[6] = appVersion; 
   oledText[1] = selectedSsid; oledText[2] + "connecting...";
@@ -193,7 +213,7 @@ void connectSsid() {
   const char *cPassword = selectedSsidPassword.c_str();
 
   if (cSsid!="") {
-    Serial.print("Trying Network "); Serial.println(cSsid);
+    debug_print("Trying Network "); debug_println(cSsid);
     clearOledArray(); 
     setAppnameForOled(); 
     oledText[1] = selectedSsid; oledText[2] =  msg_trying_to_connect;
@@ -203,15 +223,15 @@ void connectSsid() {
 
     while ( (WiFi.status() != WL_CONNECTED) 
       && ((nowTime-startTime) <= 10000) ) { // try for 10 seconds
-      Serial.print("Trying Network ... Checking status "); Serial.println(cSsid);
+      debug_print("Trying Network ... Checking status "); debug_println(cSsid);
       delay(250);
-      Serial.print(".");
+      debug_print(".");
       nowTime = millis();
     }
 
-    Serial.println("");
+    debug_println("");
     if (WiFi.status() == WL_CONNECTED) {
-      Serial.print("Connected. IP address: "); Serial.println(WiFi.localIP());
+      debug_print("Connected. IP address: "); debug_println(WiFi.localIP());
       oledText[2] = msg_connected; 
       oledText[3] = msg_address_label + String(WiFi.localIP());
       writeOledArray(false);
@@ -221,18 +241,18 @@ void connectSsid() {
 
       // setup the bonjour listener
       if (!MDNS.begin("ESP32_Browser")) {
-        Serial.println("Error setting up MDNS responder!");
-        while(1){
-          delay(1000);
-        }
-        ssidConnectionState = CONNECTION_STATE_SELECTION_REQUIRED;
+        debug_println("Error setting up MDNS responder!");
+        oledText[2] = msg_bounjour_setup_failed;
+        writeOledArray(false);
+        delay(2000);
+        ssidConnectionState = CONNECTION_STATE_DISCONNECTED;
       }
 
     } else {
-      Serial.print(msg_connection_failed);
+      debug_print(msg_connection_failed);
       oledText[2] = msg_connection_failed;
       writeOledArray(false);
-      delay(1000);
+      delay(2000);
       
       WiFi.disconnect();      
       ssidConnectionState = CONNECTION_STATE_DISCONNECTED;
@@ -255,12 +275,12 @@ void witService() {
 }
 
 void browseWitService(){
-  Serial.println("browseWitService()");
+  debug_println("browseWitService()");
 
   const char * service = "withrottle";
   const char * proto= "tcp";
 
-  Serial.printf("Browsing for service _%s._%s.local. on %s ... ", service, proto, selectedSsid);
+  debug_printf("Browsing for service _%s._%s.local. on %s ... ", service, proto, selectedSsid);
   clearOledArray(); 
   oledText[0] = appName; oledText[6] = appVersion; 
   oledText[1] = selectedSsid;   oledText[2] = msg_browsing_for_service;
@@ -270,19 +290,19 @@ void browseWitService(){
   if (noOfWitServices == 0) {
     oledText[1] = msg_no_services_found;
     writeOledArray(false);
-    Serial.println(oledText[1]);
+    debug_println(oledText[1]);
     delay(5000);
     witConnectionState = CONNECTION_STATE_DISCONNECTED;
     ssidConnectionState = CONNECTION_STATE_DISCONNECTED;
   
   } else {
-    Serial.print(noOfWitServices);  Serial.println(msg_services_found);
+    debug_print(noOfWitServices);  debug_println(msg_services_found);
     clearOledArray(); oledText[1] = msg_services_found;
 
     for (int i = 0; i < noOfWitServices; ++i) {
       // Print details for each service found
-      Serial.print("  "); Serial.print(i+1); Serial.print(": "); Serial.print(MDNS.hostname(i));
-      Serial.print(" ("); Serial.print(MDNS.IP(i)); Serial.print(":"); Serial.print(MDNS.port(i)); Serial.println(")");
+      debug_print("  "); debug_print(i+1); debug_print(": "); debug_print(MDNS.hostname(i));
+      debug_print(" ("); debug_print(MDNS.IP(i)); debug_print(":"); debug_print(MDNS.port(i)); debug_println(")");
       if (i<5) {  // only have room for 5
         oledText[i] = String(i+1) + ": " + MDNS.IP(i).toString() + ":" + String(MDNS.port(i));
       }
@@ -304,7 +324,7 @@ void browseWitService(){
 }
 
 void selectWitServer(int selection) {
-  Serial.print("selectWitServer() "); Serial.println(selection);
+  debug_print("selectWitServer() "); debug_println(selection);
 
   int correctedCollection = selection - 1; 
   if ((correctedCollection>=0) && (correctedCollection < noOfWitServices)) {
@@ -321,14 +341,14 @@ void connectWitServer() {
   // Uncomment for logging on Serial
   // wiThrottleProtocol.setLogStream(&Serial);
 
-  Serial.println("Connecting to the server...");
+  debug_println("Connecting to the server...");
   clearOledArray(); 
   setAppnameForOled(); 
   oledText[1] = selectedWitServerIP.toString() + " " + String(selectedWitServerPort); oledText[2] + "connecting...";
   writeOledArray(false);
 
   if (!client.connect(selectedWitServerIP, selectedWitServerPort)) {
-    Serial.println(msg_connection_failed);
+    debug_println(msg_connection_failed);
     oledText[3] = msg_connection_failed;
     writeOledArray(false);
     delay(5000);
@@ -336,11 +356,11 @@ void connectWitServer() {
     witConnectionState = CONNECTION_STATE_DISCONNECTED;
     ssidConnectionState = CONNECTION_STATE_DISCONNECTED;
   } else {
-    Serial.print("Connected to server: ");   Serial.println(selectedWitServerIP); Serial.println(selectedWitServerPort);
+    debug_print("Connected to server: ");   debug_println(selectedWitServerIP); debug_println(selectedWitServerPort);
 
     // Pass the communication to WiThrottle
     wiThrottleProtocol.connect(&client);
-    Serial.println("WiThrottle connected");
+    debug_println("WiThrottle connected");
 
     wiThrottleProtocol.setDeviceName(deviceName);  
     wiThrottleProtocol.setDeviceID(String(deviceId));  
@@ -358,7 +378,7 @@ void connectWitServer() {
 void disconnectWitServer() {
   releaseAllLocos();
   wiThrottleProtocol.disconnect();
-  Serial.println("Disconnected from wiThrottle server\n");
+  debug_println("Disconnected from wiThrottle server\n");
   clearOledArray(); oledText[0] = msg_disconnected;
   writeOledArray(false);
   witConnectionState = CONNECTION_STATE_DISCONNECTED;
@@ -376,6 +396,7 @@ void rotary_onButtonClick() {
        && (keypadUseType!=KEYPAD_USE_SELECT_SSID) ) {
     static unsigned long lastTimePressed = 0;
     if (millis() - lastTimePressed < encoderDebounceTime) {   //ignore multiple press in that time milliseconds
+      debug_println("encoder button debounce");
       return;
     }
     lastTimePressed = millis();
@@ -387,7 +408,7 @@ void rotary_onButtonClick() {
       }
       currentSpeed = 0;
     }
-    Serial.println("encoder button pressed");
+    debug_println("encoder button pressed");
     writeOledSpeed();
   }  else {
     deepSleepStart();
@@ -397,14 +418,14 @@ void rotary_onButtonClick() {
 void rotary_loop() {
   if (rotaryEncoder.encoderChanged()) {   //don't print anything unless value changed
     encoderValue = rotaryEncoder.readEncoder();
-     Serial.print("Encoder From: "); Serial.print(lastEncoderValue);  Serial.print(" to: "); Serial.println(encoderValue);
+     debug_print("Encoder From: "); debug_print(lastEncoderValue);  debug_print(" to: "); debug_println(encoderValue);
     if (abs(encoderValue-lastEncoderValue) > 800) { // must have passed through zero
       if (encoderValue > 800) {
         lastEncoderValue = 1001; 
       } else {
         lastEncoderValue = 0; 
       }
-      Serial.print("Corrected Encoder From: "); Serial.print(lastEncoderValue); Serial.print(" to: "); Serial.println(encoderValue);
+      debug_print("Corrected Encoder From: "); debug_print(lastEncoderValue); debug_print(" to: "); debug_println(encoderValue);
     }
     if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
       if (encoderValue > lastEncoderValue) {
@@ -452,12 +473,12 @@ void encoderSpeedChange(boolean rotationIsClockwise, int speedChange) {
 void keypadEvent(KeypadEvent key){
   switch (keypad.getState()){
   case PRESSED:
-    Serial.print("Button "); Serial.print(String(key - '0')); Serial.println(" pushed.");
+    debug_print("Button "); debug_print(String(key - '0')); debug_println(" pushed.");
     doKeyPress(key, true);
     break;
   case RELEASED:
     doKeyPress(key, false);
-    Serial.print("Button "); Serial.print(String(key - '0')); Serial.println(" released.");
+    debug_print("Button "); debug_print(String(key - '0')); debug_println(" released.");
     break;
 //    case HOLD:
 //        break;
@@ -475,7 +496,7 @@ void setup() {
   writeOledArray(false);
 
   delay(1000);
-  Serial.println("Start"); 
+  debug_println("Start"); 
 
   rotaryEncoder.begin();  //initialize rotary encoder
   rotaryEncoder.setup(readEncoderISR);
@@ -508,7 +529,7 @@ void loop() {
   char key = keypad.getKey();
   rotary_loop();
 
-  delay(5);
+  // delay(5);
 }
 
 // *********************************************************************************
@@ -518,7 +539,7 @@ void doKeyPress(char key, boolean pressed) {
   if (pressed)  { //pressed
     switch (keypadUseType) {
       case KEYPAD_USE_OPERATION:
-        Serial.print("key operation... "); Serial.println(key);
+        debug_print("key operation... "); debug_println(key);
         switch (key) {
           case '*':  // menu command
             menuCommand = "";
@@ -527,7 +548,7 @@ void doKeyPress(char key, boolean pressed) {
               writeOledSpeed();
             } else {
               menuCommandStarted = true;
-              Serial.println("Command started");
+              debug_println("Command started");
               writeOledMenu("");
             }
             break;
@@ -556,7 +577,7 @@ void doKeyPress(char key, boolean pressed) {
         break;
 
       case KEYPAD_USE_SELECT_WITHROTTLE_SERVER:
-        Serial.print("key wit... "); Serial.println(key);
+        debug_print("key wit... "); debug_println(key);
         switch (key){
           case '1': case '2': case '3': case '4': case '5':
             selectWitServer(key - '0');
@@ -567,7 +588,7 @@ void doKeyPress(char key, boolean pressed) {
         break;
 
       case KEYPAD_USE_SELECT_SSID:
-        Serial.print("key ssid... "); Serial.println(key);
+        debug_print("key ssid... "); debug_println(key);
         switch (key){
           case '1': case '2': case '3': case '4': case '5':
             selectSsid(key - '0');
@@ -581,7 +602,7 @@ void doKeyPress(char key, boolean pressed) {
       case KEYPAD_USE_SELECT_TURNOUTS_THROW:
       case KEYPAD_USE_SELECT_TURNOUTS_CLOSE:
       case KEYPAD_USE_SELECT_ROUTES:
-        Serial.print("key Roster/Rurnouts/Routes... "); Serial.println(key);
+        debug_print("key Roster/Rurnouts/Routes... "); debug_println(key);
         switch (key){
           case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
             
@@ -618,10 +639,10 @@ void doKeyPress(char key, boolean pressed) {
 
     // if (keypadUseType == KEYPAD_USE_OPERATION) {
     //   if ( (!menuCommandStarted) && (key>='0') && (key<='D')) { // only process releases for the numeric keys + A,B,C,D and only if a menu command has not be started
-    //     Serial.println("Operation - Process key release");
+    //     debug_println("Operation - Process key release");
     //     doDirectCommand(key, false);
     //   } else {
-    //     Serial.println("Non-Operation - Process key release");
+    //     debug_println("Non-Operation - Process key release");
     //     if (keypadUseNonOperationComplete) {   //finished processing the menu etc.
     //       resetMenu();
     //     }
@@ -632,7 +653,7 @@ void doKeyPress(char key, boolean pressed) {
 }
 
 void doDirectCommand (char key, boolean pressed) {
-  Serial.print("Direct command: "); Serial.println(key);
+  debug_print("Direct command: "); debug_println(key);
   int buttonAction = buttonActions[(key - '0')];
   if (buttonAction!=FUNCTION_NULL) {
     if ( (buttonAction>=FUNCTION_0) && (buttonAction<=FUNCTION_28) ) {
@@ -695,14 +716,14 @@ void doMenu() {
   String loco = "";
   String function = "";
   boolean result = false;
-  Serial.print("Menu: "); Serial.println(menuCommand);
+  debug_print("Menu: "); debug_println(menuCommand);
   
   switch (menuCommand[0]) {
     case '1': { // select loco
         if (menuCommand.length()>1) {
           loco = menuCommand.substring(1, menuCommand.length());
           loco = getLocoWithLength(loco);
-          Serial.print("add Loco: "); Serial.println(loco);
+          debug_print("add Loco: "); debug_println(loco);
           wiThrottleProtocol.addLocomotive(loco);
           resetFunctionStates();
           writeOledSpeed();
@@ -715,7 +736,7 @@ void doMenu() {
         loco = menuCommand.substring(1, menuCommand.length());
         if (loco!="") { // a loco is specified
           loco = getLocoWithLength(loco);
-          Serial.print("release Loco: "); Serial.println(loco);
+          debug_print("release Loco: "); debug_println(loco);
           wiThrottleProtocol.releaseLocomotive(loco);
         } else { //not loco specified so release all
           releaseAllLocos();
@@ -734,7 +755,7 @@ void doMenu() {
         if (menuCommand.length()>1) {
           String turnout = turnoutPrefix + menuCommand.substring(1, menuCommand.length());
           // if (!turnout.equals("")) { // a turnout is specified
-            Serial.print("throw turnout: "); Serial.println(turnout);
+            debug_print("throw turnout: "); debug_println(turnout);
             wiThrottleProtocol.setTurnout(turnout, TurnoutThrow);
           // }
           writeOledSpeed();
@@ -747,7 +768,7 @@ void doMenu() {
         if (menuCommand.length()>1) {
           String turnout = turnoutPrefix + menuCommand.substring(1, menuCommand.length());
           // if (!turnout.equals("")) { // a turnout is specified
-            Serial.print("close turnout: "); Serial.println(turnout);
+            debug_print("close turnout: "); debug_println(turnout);
             wiThrottleProtocol.setTurnout(turnout, TurnoutClose);
           // }
           writeOledSpeed();
@@ -760,7 +781,7 @@ void doMenu() {
         if (menuCommand.length()>1) {
           String route = routePrefix + menuCommand.substring(1, menuCommand.length());
           // if (!route.equals("")) { // a loco is specified
-            Serial.print("route: "); Serial.println(route);
+            debug_print("route: "); debug_println(route);
             wiThrottleProtocol.setRoute(route);
           // }
           writeOledSpeed();
@@ -771,7 +792,8 @@ void doMenu() {
       }
     case '8': {
         powerToggle();
-        Serial.println("Power toggle");
+        debug_println("Power toggle");
+        writeOledSpeed();
         break;
       }
     case '9': { // disconnect/reconnect/sleep
@@ -808,7 +830,7 @@ void doMenu() {
 // *********************************************************************************
 
 void resetMenu() {
-  Serial.println("resetMenu()");
+  debug_println("resetMenu()");
   menuCommand = "";
   menuCommandStarted = false;
   if ( (keypadUseType != KEYPAD_USE_SELECT_SSID) 
@@ -836,14 +858,14 @@ String getLocoWithLength(String loco) {
 void speedEstop() {
   wiThrottleProtocol.emergencyStop();
   currentSpeed = 0;
-  Serial.println("Speed EStop"); 
+  debug_println("Speed EStop"); 
   writeOledSpeed();
 }
 
 void speedDown(int amt) {
   if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
     int newSpeed = currentSpeed - amt;
-    Serial.print("Speed Down: "); Serial.println(amt);
+    debug_print("Speed Down: "); debug_println(amt);
     speedSet(newSpeed);
   }
 }
@@ -851,7 +873,7 @@ void speedDown(int amt) {
 void speedUp(int amt) {
   if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
     int newSpeed = currentSpeed + amt;
-    Serial.print("Speed Up: "); Serial.println(amt);
+    debug_print("Speed Up: "); debug_println(amt);
     speedSet(newSpeed);
   }
 }
@@ -863,7 +885,7 @@ void speedSet(int amt) {
     if (newSpeed <0) { newSpeed = 0; }
     wiThrottleProtocol.setSpeed(newSpeed);
     currentSpeed = newSpeed;
-    Serial.print("Speed Set: "); Serial.println(newSpeed);
+    debug_print("Speed Set: "); debug_println(newSpeed);
     writeOledSpeed();
   }
 }
@@ -892,7 +914,7 @@ void changeDirection(Direction direction) {
   if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
     wiThrottleProtocol.setDirection(direction);
     currentDirection = direction;
-    Serial.print("Change direction: "); Serial.println( (direction==Forward) ? "Forward" : "Reverse");
+    debug_print("Change direction: "); debug_println( (direction==Forward) ? "Forward" : "Reverse");
     writeOledSpeed(); 
   }
 }
@@ -900,7 +922,7 @@ void changeDirection(Direction direction) {
 void doFunction(int functionNumber, boolean pressed) {
   if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
     wiThrottleProtocol.setFunction(functionNumber, pressed );
-    Serial.print("fn: "); Serial.print(functionNumber); Serial.println( (pressed) ? " Pressed" : " Released");
+    debug_print("fn: "); debug_print(functionNumber); debug_println( (pressed) ? " Pressed" : " Released");
   }
 }
 
@@ -920,11 +942,11 @@ void powerToggle() {
 // *********************************************************************************
 
 void selectRoster(int selection) {
-  Serial.print("selectRoster() "); Serial.println(selection);
+  debug_print("selectRoster() "); debug_println(selection);
 
   if ((selection>=0) && (selection < rosterSize)) {
     String loco = String(rosterLength[selection]) + rosterAddress[selection];
-    Serial.print("add Loco: "); Serial.println(loco);
+    debug_print("add Loco: "); debug_println(loco);
     wiThrottleProtocol.addLocomotive(loco);
     resetFunctionStates();
     writeOledSpeed();
@@ -933,11 +955,11 @@ void selectRoster(int selection) {
 }
 
 void selectTurnoutList(int selection, TurnoutAction action) {
-  Serial.print("selectTurnoutList() "); Serial.println(selection);
+  debug_print("selectTurnoutList() "); debug_println(selection);
 
   if ((selection>=0) && (selection < turnoutListSize)) {
     String turnout = turnoutListSysName[selection];
-    Serial.print("Turnout Selected: "); Serial.println(turnout);
+    debug_print("Turnout Selected: "); debug_println(turnout);
     wiThrottleProtocol.setTurnout(turnout,action);
     writeOledSpeed();
     keypadUseType = KEYPAD_USE_OPERATION;
@@ -945,11 +967,11 @@ void selectTurnoutList(int selection, TurnoutAction action) {
 }
 
 void selectRouteList(int selection) {
-  Serial.print("selectRouteList() "); Serial.println(selection);
+  debug_print("selectRouteList() "); debug_println(selection);
 
   if ((selection>=0) && (selection < routeListSize)) {
     String route = routeListSysName[selection];
-    Serial.print("Route Selected: "); Serial.println(route);
+    debug_print("Route Selected: "); debug_println(route);
     wiThrottleProtocol.setRoute(route);
     writeOledSpeed();
     keypadUseType = KEYPAD_USE_OPERATION;
@@ -1047,9 +1069,11 @@ void writeOledSpeed() {
   String sDirection = "";
 
   clearOledArray();
+  
+  boolean drawTopLine = false;
 
   if (wiThrottleProtocol.getNumberOfLocomotives() > 0 ) {
-    oledText[0] = msg_locos_label; oledText[2] = msg_speed_label;
+    // oledText[0] = label_locos; oledText[2] = label_speed;
   
     for (int i=0; i < wiThrottleProtocol.getNumberOfLocomotives(); i++) {
       sLocos = sLocos + " " + wiThrottleProtocol.getLocomotiveAtPosition(i);
@@ -1057,18 +1081,31 @@ void writeOledSpeed() {
     sSpeed = String(currentSpeed);
     sDirection = (currentDirection==Forward) ? direction_forward : direction_reverse;
 
-    oledText[1] = sLocos; oledText[6] = sDirection;
+    oledText[0] = sLocos; oledText[7] = sDirection;
+
+    drawTopLine = true;
+
   } else {
     setAppnameForOled();
     oledText[2] = msg_no_loco_selected;
   }
 
   oledText[5] = menu_menu;
-  writeOledArray(false, false);
+  writeOledArray(false, false, drawTopLine);
 
   if (wiThrottleProtocol.getNumberOfLocomotives() > 0 ) {
     writeOledFunctions();
   }
+
+  if (trackPower == PowerOn) {
+    u8g2.drawBox(0,41,15,8);
+    u8g2.setDrawColor(1);
+    u8g2.setDrawColor(0);
+  }
+  u8g2.setFont(u8g2_font_profont10_tf);
+  u8g2.drawStr(0, 48, label_track_power.c_str());
+  u8g2.setDrawColor(1);
+
 
   const char *cSpeed = sSpeed.c_str();
   u8g2.setFont(u8g2_font_inb21_mn); // big
@@ -1078,25 +1115,36 @@ void writeOledSpeed() {
 }
 
 void writeOledFunctions() {
-   for (int i=0; i < 5; i++) {
+   int x = 109;
+   for (int i=0; i < 8; i++) {
      if (functionStates[i]) {
-      //  Serial.print("Fn On "); Serial.println(i);
-      u8g2.drawBox(119,(i+1)*10-8,8,8);
+      //  debug_print("Fn On "); debug_println(i);
+      int y = (i+2)*10-8;
+      if (i>=4) { 
+        x = 119; 
+        y = (i-2)*10-8;
+      }
+
+      u8g2.drawBox(x,y,8,8);
       u8g2.setDrawColor(0);
       u8g2.setFont(u8g2_font_profont10_tf);
-      u8g2.drawStr(121, (i+1)*10-1, String(i).c_str());
+      u8g2.drawStr( x+2, y+7, String(i).c_str());
       u8g2.setDrawColor(1);
     //  } else {
-    //    Serial.print("Fn Off "); Serial.println(i);
+    //    debug_print("Fn Off "); debug_println(i);
      }
    }
 }
 
 void writeOledArray(boolean isThreeColums) {
-  writeOledArray(isThreeColums, true);
+  writeOledArray(isThreeColums, true, false);
 }
 
 void writeOledArray(boolean isThreeColums, boolean sendBuffer) {
+  writeOledArray(isThreeColums, sendBuffer, false);
+}
+
+void writeOledArray(boolean isThreeColums, boolean sendBuffer, boolean drawTopLine) {
 
   u8g2.clearBuffer();					// clear the internal memory
 
@@ -1123,7 +1171,7 @@ void writeOledArray(boolean isThreeColums, boolean sendBuffer) {
       y=10;
     }
   }
-
+  if (drawTopLine) u8g2.drawHLine(0,11,128);
   u8g2.drawHLine(0,51,128);
 
   if (sendBuffer) u8g2.sendBuffer();					// transfer internal memory to the display
@@ -1162,7 +1210,7 @@ void deepSleepStart() {
   setAppnameForOled();
   oledText[2] = msg_start_sleep;
   writeOledArray(false);
-  delay(1000);
+  delay(2000);
 
   u8g2.setPowerSave(1);
   esp_deep_sleep_start();
