@@ -53,3 +53,6 @@ int routeListState[10];
 
 // function states
 boolean functionStates[28];
+
+// speedstep
+int currentSpeedStep = speedStep;

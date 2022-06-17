@@ -1,4 +1,4 @@
-const String appName = "witController";
+const String appName = "WitController";
 const String appVersion = "Version 0.1";
 const String msg_start = "Start";
 
@@ -61,7 +61,7 @@ const String menuText[10][2] = {
   {"Add Loco",    "no+#: Add  #: Roster *: Cancel"},        //1
   {"Drop Loco",   "no+#: One  #: All    *: Cancel"}, //2
   {"Toggle Dir",  ""},                               //3
-  {"",""},                                          //4
+  {"X Speed Step","#: Toggle           *: Cancel"},                                          //4
   {"Throw Point", "no+#: Throw  #: List *: Cancel"},       //5
   {"Close Point", "no+#: Close  #: List *: Cancel"},      //6
   {"Route",       "no+#: Select #: List *: Cancel"},            //7
@@ -72,4 +72,6 @@ const String menuText[10][2] = {
 
 // speed increase for each click of the encoder 
 const int speedStep = 4;
-const int speedStepMultiplier = 2;  // for 'fast' speed steps
+const int speedStepMultiplier = 3;  // for 'fast' speed steps
+// Additional multiplier.  If the multiplier is enabled from the menu, each rotation of the encoder becomes the speedStep * the AdditionalMultiplier
+const int speedStepAdditionalMultiplier = 2;

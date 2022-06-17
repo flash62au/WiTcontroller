@@ -430,19 +430,15 @@ void rotary_loop() {
     if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
       if (encoderValue > lastEncoderValue) {
         if (abs(encoderValue-lastEncoderValue)<50) {
-          // speedDown(speedStep);
-          encoderSpeedChange(true, speedStep);
+          encoderSpeedChange(true, currentSpeedStep);
         } else {
-          // speedDown(speedStep*speedStepMultiplier);
-          encoderSpeedChange(true, speedStep*speedStepMultiplier);
+          encoderSpeedChange(true, currentSpeedStep*speedStepMultiplier);
         }
       } else {
         if (abs(encoderValue-lastEncoderValue)<50) {
-          // speedUp(speedStep);
-          encoderSpeedChange(false, speedStep);
+          encoderSpeedChange(false, currentSpeedStep);
         } else {
-          // speedUp(speedStep*speedStepMultiplier);
-          encoderSpeedChange(false, speedStep*speedStepMultiplier);
+          encoderSpeedChange(false, currentSpeedStep*speedStepMultiplier);
         }
       } 
     }
@@ -675,19 +671,19 @@ void doDirectCommand (char key, boolean pressed) {
               break; 
             }
             case SPEED_UP: {
-              speedUp(speedStep);
+              speedUp(currentSpeedStep);
               break; 
             }
             case SPEED_DOWN: {
-              speedDown(speedStep);
+              speedDown(currentSpeedStep);
               break; 
             }
             case SPEED_UP_FAST: {
-              speedUp(speedStep*speedStepMultiplier);
+              speedUp(currentSpeedStep*speedStepMultiplier);
               break; 
             }
             case SPEED_DOWN_FAST: {
-              speedUp(speedStep*speedStepMultiplier);
+              speedUp(currentSpeedStep*speedStepMultiplier);
               break; 
             }
             case E_STOP: {
@@ -748,9 +744,10 @@ void doMenu() {
         toggleDirection();
         break;
       }
-    //  case '4': { // 
-    //     break;
-    //   }
+     case '4': { // toggle additional Multiplier
+        toggleAdditionalMultiplier();
+        break;
+      }
    case '5': {  // throw turnout
         if (menuCommand.length()>1) {
           String turnout = turnoutPrefix + menuCommand.substring(1, menuCommand.length());
@@ -896,6 +893,15 @@ void releaseAllLocos() {
       wiThrottleProtocol.releaseLocomotive(wiThrottleProtocol.getLocomotiveAtPosition(index));
       writeOledSpeed();
     } 
+  }
+}
+
+void toggleAdditionalMultiplier() {
+  if (speedStep != currentSpeedStep) {
+    currentSpeedStep = speedStep;
+  } else {
+    currentSpeedStep = speedStep * speedStepAdditionalMultiplier;
+    writeOledSpeed();
   }
 }
 
@@ -1088,6 +1094,10 @@ void writeOledSpeed() {
   } else {
     setAppnameForOled();
     oledText[2] = msg_no_loco_selected;
+  }
+
+  if (speedStep != currentSpeedStep) {
+    oledText[3] = "X " + String(speedStepAdditionalMultiplier);
   }
 
   oledText[5] = menu_menu;
