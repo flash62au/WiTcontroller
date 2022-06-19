@@ -30,6 +30,11 @@ int selectedWitServerPort = 0;
 int noOfWitServices = 0;
 int witConnectionState = CONNECTION_STATE_DISCONNECTED;
 
+// wit Server ip entry
+String witServerIpAndPortConstructed = "###.###.###.###:#####";
+String witServerIpAndPortEntered = "";
+boolean witServerIpAndPortChanged = true;
+
 // roster variables
 int rosterSize = 0;
 int rosterIndex[10]; 

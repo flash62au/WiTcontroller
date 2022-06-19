@@ -262,20 +262,28 @@ void connectSsid() {
 
 // *********************************************************************************
 
-void witService() {
-  keypadUseType = KEYPAD_USE_SELECT_WITHROTTLE_SERVER;
-
+void witServiceLoop() {
   if (witConnectionState == CONNECTION_STATE_DISCONNECTED) {
     browseWitService(); 
   }
-  
-  if (witConnectionState == CONNECTION_STATE_SELECTED) {
+
+  if (witConnectionState == CONNECTION_STATE_ENTRY_REQUIRED) {
+    enterWitServer();
+  }
+
+  if ( (witConnectionState == CONNECTION_STATE_SELECTED) 
+  || (witConnectionState == CONNECTION_STATE_ENTERED) ) {
     connectWitServer();
   }
 }
 
 void browseWitService(){
   debug_println("browseWitService()");
+
+  keypadUseType = KEYPAD_USE_SELECT_WITHROTTLE_SERVER;
+
+  double startTime = millis();
+  double nowTime = startTime;
 
   const char * service = "withrottle";
   const char * proto= "tcp";
@@ -286,14 +294,20 @@ void browseWitService(){
   oledText[1] = selectedSsid;   oledText[2] = msg_browsing_for_service;
   writeOledArray(false);
 
-  noOfWitServices = MDNS.queryService(service, proto);
+  while ( (noOfWitServices == 0) 
+    && ((nowTime-startTime) <= 10000) ) { // try for 10 seconds
+    noOfWitServices = MDNS.queryService(service, proto);
+    delay(250);
+    debug_print(".");
+    nowTime = millis();
+  }
+
   if (noOfWitServices == 0) {
     oledText[1] = msg_no_services_found;
     writeOledArray(false);
     debug_println(oledText[1]);
-    delay(5000);
-    witConnectionState = CONNECTION_STATE_DISCONNECTED;
-    ssidConnectionState = CONNECTION_STATE_DISCONNECTED;
+    delay(1000);
+    witConnectionState = CONNECTION_STATE_ENTRY_REQUIRED;
   
   } else {
     debug_print(noOfWitServices);  debug_println(msg_services_found);
@@ -355,6 +369,8 @@ void connectWitServer() {
     
     witConnectionState = CONNECTION_STATE_DISCONNECTED;
     ssidConnectionState = CONNECTION_STATE_DISCONNECTED;
+    witServerIpAndPortChanged = true;
+
   } else {
     debug_print("Connected to server: ");   debug_println(selectedWitServerIP); debug_println(selectedWitServerPort);
 
@@ -375,13 +391,74 @@ void connectWitServer() {
   }
 }
 
+void enterWitServer() {
+  keypadUseType = KEYPAD_USE_ENTER_WITHROTTLE_SERVER;
+  if (witServerIpAndPortChanged) { // don't refresh the screen if nothing nothing has changed
+    debug_println("enterWitServer()");
+    clearOledArray(); 
+    setAppnameForOled(); 
+    oledText[1] = msg_no_services_found_entry_required;
+    oledText[3] = witServerIpAndPortConstructed;
+    oledText[5] = menu_select_wit_entry;
+    writeOledArray(false);
+    witServerIpAndPortChanged = false;
+  }
+}
+
 void disconnectWitServer() {
+  debug_println("disconnectWitServer()");
   releaseAllLocos();
   wiThrottleProtocol.disconnect();
   debug_println("Disconnected from wiThrottle server\n");
   clearOledArray(); oledText[0] = msg_disconnected;
   writeOledArray(false);
   witConnectionState = CONNECTION_STATE_DISCONNECTED;
+  witServerIpAndPortChanged = true;
+}
+
+void witEntryAddChar(char key) {
+  if (witServerIpAndPortEntered.length() < 17) {
+    witServerIpAndPortEntered = witServerIpAndPortEntered + key;
+    debug_print("wit entered: ");
+    debug_println(witServerIpAndPortEntered);
+    buildWitEntry();
+    witServerIpAndPortChanged = true;
+  }
+}
+
+void witEntryDeleteChar(char key) {
+  if (witServerIpAndPortEntered.length() > 0) {
+    witServerIpAndPortEntered = witServerIpAndPortEntered.substring(0, witServerIpAndPortEntered.length()-1);
+    debug_print("wit deleted: ");
+    debug_println(witServerIpAndPortEntered);
+    buildWitEntry();
+    witServerIpAndPortChanged = true;
+  }
+}
+
+void buildWitEntry() {
+  debug_println("buildWitEntry()");
+  witServerIpAndPortConstructed = "";
+  for (int i=0; i < witServerIpAndPortEntered.length(); i++) {
+    if ( (i==3) || (i==6) || (i==9) ) {
+      witServerIpAndPortConstructed = witServerIpAndPortConstructed + ".";
+    } else if (i==12) {
+      witServerIpAndPortConstructed = witServerIpAndPortConstructed + ":";
+    }
+    witServerIpAndPortConstructed = witServerIpAndPortConstructed + witServerIpAndPortEntered.substring(i,i+1);
+  }
+  debug_print("wit Constructed: ");
+  debug_println(witServerIpAndPortConstructed);
+  if (witServerIpAndPortEntered.length()<17) {
+    witServerIpAndPortConstructed = witServerIpAndPortConstructed + witServerIpAndPortEntryMask.substring(witServerIpAndPortConstructed.length());
+  }
+  debug_print("wit Constructed: ");
+  debug_println(witServerIpAndPortConstructed);
+
+  if (witServerIpAndPortEntered.length() == 17) {
+     selectedWitServerIP.fromString( witServerIpAndPortConstructed.substring(0,15));
+     selectedWitServerPort = witServerIpAndPortConstructed.substring(16).toInt();
+  }
 }
 
 // *********************************************************************************
@@ -393,6 +470,7 @@ void IRAM_ATTR readEncoderISR() {
 
 void rotary_onButtonClick() {
   if ( (keypadUseType!=KEYPAD_USE_SELECT_WITHROTTLE_SERVER)
+       && (keypadUseType!=KEYPAD_USE_ENTER_WITHROTTLE_SERVER)
        && (keypadUseType!=KEYPAD_USE_SELECT_SSID) ) {
     static unsigned long lastTimePressed = 0;
     if (millis() - lastTimePressed < encoderDebounceTime) {   //ignore multiple press in that time milliseconds
@@ -517,7 +595,7 @@ void loop() {
     ssidsLoop();
   } else {  
     if (witConnectionState != CONNECTION_STATE_CONNECTED) {
-      witService();
+      witServiceLoop();
     } else {
       wiThrottleProtocol.check();    // parse incoming messages
     }
@@ -572,8 +650,28 @@ void doKeyPress(char key, boolean pressed) {
         }
         break;
 
+      case KEYPAD_USE_ENTER_WITHROTTLE_SERVER:
+        debug_print("key: Enter wit... "); debug_println(key);
+        switch (key){
+          case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
+            witEntryAddChar(key);
+            break;
+          case '*': // backspace
+            witEntryDeleteChar(key);
+            break;
+          case '#': // end of command
+            if (witServerIpAndPortEntered.length()==17) {
+              witConnectionState =
+              CONNECTION_STATE_ENTERED;
+            }
+          default:  // do nothing 
+            break;
+        }
+
+        break;
+
       case KEYPAD_USE_SELECT_WITHROTTLE_SERVER:
-        debug_print("key wit... "); debug_println(key);
+        debug_print("key: Select wit... "); debug_println(key);
         switch (key){
           case '1': case '2': case '3': case '4': case '5':
             selectWitServer(key - '0');
@@ -586,7 +684,7 @@ void doKeyPress(char key, boolean pressed) {
       case KEYPAD_USE_SELECT_SSID:
         debug_print("key ssid... "); debug_println(key);
         switch (key){
-          case '1': case '2': case '3': case '4': case '5':
+          case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
             selectSsid(key - '0');
             break;
           default:  // do nothing 
