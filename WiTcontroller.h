@@ -30,31 +30,42 @@ int selectedWitServerPort = 0;
 int noOfWitServices = 0;
 int witConnectionState = CONNECTION_STATE_DISCONNECTED;
 
+//found ssids
+String foundSsids[10];
+boolean foundSsidsOpen[10];
+int foundSsidsCount = 0;
+int ssidSelectionSource;
+
 // wit Server ip entry
 String witServerIpAndPortConstructed = "###.###.###.###:#####";
 String witServerIpAndPortEntered = "";
 boolean witServerIpAndPortChanged = true;
 
 // roster variables
+#define maxRoster 50     // must be a multiple of 10
 int rosterSize = 0;
-int rosterIndex[10]; 
-String rosterName[10]; 
-int rosterAddress[10];
-char rosterLength[10];
+int rosterIndex[maxRoster]; 
+String rosterName[maxRoster]; 
+int rosterAddress[maxRoster];
+char rosterLength[maxRoster];
+
+int page = 0;
 
 // turnout variables
+#define maxTurnoutList 50     // must be a multiple of 10
 int turnoutListSize = 0;
-int turnoutListIndex[10]; 
-String turnoutListSysName[10]; 
-String turnoutListUserName[10];
-int turnoutListState[10];
+int turnoutListIndex[maxTurnoutList]; 
+String turnoutListSysName[maxTurnoutList]; 
+String turnoutListUserName[maxTurnoutList];
+int turnoutListState[maxTurnoutList];
 
 // route variables
+#define maxRouteList 50     // must be a multiple of 10
 int routeListSize = 0;
-int routeListIndex[10]; 
-String routeListSysName[10]; 
-String routeListUserName[10];
-int routeListState[10];
+int routeListIndex[maxRouteList]; 
+String routeListSysName[maxRouteList]; 
+String routeListUserName[maxRouteList];
+int routeListState[maxRouteList];
 
 // function states
 boolean functionStates[28];

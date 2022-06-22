@@ -2,26 +2,29 @@ const String appName = "WitController";
 const String appVersion = "Version 0.1";
 const String msg_start = "Start";
 
-const String msg_browsing_for_service ="Browsing for WiT services";
-
 const String menu_menu = "#: Key Defs       *: Menu";
 const String menu_finish = "#: Finish";
 const String menu_cancel = "*: Cancel";
 const String menu_show_direct = "#: Show Direct";
-const String menu_roster =  "0-9: Select *: Cancel";
+const String menu_roster =  "0-9: Select #: Pg *: Cancel";
 const String menu_turnout_list =  "0-9: Select *: Cancel";
 const String menu_route_list =  "0-9: Select *: Cancel";
 
-const String menu_select_wit_service = "0-9: Select    E_Btn: Sleep";
-const String menu_select_wit_entry = "0-9 *:Back  #:Go  E_Btn:Sleep";
-const String menu_select_ssids = "0-9: Select      E_Btn: Sleep";
+const String menu_select_wit_service =      "0-9: Select    E_Btn: Sleep";
+const String menu_select_wit_entry =        "0-9 *:Back  #:Go  E_Btn:Sleep";
+const String menu_select_ssids =            "0-9  #: Search  E_Btn: Sleep";
+const String menu_select_ssids_from_found = "0-9             E_Btn: Sleep";
 
 const String direct_command_list = "Direct Commands";
 
 const String direction_forward = "         Fwd";
 const String direction_reverse = "         Rev";
 
+const String msg_browsing_for_service ="Browsing for WiT services";
+const String msg_browsing_for_ssids ="Browsing for ssids";
+
 const String msg_no_ssids_found = "No ssids found";
+const String msg_ssids_listed = " ssids listed";
 const String msg_ssids_found = " ssids found";
 const String msg_bounjour_setup_failed = "Unable to setup Listener";
 const String msg_no_services_found = "No services found";
@@ -44,12 +47,13 @@ const String label_track_power = "TRK";
 
 #define KEYPAD_USE_OPERATION 0
 #define KEYPAD_USE_SELECT_SSID 1
-#define KEYPAD_USE_SELECT_WITHROTTLE_SERVER 2
-#define KEYPAD_USE_ENTER_WITHROTTLE_SERVER 3
-#define KEYPAD_USE_SELECT_ROSTER 4
-#define KEYPAD_USE_SELECT_TURNOUTS_THROW 5
-#define KEYPAD_USE_SELECT_TURNOUTS_CLOSE 6
-#define KEYPAD_USE_SELECT_ROUTES 7
+#define KEYPAD_USE_SELECT_SSID_FROM_FOUND 2
+#define KEYPAD_USE_SELECT_WITHROTTLE_SERVER 3
+#define KEYPAD_USE_ENTER_WITHROTTLE_SERVER 4
+#define KEYPAD_USE_SELECT_ROSTER 5
+#define KEYPAD_USE_SELECT_TURNOUTS_THROW 6
+#define KEYPAD_USE_SELECT_TURNOUTS_CLOSE 7
+#define KEYPAD_USE_SELECT_ROUTES 8
 
 // used for both wit and ssid
 #define CONNECTION_STATE_DISCONNECTED 0
@@ -58,6 +62,10 @@ const String label_track_power = "TRK";
 #define CONNECTION_STATE_ENTRY_REQUIRED 3
 #define CONNECTION_STATE_SELECTED 4
 #define CONNECTION_STATE_ENTERED 5
+
+#define SSID_CONNECTION_SOURCE_LIST 0
+#define SSID_CONNECTION_SOURCE_BROWSE 1
+
 
 #define MAX_LOCOS     10  // maximum number of locos that can be added to the consist
 

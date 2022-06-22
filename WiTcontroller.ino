@@ -87,7 +87,7 @@ class MyDelegate : public WiThrottleProtocolDelegate {
       rosterSize = size;
     }
     void receivedRosterEntry(int index, String name, int address, char length) {
-      if (index < 10) {
+      if (index < maxRoster) {
         rosterIndex[index] = index; 
         rosterName[index] = name; 
         rosterAddress[index] = address;
@@ -99,7 +99,7 @@ class MyDelegate : public WiThrottleProtocolDelegate {
       turnoutListSize = size;
     }
     void receivedTurnoutEntry(int index, String sysName, String userName, int state) {
-      if (index < 10) {
+      if (index < maxTurnoutList) {
         turnoutListIndex[index] = index; 
         turnoutListSysName[index] = sysName; 
         turnoutListUserName[index] = userName;
@@ -111,7 +111,7 @@ class MyDelegate : public WiThrottleProtocolDelegate {
       routeListSize = size;
     }
     void receivedRouteEntry(int index, String sysName, String userName, int state) {
-      if (index < 10) {
+      if (index < maxRouteList) {
         routeListIndex[index] = index; 
         routeListSysName[index] = sysName; 
         routeListUserName[index] = userName;
@@ -128,10 +128,12 @@ int deviceId = random(1000,9999);
 // *********************************************************************************
 
 void ssidsLoop() {
-  keypadUseType = KEYPAD_USE_SELECT_SSID;
-
   if (ssidConnectionState == CONNECTION_STATE_DISCONNECTED) {
-    browseSsids(); 
+    if (ssidSelectionSource == SSID_CONNECTION_SOURCE_LIST) {
+      showListOfSsids(); 
+    } else {
+      browseSsids();
+    }
   }
   
   if (ssidConnectionState == CONNECTION_STATE_SELECTED) {
@@ -141,6 +143,95 @@ void ssidsLoop() {
 
 void browseSsids(){
   debug_println("browseSsids()");
+
+  double startTime = millis();
+  double nowTime = startTime;
+
+  debug_println("Browsing for ssids");
+  clearOledArray(); 
+  setAppnameForOled();
+  oledText[2] = msg_browsing_for_ssids;
+  writeOledArray(false);
+
+  int numSsids = WiFi.scanNetworks();
+  while ( (numSsids == -1)
+    && ((nowTime-startTime) <= 10000) ) { // try for 10 seconds
+    delay(250);
+    debug_print(".");
+    nowTime = millis();
+  }
+
+  foundSsidsCount = 0;
+  if (numSsids == -1) {
+    debug_println("Couldn't get a wifi connection");
+
+  } else {
+    for (int thisSsid = 0; thisSsid < numSsids; thisSsid++) {
+      /// remove duplicates (repeaters and mesh networks)
+      boolean found = false;
+      for (int i=0; i<foundSsidsCount; i++) {
+        if (WiFi.SSID(thisSsid) == foundSsids[i]) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        foundSsids[foundSsidsCount] = WiFi.SSID(thisSsid);
+        foundSsidsOpen[foundSsidsCount] = (WiFi.encryptionType(thisSsid) == 7) ? true : false;
+        foundSsidsCount++;
+      }
+    }
+    for (int i=0; i<foundSsidsCount; i++) {
+      debug_println(foundSsids[i]);      
+    }
+
+    clearOledArray(); oledText[10] = msg_ssids_found;
+
+    for (int i = 0; i < foundSsidsCount; ++i) {
+      debug_print(i); debug_print(": "); debug_println(foundSsids[i]);
+      int j = i;
+      if (i>=5) { 
+        j=i+1;
+      } 
+      if (i<=10) {  // only have room for 10
+        oledText[j] = String(i) + ": ";
+        if (foundSsids[i].length()<7) {
+          oledText[j] = oledText[j] + foundSsids[i];
+        } else {
+          oledText[j] = oledText[j] + foundSsids[i].substring(0,7) + "..";
+        }
+        if ( (foundSsidsOpen[i]) || (foundSsids[i].substring(0,6) == "DCCEX_") ) {
+          oledText[j] = oledText[j] + "<>";
+        }
+      }
+    }
+
+    oledText[5] = menu_select_ssids_from_found;
+    writeOledArray(false);
+
+    keypadUseType = KEYPAD_USE_SELECT_SSID_FROM_FOUND;
+    ssidConnectionState = CONNECTION_STATE_SELECTION_REQUIRED;
+  }
+}
+
+void selectSsidFromFound(int selection) {
+  debug_print("selectSsid() "); debug_println(selection);
+
+  if ((selection>=0) && (selection < maxSsids)) {
+    ssidConnectionState = CONNECTION_STATE_SELECTED;
+    selectedSsid = foundSsids[selection];
+    selectedSsidPassword = "";
+    if (foundSsids[selection].substring(0,6) == "DCCEX_") {
+      selectedSsidPassword = "PASS_" + foundSsids[selection].substring(6);
+      witServerIpAndPortEntered = "19216800400102560";
+    }
+    turnoutPrefix = "";
+    routePrefix = "";
+  }
+}
+
+void showListOfSsids(){
+  debug_println("showListOfSsids()");
 
   clearOledArray(); 
   setAppnameForOled(); 
@@ -152,16 +243,21 @@ void browseSsids(){
     debug_println(oledText[1]);
   
   } else {
-    debug_print(maxSsids);  debug_println(msg_ssids_found);
-    clearOledArray(); oledText[1] = msg_ssids_found;
+    debug_print(maxSsids);  debug_println(msg_ssids_listed);
+    clearOledArray(); oledText[10] = msg_ssids_listed;
 
     for (int i = 0; i < maxSsids; ++i) {
       debug_print(i+1); debug_print(": "); debug_println(ssids[i]);
-      if (i<5) { 
-        oledText[i] = String(i+1) + ": " + ssids[i];
-      } else {
-        if (i<10) {  // only have room for 10
-          oledText[i+1] = String(i+1) + ": " + ssids[i];
+      int j = i;
+      if (i>=5) { 
+        j=i+1;
+      } 
+      if (i<=10) {  // only have room for 10
+        oledText[j] = String(i) + ": ";
+        if (ssids[i].length()<9) {
+          oledText[j] = oledText[j] + ssids[i];
+        } else {
+          oledText[j] = oledText[j] + ssids[i].substring(0,9) + "..";
         }
       }
     }
@@ -181,6 +277,7 @@ void browseSsids(){
       
     } else {
       ssidConnectionState = CONNECTION_STATE_SELECTION_REQUIRED;
+      keypadUseType = KEYPAD_USE_SELECT_SSID;
     }
   }
 }
@@ -188,21 +285,20 @@ void browseSsids(){
 void selectSsid(int selection) {
   debug_print("selectSsid() "); debug_println(selection);
 
-  int correctedSelection = selection - 1; 
-  if ((correctedSelection>=0) && (correctedSelection < maxSsids)) {
+  if ((selection>=0) && (selection < maxSsids)) {
     ssidConnectionState = CONNECTION_STATE_SELECTED;
-    selectedSsid = ssids[correctedSelection];
-    selectedSsidPassword = passwords[correctedSelection];
+    selectedSsid = ssids[selection];
+    selectedSsidPassword = passwords[selection];
     
-    turnoutPrefix = turnoutPrefixes[correctedSelection];
-    routePrefix = routePrefixes[correctedSelection];
+    turnoutPrefix = turnoutPrefixes[selection];
+    routePrefix = routePrefixes[selection];
   }
 }
 
 void connectSsid() {
   debug_println("Connecting to ssid...");
   clearOledArray(); 
-  oledText[0] = appName; oledText[6] = appVersion; 
+  setAppnameForOled();
   oledText[1] = selectedSsid; oledText[2] + "connecting...";
   writeOledArray(false);
 
@@ -256,6 +352,7 @@ void connectSsid() {
       
       WiFi.disconnect();      
       ssidConnectionState = CONNECTION_STATE_DISCONNECTED;
+      ssidSelectionSource = SSID_CONNECTION_SOURCE_LIST;
     }
   }
 }
@@ -307,6 +404,7 @@ void browseWitService(){
     writeOledArray(false);
     debug_println(oledText[1]);
     delay(1000);
+    buildWitEntry();
     witConnectionState = CONNECTION_STATE_ENTRY_REQUIRED;
   
   } else {
@@ -449,7 +547,7 @@ void buildWitEntry() {
   }
   debug_print("wit Constructed: ");
   debug_println(witServerIpAndPortConstructed);
-  if (witServerIpAndPortEntered.length()<17) {
+  if (witServerIpAndPortEntered.length() < 17) {
     witServerIpAndPortConstructed = witServerIpAndPortConstructed + witServerIpAndPortEntryMask.substring(witServerIpAndPortConstructed.length());
   }
   debug_print("wit Constructed: ");
@@ -462,6 +560,9 @@ void buildWitEntry() {
 }
 
 // *********************************************************************************
+//   Encoder
+// *********************************************************************************
+
 
 AiEsp32RotaryEncoder rotaryEncoder = AiEsp32RotaryEncoder(ROTARY_ENCODER_A_PIN, ROTARY_ENCODER_B_PIN, ROTARY_ENCODER_BUTTON_PIN, ROTARY_ENCODER_VCC_PIN, ROTARY_ENCODER_STEPS);
 void IRAM_ATTR readEncoderISR() {
@@ -471,7 +572,8 @@ void IRAM_ATTR readEncoderISR() {
 void rotary_onButtonClick() {
   if ( (keypadUseType!=KEYPAD_USE_SELECT_WITHROTTLE_SERVER)
        && (keypadUseType!=KEYPAD_USE_ENTER_WITHROTTLE_SERVER)
-       && (keypadUseType!=KEYPAD_USE_SELECT_SSID) ) {
+       && (keypadUseType!=KEYPAD_USE_SELECT_SSID) 
+       && (keypadUseType!=KEYPAD_USE_SELECT_SSID_FROM_FOUND) ) {
     static unsigned long lastTimePressed = 0;
     if (millis() - lastTimePressed < encoderDebounceTime) {   //ignore multiple press in that time milliseconds
       debug_println("encoder button debounce");
@@ -560,6 +662,7 @@ void keypadEvent(KeypadEvent key){
 }
 
 // *********************************************************************************
+//  Setup and Loop
 // *********************************************************************************
 
 void setup() {
@@ -585,11 +688,11 @@ void setup() {
   esp_sleep_enable_ext0_wakeup(GPIO_NUM_13,0); //1 = High, 0 = Low
 
   keypadUseType = KEYPAD_USE_SELECT_SSID;
+  ssidSelectionSource = SSID_CONNECTION_SOURCE_LIST;
 }
 
 void loop() {
   
-  // if (!ssidConnected) {
   if (ssidConnectionState != CONNECTION_STATE_CONNECTED) {
     // connectNetwork();
     ssidsLoop();
@@ -607,6 +710,7 @@ void loop() {
 }
 
 // *********************************************************************************
+//  Key press and Menu
 // *********************************************************************************
 
 void doKeyPress(char key, boolean pressed) {
@@ -660,10 +764,11 @@ void doKeyPress(char key, boolean pressed) {
             witEntryDeleteChar(key);
             break;
           case '#': // end of command
-            if (witServerIpAndPortEntered.length()==17) {
+            if (witServerIpAndPortEntered.length() == 17) {
               witConnectionState =
               CONNECTION_STATE_ENTERED;
             }
+            break;
           default:  // do nothing 
             break;
         }
@@ -687,44 +792,93 @@ void doKeyPress(char key, boolean pressed) {
           case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
             selectSsid(key - '0');
             break;
+          case '#': // end of command
+            ssidConnectionState = CONNECTION_STATE_DISCONNECTED;
+            keypadUseType = KEYPAD_USE_SELECT_SSID_FROM_FOUND;
+            ssidSelectionSource = SSID_CONNECTION_SOURCE_BROWSE;
+            // browseSsids();
+            break;
+          default:  // do nothing 
+            break;
+        }
+        break;
+
+      case KEYPAD_USE_SELECT_SSID_FROM_FOUND:
+        debug_print("key ssid from found... "); debug_println(key);
+        switch (key){
+          case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
+            selectSsidFromFound(key - '0');
+            break;
           default:  // do nothing 
             break;
         }
         break;
 
       case KEYPAD_USE_SELECT_ROSTER:
-      case KEYPAD_USE_SELECT_TURNOUTS_THROW:
-      case KEYPAD_USE_SELECT_TURNOUTS_CLOSE:
-      case KEYPAD_USE_SELECT_ROUTES:
-        debug_print("key Roster/Rurnouts/Routes... "); debug_println(key);
+        debug_print("key Roster... "); debug_println(key);
         switch (key){
           case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
-            
-            switch (keypadUseType) {
-              case KEYPAD_USE_SELECT_ROSTER:
-                selectRoster(key - '0');
-                break;
-              case KEYPAD_USE_SELECT_TURNOUTS_THROW:
-                selectTurnoutList(key - '0', TurnoutThrow);
-                break;
-              case KEYPAD_USE_SELECT_TURNOUTS_CLOSE:
-                selectTurnoutList(key - '0', TurnoutClose);
-                break;
-              case KEYPAD_USE_SELECT_ROUTES:
-                selectRouteList(key - '0');
-                break;
+            selectRoster((key - '0')+(page*10));
+            break;
+          case '#':  // next page
+            if ( page < ((maxRoster/10)-1) ) {
+              page++;
+              writeOledRoster(""); 
             }
             break;
-          
           case '*':  // cancel
-          case '#':  // cancel  todo: change to next page
             resetMenu();
             writeOledSpeed();
             break;
-
           default:  // do nothing 
             break;
         }
+        break;
+
+      case KEYPAD_USE_SELECT_TURNOUTS_THROW:
+      case KEYPAD_USE_SELECT_TURNOUTS_CLOSE:
+        debug_print("key turnouts... "); debug_println(key);
+        switch (key){
+          case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
+            selectTurnoutList(key - '0', (keypadUseType == KEYPAD_USE_SELECT_TURNOUTS_THROW) ? TurnoutThrow : TurnoutClose);
+            break;
+          case '#':  // next page
+            if ( page < ((maxTurnoutList/10)-1) ) {
+              page++;
+              writeOledTurnoutList("", (keypadUseType == KEYPAD_USE_SELECT_TURNOUTS_THROW) ? TurnoutThrow : TurnoutClose); 
+            }
+            break;
+          case '*':  // cancel
+            resetMenu();
+            writeOledSpeed();
+            break;
+          default:  // do nothing 
+            break;
+        }
+        break;
+
+      case KEYPAD_USE_SELECT_ROUTES:
+        debug_print("key routes... "); debug_println(key);
+        switch (key){
+          case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
+            selectRouteList(key - '0');
+            break;
+          case '#':  // next page
+            if ( page < ((maxTurnoutList/10)-1) ) {
+              page++;
+              writeOledRouteList(""); 
+            }
+            break;
+          case '*':  // cancel
+            resetMenu();
+            writeOledSpeed();
+            break;
+          default:  // do nothing 
+            break;
+        }
+        break;
+
+      default:  // do nothing 
         break;
     }
 
@@ -822,6 +976,7 @@ void doMenu() {
           resetFunctionStates();
           writeOledSpeed();
         } else {
+          page = 0;
           writeOledRoster("");
         }
         break;
@@ -855,6 +1010,7 @@ void doMenu() {
           // }
           writeOledSpeed();
         } else {
+          page = 0;
           writeOledTurnoutList("", TurnoutThrow);
         }
         break;
@@ -868,6 +1024,7 @@ void doMenu() {
           // }
           writeOledSpeed();
         } else {
+          page = 0;
           writeOledTurnoutList("",TurnoutClose);
         }
         break;
@@ -881,6 +1038,7 @@ void doMenu() {
           // }
           writeOledSpeed();
         } else {
+          page = 0;
           writeOledRouteList("");
         }
         break;
@@ -923,9 +1081,12 @@ void doMenu() {
 }
 
 // *********************************************************************************
+//  Actions
+// *********************************************************************************
 
 void resetMenu() {
   debug_println("resetMenu()");
+  page = 0;
   menuCommand = "";
   menuCommandStarted = false;
   if ( (keypadUseType != KEYPAD_USE_SELECT_SSID) 
@@ -1044,6 +1205,8 @@ void powerToggle() {
 }
 
 // *********************************************************************************
+//  Select functions
+// *********************************************************************************
 
 void selectRoster(int selection) {
   debug_print("selectRoster() "); debug_println(selection);
@@ -1083,6 +1246,8 @@ void selectRouteList(int selection) {
 }
 
 // *********************************************************************************
+//  oLED functions
+// *********************************************************************************
 
 void setAppnameForOled() {
   oledText[0] = appName; oledText[6] = appVersion; 
@@ -1096,7 +1261,7 @@ void writeOledRoster(String soFar) {
     int j = 0;
     for (int i=0; i<10 && i<rosterSize; i++) {
       j = (i<5) ? j=i : j = i+1;
-      oledText[j] = String(rosterIndex[i]) + ": " + rosterName[i].substring(0,10);
+      oledText[j] = String(rosterIndex[i]) + ": " + rosterName[(page*10)+i].substring(0,10);
     }
     oledText[5] = menu_roster;
     writeOledArray(false);
@@ -1117,7 +1282,7 @@ void writeOledTurnoutList(String soFar, TurnoutAction action) {
     int j = 0;
     for (int i=0; i<10 && i<turnoutListSize; i++) {
       j = (i<5) ? j=i : j = i+1;
-      oledText[j] = String(turnoutListIndex[i]) + ": " + turnoutListUserName[i].substring(0,10);
+      oledText[j] = String(turnoutListIndex[i]) + ": " + turnoutListUserName[(page*10)+i].substring(0,10);
     }
     oledText[5] = menu_turnout_list;
     writeOledArray(false);
@@ -1134,7 +1299,7 @@ void writeOledRouteList(String soFar) {
     int j = 0;
     for (int i=0; i<10 && i<routeListSize; i++) {
       j = (i<5) ? j=i : j = i+1;
-      oledText[j] = String(routeListIndex[i]) + ": " + routeListUserName[i].substring(0,10);
+      oledText[j] = String(routeListIndex[i]) + ": " + routeListUserName[(page*10)+i].substring(0,10);
     }
     oledText[5] = menu_route_list;
     writeOledArray(false);
@@ -1259,6 +1424,7 @@ void writeOledArray(boolean isThreeColums, boolean sendBuffer, boolean drawTopLi
   // u8g2.setFont(u8g2_font_ncenB08_tr);	// serif bold
   // u8g2.setFont(u8g2_font_helvB08_te);	// helv bold
   // u8g2.setFont(u8g2_font_helvB08_tf);	// helv
+  // u8g2.setFont(u8g2_font_likeminecraft_te); // bit wider
   u8g2.setFont(u8g2_font_NokiaSmallPlain_tf); // small
   
   int x=0;
