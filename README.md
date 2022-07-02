@@ -6,9 +6,11 @@ A WiTcontroller is a simple DIY, handheld controller that talks to a wThrottle S
 
 ## Prerequisites
 
-1. Some basic soldering skills.  The components will work if just plugged together using jumpers, but they take a lot of space that way, so soldering them together is necessary to make it hand held.
+1. Some basic soldering skills.  
 
-2. loading the code (sketch) requires downloading of one of the IDEs.
+    The components will work if just plugged together using jumpers, but they take a lot of space that way, so soldering them together is advised to make it hand held.
+
+2. Loading the code (sketch) requires downloading of one of the IDEs, this sketch, the libraries, etc. so some experience with Arduinos is helpful, but not critical.
 
 3. A wiThrottle Server to connect to. WiTcontroller will work with an wiThrottle Server. e.g.
 
@@ -23,11 +25,13 @@ Required Components
 
 * WeMos Lite LOLIN32  (ESP32 Arduino with LiPo charger)
 * 3x4 Keypad
-* Polymer Lithium Ion Battery LiPo 400mAh 3.7V 502535 JST Connector
+* Polymer Lithium Ion Battery LiPo 400mAh 3.7V 502535 JST Connector (or larger capacity)
 * KY-040 Rotary Encoder Module
 * OLED Display 0.96" 128x64 Blue I2C IIC SSD1306
 * Case - my one was 3d printed
 * Knob
+
+![Assembly](WiTcontroller pinouts v0.1.png)
 
 ## Loading the code
 
@@ -39,7 +43,7 @@ Required Components
     * AiEsp32RotaryEncoder.h https://github.com/igorantolic/ai-esp32-rotary-encoder
     * Keypad.h https://www.arduinolibraries.info/libraries/keypad
     * U8g2lib.h
-3. load the WiThrottleProtocol library  (this must be manually downloaded and placed  in the libraries folder)
+3. Download or clone the WiThrottleProtocol library  (this **must** be placed  in the libraries folder)
     * WiThrottleProtocol.h https://github.com/flash62au/WiThrottleProtocol
 4. copy config_network_example.h to config_network.h  
 Then edit it to include the network ssids you want to use
