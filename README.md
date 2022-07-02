@@ -4,6 +4,8 @@ A WiTcontroller is a simple DIY, handheld controller that talks to a wThrottle S
 
 [See a video of it in use here.](https://youtu.be/RKnhfBCP_SQ)
 
+---
+
 ## Prerequisites
 
 1. Some basic soldering skills.  
@@ -12,12 +14,14 @@ A WiTcontroller is a simple DIY, handheld controller that talks to a wThrottle S
 
 2. Loading the code (sketch) requires downloading of one of the IDEs, this sketch, the libraries, etc. so some experience with Arduinos is helpful, but not critical.
 
-3. A wiThrottle Server to connect to. WiTcontroller will work with an wiThrottle Server. e.g.
+3. A wiThrottle Server to connect to. WiTcontroller will work with any wiThrottle Server. e.g.
 
     * JMRI
     * DCC++EX
     * MRC WiFi
     * Dijitrax LnWi
+
+---
 
 ## Building
 
@@ -37,21 +41,23 @@ Required Components
 
 1. Download the Arduino IDE. (I prefer to use VSC, but you still need the Arduino IDE installed.)
 2. Download or clone this repository. (Note: if you 'clone', it is easier to receive updates to the code.)
-2. load the needed libraries  (these can loaded from the library manager)
+3. Load the needed libraries to your PC (these can loaded from the library manager)
     * WiFi.h https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi
     * ESPmDNS.h https://github.com/espressif/arduino-esp32/blob/master/libraries/ESPmDNS
     * AiEsp32RotaryEncoder.h https://github.com/igorantolic/ai-esp32-rotary-encoder
     * Keypad.h https://www.arduinolibraries.info/libraries/keypad
     * U8g2lib.h
-3. Download or clone the WiThrottleProtocol library  (this **must** be placed  in the libraries folder)
+4. Download or clone the WiThrottleProtocol library to you PC (this **must** be placed in the 'libraries' folder)
     * WiThrottleProtocol.h https://github.com/flash62au/WiThrottleProtocol
-4. copy config_network_example.h to config_network.h  
+5. Copy **config_network_example.h** to **config_network.h**  
 Then edit it to include the network ssids you want to use
-5. upload the sketch
+6. Upload the sketch
+
+---
 
 ## Using WiTController
 
-Currently functioning:
+**Currently functioning:**
 - provides a list of SSIDs with the specified password to choose from
   - choose from these or select from the found SSIDs, but...
     - they must have no password, or
@@ -76,7 +82,7 @@ Currently functioning:
   - Disconnect / Reconnect
   - Put ESP32 in deep sleep and restart it
 
-ToDo:
+**ToDo:**
 - speed button repeat (i.e. hold the button down)
 - automatic reconnection
 - functions are currently only sent the earliest selected loco
@@ -85,7 +91,7 @@ ToDo:
   - specify functions as latching/non-latching
 - keep a list of ip addresses and ports if bonjour doesn't provide any
 
-Command menu:
+### Command menu:
 - 0-9 keys = pressing these directly will do whatever you has been preset in the sketch for them to do  (see \# below)
 - \* = Menu:  The button press following the \* is the actual command:
  - 1 = Add loco.  
@@ -130,6 +136,8 @@ Pressing the Encoder button while the ESP32 is in Deep Sleep will revive it.
 * 9 = DIRECTION_FORWARD`
 
 ### Allowed assignments for the 0-9 keys:
+
+Note: you need to edit config.h to alter these assignments 
 - FUNCTION_NULL   - don't do anything
 - FUNCTION_0 - FUNCTION_28
 - SPEED_STOP
