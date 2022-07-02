@@ -31,7 +31,7 @@ Required Components
 * Case - my one was 3d printed
 * Knob
 
-![Assembly](WiTcontroller pinouts v0.1.png)
+![Assembly diagram](WiTcontroller%20pinouts%20v0.1.png)
 
 ## Loading the code
 
