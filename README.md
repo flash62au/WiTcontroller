@@ -1,17 +1,73 @@
-# witController
+# WiTcontroller
 
-important!
-- copy config_network_example.h to config_network.h 
-- edit it to include the network ssids you want to use
+A WiTcontroller is a simple DIY, handheld controller that talks to a wThrottle Server (JMRI, DCC++EX and many others) using the wiThrottle protocol to control DCC model trains. 
+
+[See a video of it in use here.](https://youtu.be/RKnhfBCP_SQ)
+
+## Prerequisites
+
+1. Some basic soldering skills.  The components will work if just plugged together using jumpers, but they take a lot of space that way, so soldering them together is necessary to make it hand held.
+
+2. loading the code (sketch) requires downloading of one of the IDEs.
+
+3. A wiThrottle Server to connect to. WiTcontroller will work with an wiThrottle Server. e.g.
+
+    * JMRI
+    * DCC++EX
+    * MRC WiFi
+    * Dijitrax LnWi
+
+## Building
+
+Required Components
+
+* WeMos Lite LOLIN32  (ESP32 Arduino with LiPo charger)
+* 3x4 Keypad
+* Polymer Lithium Ion Battery LiPo 400mAh 3.7V 502535 JST Connector
+* KY-040 Rotary Encoder Module
+* OLED Display 0.96" 128x64 Blue I2C IIC SSD1306
+* Case - my one was 3d printed
+* Knob
+
+## Loading the code
+
+1. Download the Arduino IDE. (I prefer to use VSC, but you still need the Arduino IDE installed.)
+2. Download or clone this repository. (Note: if you 'clone', it is easier to receive updates to the code.)
+2. load the needed libraries  (these can loaded from the library manager)
+    * WiFi.h https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi
+    * ESPmDNS.h https://github.com/espressif/arduino-esp32/blob/master/libraries/ESPmDNS
+    * AiEsp32RotaryEncoder.h https://github.com/igorantolic/ai-esp32-rotary-encoder
+    * Keypad.h https://www.arduinolibraries.info/libraries/keypad
+    * U8g2lib.h
+3. load the WiThrottleProtocol library  (this must be manually downloaded and placed  in the libraries folder)
+    * WiThrottleProtocol.h https://github.com/flash62au/WiThrottleProtocol
+4. copy config_network_example.h to config_network.h  
+Then edit it to include the network ssids you want to use
+5. upload the sketch
+
+## Using WiTController
 
 Currently functioning:
-- Connects to the first available SSID (of three you can specify) with the specified password
-- Auto-connects to the first found wiThrottle Protocol Server if only one found, otherwise askes which to connect to
+- provides a list of SSIDs with the specified password to choose from
+  - choose from these or select from the found SSIDs, but...
+    - they must have no password, or
+    - if it is a DCC++EX wiFi server, it will guess the password
+- Auto-connects to the first found wiThrottle Protocol Server if only one found, otherwise 
+  - asks which to connect to
+  - if none found will ask to enter the IP Address and Port
 - Rudimentary on-the-fly consists
 - Assign commands directly to the 1-9 (see list below)
 - Command menu (see below for full list) including:
-  - Able to select and deselect locos by their DCC address, via the keypad
-  - Able to select from the first 10 locos in the roster
+  - Able to select and deselect locos 
+    - by their DCC address, via the keypad
+    - from the first 50 locos in the roster
+  - Able to throw/close turnouts/points
+    - from the address
+    - from the first 50 turnouts/points in the server list
+  - Able to activate routes
+    - from their address
+    - from the first 50 routes in the server list
+  - set/unset a multiplier for the rotary encoder
   - Power Track On/Off
   - Disconnect / Reconnect
   - Put ESP32 in deep sleep and restart it
@@ -23,15 +79,10 @@ ToDo:
 - change facing of a loco in consist
 - nice to have: 
   - specify functions as latching/non-latching
-- able to select from more than 10 locos in the roster
-- select from the server turnout/point list
-- select from the server route list
-- choose which SSID to connect to
-- type in an ip address and port
 - keep a list of ip addresses and ports if bonjour doesn't provide any
 
 Command menu:
-- 0-9 keys = pressing these directly will do whatever you want to app them to do  (see below)
+- 0-9 keys = pressing these directly will do whatever you has been preset in the sketch for them to do  (see \# below)
 - \* = Menu:  The button press following the \* is the actual command:
  - 1 = Add loco.  
       - Followed by the loco number, followed by \# to complete.  e.g. to select loco 99 you would press '\*199\#'
@@ -40,19 +91,41 @@ Command menu:
   - Followed by the loco number, followed by \# to release an individual loco.  e.g. to deselect the loco 99 you would press '\*299\#'
   - Otherwise followed directly by \#  to release all e.g. '\*2\#'
  - 3 = Change direction.  Followed by \# to complete.  e.g. forward '\*21\#'  reverse '\*20\#'
- - 5 = Throw turnout.  Followed by \# to complete.  e.g. Throw turnout XX12 '\*512\#'  (where XX is a prefix defined in the sketch) 
- - 6 = Close turnout.  Followed by \# to complete.  e.g. Close turnout XX12 '\*612\#'  (where XX is a prefix defined in the sketch)
- - 7 = Set Route.  Followed by \# to complete.  e.g. to Set route XX:XX:0012 '\*60012\#'  (where \'XX:XX:\' is a prefix defined in the sketch)
- - 0 = Function button. Followed by the loco number, Followed by \# to complete.  e.g. to make loco 99 the lead loco you would press '\*499\#'
- - 8 = Power On/Off. Followed by \# to complete.
+ - 4 = Set / Unset a 2 times multiplier for the rotary encoder dial.
+ - 5 = Throw turnout/point.  
+      - Followed by the turnout/point number, followed by the \# to complete.  e.g. Throw turnout XX12 '\*512\#'  (where XX is a prefix defined in the sketch) 
+      - or \# alone to show the list from the server
+ - 6 = Close turnout.    
+      - Followed by the turnout/point number, followed by \# to complete.  e.g. Close turnout XX12 '\*612\#'  (where XX is a prefix defined in the sketch)
+      - or \# alone to show the list from the server
+ - 7 = Set Route.    
+      - Followed by the Route number, followed by \# to complete.  e.g. to Set route XX:XX:0012 '\*60012\#'  (where \'XX:XX:\' is a prefix defined in the sketch)
+      - or \# alone to show the list from the server
+ - 0 = Function button. Followed by the loco number, Followed by \# to complete.  e.g. to set function 17 you would press '\*017\#'
+ - 8 = Track Power On/Off. Followed by \# to complete.
  - 9 = Disconnect/reconnect. 
        - Followed by \# to complete.  
        - or followed by 9 then \# to put into deep sleep
 Pressing '\*' again before the '\#' will terminate the current command (but not start a new command)
+ - \# = Pressing # alone will show the function the the numbered keys (0-9)perform, outside the menu.
 
-Pressing the Encoder button while the ESP32 is in Deep Sleep will revive.
+Pressing the Encoder button while the ESP32 is in Deep Sleep will revive it.
 
-Allowed assignments for the 0-9 keys:
+
+### Default number key assignments (0-9)  (outside the menu)
+
+* 0 = SPEED_STOP
+* 1 = FUNCTION_0 (DCC Lights)
+* 2 = FUNCTION_1 (DCC Bell)
+* 3 = FUNCTION_3 (DCC Horn/Whistle)
+* 4 = FUNCTION_NULL
+* 5 = SPEED_UP
+* 6 = FUNCTION_NULL
+* 7 = DIRECTION_REVERSE
+* 8 = SPEED_DOWN
+* 9 = DIRECTION_FORWARD`
+
+### Allowed assignments for the 0-9 keys:
 - FUNCTION_NULL   - don't do anything
 - FUNCTION_0 - FUNCTION_28
 - SPEED_STOP

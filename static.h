@@ -1,4 +1,4 @@
-const String appName = "WitController";
+const String appName = "WiTcontroller";
 const String appVersion = "Version 0.1";
 const String msg_start = "Start";
 
