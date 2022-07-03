@@ -1141,7 +1141,7 @@ void speedUp(int amt) {
 void speedSet(int amt) {
   if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
     int newSpeed = amt;
-    if (newSpeed >128) { newSpeed = 126; }
+    if (newSpeed >126) { newSpeed = 126; }
     if (newSpeed <0) { newSpeed = 0; }
     wiThrottleProtocol.setSpeed(newSpeed);
     currentSpeed = newSpeed;
@@ -1160,11 +1160,24 @@ void releaseAllLocos() {
 }
 
 void toggleAdditionalMultiplier() {
-  if (speedStep != currentSpeedStep) {
-    currentSpeedStep = speedStep;
-  } else {
-    currentSpeedStep = speedStep * speedStepAdditionalMultiplier;
+  // if (speedStep != currentSpeedStep) {
+  //   currentSpeedStep = speedStep;
+  // } else {
+  //   currentSpeedStep = speedStep * speedStepAdditionalMultiplier;
+  // }
+  switch (speedStepCurrentMultiplier) {
+    case 1: 
+      speedStepCurrentMultiplier = speedStepAdditionalMultiplier;
+      break;
+    case speedStepAdditionalMultiplier:
+      speedStepCurrentMultiplier = speedStepAdditionalMultiplier*2;
+      break;
+    case speedStepAdditionalMultiplier*2:
+      speedStepCurrentMultiplier = 1;
+      break;
   }
+
+  currentSpeedStep = speedStep * speedStepCurrentMultiplier;
   writeOledSpeed();
 }
 
@@ -1364,7 +1377,7 @@ void writeOledSpeed() {
   }
 
   if (speedStep != currentSpeedStep) {
-    oledText[3] = "X " + String(speedStepAdditionalMultiplier);
+    oledText[3] = "X " + String(speedStepCurrentMultiplier);
   }
 
   oledText[5] = menu_menu;

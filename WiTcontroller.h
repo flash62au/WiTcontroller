@@ -9,6 +9,7 @@ String oledText[18] = {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "
 
 int currentSpeed = 0;
 Direction currentDirection = Forward;
+int speedStepCurrentMultiplier = 1;
 
 TrackPower trackPower = PowerUnknown;
 String turnoutPrefix = "";
