@@ -25,21 +25,21 @@ const boolean toggleDirectionOnEncoderButtonPressWhenStationary = true;
 // };
 
 //4x3 keypad
-int buttonActions[10] = { E_STOP,   // 0
-                         FUNCTION_0,    // 1 - lights
-                         FUNCTION_1,    // 2 - bell
-                         FUNCTION_2,    // 3 - horn
-                         FUNCTION_NULL, // 4
-                         SPEED_UP,      // 5
-                         FUNCTION_NULL, // 6
+int buttonActions[10] = { E_STOP,           // 0
+                         FUNCTION_0,        // 1 - lights
+                         FUNCTION_1,        // 2 - bell
+                         FUNCTION_2,        // 3 - horn
+                         SPEED_MULTIPLIER,  // 4
+                         SPEED_UP,          // 5
+                         FUNCTION_NULL,     // 6
                          DIRECTION_REVERSE, // 7
-                         SPEED_DOWN,    // 8
+                         SPEED_DOWN,        // 8
                          DIRECTION_FORWARD  // 9
 };
 
 const String directCommandText[4][3] = {
     {"1: F0", "2: F1", "3: F2"},
-    {"4:", "5: V Up", "6: "}, 
+    {"4: X Spd", "5: V Up", "6: "}, 
     {"7: Rev", "8: V Dwn", "9: Fwd"},
     {"*: Menu", "E Stop", "#: This"}
 };

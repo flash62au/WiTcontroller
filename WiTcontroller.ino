@@ -938,6 +938,10 @@ void doDirectCommand (char key, boolean pressed) {
               speedUp(currentSpeedStep*speedStepMultiplier);
               break; 
             }
+            case SPEED_MULTIPLIER: {
+              toggleAdditionalMultiplier();
+              break; 
+            }
             case E_STOP: {
               speedEstop();
               break; 
@@ -1148,7 +1152,7 @@ void speedSet(int amt) {
 
 void releaseAllLocos() {
   if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
-    for(int index=0;index<wiThrottleProtocol.getNumberOfLocomotives();index++) {
+    for(int index=wiThrottleProtocol.getNumberOfLocomotives()-1;index>=0;index--) {
       wiThrottleProtocol.releaseLocomotive(wiThrottleProtocol.getLocomotiveAtPosition(index));
       writeOledSpeed();
     } 
@@ -1160,8 +1164,8 @@ void toggleAdditionalMultiplier() {
     currentSpeedStep = speedStep;
   } else {
     currentSpeedStep = speedStep * speedStepAdditionalMultiplier;
-    writeOledSpeed();
   }
+  writeOledSpeed();
 }
 
 void toggleDirection() {

@@ -39,7 +39,7 @@ Required Components
 
 ## Loading the code
 
-1. Download the Arduino IDE. (I prefer to use VSC, but you still need the Arduino IDE installed.)
+1. Download the Arduino IDE. (I prefer to use VSC, but you still need to have the Arduino IDE installed.)
 2. Download or clone this repository. (Note: if you 'clone', it is easier to receive updates to the code.)
 3. Load the needed libraries to your PC (these can loaded from the library manager)
     * WiFi.h https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi
@@ -128,7 +128,7 @@ Pressing the Encoder button while the ESP32 is in Deep Sleep will revive it.
 * 1 = FUNCTION_0 (DCC Lights)
 * 2 = FUNCTION_1 (DCC Bell)
 * 3 = FUNCTION_3 (DCC Horn/Whistle)
-* 4 = FUNCTION_NULL
+* 4 = SPEED_MULTIPLIER
 * 5 = SPEED_UP
 * 6 = FUNCTION_NULL
 * 7 = DIRECTION_REVERSE
@@ -145,6 +145,7 @@ Note: you need to edit config.h to alter these assignments
 - SPEED_DOWN
 - SPEED_UP_FAST
 - SPEED_DOWN_FAST
+- SPEED_MULTIPLIER
 - E_STOP
 - POWER_TOGGLE
 - POWER_ON

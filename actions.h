@@ -36,6 +36,7 @@
 #define SPEED_UP_FAST 33
 #define SPEED_DOWN_FAST 34
 #define E_STOP 35
+#define SPEED_MULTIPLIER 36
 
 #define POWER_TOGGLE 40
 #define POWER_ON 41
