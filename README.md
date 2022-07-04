@@ -56,7 +56,7 @@ Note:
     * AiEsp32RotaryEncoder.h https://github.com/igorantolic/ai-esp32-rotary-encoder
     * Keypad.h https://www.arduinolibraries.info/libraries/keypad
     * U8g2lib.h
-4. Download or clone the WiThrottleProtocol library to you PC (this **must** be placed in the 'libraries' folder)
+4. Manually download or clone my version of WiThrottleProtocol library to you PC (this **must** be placed in the 'libraries' folder) (Note: if you 'clone', it is easier to receive updates to the code.)
     * WiThrottleProtocol.h https://github.com/flash62au/WiThrottleProtocol
 5. Copy **config_network_example.h** to **config_network.h**  
 Then edit it to include the network ssids you want to use
@@ -92,12 +92,14 @@ Then edit it to include the network ssids you want to use
   - Put ESP32 in deep sleep and restart it
 
 **ToDo:**
+- for reasons unknown, the wiThrottle server on DCC++EX is never found. I have a work around that 'guesses' the IP and Port, but I would like to understand why
 - speed button repeat (i.e. hold the button down)
-- automatic reconnection
+- deal with disconnects
+  - display error
+  - automatic reconnection
 - functions are currently only sent to the earliest selected loco
+- function buttons are currently all latching
 - change facing of a loco in consist
-- nice to have: 
-  - specify functions as latching/non-latching
 - keep a list of ip addresses and ports if bonjour doesn't provide any
 
 ### Command menu:
