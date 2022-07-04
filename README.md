@@ -4,6 +4,9 @@ A WiTcontroller is a simple DIY, handheld controller that talks to a wThrottle S
 
 [See a video of it in use here.](https://youtu.be/RKnhfBCP_SQ)
 
+
+[Discussion on Discord.](https://discord.com/channels/713189617066836079/735019837746577438)
+
 ---
 
 ## Prerequisites
