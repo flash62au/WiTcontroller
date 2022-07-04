@@ -17,8 +17,8 @@ const String menu_select_ssids_from_found = "0-9             E_Btn: Sleep";
 
 const String direct_command_list = "Direct Commands";
 
-const String direction_forward = "         Fwd";
-const String direction_reverse = "         Rev";
+const String direction_forward = "     Fwd";
+const String direction_reverse = "     Rev";
 
 const String msg_browsing_for_service ="Browsing for WiT services";
 const String msg_browsing_for_ssids ="Browsing for ssids";

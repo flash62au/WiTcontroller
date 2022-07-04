@@ -1201,10 +1201,19 @@ void changeDirection(Direction direction) {
   }
 }
 
-void doFunction(int functionNumber, boolean pressed) {
+void doFunction(int functionNumber, boolean pressed) {   // currently ignoring the pressed value
   if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
-    wiThrottleProtocol.setFunction(functionNumber, pressed );
-    debug_print("fn: "); debug_print(functionNumber); debug_println( (pressed) ? " Pressed" : " Released");
+    wiThrottleProtocol.setFunction(functionNumber, true);
+    if (!functionStates[functionNumber]) {
+      debug_print("fn: "); debug_print(functionNumber); debug_println(" Pressed");
+      // functionStates[functionNumber] = true;
+    } else {
+      delay(20);
+      wiThrottleProtocol.setFunction(functionNumber, false);
+      debug_print("fn: "); debug_print(functionNumber); debug_println(" Released");
+      // functionStates[functionNumber] = false;
+    }
+    writeOledSpeed(); 
   }
 }
 
@@ -1400,25 +1409,28 @@ void writeOledSpeed() {
   const char *cSpeed = sSpeed.c_str();
   u8g2.setFont(u8g2_font_inb21_mn); // big
   int width = u8g2.getStrWidth(cSpeed);
-  u8g2.drawStr(35+(55-width),45, cSpeed);
+  u8g2.drawStr(25+(55-width),45, cSpeed);
   u8g2.sendBuffer();
 }
 
 void writeOledFunctions() {
-   int x = 109;
-   for (int i=0; i < 8; i++) {
+   int x = 99;
+   for (int i=0; i < 12; i++) {
      if (functionStates[i]) {
       //  debug_print("Fn On "); debug_println(i);
       int y = (i+2)*10-8;
-      if (i>=4) { 
-        x = 119; 
+      if ((i>=4) && (i<8)) { 
+        x = 109; 
         y = (i-2)*10-8;
+      } else if (i>=8) { 
+        x = 119; 
+        y = (i-6)*10-8;
       }
-
+      
       u8g2.drawBox(x,y,8,8);
       u8g2.setDrawColor(0);
       u8g2.setFont(u8g2_font_profont10_tf);
-      u8g2.drawStr( x+2, y+7, String(i).c_str());
+      u8g2.drawStr( x+2, y+7, String( (i<10) ? i : i-10 ).c_str());
       u8g2.setDrawColor(1);
     //  } else {
     //    debug_print("Fn Off "); debug_println(i);
