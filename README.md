@@ -30,15 +30,21 @@ A WiTcontroller is a simple DIY, handheld controller that talks to a wThrottle S
 
 Required Components
 
-* WeMos Lite LOLIN32  (ESP32 Arduino with LiPo charger)
-* 3x4 Keypad
-* Polymer Lithium Ion Battery LiPo 400mAh 3.7V 502535 JST Connector (or larger capacity)
-* KY-040 Rotary Encoder Module
-* OLED Display 0.96" 128x64 Blue I2C IIC SSD1306
-* Case - my one was 3d printed
-* Knob
+* WeMos Lite LOLIN32  (ESP32 Arduino with LiPo charger) ([Example](https://www.ebay.com.au/itm/284800618644?hash=item424f709094:g:-soAAOSwHslfC9ce&frcectupt=true))
+* 3x4 Keypad  ([Example](https://www.jaycar.com.au/12-key-numeric-keypad/p/SP0770?pos=2&queryId=20aedf107668ad42c6fe1f8b7f7a9ca7))
+* Polymer Lithium Ion Battery LiPo 400mAh 3.7V 502535 JST Connector (or larger capacity) ([500mAh Example](https://www.ebay.com.au/itm/133708965793?hash=item1f21ace7a1:g:tlwAAOSwfORgYqYK))
+* KY-040 Rotary Encoder Module ([Example](https://www.ebay.com.au/itm/394147297055?hash=item5bc502771f:g:gr0AAOSwcixiwo2~&frcectupt=true))
+* OLED Display 0.96" 128x64 Blue I2C IIC SSD1306 ([Example](https://www.ebay.com.au/itm/273746192621?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2060353.m2749.l2649))
+* Case - my one was 3d printed (see below)
+* Knob ([Example](https://www.jaycar.com.au/35mm-knob-matching-equipment-style/p/HK7766?pos=7&queryId=cbd19e2486968bca41273cc2dbce54a4&sort=relevance))
 
 ![Assembly diagram](WiTcontroller%20pinouts%20v0.1.png)
+
+Note:
+
+* The case was 3D Printed for me by PeteGSX (See the [Discussion on Discord.](https://discord.com/channels/713189617066836079/735019837746577438) )
+* The 3x4 keypad he designed the case for came from Jaycar and is slightly narrower than the one you see in the 'deconstructed' view in the video above.
+* The case requires about a dozen M2x4mm screws
 
 ## Loading the code
 
