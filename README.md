@@ -85,7 +85,7 @@ Then edit it to include the network ssids you want to use
 **ToDo:**
 - speed button repeat (i.e. hold the button down)
 - automatic reconnection
-- functions are currently only sent the earliest selected loco
+- functions are currently only sent to the earliest selected loco
 - change facing of a loco in consist
 - nice to have: 
   - specify functions as latching/non-latching
