@@ -73,3 +73,6 @@ boolean functionStates[28];
 
 // speedstep
 int currentSpeedStep = speedStep;
+
+int heartBeatPeriod = 10; // default to 10 seconds
+long lastServerResponseTime;  // seconds since start of Arduino

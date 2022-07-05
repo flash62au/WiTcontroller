@@ -47,6 +47,10 @@ void displayUpdateFromWit() {
 class MyDelegate : public WiThrottleProtocolDelegate {
   
   public:
+    void heartbeatConfig(int seconds) { 
+      debug_println("Received heart beat"); 
+      heartBeatPeriod = seconds;
+    }
     void receivedVersion(String version) {    
       debug_printf("Received Version: %s\n",version); 
     }
@@ -391,8 +395,9 @@ void browseWitService(){
   oledText[1] = selectedSsid;   oledText[2] = msg_browsing_for_service;
   writeOledArray(false);
 
+  noOfWitServices = 0;
   while ( (noOfWitServices == 0) 
-    && ((nowTime-startTime) <= 10000) ) { // try for 10 seconds
+    && ((nowTime-startTime) <= 5000) ) { // try for 5 seconds
     noOfWitServices = MDNS.queryService(service, proto);
     delay(250);
     debug_print(".");
@@ -426,10 +431,12 @@ void browseWitService(){
     writeOledArray(false);
 
     if (noOfWitServices == 1) {
+      debug_println("WiT Selection - only 1");
       selectedWitServerIP = MDNS.IP(0);
       selectedWitServerPort = MDNS.port(0);
       witConnectionState = CONNECTION_STATE_SELECTED;
     } else {
+      debug_println("WiT Selection required");
       witConnectionState = CONNECTION_STATE_SELECTION_REQUIRED;
     }
   }
@@ -467,6 +474,7 @@ void connectWitServer() {
     
     witConnectionState = CONNECTION_STATE_DISCONNECTED;
     ssidConnectionState = CONNECTION_STATE_DISCONNECTED;
+    ssidSelectionSource = SSID_CONNECTION_SOURCE_LIST;
     witServerIpAndPortChanged = true;
 
   } else {
@@ -480,6 +488,7 @@ void connectWitServer() {
     wiThrottleProtocol.setDeviceID(String(deviceId));  
 
     witConnectionState = CONNECTION_STATE_CONNECTED;
+    setLastServerResponseTime(true);
 
     oledText[2] = msg_connected;
     oledText[5] = menu_menu;
@@ -680,7 +689,7 @@ void setup() {
   //set boundaries and if values should cycle or not 
   rotaryEncoder.setBoundaries(0, 1000, circleValues); //minValue, maxValue, circleValues true|false (when max go to min and vice versa)
   //rotaryEncoder.disableAcceleration(); //acceleration is now enabled by default - disable if you dont need it
-  rotaryEncoder.setAcceleration(100); //or set the value - larger number = more accelearation; 0 or 1 means disabled acceleration
+  rotaryEncoder.setAcceleration(100); //or set the value - larger number = more acceleration; 0 or 1 means disabled acceleration
 
   keypad.addEventListener(keypadEvent); // Add an event listener for this keypad
   keypad.setDebounceTime(keypadDebounceTime);
@@ -701,6 +710,13 @@ void loop() {
       witServiceLoop();
     } else {
       wiThrottleProtocol.check();    // parse incoming messages
+
+      setLastServerResponseTime(false);
+
+      if (lastServerResponseTime+(heartBeatPeriod*4) < millis()/1000) {
+        debug_print("Disconnected - Last:");  debug_print(lastServerResponseTime); debug_print(" Current:");  debug_println(millis()/1000);
+        reconnect();
+      }
     }
   }
   char key = keypad.getKey();
@@ -765,8 +781,7 @@ void doKeyPress(char key, boolean pressed) {
             break;
           case '#': // end of command
             if (witServerIpAndPortEntered.length() == 17) {
-              witConnectionState =
-              CONNECTION_STATE_ENTERED;
+              witConnectionState = CONNECTION_STATE_ENTERED;
             }
             break;
           default:  // do nothing 
@@ -1228,6 +1243,22 @@ void powerToggle() {
   } else {
     powerOnOff(PowerOn);
   }
+}
+
+void reconnect() {
+  clearOledArray(); 
+  oledText[0] = appName; oledText[6] = appVersion; 
+  oledText[2] = msg_disconnected;
+  writeOledArray(false);
+  delay(10000);
+  disconnectWitServer();
+}
+
+void setLastServerResponseTime(boolean force) {
+  // debug_print("setLastServerResponseTime "); debug_println((force) ? "True": "False");
+  lastServerResponseTime = wiThrottleProtocol.getLastServerResponseTime();
+  if ( (lastServerResponseTime==0) || (force) ) lastServerResponseTime = millis() /1000;
+  // debug_print("setLastServerResponseTime "); debug_println(lastServerResponseTime);
 }
 
 // *********************************************************************************
