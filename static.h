@@ -1,19 +1,19 @@
 const String appName = "WiTcontroller";
-const String appVersion = "Version 0.1";
+const String appVersion = "     Version 0.1";
 const String msg_start = "Start";
 
-const String menu_menu = "#: Key Defs       *: Menu";
+const String menu_menu = "#: Key Defs           *: Menu";
 const String menu_finish = "#: Finish";
 const String menu_cancel = "*: Cancel";
 const String menu_show_direct = "#: Show Direct";
-const String menu_roster =  "0-9: Select #: Pg *: Cancel";
+const String menu_roster =  "0-9: Select     #: Pg   *: Cancel";
 const String menu_turnout_list =  "0-9: Select *: Cancel";
 const String menu_route_list =  "0-9: Select *: Cancel";
 
-const String menu_select_wit_service =      "0-9: Select    E_Btn: Sleep";
-const String menu_select_wit_entry =        "0-9 *:Back  #:Go  E_Btn:Sleep";
-const String menu_select_ssids =            "0-9  #: Search  E_Btn: Sleep";
-const String menu_select_ssids_from_found = "0-9             E_Btn: Sleep";
+const String menu_select_wit_service =      "0-9: Select           E.btn: Sleep";
+const String menu_select_wit_entry =        "0-9   *:Back  #:Go  E.btn:Sleep";
+const String menu_select_ssids =            "0-9    #: Search    E.btn: Sleep";
+const String menu_select_ssids_from_found = "0-4  #: Pg  9: List  E.btn: Sleep";
 
 const String direct_command_list = "Direct Commands";
 
@@ -21,11 +21,11 @@ const String direction_forward = "     Fwd";
 const String direction_reverse = "     Rev";
 
 const String msg_browsing_for_service ="Browsing for WiT services";
-const String msg_browsing_for_ssids ="Browsing for ssids";
+const String msg_browsing_for_ssids ="Browsing for SSIDs";
 
-const String msg_no_ssids_found = "No ssids found";
-const String msg_ssids_listed = " ssids listed";
-const String msg_ssids_found = " ssids found";
+const String msg_no_ssids_found = "No SSIDs found";
+const String msg_ssids_listed = "  SSIDs listed";
+const String msg_ssids_found = "    SSIDs found";
 const String msg_bounjour_setup_failed = "Unable to setup Listener";
 const String msg_no_services_found = "No services found";
 const String msg_no_services_found_entry_required = "Enter witServer IP:Port";
@@ -35,8 +35,8 @@ const String msg_connected = "Connected";
 const String msg_address_label = "IP address: ";
 const String msg_connection_failed = "Connection failed";
 const String msg_disconnected = "Disconnected";
-const String msg_start_sleep = "Starting Sleep    E_Btn: Wake";
-const String msg_no_loco_selected = "No Loco selected";
+const String msg_start_sleep = "Sleeping...        E.btn: Wake";
+const String msg_no_loco_selected = "        No Loco selected";
 
 // const String label_locos = "Locos: ";
 // const String label_speed = "Speed: ";

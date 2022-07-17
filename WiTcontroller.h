@@ -32,8 +32,9 @@ int noOfWitServices = 0;
 int witConnectionState = CONNECTION_STATE_DISCONNECTED;
 
 //found ssids
-String foundSsids[10];
-boolean foundSsidsOpen[10];
+#define maxFoundSsids 20     // must be a multiple of 5
+String foundSsids[maxFoundSsids];
+boolean foundSsidsOpen[maxFoundSsids];
 int foundSsidsCount = 0;
 int ssidSelectionSource;
 
@@ -43,7 +44,7 @@ String witServerIpAndPortEntered = "";
 boolean witServerIpAndPortChanged = true;
 
 // roster variables
-#define maxRoster 50     // must be a multiple of 10
+#define maxRoster 60     // must be a multiple of 10
 int rosterSize = 0;
 int rosterIndex[maxRoster]; 
 String rosterName[maxRoster]; 
