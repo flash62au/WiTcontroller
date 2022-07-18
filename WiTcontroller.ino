@@ -417,7 +417,8 @@ void browseWitService(){
       debug_print("  "); debug_print(i); debug_print(": "); debug_print(MDNS.hostname(i));
       debug_print(" ("); debug_print(MDNS.IP(i)); debug_print(":"); debug_print(MDNS.port(i)); debug_println(")");
       if (i<5) {  // only have room for 5
-        oledText[i] = String(i) + ": " + MDNS.IP(i).toString() + ":" + String(MDNS.port(i));
+        String truncatedIp = ".." + MDNS.IP(i).toString().substring(MDNS.IP(i).toString().lastIndexOf("."));
+        oledText[i] = String(i) + ": " + truncatedIp + ":" + String(MDNS.port(i)) + " " + MDNS.hostname(i);
       }
     }
 
