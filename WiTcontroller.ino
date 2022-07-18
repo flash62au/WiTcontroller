@@ -91,6 +91,7 @@ class MyDelegate : public WiThrottleProtocolDelegate {
       rosterSize = size;
     }
     void receivedRosterEntry(int index, String name, int address, char length) {
+      debug_print("Received Roster Entry, index: "); debug_print(index); debug_println(" - " + name);
       if (index < maxRoster) {
         rosterIndex[index] = index; 
         rosterName[index] = name; 
@@ -204,7 +205,7 @@ void browseSsids(){ // show the found SSIDs
 void selectSsidFromFound(int selection) {
   debug_print("selectSsid() "); debug_println(selection);
 
-  if ((selection>=0) && (selection < maxSsids)) {
+  if ((selection>=0) && (selection < maxFoundSsids)) {
     ssidConnectionState = CONNECTION_STATE_SELECTED;
     selectedSsid = foundSsids[selection];
     getSsidPasswordAndWitIpForFound();
@@ -750,7 +751,8 @@ void doKeyPress(char key, boolean pressed) {
             }
             break;
 
-          case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
+          case '0': case '1': case '2': case '3': case '4': 
+          case '5': case '6': case '7': case '8': case '9':
             if (menuCommandStarted) { // appeand to the string
               menuCommand += key;
               writeOledMenu(menuCommand);
@@ -768,7 +770,8 @@ void doKeyPress(char key, boolean pressed) {
       case KEYPAD_USE_ENTER_WITHROTTLE_SERVER:
         debug_print("key: Enter wit... "); debug_println(key);
         switch (key){
-          case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
+          case '0': case '1': case '2': case '3': case '4': 
+          case '5': case '6': case '7': case '8': case '9':
             witEntryAddChar(key);
             break;
           case '*': // backspace
@@ -799,7 +802,8 @@ void doKeyPress(char key, boolean pressed) {
       case KEYPAD_USE_SELECT_SSID:
         debug_print("key ssid... "); debug_println(key);
         switch (key){
-          case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
+          case '0': case '1': case '2': case '3': case '4': 
+          case '5': case '6': case '7': case '8': case '9':
             selectSsid(key - '0');
             break;
           case '#': // show found SSIds
@@ -820,15 +824,15 @@ void doKeyPress(char key, boolean pressed) {
             selectSsidFromFound(key - '0'+(page*5));
             break;
           case '#': // next page
-            if (maxFoundSsids>5) {
-              if ( page < ((maxFoundSsids/5)-1) ) {
+            if (foundSsidsCount>5) {
+              if ( (page+1)*5 < foundSsidsCount ) {
                 page++;
               } else {
                 page = 0;
               }
               writeOledFoundSSids(""); 
-              break;
             }
+            break;
           case '9': // show in code list of SSIDs
             ssidConnectionState = CONNECTION_STATE_DISCONNECTED;
             keypadUseType = KEYPAD_USE_SELECT_SSID;
@@ -842,18 +846,19 @@ void doKeyPress(char key, boolean pressed) {
       case KEYPAD_USE_SELECT_ROSTER:
         debug_print("key Roster... "); debug_println(key);
         switch (key){
-          case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
+          case '0': case '1': case '2': case '3': case '4': 
+          case '5': case '6': case '7': case '8': case '9':
             selectRoster((key - '0')+(page*10));
             break;
           case '#':  // next page
-            if (maxRoster>10) {
-              if ( page < ((maxRoster/10)-1) ) {
+            if ( rosterSize > 5 ) {
+              if ( (page+1)*5 < rosterSize ) {
                 page++;
               } else {
                 page = 0;
               }
+              writeOledRoster(""); 
             }
-            writeOledRoster(""); 
             break;
           case '*':  // cancel
             resetMenu();
@@ -868,12 +873,17 @@ void doKeyPress(char key, boolean pressed) {
       case KEYPAD_USE_SELECT_TURNOUTS_CLOSE:
         debug_print("key turnouts... "); debug_println(key);
         switch (key){
-          case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
+          case '0': case '1': case '2': case '3': case '4': 
+          case '5': case '6': case '7': case '8': case '9':
             selectTurnoutList(key - '0', (keypadUseType == KEYPAD_USE_SELECT_TURNOUTS_THROW) ? TurnoutThrow : TurnoutClose);
             break;
           case '#':  // next page
-            if ( page < ((maxTurnoutList/10)-1) ) {
-              page++;
+            if ( turnoutListSize > 10 ) {
+              if ( (page+1)*10 < turnoutListSize ) {
+                page++;
+              } else {
+                page = 0;
+              }
               writeOledTurnoutList("", (keypadUseType == KEYPAD_USE_SELECT_TURNOUTS_THROW) ? TurnoutThrow : TurnoutClose); 
             }
             break;
@@ -889,13 +899,18 @@ void doKeyPress(char key, boolean pressed) {
       case KEYPAD_USE_SELECT_ROUTES:
         debug_print("key routes... "); debug_println(key);
         switch (key){
-          case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
+          case '0': case '1': case '2': case '3': case '4': 
+          case '5': case '6': case '7': case '8': case '9':
             selectRouteList(key - '0');
             break;
           case '#':  // next page
-            if ( page < ((maxTurnoutList/10)-1) ) {
-              page++;
-              writeOledRouteList(""); 
+            if ( (page+1)*10 <= routeListSize ) {
+              if ( page < ((routeListSize/10)-1) ) {
+                page++;
+                writeOledRouteList(""); 
+              } else {
+                page = 0;
+              }
             }
             break;
           case '*':  // cancel
@@ -1344,10 +1359,10 @@ void writeOledRoster(String soFar) {
   keypadUseType = KEYPAD_USE_SELECT_ROSTER;
   if (soFar == "") { // nothing entered yet
     clearOledArray();
-    int j = 0;
-    for (int i=0; i<10 && i<rosterSize; i++) {
-      j = (i<5) ? j=i : j = i+1;
-      oledText[j] = String(rosterIndex[i]) + ": " + rosterName[(page*10)+i].substring(0,10);
+    for (int i=0; i<5 && i<rosterSize; i++) {
+      if (rosterAddress[(page*5)+i] != 0) {
+        oledText[i] = String(rosterIndex[i]) + ": " + rosterName[(page*5)+i] + " (" + rosterAddress[(page*5)+i] + ")" ;
+      }
     }
     oledText[5] = menu_roster;
     writeOledArray(false);
