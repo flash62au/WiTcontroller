@@ -28,8 +28,17 @@ int ssidConnectionState = CONNECTION_STATE_DISCONNECTED;
 
 IPAddress selectedWitServerIP;
 int selectedWitServerPort = 0;
+String selectedWitServerName ="";
 int noOfWitServices = 0;
 int witConnectionState = CONNECTION_STATE_DISCONNECTED;
+
+//found wiThrottle servers
+#define maxFoundWitServers 5     // must be 5 for the moment
+IPAddress foundWitServersIPs[maxFoundWitServers];
+int foundWitServersPorts[maxFoundWitServers];
+String foundWitServersNames[maxFoundWitServers];
+int foundWitServersCount = 0;
+
 
 //found ssids
 #define maxFoundSsids 20     // must be a multiple of 5

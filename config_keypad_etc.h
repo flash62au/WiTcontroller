@@ -46,7 +46,8 @@ byte pin_rows[ROW_NUM]      = {19, 18, 17, 16}; // GIOP19, GIOP18, GIOP5, GIOP17
 byte pin_column[COLUMN_NUM] = { 4, 0, 2};   // GIOP16, GIOP4, GIOP0 connect to the column pins
 
 Keypad keypad = Keypad( makeKeymap(keys), pin_rows, pin_column, ROW_NUM, COLUMN_NUM );
-const int keypadDebounceTime = 5;   // in miliseconds
+const int keypadDebounceTime = 10;   // in miliseconds
+const int keypadHoldTime = 200;   // in miliseconds
 
 // *******************************************************************************************************************
 // oled
@@ -58,9 +59,10 @@ const int keypadDebounceTime = 5;   // in miliseconds
 #include <Wire.h>                      // add to include path [Arduino install]\hardware\arduino\avr\libraries\Wire\src
 #endif
 
-// Please select a contructor line for below depending on your display
-// U8g2 Contructor List (Frame Buffer)
+// Please select a constructor line for below depending on your display
+// U8g2 Constructor List (Frame Buffer)
 // The complete list is available here: https://github.com/olikraus/u8g2/wiki/u8g2setupcpp
 // Please update the pin numbers according to your setup. Use U8X8_PIN_NONE if the reset pin is not connected
-// U8G2_SSD1312_128X64_NONAME_F_SW_I2C u8g2(U8G2_MIRROR_VERTICAL, /* clock=*/ 22, /* data=*/ 23, /* reset=*/ U8X8_PIN_NONE);
-U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, /* clock=*/ 22, /* data=*/ 23, /* reset=*/ U8X8_PIN_NONE);
+// U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, /* clock=*/ 22, /* data=*/ 23, /* reset=*/ U8X8_PIN_NONE);
+// U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, /* clock=*/ 22, /* data=*/ 23, /* reset=*/ U8X8_PIN_NONE);
+U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);

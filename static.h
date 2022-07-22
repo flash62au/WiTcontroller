@@ -2,18 +2,18 @@ const String appName = "WiTcontroller";
 const String appVersion = "     Version 0.1";
 const String msg_start = "Start";
 
-const String menu_menu = "#: Key Defs           *: Menu";
-const String menu_finish = "#: Finish";
-const String menu_cancel = "*: Cancel";
-const String menu_show_direct = "#: Show Direct";
-const String menu_roster =  "0-9: Select     #: Pg   *: Cancel";
-const String menu_turnout_list =  "0-9: Select *: Cancel";
-const String menu_route_list =  "0-9: Select *: Cancel";
+const String menu_menu =         "# Key Defs                * Menu";
+const String menu_finish =       "# Finish";
+const String menu_cancel =       "                          * Cancel";
+const String menu_show_direct =  "# Show Direct";
+const String menu_roster =       "0-9        # Pg   * Cancel";
+const String menu_turnout_list = "0-9               * Cancel";
+const String menu_route_list =   "0-9               * Cancel";
 
-const String menu_select_wit_service =      "0-9: Select           E.btn: Sleep";
-const String menu_select_wit_entry =        "0-9   *:Back  #:Go  E.btn:Sleep";
-const String menu_select_ssids =            "0-9    #: Search    E.btn: Sleep";
-const String menu_select_ssids_from_found = "0-4  #: Pg  9: List  E.btn: Sleep";
+const String menu_select_wit_service =      "0-4      # Entry      E.btn OFF";
+const String menu_select_wit_entry =        "0-9   * Back  # Go   E.btn OFF";
+const String menu_select_ssids =            "0-9     # Search      E.btn OFF";
+const String menu_select_ssids_from_found = "0-4    # Pg   9 List   E.btn OFF";
 
 const String direct_command_list = "Direct Commands";
 
@@ -35,7 +35,7 @@ const String msg_connected = "Connected";
 const String msg_address_label = "IP address: ";
 const String msg_connection_failed = "Connection failed";
 const String msg_disconnected = "Disconnected";
-const String msg_start_sleep = "Sleeping...        E.btn: Wake";
+const String msg_start_sleep = "Shutting Down.        E.btn ON";
 const String msg_no_loco_selected = "        No Loco selected";
 
 // const String label_locos = "Locos: ";
@@ -70,16 +70,16 @@ const String label_track_power = "TRK";
 #define MAX_LOCOS     10  // maximum number of locos that can be added to the consist
 
 const String menuText[10][2] = {
-  {"Function",    "no+#: Select        *: Cancel"},                //0
-  {"Add Loco",    "no+#: Add  #: Roster *: Cancel"},        //1
-  {"Drop Loco",   "no+#: One  #: All    *: Cancel"}, //2
-  {"Toggle Dir",  ""},                               //3
-  {"X Speed Step","#: Toggle           *: Cancel"},                                          //4
-  {"Throw Point", "no+#: Throw  #: List *: Cancel"},       //5
-  {"Close Point", "no+#: Close  #: List *: Cancel"},      //6
-  {"Route",       "no+#: Select #: List *: Cancel"},            //7
-  {"Trk Power",   "#: Toggle           *: Cancel"},                  //8 
-  {"Disconnect",  "9+#: Sleep      #: Disconnect"},             //9
+  {"Function",    "no+: Select           * Cancel"}, //0
+  {"Add Loco",    "no+# Add   # Roster   * Cancel"}, //1
+  {"Drop Loco",   "no+# One   # All      * Cancel"}, //2
+  {"Toggle Dir",  "                      # Toggle"}, //3
+  {"X Speed Step","# Toggle              * Cancel"}, //4
+  {"Throw Point", "no+# Throw   # List   * Cancel"}, //5
+  {"Close Point", "no+# Close   # List   * Cancel"}, //6
+  {"Route",       "no+# Select  # List   * Cancel"}, //7
+  {"Trk Power",   "# Toggle              * Cancel"}, //8 
+  {"Disconnect",  "9+# OFF           # Disconnect"},  //9
 };
 
 

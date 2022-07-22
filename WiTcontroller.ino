@@ -12,7 +12,7 @@
 #include <WiThrottleProtocol.h>   // https://github.com/flash62au/WiThrottleProtocol
 #include <AiEsp32RotaryEncoder.h> // https://github.com/igorantolic/ai-esp32-rotary-encoder
 #include <Keypad.h>               // https://www.arduinolibraries.info/libraries/keypad
-#include <U8g2lib.h>
+#include <U8g2lib.h>              // https://github.com/olikraus/u8g2
 #include <string>
 
 #include "static.h"
@@ -27,7 +27,7 @@
 
 #ifdef DEBUG
  #define debug_print(...) Serial.print(__VA_ARGS__)
- #define debug_println(...) Serial.println(__VA_ARGS__)
+ #define debug_println(...) Serial.print(__VA_ARGS__); Serial.print(" ("); Serial.print(millis()); Serial.println(")")
  #define debug_printf(...) Serial.printf(__VA_ARGS__)
 #else
  #define debug_print(...)
@@ -396,12 +396,29 @@ void browseWitService(){
   while ( (noOfWitServices == 0) 
     && ((nowTime-startTime) <= 5000) ) { // try for 5 seconds
     noOfWitServices = MDNS.queryService(service, proto);
-    delay(250);
-    debug_print(".");
+    if (noOfWitServices == 0 ) {
+      delay(500);
+      debug_print(".");
+    }
     nowTime = millis();
   }
 
-  if (noOfWitServices == 0) {
+  foundWitServersCount = noOfWitServices;
+  if (noOfWitServices > 0) {
+    for (int i = 0; ((i < noOfWitServices) && (i<maxFoundWitServers)); ++i) {
+      foundWitServersNames[i] = MDNS.hostname(i);
+      foundWitServersIPs[i] = MDNS.IP(i);
+      foundWitServersPorts[i] = MDNS.port(i);
+    }
+  }
+  if (selectedSsid.substring(0,6) == "DCCEX_") {
+    foundWitServersIPs[foundWitServersCount].fromString("192.168.4.1");
+    foundWitServersPorts[foundWitServersCount] = 2560;
+    foundWitServersNames[foundWitServersCount] = "'Guessed' DCC++ WiT server";
+    foundWitServersCount++;
+  }
+
+  if (foundWitServersCount == 0) {
     oledText[1] = msg_no_services_found;
     writeOledArray(false);
     debug_println(oledText[1]);
@@ -413,25 +430,26 @@ void browseWitService(){
     debug_print(noOfWitServices);  debug_println(msg_services_found);
     clearOledArray(); oledText[1] = msg_services_found;
 
-    for (int i = 0; i < noOfWitServices; ++i) {
+    for (int i = 0; i < foundWitServersCount; ++i) {
       // Print details for each service found
-      debug_print("  "); debug_print(i); debug_print(": "); debug_print(MDNS.hostname(i));
-      debug_print(" ("); debug_print(MDNS.IP(i)); debug_print(":"); debug_print(MDNS.port(i)); debug_println(")");
+      debug_print("  "); debug_print(i); debug_print(": "); debug_print(foundWitServersNames[i]);
+      debug_print(" ("); debug_print(foundWitServersIPs[i]); debug_print(":"); debug_print(foundWitServersPorts[i]); debug_println(")");
       if (i<5) {  // only have room for 5
-        String truncatedIp = ".." + MDNS.IP(i).toString().substring(MDNS.IP(i).toString().lastIndexOf("."));
-        oledText[i] = String(i) + ": " + truncatedIp + ":" + String(MDNS.port(i)) + " " + MDNS.hostname(i);
+        String truncatedIp = ".." + foundWitServersIPs[i].toString().substring(foundWitServersIPs[i].toString().lastIndexOf("."));
+        oledText[i] = String(i) + ": " + truncatedIp + ":" + String(foundWitServersPorts[i]) + " " + foundWitServersNames[i];
       }
     }
 
-    if (noOfWitServices > 0) {
+    if (foundWitServersCount > 0) {
       oledText[5] = menu_select_wit_service;
     }
     writeOledArray(false);
 
-    if (noOfWitServices == 1) {
+    if (foundWitServersCount == 1) {
       debug_println("WiT Selection - only 1");
-      selectedWitServerIP = MDNS.IP(0);
-      selectedWitServerPort = MDNS.port(0);
+      selectedWitServerIP = foundWitServersIPs[0];
+      selectedWitServerPort = foundWitServersPorts[0];
+      selectedWitServerName = foundWitServersNames[0];
       witConnectionState = CONNECTION_STATE_SELECTED;
     } else {
       debug_println("WiT Selection required");
@@ -443,10 +461,11 @@ void browseWitService(){
 void selectWitServer(int selection) {
   debug_print("selectWitServer() "); debug_println(selection);
 
-  if ((selection>=0) && (selection < noOfWitServices)) {
+  if ((selection>=0) && (selection < foundWitServersCount)) {
     witConnectionState = CONNECTION_STATE_SELECTED;
-    selectedWitServerIP = MDNS.IP(selection);
-    selectedWitServerPort = MDNS.port(selection);
+    selectedWitServerIP = foundWitServersIPs[selection];
+    selectedWitServerPort = foundWitServersPorts[selection];
+    selectedWitServerName = foundWitServersNames[selection];
     keypadUseType = KEYPAD_USE_OPERATION;
   }
 }
@@ -460,7 +479,8 @@ void connectWitServer() {
   debug_println("Connecting to the server...");
   clearOledArray(); 
   setAppnameForOled(); 
-  oledText[1] = selectedWitServerIP.toString() + " " + String(selectedWitServerPort); oledText[2] + "connecting...";
+  oledText[1] = selectedWitServerIP.toString() + " : " + String(selectedWitServerPort); 
+  oledText[2] = selectedWitServerName; oledText[3] + "connecting...";
   writeOledArray(false);
 
   if (!client.connect(selectedWitServerIP, selectedWitServerPort)) {
@@ -487,7 +507,7 @@ void connectWitServer() {
     witConnectionState = CONNECTION_STATE_CONNECTED;
     setLastServerResponseTime(true);
 
-    oledText[2] = msg_connected;
+    oledText[3] = msg_connected;
     oledText[5] = menu_menu;
     writeOledArray(false);
 
@@ -662,8 +682,14 @@ void keypadEvent(KeypadEvent key){
     doKeyPress(key, false);
     debug_print("Button "); debug_print(String(key - '0')); debug_println(" released.");
     break;
-//    case HOLD:
-//        break;
+  case HOLD:
+    debug_print("Button "); debug_print(String(key - '0')); debug_println(" hold.");
+    break;
+  case IDLE:
+    debug_print("Button "); debug_print(String(key - '0')); debug_println(" idle.");
+    break;
+  default:
+    debug_print("Button "); debug_print(String(key - '0')); debug_println(" unknown.");
   }
 }
 
@@ -674,6 +700,7 @@ void keypadEvent(KeypadEvent key){
 void setup() {
   Serial.begin(115200);
   u8g2.begin();
+  // i2cSetClock(0,400000);
 
   clearOledArray(); oledText[0] = appName; oledText[6] = appVersion; oledText[2] = msg_start;
   writeOledArray(false);
@@ -690,6 +717,7 @@ void setup() {
 
   keypad.addEventListener(keypadEvent); // Add an event listener for this keypad
   keypad.setDebounceTime(keypadDebounceTime);
+  keypad.setHoldTime(keypadHoldTime);
 
   esp_sleep_enable_ext0_wakeup(GPIO_NUM_13,0); //1 = High, 0 = Low
 
@@ -719,6 +747,8 @@ void loop() {
   }
   char key = keypad.getKey();
   rotary_loop();
+
+	// debug_println("loop:" );
 }
 
 // *********************************************************************************
@@ -793,6 +823,10 @@ void doKeyPress(char key, boolean pressed) {
         switch (key){
           case '0': case '1': case '2': case '3': case '4':
             selectWitServer(key - '0');
+            break;
+          case '#': // show ip address entry screen
+            witConnectionState = CONNECTION_STATE_ENTRY_REQUIRED;
+            enterWitServer();
             break;
           default:  // do nothing 
             break;
@@ -1419,7 +1453,7 @@ void writeOledMenu(String soFar) {
       oledText[j-1] = String(i) + ": " + menuText[i][0];
     }
     oledText[10] = "0: " + menuText[0][0];
-    oledText[11] = menu_cancel;
+    oledText[5] = menu_cancel;
     writeOledArray(false);
   } else {
     int cmd = menuCommand.substring(0, 1).toInt();
@@ -1522,7 +1556,7 @@ void writeOledArray(boolean isThreeColums, boolean sendBuffer) {
 }
 
 void writeOledArray(boolean isThreeColums, boolean sendBuffer, boolean drawTopLine) {
-
+  // debug_println("Start writeOledArray()");
   u8g2.clearBuffer();					// clear the internal memory
 
   // u8g2.setFont(u8g2_font_ncenB08_tr);	// serif bold
@@ -1553,6 +1587,7 @@ void writeOledArray(boolean isThreeColums, boolean sendBuffer, boolean drawTopLi
   u8g2.drawHLine(0,51,128);
 
   if (sendBuffer) u8g2.sendBuffer();					// transfer internal memory to the display
+  // debug_println("End writeOledArray()");
 }
 
 void clearOledArray() {
