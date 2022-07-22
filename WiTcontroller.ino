@@ -1184,13 +1184,14 @@ void resetMenu() {
  }
 
 String getLocoWithLength(String loco) {
-  int locoNo = menuCommand.toInt() + 0;
+  int locoNo = loco.toInt();
+  String locoWithLength = "";
   if (locoNo <= 127) {
-    loco = "S" + loco;
+    locoWithLength = "S" + loco;
   } else {
-    loco = "L" + loco;
+    locoWithLength = "L" + loco;
   }
-  return loco;
+  return locoWithLength;
 }
 
 void speedEstop() {
