@@ -783,7 +783,7 @@ void doKeyPress(char key, boolean pressed) {
 
           case '0': case '1': case '2': case '3': case '4': 
           case '5': case '6': case '7': case '8': case '9':
-            if (menuCommandStarted) { // appeand to the string
+            if (menuCommandStarted) { // append to the string
               menuCommand += key;
               writeOledMenu(menuCommand);
             } else {
@@ -960,22 +960,16 @@ void doKeyPress(char key, boolean pressed) {
         break;
     }
 
-  } // else {  // released
-    // do nothing
-
-    // if (keypadUseType == KEYPAD_USE_OPERATION) {
-    //   if ( (!menuCommandStarted) && (key>='0') && (key<='D')) { // only process releases for the numeric keys + A,B,C,D and only if a menu command has not be started
-    //     debug_println("Operation - Process key release");
-    //     doDirectCommand(key, false);
-    //   } else {
-    //     debug_println("Non-Operation - Process key release");
-    //     if (keypadUseNonOperationComplete) {   //finished processing the menu etc.
-    //       resetMenu();
-    //     }
-    //   }
-    // } // else {  // keypadUser type = KEYPAD_USE_SELECT_WITHROTTLE_SERVER
-    // }
-  // }
+  } else {  // released
+    if (keypadUseType == KEYPAD_USE_OPERATION) {
+      if ( (!menuCommandStarted) && (key>='0') && (key<='D')) { // only process releases for the numeric keys + A,B,C,D and only if a menu command has not be started
+        debug_println("Operation - Process key release");
+        doDirectCommand(key, false);
+      } else {
+        debug_println("Non-Operation - Process key release");
+      }
+    }
+  }
 }
 
 void doDirectCommand (char key, boolean pressed) {
@@ -983,7 +977,7 @@ void doDirectCommand (char key, boolean pressed) {
   int buttonAction = buttonActions[(key - '0')];
   if (buttonAction!=FUNCTION_NULL) {
     if ( (buttonAction>=FUNCTION_0) && (buttonAction<=FUNCTION_28) ) {
-      doFunction(buttonAction, pressed);
+      doDirectFunction(buttonAction, pressed);
 
     } else {
       if (pressed) { // only process these on the key press, not the release
@@ -1186,7 +1180,7 @@ void resetMenu() {
 String getLocoWithLength(String loco) {
   int locoNo = loco.toInt();
   String locoWithLength = "";
-  if (locoNo <= 127) {
+  if (locoNo <= SHORT_DCC_ADDESS_LIMIT) {
     locoWithLength = "S" + loco;
   } else {
     locoWithLength = "L" + loco;
@@ -1276,6 +1270,14 @@ void changeDirection(Direction direction) {
     wiThrottleProtocol.setDirection(direction);
     currentDirection = direction;
     debug_print("Change direction: "); debug_println( (direction==Forward) ? "Forward" : "Reverse");
+    writeOledSpeed(); 
+  }
+}
+
+void doDirectFunction(int functionNumber, boolean pressed) {
+  if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
+    debug_print("direct fn: "); debug_print(functionNumber); debug_println( pressed ? " Pressed" : " Released");
+    wiThrottleProtocol.setFunction(functionNumber, pressed);
     writeOledSpeed(); 
   }
 }

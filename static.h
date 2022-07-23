@@ -69,17 +69,17 @@ const String label_track_power = "TRK";
 
 #define MAX_LOCOS     10  // maximum number of locos that can be added to the consist
 
-const String menuText[10][2] = {
-  {"Function",    "no+: Select           * Cancel"}, //0
-  {"Add Loco",    "no+# Add   # Roster   * Cancel"}, //1
-  {"Drop Loco",   "no+# One   # All      * Cancel"}, //2
-  {"Toggle Dir",  "                      # Toggle"}, //3
-  {"X Speed Step","# Toggle              * Cancel"}, //4
-  {"Throw Point", "no+# Throw   # List   * Cancel"}, //5
-  {"Close Point", "no+# Close   # List   * Cancel"}, //6
-  {"Route",       "no+# Select  # List   * Cancel"}, //7
-  {"Trk Power",   "# Toggle              * Cancel"}, //8 
-  {"Disconnect",  "9+# OFF           # Disconnect"},  //9
+const String menuText[10][3] = {
+  {"Function",    "no+# Select           * Cancel", ""}, //0
+  {"Add Loco",    "no+# Add   # Roster   * Cancel", ""}, //1
+  {"Drop Loco",   "no+# One   # All      * Cancel", ""}, //2
+  {"Toggle Dir",  "                      # Toggle", ""}, //3
+  {"X Speed Step","# Toggle              * Cancel", ""}, //4
+  {"Throw Point", "no+# Throw   # List   * Cancel", ""}, //5
+  {"Close Point", "no+# Close   # List   * Cancel", ""}, //6
+  {"Route",       "no+# Select  # List   * Cancel", ""}, //7
+  {"Trk Power",   "# Toggle              * Cancel", ""}, //8 
+  {"Disconnect",  "9+# OFF           # Disconnect", ""},  //9
 };
 
 
