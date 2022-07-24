@@ -7,6 +7,8 @@ A WiTcontroller is a simple DIY, handheld controller that talks to a wThrottle S
 
 [Discussion on Discord.](https://discord.com/channels/713189617066836079/735019837746577438)
 
+[3d Printed Case](https://www.thingiverse.com/thing:5440351)
+
 ---
 
 ## Prerequisites
@@ -42,7 +44,7 @@ Required Components
 
 Note:
 
-* My case was 3D Printed for me by peteGSX (See the [Discussion on Discord.](https://discord.com/channels/713189617066836079/735019837746577438) )
+* My case was 3D Printed for me by peteGSX (See the [Thingiverse.](https://www.thingiverse.com/thing:5440351) )
 * The 3x4 keypad he designed the case for came from Jaycar and is slightly narrower than the one you see in the 'deconstructed' view in the video above.
 * The case requires about a dozen M2x4mm screws
 
