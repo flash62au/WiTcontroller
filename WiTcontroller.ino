@@ -1,4 +1,4 @@
-/**
+olk/**
  * This app turns the ESP32 into a Bluetooth LE keyboard that is intended to act as a dedicated
  * gamepad for the JMRI or any wiThrottle server.
 
@@ -1171,13 +1171,13 @@ void resetMenu() {
     && (keypadUseType != KEYPAD_USE_SELECT_WITHROTTLE_SERVER) ) {
     keypadUseType = KEYPAD_USE_OPERATION; 
   }
- }
+}
 
- void resetFunctionStates() {
-   for (int i=0; i<28; i++) {
-     functionStates[i] = false;
-   }
- }
+void resetFunctionStates() {
+  for (int i=0; i<28; i++) {
+    functionStates[i] = false;
+  }
+}
 
 String getLocoWithLength(String loco) {
   int locoNo = loco.toInt();
