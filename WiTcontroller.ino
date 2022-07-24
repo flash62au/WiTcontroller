@@ -1173,11 +1173,11 @@ void resetMenu() {
   }
  }
 
- void resetFunctionStates() {
-   for (int i=0; i<28; i++) {
-     functionStates[i] = false;
-   }
- }
+void resetFunctionStates() {
+  for (int i=0; i<28; i++) {
+    functionStates[i] = false;
+  }
+}
 
 String getLocoWithLength(String loco) {
   int locoNo = loco.toInt();
