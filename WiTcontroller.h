@@ -86,3 +86,35 @@ int currentSpeedStep = speedStep;
 
 int heartBeatPeriod = 10; // default to 10 seconds
 long lastServerResponseTime;  // seconds since start of Arduino
+
+// don't alter the assignments here
+// alter them in config_buttons.h
+
+const char* deviceName = DEVICE_NAME;
+
+const boolean encoderRotationClockwiseIsIncreaseSpeed = false;
+// false = Counterclockwise  true = clockwise
+
+const boolean toggleDirectionOnEncoderButtonPressWhenStationary = true;
+// true = if the locos(s) are stationary, clicking the encoder button will toggle the direction
+
+//4x3 keypad
+int buttonActions[10] = { CHOSEN_KEYPAD_0_FUNCTION,
+                          CHOSEN_KEYPAD_1_FUNCTION,
+                          CHOSEN_KEYPAD_2_FUNCTION,
+                          CHOSEN_KEYPAD_3_FUNCTION,
+                          CHOSEN_KEYPAD_4_FUNCTION,
+                          CHOSEN_KEYPAD_5_FUNCTION,
+                          CHOSEN_KEYPAD_6_FUNCTION,
+                          CHOSEN_KEYPAD_7_FUNCTION,
+                          CHOSEN_KEYPAD_8_FUNCTION,
+                          CHOSEN_KEYPAD_9_FUNCTION
+};
+
+// text that will appear when you press #
+const String directCommandText[4][3] = {
+    {CHOSEN_KEYPAD_1_DISPLAY_NAME, CHOSEN_KEYPAD_2_DISPLAY_NAME, CHOSEN_KEYPAD_3_DISPLAY_NAME},
+    {CHOSEN_KEYPAD_4_DISPLAY_NAME, CHOSEN_KEYPAD_5_DISPLAY_NAME, CHOSEN_KEYPAD_6_DISPLAY_NAME},
+    {CHOSEN_KEYPAD_7_DISPLAY_NAME, CHOSEN_KEYPAD_8_DISPLAY_NAME, CHOSEN_KEYPAD_9_DISPLAY_NAME},
+    {"* Menu", CHOSEN_KEYPAD_0_DISPLAY_NAME, "# This"}
+};

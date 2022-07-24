@@ -15,12 +15,14 @@
 #include <U8g2lib.h>              // https://github.com/olikraus/u8g2
 #include <string>
 
-#include "static.h"
-#include "WiTcontroller.h"
+#include "static.h"              // change for non-english languages
 #include "actions.h"
-#include "config_network.h"
-#include "config_keypad_etc.h"   // keypad, encoder, oled display
-#include "config.h"
+
+#include "config_network.h"      // LAN networks (SSIDs and passwords)
+#include "config_keypad_etc.h"   // hardware config - GPIOs - keypad, encoder; oled display type
+#include "config_buttons.h"      // keypad buttons assignments
+
+#include "WiTcontroller.h"
 
 // comment out the following line to stop all console messages
 #define DEBUG 1

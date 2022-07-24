@@ -56,3 +56,4 @@ build\sketch\*.*
 .pio
 
 config_network.h
+config_buttons.h

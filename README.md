@@ -60,6 +60,8 @@ Note:
     * WiThrottleProtocol.h https://github.com/flash62au/WiThrottleProtocol
 5. Copy **config_network_example.h** to **config_network.h**  
 Then edit it to include the network ssids you want to use
+5. Copy **config_keypad_example.h** to **config_keypad.h**  
+Optionally, edit this to change the mapping of the keypad buttons to specific functions 
 6. Upload the sketch
 
 ---
@@ -67,15 +69,22 @@ Then edit it to include the network ssids you want to use
 ## Using WiTController
 
 **Currently functioning:**
-- provides a list of SSIDs with the specified password to choose from
+- provides a list of discovered SSIDs with the specified password to choose from: When you select one:
+  - if it is one in your specified list, it will use that specifed password 
+  - if it is a DCC++EX wiFi Command Station in access Point mode, it will guess the password
+  - otherwise it will only connect if the password is blank
+- Optionally provides a list of SSIDs with the specified password to choose from
   - choose from these or select from the found SSIDs, but...
     - they must have no password, or
     - if it is a DCC++EX wiFi server, it will guess the password
 - Auto-connects to the first found wiThrottle Protocol Server if only one found, otherwise 
   - asks which to connect to
   - if none found will ask to enter the IP Address and Port
+  - Guesses the wiThrottle IP address and Port for DCC++EX WiFi Access Point mode Command Stations
 - Rudimentary on-the-fly consists
-- Assign commands directly to the 1-9 (see list below)
+- Assign commands directly to the 1-9 buttons (see list below)
+  - this is done in config_button.h
+  - latching / non-latching for the function is provided by the roster entry of wiThrottle server
 - Command menu (see below for full list) including:
   - Able to select and deselect locos 
     - by their DCC address, via the keypad
@@ -89,16 +98,15 @@ Then edit it to include the network ssids you want to use
   - set/unset a multiplier for the rotary encoder
   - Power Track On/Off
   - Disconnect / Reconnect
+  - limited dealing with unexpected disconnects.  It will thow you back to the WiThtottle Server selection screen.
   - Put ESP32 in deep sleep and restart it
 
+
 **ToDo:**
-- for reasons unknown, the wiThrottle server on DCC++EX is never found. I have a work around that 'guesses' the IP and Port, but I would like to understand why
 - speed button repeat (i.e. hold the button down)
-- deal with disconnects
-  - display error
-  - automatic reconnection
+- deal with unexpected disconnects better
+  - automatic attempt to reconnect
 - functions are currently only sent to the earliest selected loco
-- function buttons are currently all latching
 - change facing of a loco in consist
 - keep a list of ip addresses and ports if bonjour doesn't provide any
 
@@ -107,7 +115,7 @@ Then edit it to include the network ssids you want to use
 - \* = Menu:  The button press following the \* is the actual command:
  - 1 = Add loco.  
       - Followed by the loco number, followed by \# to complete.  e.g. to select loco 99 you would press '\*199\#'
-      - or \# alone to show the roster
+      - or \# alone to show the roster   \# again will show the next page
  - 2 = release loco:
   - Followed by the loco number, followed by \# to release an individual loco.  e.g. to deselect the loco 99 you would press '\*299\#'
   - Otherwise followed directly by \#  to release all e.g. '\*2\#'
@@ -115,40 +123,40 @@ Then edit it to include the network ssids you want to use
  - 4 = Set / Unset a 2 times multiplier for the rotary encoder dial.
  - 5 = Throw turnout/point.  
       - Followed by the turnout/point number, followed by the \# to complete.  e.g. Throw turnout XX12 '\*512\#'  (where XX is a prefix defined in the sketch) 
-      - or \# alone to show the list from the server
+      - or \# alone to show the list from the server   \# again will show the next page
  - 6 = Close turnout.    
       - Followed by the turnout/point number, followed by \# to complete.  e.g. Close turnout XX12 '\*612\#'  (where XX is a prefix defined in the sketch)
       - or \# alone to show the list from the server
  - 7 = Set Route.    
       - Followed by the Route number, followed by \# to complete.  e.g. to Set route XX:XX:0012 '\*60012\#'  (where \'XX:XX:\' is a prefix defined in the sketch)
-      - or \# alone to show the list from the server
+      - or \# alone to show the list from the server   \# again will show the next page
  - 0 = Function button. Followed by the loco number, Followed by \# to complete.  e.g. to set function 17 you would press '\*017\#'
  - 8 = Track Power On/Off. Followed by \# to complete.
  - 9 = Disconnect/reconnect. 
        - Followed by \# to complete.  
        - or followed by 9 then \# to put into deep sleep
 Pressing '\*' again before the '\#' will terminate the current command (but not start a new command)
- - \# = Pressing # alone will show the function the the numbered keys (0-9)perform, outside the menu.
+ - \# = Pressing # alone will show the function the the numbered keys (0-9) perform, outside the menu.
 
 Pressing the Encoder button while the ESP32 is in Deep Sleep will revive it.
 
 
 ### Default number key assignments (0-9)  (outside the menu)
 
-* 0 = SPEED_STOP
-* 1 = FUNCTION_0 (DCC Lights)
-* 2 = FUNCTION_1 (DCC Bell)
-* 3 = FUNCTION_3 (DCC Horn/Whistle)
-* 4 = SPEED_MULTIPLIER
-* 5 = SPEED_UP
-* 6 = FUNCTION_NULL
+* 0 = FUNCTION_0 (DCC Lights)
+* 1 = FUNCTION_1 (DCC Bell)
+* 2 = FUNCTION_3 (DCC Horn/Whistle)
+* 3 = FUNCTION_3
+* 4 = FUNCTION_4
+* 5 = FUNCTION_5
+* 6 = SPEED_MULTIPLIER
 * 7 = DIRECTION_REVERSE
-* 8 = SPEED_DOWN
-* 9 = DIRECTION_FORWARD`
+* 8 = SPEED_STOP
+* 9 = DIRECTION_FORWARD
 
 ### Allowed assignments for the 0-9 keys:
 
-Note: you need to edit config.h to alter these assignments 
+Note: you need to edit config_buttons.h to alter these assignments   (copy config_buttons_example.h)
 - FUNCTION_NULL   - don't do anything
 - FUNCTION_0 - FUNCTION_28
 - SPEED_STOP
