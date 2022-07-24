@@ -92,10 +92,10 @@ long lastServerResponseTime;  // seconds since start of Arduino
 
 const char* deviceName = DEVICE_NAME;
 
-const boolean encoderRotationClockwiseIsIncreaseSpeed = false;
+const boolean encoderRotationClockwiseIsIncreaseSpeed = ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED;
 // false = Counterclockwise  true = clockwise
 
-const boolean toggleDirectionOnEncoderButtonPressWhenStationary = true;
+const boolean toggleDirectionOnEncoderButtonPressWhenStationary = TOGGLE_DIRECTION_ON_ENCODER_BUUTTON_PRESSED_WHEN_STATIONAY;
 // true = if the locos(s) are stationary, clicking the encoder button will toggle the direction
 
 //4x3 keypad
