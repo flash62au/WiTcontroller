@@ -15,6 +15,8 @@ const String menu_select_wit_entry =        "0-9   * Back  # Go   E.btn OFF";
 const String menu_select_ssids =            "0-9     # Search      E.btn OFF";
 const String menu_select_ssids_from_found = "0-4    # Pg   9 List   E.btn OFF";
 
+const String menu_enter_ssid_password =     "E Chrs  E.btn Slct  * Bck # Entr";
+
 const String direct_command_list = "Direct Commands";
 
 const String direction_forward = "     Fwd";
@@ -37,6 +39,7 @@ const String msg_connection_failed = "Connection failed";
 const String msg_disconnected = "Disconnected";
 const String msg_start_sleep = "Shutting Down.        E.btn ON";
 const String msg_no_loco_selected = "        No Loco selected";
+const String msg_enter_password = "Enter Password";
 
 // const String label_locos = "Locos: ";
 // const String label_speed = "Speed: ";
@@ -54,6 +57,10 @@ const String label_track_power = "TRK";
 #define KEYPAD_USE_SELECT_TURNOUTS_THROW 6
 #define KEYPAD_USE_SELECT_TURNOUTS_CLOSE 7
 #define KEYPAD_USE_SELECT_ROUTES 8
+#define KEYPAD_USE_ENTER_SSID_PASSWORD 9
+
+#define ENCODER_USE_OPERATION 0
+#define ENCODER_USE_SSID_PASSWORD 1
 
 // used for both wit and ssid
 #define CONNECTION_STATE_DISCONNECTED 0
@@ -61,7 +68,8 @@ const String label_track_power = "TRK";
 #define CONNECTION_STATE_SELECTION_REQUIRED 2
 #define CONNECTION_STATE_ENTRY_REQUIRED 3
 #define CONNECTION_STATE_SELECTED 4
-#define CONNECTION_STATE_ENTERED 5
+#define CONNECTION_STATE_PASSWORD_ENTRY 5
+#define CONNECTION_STATE_ENTERED 6
 
 #define SSID_CONNECTION_SOURCE_LIST 0
 #define SSID_CONNECTION_SOURCE_BROWSE 1
@@ -90,3 +98,5 @@ const int speedStepMultiplier = 3;  // for 'fast' speed steps
 const int speedStepAdditionalMultiplier = 2;
 
 String witServerIpAndPortEntryMask = "###.###.###.###:#####";
+
+const char ssidPasswordBlankChar = 164;

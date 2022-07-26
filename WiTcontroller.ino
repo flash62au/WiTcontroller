@@ -1,4 +1,4 @@
-olk/**
+/**
  * This app turns the ESP32 into a Bluetooth LE keyboard that is intended to act as a dedicated
  * gamepad for the JMRI or any wiThrottle server.
 
@@ -143,6 +143,10 @@ void ssidsLoop() {
     }
   }
   
+  if (ssidConnectionState == CONNECTION_STATE_PASSWORD_ENTRY) {
+    enterSsidPassword();
+  }
+
   if (ssidConnectionState == CONNECTION_STATE_SELECTED) {
     connectSsid();
   }
@@ -158,7 +162,7 @@ void browseSsids(){ // show the found SSIDs
   clearOledArray(); 
   setAppnameForOled();
   oledText[2] = msg_browsing_for_ssids;
-  writeOledArray(false);
+  writeOledArray(false, false);
 
   int numSsids = WiFi.scanNetworks();
   while ( (numSsids == -1)
@@ -197,7 +201,7 @@ void browseSsids(){ // show the found SSIDs
      writeOledFoundSSids("");
 
     oledText[5] = menu_select_ssids_from_found;
-    writeOledArray(false);
+    writeOledArray(false, false);
 
     keypadUseType = KEYPAD_USE_SELECT_SSID_FROM_FOUND;
     ssidConnectionState = CONNECTION_STATE_SELECTION_REQUIRED;
@@ -211,6 +215,9 @@ void selectSsidFromFound(int selection) {
     ssidConnectionState = CONNECTION_STATE_SELECTED;
     selectedSsid = foundSsids[selection];
     getSsidPasswordAndWitIpForFound();
+  }
+  if (selectedSsidPassword=="") {
+    ssidConnectionState = CONNECTION_STATE_PASSWORD_ENTRY;
   }
 }
 
@@ -233,16 +240,25 @@ void getSsidPasswordAndWitIpForFound() {
     }
 }
 
+void enterSsidPassword() {
+  keypadUseType = KEYPAD_USE_ENTER_SSID_PASSWORD;
+  encoderUseType = ENCODER_USE_SSID_PASSWORD;
+  if (ssidPasswordChanged) { // don't refresh the screen if nothing nothing has changed
+    debug_println("enterWitServer()");
+    writeOledEnterPassword();
+    ssidPasswordChanged = false;
+  }
+}
 void showListOfSsids(){  // show the list from the specified values in config_network.h
   debug_println("showListOfSsids()");
 
   clearOledArray(); 
   setAppnameForOled(); 
-  writeOledArray(false);
+  writeOledArray(false, false);
 
   if (maxSsids == 0) {
     oledText[1] = msg_no_ssids_found;
-    writeOledArray(false);
+    writeOledArray(false, false);
     debug_println(oledText[1]);
   
   } else {
@@ -268,7 +284,7 @@ void showListOfSsids(){  // show the list from the specified values in config_ne
     if (maxSsids > 0) {
       oledText[5] = menu_select_ssids;
     }
-    writeOledArray(false);
+    writeOledArray(false, false);
 
     if (maxSsids == 1) {
       selectedSsid = ssids[0];
@@ -303,7 +319,7 @@ void connectSsid() {
   clearOledArray(); 
   setAppnameForOled();
   oledText[1] = selectedSsid; oledText[2] + "connecting...";
-  writeOledArray(false);
+  writeOledArray(false, false);
 
   double startTime = millis();
   double nowTime = startTime;
@@ -316,13 +332,13 @@ void connectSsid() {
     clearOledArray(); 
     setAppnameForOled(); 
     oledText[1] = selectedSsid; oledText[2] =  msg_trying_to_connect;
-    writeOledArray(false);
+    writeOledArray(false, false);
 
     WiFi.begin(cSsid, cPassword); 
 
     while ( (WiFi.status() != WL_CONNECTED) 
       && ((nowTime-startTime) <= 10000) ) { // try for 10 seconds
-      debug_print("Trying Network ... Checking status "); debug_println(cSsid);
+      debug_print("Trying Network ... Checking status "); debug_print(cSsid); debug_print(" :"); debug_print(cPassword); debug_println(":");
       delay(250);
       debug_print(".");
       nowTime = millis();
@@ -333,7 +349,7 @@ void connectSsid() {
       debug_print("Connected. IP address: "); debug_println(WiFi.localIP());
       oledText[2] = msg_connected; 
       oledText[3] = msg_address_label + String(WiFi.localIP());
-      writeOledArray(false);
+      writeOledArray(false, false);
       // ssidConnected = true;
       ssidConnectionState = CONNECTION_STATE_CONNECTED;
       keypadUseType = KEYPAD_USE_SELECT_WITHROTTLE_SERVER;
@@ -342,15 +358,15 @@ void connectSsid() {
       if (!MDNS.begin("ESP32_Browser")) {
         debug_println("Error setting up MDNS responder!");
         oledText[2] = msg_bounjour_setup_failed;
-        writeOledArray(false);
+        writeOledArray(false, false);
         delay(2000);
         ssidConnectionState = CONNECTION_STATE_DISCONNECTED;
       }
 
     } else {
-      debug_print(msg_connection_failed);
+      debug_println(msg_connection_failed);
       oledText[2] = msg_connection_failed;
-      writeOledArray(false);
+      writeOledArray(false, false);
       delay(2000);
       
       WiFi.disconnect();      
@@ -392,7 +408,7 @@ void browseWitService(){
   clearOledArray(); 
   oledText[0] = appName; oledText[6] = appVersion; 
   oledText[1] = selectedSsid;   oledText[2] = msg_browsing_for_service;
-  writeOledArray(false);
+  writeOledArray(false, false);
 
   noOfWitServices = 0;
   while ( (noOfWitServices == 0) 
@@ -422,7 +438,7 @@ void browseWitService(){
 
   if (foundWitServersCount == 0) {
     oledText[1] = msg_no_services_found;
-    writeOledArray(false);
+    writeOledArray(false, false);
     debug_println(oledText[1]);
     delay(1000);
     buildWitEntry();
@@ -445,7 +461,7 @@ void browseWitService(){
     if (foundWitServersCount > 0) {
       oledText[5] = menu_select_wit_service;
     }
-    writeOledArray(false);
+    writeOledArray(false, false);
 
     if (foundWitServersCount == 1) {
       debug_println("WiT Selection - only 1");
@@ -483,12 +499,12 @@ void connectWitServer() {
   setAppnameForOled(); 
   oledText[1] = selectedWitServerIP.toString() + " : " + String(selectedWitServerPort); 
   oledText[2] = selectedWitServerName; oledText[3] + "connecting...";
-  writeOledArray(false);
+  writeOledArray(false, false);
 
   if (!client.connect(selectedWitServerIP, selectedWitServerPort)) {
     debug_println(msg_connection_failed);
     oledText[3] = msg_connection_failed;
-    writeOledArray(false);
+    writeOledArray(false, false);
     delay(5000);
     
     witConnectionState = CONNECTION_STATE_DISCONNECTED;
@@ -511,7 +527,7 @@ void connectWitServer() {
 
     oledText[3] = msg_connected;
     oledText[5] = menu_menu;
-    writeOledArray(false);
+    writeOledArray(false, false);
 
     keypadUseType = KEYPAD_USE_OPERATION;
   }
@@ -526,7 +542,7 @@ void enterWitServer() {
     oledText[1] = msg_no_services_found_entry_required;
     oledText[3] = witServerIpAndPortConstructed;
     oledText[5] = menu_select_wit_entry;
-    writeOledArray(false);
+    writeOledArray(false, false);
     witServerIpAndPortChanged = false;
   }
 }
@@ -537,7 +553,7 @@ void disconnectWitServer() {
   wiThrottleProtocol.disconnect();
   debug_println("Disconnected from wiThrottle server\n");
   clearOledArray(); oledText[0] = msg_disconnected;
-  writeOledArray(false);
+  writeOledArray(false, false);
   witConnectionState = CONNECTION_STATE_DISCONNECTED;
   witServerIpAndPortChanged = true;
 }
@@ -559,6 +575,24 @@ void witEntryDeleteChar(char key) {
     debug_println(witServerIpAndPortEntered);
     buildWitEntry();
     witServerIpAndPortChanged = true;
+  }
+}
+
+void ssidPasswordAddChar(char key) {
+  ssidPasswordEntered = ssidPasswordEntered + key;
+  debug_print("password entered: ");
+  debug_println(ssidPasswordEntered);
+  ssidPasswordChanged = true;
+  ssidPasswordCurrentChar = ssidPasswordBlankChar;
+}
+
+void ssidPasswordDeleteChar(char key) {
+  if (ssidPasswordEntered.length() > 0) {
+    ssidPasswordEntered = ssidPasswordEntered.substring(0, ssidPasswordEntered.length()-1);
+    debug_print("password char deleted: ");
+    debug_println(ssidPasswordEntered);
+    ssidPasswordChanged = true;
+    ssidPasswordCurrentChar = ssidPasswordBlankChar;
   }
 }
 
@@ -598,29 +632,37 @@ void IRAM_ATTR readEncoderISR() {
 }
 
 void rotary_onButtonClick() {
-  if ( (keypadUseType!=KEYPAD_USE_SELECT_WITHROTTLE_SERVER)
-       && (keypadUseType!=KEYPAD_USE_ENTER_WITHROTTLE_SERVER)
-       && (keypadUseType!=KEYPAD_USE_SELECT_SSID) 
-       && (keypadUseType!=KEYPAD_USE_SELECT_SSID_FROM_FOUND) ) {
-    static unsigned long lastTimePressed = 0;
-    if (millis() - lastTimePressed < encoderDebounceTime) {   //ignore multiple press in that time milliseconds
-      debug_println("encoder button debounce");
-      return;
-    }
-    lastTimePressed = millis();
-    if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
-      if (currentSpeed!=0) {
-        wiThrottleProtocol.setSpeed(0);
-      } else {
-        if (toggleDirectionOnEncoderButtonPressWhenStationary) toggleDirection();
+   if (encoderUseType == ENCODER_USE_OPERATION) {
+    if ( (keypadUseType!=KEYPAD_USE_SELECT_WITHROTTLE_SERVER)
+        && (keypadUseType!=KEYPAD_USE_ENTER_WITHROTTLE_SERVER)
+        && (keypadUseType!=KEYPAD_USE_SELECT_SSID) 
+        && (keypadUseType!=KEYPAD_USE_SELECT_SSID_FROM_FOUND) ) {
+      static unsigned long lastTimePressed = 0;
+      if (millis() - lastTimePressed < encoderDebounceTime) {   //ignore multiple press in that time milliseconds
+        debug_println("encoder button debounce");
+        return;
       }
-      currentSpeed = 0;
+      lastTimePressed = millis();
+      if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
+        if (currentSpeed!=0) {
+          wiThrottleProtocol.setSpeed(0);
+        } else {
+          if (toggleDirectionOnEncoderButtonPressWhenStationary) toggleDirection();
+        }
+        currentSpeed = 0;
+      }
+      debug_println("encoder button pressed");
+      writeOledSpeed();
+    }  else {
+      deepSleepStart();
     }
-    debug_println("encoder button pressed");
-    writeOledSpeed();
-  }  else {
-    deepSleepStart();
-  }
+   } else {
+    if (ssidPasswordCurrentChar!=ssidPasswordBlankChar) {
+      ssidPasswordEntered = ssidPasswordEntered + ssidPasswordCurrentChar;
+      ssidPasswordCurrentChar = ssidPasswordBlankChar;
+      writeOledEnterPassword();
+    }
+   }
 }
 
 void rotary_loop() {
@@ -635,20 +677,37 @@ void rotary_loop() {
       }
       debug_print("Corrected Encoder From: "); debug_print(lastEncoderValue); debug_print(" to: "); debug_println(encoderValue);
     }
-    if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
-      if (encoderValue > lastEncoderValue) {
-        if (abs(encoderValue-lastEncoderValue)<50) {
-          encoderSpeedChange(true, currentSpeedStep);
+ 
+    if (encoderUseType == ENCODER_USE_OPERATION) {
+      if (wiThrottleProtocol.getNumberOfLocomotives()>0) {
+        if (encoderValue > lastEncoderValue) {
+          if (abs(encoderValue-lastEncoderValue)<50) {
+            encoderSpeedChange(true, currentSpeedStep);
+          } else {
+            encoderSpeedChange(true, currentSpeedStep*speedStepMultiplier);
+          }
         } else {
-          encoderSpeedChange(true, currentSpeedStep*speedStepMultiplier);
-        }
-      } else {
-        if (abs(encoderValue-lastEncoderValue)<50) {
-          encoderSpeedChange(false, currentSpeedStep);
+          if (abs(encoderValue-lastEncoderValue)<50) {
+            encoderSpeedChange(false, currentSpeedStep);
+          } else {
+            encoderSpeedChange(false, currentSpeedStep*speedStepMultiplier);
+          }
+        } 
+      }
+    } else { // (encoderUseType == ENCODER_USE_SSID_PASSWORD) 
+        if (encoderValue > lastEncoderValue) {
+          ssidPasswordCurrentChar = ssidPasswordCurrentChar + 1;
+          if (ssidPasswordCurrentChar > 126) {
+            ssidPasswordCurrentChar = 32;
+          }
         } else {
-          encoderSpeedChange(false, currentSpeedStep*speedStepMultiplier);
+          ssidPasswordCurrentChar = ssidPasswordCurrentChar - 1;
+          if ((ssidPasswordCurrentChar < 32) ||(ssidPasswordCurrentChar > 126) ) {
+            ssidPasswordCurrentChar = 126;
+          }
         }
-      } 
+        ssidPasswordChanged = true;
+        writeOledEnterPassword();
     }
     lastEncoderValue = encoderValue;
   }
@@ -705,7 +764,7 @@ void setup() {
   // i2cSetClock(0,400000);
 
   clearOledArray(); oledText[0] = appName; oledText[6] = appVersion; oledText[2] = msg_start;
-  writeOledArray(false);
+  writeOledArray(false, false);
 
   delay(1000);
   debug_println("Start"); 
@@ -724,7 +783,7 @@ void setup() {
   esp_sleep_enable_ext0_wakeup(GPIO_NUM_13,0); //1 = High, 0 = Low
 
   keypadUseType = KEYPAD_USE_SELECT_SSID;
-  // ssidSelectionSource = SSID_CONNECTION_SOURCE_LIST;
+  encoderUseType = ENCODER_USE_OPERATION;
   ssidSelectionSource = SSID_CONNECTION_SOURCE_BROWSE;
 }
 
@@ -813,6 +872,28 @@ void doKeyPress(char key, boolean pressed) {
             if (witServerIpAndPortEntered.length() == 17) {
               witConnectionState = CONNECTION_STATE_ENTERED;
             }
+            break;
+          default:  // do nothing 
+            break;
+        }
+
+        break;
+
+      case KEYPAD_USE_ENTER_SSID_PASSWORD:
+        debug_print("key: Enter password... "); debug_println(key);
+        switch (key){
+          case '0': case '1': case '2': case '3': case '4': 
+          case '5': case '6': case '7': case '8': case '9':
+            ssidPasswordAddChar(key);
+            break;
+          case '*': // backspace
+            ssidPasswordDeleteChar(key);
+            break;
+          case '#': // end of command
+              selectedSsidPassword = ssidPasswordEntered;
+              encoderUseType = ENCODER_USE_OPERATION;
+              keypadUseType = KEYPAD_USE_OPERATION;
+              ssidConnectionState = CONNECTION_STATE_SELECTED;
             break;
           default:  // do nothing 
             break;
@@ -1317,7 +1398,7 @@ void reconnect() {
   clearOledArray(); 
   oledText[0] = appName; oledText[6] = appVersion; 
   oledText[2] = msg_disconnected;
-  writeOledArray(false);
+  writeOledArray(false, false);
   delay(5000);
   disconnectWitServer();
 }
@@ -1387,7 +1468,7 @@ void writeOledFoundSSids(String soFar) {
       oledText[i] = String(i) + ": " + foundSsids[(page*5)+i];
     }
     oledText[5] = menu_select_ssids_from_found;
-    writeOledArray(false);
+    writeOledArray(false, false);
   } else {
     int cmd = menuCommand.substring(0, 1).toInt();
   }
@@ -1404,7 +1485,7 @@ void writeOledRoster(String soFar) {
       }
     }
     oledText[5] = menu_roster;
-    writeOledArray(false);
+    writeOledArray(false, false);
   } else {
     int cmd = menuCommand.substring(0, 1).toInt();
   }
@@ -1425,7 +1506,7 @@ void writeOledTurnoutList(String soFar, TurnoutAction action) {
       oledText[j] = String(turnoutListIndex[i]) + ": " + turnoutListUserName[(page*10)+i].substring(0,10);
     }
     oledText[5] = menu_turnout_list;
-    writeOledArray(false);
+    writeOledArray(false, false);
   } else {
     int cmd = menuCommand.substring(0, 1).toInt();
   }
@@ -1442,11 +1523,30 @@ void writeOledRouteList(String soFar) {
       oledText[j] = String(routeListIndex[i]) + ": " + routeListUserName[(page*10)+i].substring(0,10);
     }
     oledText[5] = menu_route_list;
-    writeOledArray(false);
+    writeOledArray(false, false);
   } else {
     int cmd = menuCommand.substring(0, 1).toInt();
   }
 }
+
+
+void writeOledEnterPassword() {
+  keypadUseType = KEYPAD_USE_ENTER_SSID_PASSWORD;
+  encoderUseType = KEYPAD_USE_ENTER_SSID_PASSWORD;
+  clearOledArray(); 
+  String tempSsidPasswordEntered;
+  tempSsidPasswordEntered = ssidPasswordEntered+ssidPasswordCurrentChar;
+  if (tempSsidPasswordEntered.length()>12) {
+    tempSsidPasswordEntered = "\253"+tempSsidPasswordEntered.substring(tempSsidPasswordEntered.length()-12);
+  } else {
+    tempSsidPasswordEntered = " "+tempSsidPasswordEntered;
+  }
+  oledText[0] = msg_enter_password;
+  oledText[2] = tempSsidPasswordEntered;
+  oledText[5] = menu_enter_ssid_password;
+  writeOledArray(false, true);
+}
+
 
 void writeOledMenu(String soFar) {
   menuIsShowing = true;
@@ -1459,7 +1559,7 @@ void writeOledMenu(String soFar) {
     }
     oledText[10] = "0: " + menuText[0][0];
     oledText[5] = menu_cancel;
-    writeOledArray(false);
+    writeOledArray(false, false);
   } else {
     int cmd = menuCommand.substring(0, 1).toInt();
 
@@ -1467,7 +1567,7 @@ void writeOledMenu(String soFar) {
 
     oledText[0] = "Menu: " + menuText[cmd][0]; oledText[1] =  menuCommand.substring(1, menuCommand.length());
     oledText[5] = menuText[cmd][1];
-    writeOledArray(false);
+    writeOledArray(false, false);
   }
 }
 
@@ -1504,7 +1604,7 @@ void writeOledSpeed() {
   }
 
   oledText[5] = menu_menu;
-  writeOledArray(false, false, drawTopLine);
+  writeOledArray(false, false, false, drawTopLine);
 
   if (wiThrottleProtocol.getNumberOfLocomotives() > 0 ) {
     writeOledFunctions();
@@ -1552,15 +1652,15 @@ void writeOledFunctions() {
    }
 }
 
-void writeOledArray(boolean isThreeColums) {
-  writeOledArray(isThreeColums, true, false);
+void writeOledArray(boolean isThreeColums, boolean isPassword) {
+  writeOledArray(isThreeColums, isPassword, true, false);
 }
 
-void writeOledArray(boolean isThreeColums, boolean sendBuffer) {
-  writeOledArray(isThreeColums, sendBuffer, false);
+void writeOledArray(boolean isThreeColums, boolean isPassword, boolean sendBuffer) {
+  writeOledArray(isThreeColums, isPassword, sendBuffer, false);
 }
 
-void writeOledArray(boolean isThreeColums, boolean sendBuffer, boolean drawTopLine) {
+void writeOledArray(boolean isThreeColums, boolean isPassword, boolean sendBuffer, boolean drawTopLine) {
   // debug_println("Start writeOledArray()");
   u8g2.clearBuffer();					// clear the internal memory
 
@@ -1581,11 +1681,13 @@ void writeOledArray(boolean isThreeColums, boolean sendBuffer, boolean drawTopLi
 
   for (int i=0; i < max; i++) {
     const char *cLine1 = oledText[i].c_str();
+    if ((isPassword) && (i==2)) u8g2.setFont(u8g2_font_9x15_tf); 
     u8g2.drawStr(x,y, cLine1);
+    if ((isPassword) && (i==2)) u8g2.setFont(u8g2_font_NokiaSmallPlain_tf); 
     y = y + 10;
     if ((i==5) || (i==11)) {
-      x=x+xInc;
-      y=10;
+      x = x + xInc;
+      y = 10;
     }
   }
   if (drawTopLine) u8g2.drawHLine(0,11,128);
@@ -1617,7 +1719,7 @@ void writeOledDirectCommands() {
     oledText[i+1] = directCommandText[j][2];
     j++;
   }
-  writeOledArray(true);
+  writeOledArray(true, false);
   menuCommandStarted = false;
 }
 
@@ -1627,7 +1729,7 @@ void deepSleepStart() {
   clearOledArray(); 
   setAppnameForOled();
   oledText[2] = msg_start_sleep;
-  writeOledArray(false);
+  writeOledArray(false, false);
   delay(2000);
 
   u8g2.setPowerSave(1);

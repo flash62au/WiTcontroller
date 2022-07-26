@@ -71,20 +71,17 @@ Optionally, edit this to change the mapping of the keypad buttons to specific fu
 ## Using WiTController
 
 **Currently functioning:**
-- provides a list of discovered SSIDs with the specified password to choose from: When you select one:
-  - if it is one in your specified list, it will use that specifed password 
+- provides a list of discovered SSIDs with the ability to choose one. When you select one:
+  - if it is one in your specified list (in the sketch), it will use that specified password 
   - if it is a DCC++EX wiFi Command Station in access Point mode, it will guess the password
-  - otherwise it will only connect if the password is blank
-- Optionally provides a list of SSIDs with the specified password to choose from
-  - choose from these or select from the found SSIDs, but...
-    - they must have no password, or
-    - if it is a DCC++EX wiFi server, it will guess the password
+  - otherwise it will ask to enter the password (Use the rotary encoder to choose each character and the encoder button to select it.  * = backspace.  # = enter the password.) 
+- Optionally provides a list of SSIDs with the specified passwords (in the sketch) to choose from
 - Auto-connects to the first found wiThrottle Protocol Server if only one found, otherwise 
   - asks which to connect to
   - if none found will ask to enter the IP Address and Port
   - Guesses the wiThrottle IP address and Port for DCC++EX WiFi Access Point mode Command Stations
 - Rudimentary on-the-fly consists
-- Assign commands directly to the 1-9 buttons (see list below)
+- Assign commands directly to the 1-9 buttons (in the sketch) (see list below)
   - this is done in config_button.h
   - latching / non-latching for the function is provided by the roster entry of wiThrottle server
 - Command menu (see below for full list) including:
@@ -100,7 +97,7 @@ Optionally, edit this to change the mapping of the keypad buttons to specific fu
   - set/unset a multiplier for the rotary encoder
   - Power Track On/Off
   - Disconnect / Reconnect
-  - limited dealing with unexpected disconnects.  It will thow you back to the WiThtottle Server selection screen.
+  - limited dealing with unexpected disconnects.  It will throw you back to the WiThtottle Server selection screen.
   - Put ESP32 in deep sleep and restart it
 
 

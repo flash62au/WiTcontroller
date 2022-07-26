@@ -1,5 +1,6 @@
 
 int keypadUseType = KEYPAD_USE_OPERATION;
+int encoderUseType = ENCODER_USE_OPERATION;
 
 boolean menuCommandStarted = false;
 String menuCommand = "";
@@ -26,6 +27,11 @@ String selectedSsid = "";
 String selectedSsidPassword = "";
 int ssidConnectionState = CONNECTION_STATE_DISCONNECTED;
 
+// ssid password entry
+String ssidPasswordEntered = "";
+boolean ssidPasswordChanged = true;
+char ssidPasswordCurrentChar = ssidPasswordBlankChar; 
+
 IPAddress selectedWitServerIP;
 int selectedWitServerPort = 0;
 String selectedWitServerName ="";
@@ -38,7 +44,6 @@ IPAddress foundWitServersIPs[maxFoundWitServers];
 int foundWitServersPorts[maxFoundWitServers];
 String foundWitServersNames[maxFoundWitServers];
 int foundWitServersCount = 0;
-
 
 //found ssids
 #define maxFoundSsids 20     // must be a multiple of 5
