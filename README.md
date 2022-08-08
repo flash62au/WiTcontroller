@@ -51,20 +51,21 @@ Note:
 ## Loading the code
 
 1. Download the Arduino IDE. (I prefer to use VSC, but you still need to have the Arduino IDE installed.)
-2. Download or clone this repository. (Note: if you 'clone', it is easier to receive updates to the code.)
-3. Load the needed libraries to your PC (these can loaded from the library manager)
+2. download the esp32 boards using the Boards Manager
+3. Download or clone this repository. (Note: if you 'clone', it is easier to receive updates to the code.)
+4. Load the needed libraries to your PC (these can loaded from the library manager)
     * WiFi.h https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi
     * ESPmDNS.h https://github.com/espressif/arduino-esp32/blob/master/libraries/ESPmDNS
     * AiEsp32RotaryEncoder.h https://github.com/igorantolic/ai-esp32-rotary-encoder
     * Keypad.h https://www.arduinolibraries.info/libraries/keypad
     * U8g2lib.h
-4. Manually download or clone my version of WiThrottleProtocol library to you PC (this **must** be placed in the 'libraries' folder) (Note: if you 'clone', it is easier to receive updates to the code.)
+5. Manually download or clone my version of WiThrottleProtocol library to you PC (this **must** be placed in the 'libraries' folder) (Note: if you 'clone', it is easier to receive updates to the code.)
     * WiThrottleProtocol.h https://github.com/flash62au/WiThrottleProtocol
-5. Copy **config_network_example.h** to **config_network.h**  
+6. Copy **config_network_example.h** to **config_network.h**  
 Then edit it to include the network ssids you want to use
-5. Copy **config_keypad_example.h** to **config_keypad.h**  
+7. Copy **config_keypad_example.h** to **config_keypad.h**  
 Optionally, edit this to change the mapping of the keypad buttons to specific functions 
-6. Upload the sketch
+8. Upload the sketch  (Select the board type as 'WEMOS LOLIN32 Lite')
 
 ---
 
