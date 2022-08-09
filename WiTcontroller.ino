@@ -973,7 +973,7 @@ void doKeyPress(char key, boolean pressed) {
         switch (key){
           case '0': case '1': case '2': case '3': case '4': 
           case '5': case '6': case '7': case '8': case '9':
-            selectRoster((key - '0')+(page*10));
+            selectRoster((key - '0')+(page*5));
             break;
           case '#':  // next page
             if ( rosterSize > 5 ) {
