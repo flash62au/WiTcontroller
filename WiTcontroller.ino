@@ -696,14 +696,22 @@ void rotary_loop() {
       }
     } else { // (encoderUseType == ENCODER_USE_SSID_PASSWORD) 
         if (encoderValue > lastEncoderValue) {
-          ssidPasswordCurrentChar = ssidPasswordCurrentChar + 1;
-          if (ssidPasswordCurrentChar > 126) {
-            ssidPasswordCurrentChar = 32;
+          if (ssidPasswordCurrentChar==ssidPasswordBlankChar) {
+            ssidPasswordCurrentChar = 66; // 'B'
+          } else {
+            ssidPasswordCurrentChar = ssidPasswordCurrentChar - 1;
+            if ((ssidPasswordCurrentChar < 32) ||(ssidPasswordCurrentChar > 126) ) {
+              ssidPasswordCurrentChar = 126;  // '~'
+            }
           }
         } else {
-          ssidPasswordCurrentChar = ssidPasswordCurrentChar - 1;
-          if ((ssidPasswordCurrentChar < 32) ||(ssidPasswordCurrentChar > 126) ) {
-            ssidPasswordCurrentChar = 126;
+          if (ssidPasswordCurrentChar==ssidPasswordBlankChar) {
+            ssidPasswordCurrentChar = 64; // '@'
+          } else {
+            ssidPasswordCurrentChar = ssidPasswordCurrentChar + 1;
+            if (ssidPasswordCurrentChar > 126) {
+              ssidPasswordCurrentChar = 32; // ' ' space
+            }
           }
         }
         ssidPasswordChanged = true;
@@ -1263,7 +1271,7 @@ void resetFunctionStates() {
 String getLocoWithLength(String loco) {
   int locoNo = loco.toInt();
   String locoWithLength = "";
-  if (locoNo <= SHORT_DCC_ADDESS_LIMIT) {
+  if ( (locoNo <= SHORT_DCC_ADDESS_LIMIT) && (loco.charAt(0)!='0') ) {
     locoWithLength = "S" + loco;
   } else {
     locoWithLength = "L" + loco;
