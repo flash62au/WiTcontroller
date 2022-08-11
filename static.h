@@ -15,7 +15,7 @@ const String menu_select_wit_entry =        "0-9   * Back  # Go   E.btn OFF";
 const String menu_select_ssids =            "0-9     # Search      E.btn OFF";
 const String menu_select_ssids_from_found = "0-4    # Pg   9 List   E.btn OFF";
 
-const String menu_enter_ssid_password =     "E Chrs  E.btn Slct  * Bck # Entr";
+const String menu_enter_ssid_password =     "E Chrs  E.btn Slct  * Bck  # Go";
 
 const String direct_command_list = "Direct Commands";
 
