@@ -35,3 +35,9 @@
 // DCC Addresses below or equal to this number will be treated as short addresses.  
 // DCC++EX, NCE, Digitrax use 127, Lenz use 99
 #define SHORT_DCC_ADDESS_LIMIT 127  
+
+// speed increase for each click of the encoder 
+#define SPEED_STEP 4
+#define SPEED_STEP_MULTIPLIER 3  // for 'fast' speed steps
+// Additional multiplier.  If the multiplier is enabled from the menu, each rotation of the encoder becomes the speedStep * the AdditionalMultiplier
+#define SPEED_STEP_ADDITIONAL_MULTIPLIER 2

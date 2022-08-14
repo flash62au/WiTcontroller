@@ -15,12 +15,12 @@
 #include <U8g2lib.h>              // https://github.com/olikraus/u8g2
 #include <string>
 
-#include "static.h"              // change for non-english languages
-#include "actions.h"
-
 #include "config_network.h"      // LAN networks (SSIDs and passwords)
 #include "config_keypad_etc.h"   // hardware config - GPIOs - keypad, encoder; oled display type
 #include "config_buttons.h"      // keypad buttons assignments
+
+#include "static.h"              // change for non-english languages
+#include "actions.h"
 
 #include "WiTcontroller.h"
 

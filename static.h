@@ -90,12 +90,25 @@ const String menuText[10][3] = {
   {"Disconnect",  "9+# OFF           # Disconnect", ""},  //9
 };
 
-
+// if defined in config_buttons.h these values will be overwritten
+//
 // speed increase for each click of the encoder 
-const int speedStep = 4;
-const int speedStepMultiplier = 3;  // for 'fast' speed steps
+#ifdef SPEED_STEP
+  const int speedStep = SPEED_STEP;
+#else
+  const int speedStep = 4;
+#endif
+#ifdef SPEED_STEP_MULTIPLIER
+  const int speedStepMultiplier = SPEED_STEP_MULTIPLIER;  // for 'fast' speed steps
+#else
+  const int speedStepMultiplier = 3;  // for 'fast' speed steps
+#endif
 // Additional multiplier.  If the multiplier is enabled from the menu, each rotation of the encoder becomes the speedStep * the AdditionalMultiplier
-const int speedStepAdditionalMultiplier = 2;
+#ifdef SPEED_STEP_MULTIPLIER
+  const int speedStepAdditionalMultiplier = SPEED_STEP_MULTIPLIER;
+#else
+  const int speedStepAdditionalMultiplier = 2;
+#endif
 
 String witServerIpAndPortEntryMask = "###.###.###.###:#####";
 

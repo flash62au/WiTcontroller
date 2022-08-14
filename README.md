@@ -88,6 +88,7 @@ Optionally, edit this to change the mapping of the keypad buttons to specific fu
 - Command menu (see below for full list) including:
   - Able to select and deselect locos 
     - by their DCC address, via the keypad
+      - On NCE systems, a leading zero (0) will force a long address
     - from the first 50 locos in the roster
   - Able to throw/close turnouts/points
     - from the address
@@ -100,6 +101,7 @@ Optionally, edit this to change the mapping of the keypad buttons to specific fu
   - Disconnect / Reconnect
   - limited dealing with unexpected disconnects.  It will throw you back to the WiThtottle Server selection screen.
   - Put ESP32 in deep sleep and restart it
+  - Boundary between short and long DCC addresses can be configured in config_buttons.h
 
 
 **ToDo:**
@@ -108,7 +110,9 @@ Optionally, edit this to change the mapping of the keypad buttons to specific fu
   - automatic attempt to reconnect
 - functions are currently only sent to the earliest selected loco
 - change facing of a loco in consist
-- keep a list of ip addresses and ports if bonjour doesn't provide any
+- keep a list of ip addresses and ports if mDNS doesn't provide any
+- remember (for the current session only) recently selected locos
+- restructure the '9' menu item.
 
 ### Command menu:
 - 0-9 keys = pressing these directly will do whatever you has been preset in the sketch for them to do  (see \# below)
