@@ -119,7 +119,9 @@ Note: WiFi.h and ESPmDNS.h were automatically installed for me at some point whe
 ### Command menu:
 - 0-9 keys = pressing these directly will do whatever you has been preset in the sketch for them to do  (see \# below)
 - \* = Menu:  The button press following the \* is the actual command:
+
  - 1 = Add loco.  
+ 
       - Followed by the loco number, followed by \# to complete.  e.g. to select loco 99 you would press '\*199\#'
       - or \# alone to show the roster   \# again will show the next page
  - 2 = release loco:
