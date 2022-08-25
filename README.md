@@ -119,30 +119,28 @@ Note: WiFi.h and ESPmDNS.h were automatically installed for me at some point whe
 ### Command menu:
 - 0-9 keys = pressing these directly will do whatever you has been preset in the sketch for them to do  (see \# below)
 - \* = Menu:  The button press following the \* is the actual command:
-
- - 1 = Add loco.  
- 
-      - Followed by the loco number, followed by \# to complete.  e.g. to select loco 99 you would press '\*199\#'
-      - or \# alone to show the roster   \# again will show the next page
- - 2 = release loco:
-  - Followed by the loco number, followed by \# to release an individual loco.  e.g. to deselect the loco 99 you would press '\*299\#'
-  - Otherwise followed directly by \#  to release all e.g. '\*2\#'
- - 3 = Change direction.  Followed by \# to complete.  e.g. forward '\*21\#'  reverse '\*20\#'
- - 4 = Set / Unset a 2 times multiplier for the rotary encoder dial.
- - 5 = Throw turnout/point.  
-      - Followed by the turnout/point number, followed by the \# to complete.  e.g. Throw turnout XX12 '\*512\#'  (where XX is a prefix defined in the sketch) 
-      - or \# alone to show the list from the server   \# again will show the next page
- - 6 = Close turnout.    
-      - Followed by the turnout/point number, followed by \# to complete.  e.g. Close turnout XX12 '\*612\#'  (where XX is a prefix defined in the sketch)
-      - or \# alone to show the list from the server
- - 7 = Set Route.    
+  - 1 = Add loco.  
+     - Followed by the loco number, followed by \# to complete.  e.g. to select loco 99 you would press '\*199\#'
+     - or \# alone to show the roster   \# again will show the next page
+  - 2 = release loco:
+     - Followed by the loco number, followed by \# to release an individual loco.  e.g. to deselect the loco 99 you would press '\*299\#'
+     - Otherwise followed directly by \#  to release all e.g. '\*2\#'
+  - 3 = Change direction.  Followed by \# to complete.  e.g. forward '\*21\#'  reverse '\*20\#'
+  - 4 = Set / Unset a 2 times multiplier for the rotary encoder dial.
+  - 5 = Throw turnout/point.  
+     - Followed by the turnout/point number, followed by the \# to complete.  e.g. Throw turnout XX12 '\*512\#'  (where XX is a prefix defined in the sketch) 
+     - or \# alone to show the list from the server   \# again will show the next page
+  - 6 = Close turnout.    
+     - Followed by the turnout/point number, followed by \# to complete.  e.g. Close turnout XX12 '\*612\#'  (where XX is a prefix defined in the sketch)
+     - or \# alone to show the list from the server
+  - 7 = Set Route.    
       - Followed by the Route number, followed by \# to complete.  e.g. to Set route XX:XX:0012 '\*60012\#'  (where \'XX:XX:\' is a prefix defined in the sketch)
       - or \# alone to show the list from the server   \# again will show the next page
- - 0 = Function button. Followed by the loco number, Followed by \# to complete.  e.g. to set function 17 you would press '\*017\#'
- - 8 = Track Power On/Off. Followed by \# to complete.
- - 9 = Disconnect/reconnect. 
-       - Followed by \# to complete.  
-       - or followed by 9 then \# to put into deep sleep
+  - 0 = Function button. Followed by the loco number, Followed by \# to complete.  e.g. to set function 17 you would press '\*017\#'
+  - 8 = Track Power On/Off. Followed by \# to complete.
+  - 9 = Disconnect/reconnect. 
+      - Followed by \# to complete.  
+      - or followed by 9 then \# to put into deep sleep
 Pressing '\*' again before the '\#' will terminate the current command (but not start a new command)
  - \# = Pressing # alone will show the function the the numbered keys (0-9) perform, outside the menu.
 
