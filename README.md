@@ -104,7 +104,7 @@ Note: WiFi.h and ESPmDNS.h were automatically installed for me at some point whe
   - limited dealing with unexpected disconnects.  It will throw you back to the WiThtottle Server selection screen.
   - Put ESP32 in deep sleep and restart it
   - Boundary between short and long DCC addresses can be configured in config_buttons.h
-
+  - The default speed step (per encoder click) can be configured in config_buttons.h
 
 **ToDo:**
 - speed button repeat (i.e. hold the button down)
