@@ -68,6 +68,7 @@ Optionally, edit this to change the mapping of the keypad buttons to specific fu
 8. Upload the sketch  (Select the board type as 'WEMOS LOLIN32 Lite')
 
 Note: WiFi.h and ESPmDNS.h were automatically installed for me at some point when I installed VSC and Platform.io, but if you are using the Arduino IDE, you may need to install them manually.
+
 ---
 
 ## Using WiTController
