@@ -55,10 +55,10 @@ Note:
 3. Download or clone this repository. (Note: if you 'clone', it is easier to receive updates to the code.)
 4. Load the needed libraries to your PC (these can loaded from the library manager)
     * WiFi.h https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi
-    * ESPmDNS.h https://github.com/espressif/arduino-esp32/blob/master/libraries/ESPmDNS
+    * ESPmDNS.h https://github.com/espressif/arduino-esp32/blob/master/libraries/ESPmDNS  (You should be able to download it from here https://github.com/espressif/arduino-esp32 Then unzip it and copy 'just' the ESPmDNS folder to your own libraries folder )
     * AiEsp32RotaryEncoder.h https://github.com/igorantolic/ai-esp32-rotary-encoder
     * Keypad.h https://www.arduinolibraries.info/libraries/keypad
-    * U8g2lib.h
+    * U8g2lib.h   (Just get "U8g2" via the Arduino IDE Library Manager)
 5. Manually download or clone my version of WiThrottleProtocol library to you PC (this **must** be placed in the 'libraries' folder) (Note: if you 'clone', it is easier to receive updates to the code.)
     * WiThrottleProtocol.h https://github.com/flash62au/WiThrottleProtocol
 6. Copy **config_network_example.h** to **config_network.h**  
@@ -67,6 +67,7 @@ Then edit it to include the network ssids you want to use
 Optionally, edit this to change the mapping of the keypad buttons to specific functions 
 8. Upload the sketch  (Select the board type as 'WEMOS LOLIN32 Lite')
 
+Note: WiFi.h and ESPmDNS.h were automatically installed for me at some point when I installed VSC and Platform.io, but if you are using the Arduino IDE, you may need to install them manually.
 ---
 
 ## Using WiTController

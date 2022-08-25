@@ -8,11 +8,11 @@
  */
 
 #include <WiFi.h>                 // https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi
-#include <ESPmDNS.h>              // https://github.com/espressif/arduino-esp32/blob/master/libraries/ESPmDNS
+#include <ESPmDNS.h>              // https://github.com/espressif/arduino-esp32/blob/master/libraries/ESPmDNS (You should be able to download it from here https://github.com/espressif/arduino-esp32 Then unzip it and copy 'just' the ESPmDNS folder to your own libraries folder )
 #include <WiThrottleProtocol.h>   // https://github.com/flash62au/WiThrottleProtocol
 #include <AiEsp32RotaryEncoder.h> // https://github.com/igorantolic/ai-esp32-rotary-encoder
 #include <Keypad.h>               // https://www.arduinolibraries.info/libraries/keypad
-#include <U8g2lib.h>              // https://github.com/olikraus/u8g2
+#include <U8g2lib.h>              // https://github.com/olikraus/u8g2  (Just get "U8g2" via the Arduino IDE Library Manager)
 #include <string>
 
 #include "config_network.h"      // LAN networks (SSIDs and passwords)
