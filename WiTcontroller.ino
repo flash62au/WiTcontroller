@@ -331,17 +331,26 @@ void connectSsid() {
     debug_print("Trying Network "); debug_println(cSsid);
     clearOledArray(); 
     setAppnameForOled(); 
-    oledText[1] = selectedSsid; oledText[2] =  msg_trying_to_connect;
-    writeOledArray(false, false);
+    for (int i = 0; i < 3; ++i) {  // Try three times
+      oledText[1] = selectedSsid; oledText[2] =  msg_trying_to_connect + " (" + String(i) + ")";
+      writeOledArray(false, false);
 
-    WiFi.begin(cSsid, cPassword); 
+      nowTime = startTime;      
+      WiFi.begin(cSsid, cPassword); 
 
-    while ( (WiFi.status() != WL_CONNECTED) 
-      && ((nowTime-startTime) <= 10000) ) { // try for 10 seconds
       debug_print("Trying Network ... Checking status "); debug_print(cSsid); debug_print(" :"); debug_print(cPassword); debug_println(":");
-      delay(250);
-      debug_print(".");
-      nowTime = millis();
+      while ( (WiFi.status() != WL_CONNECTED) 
+        && ((nowTime-startTime) <= 10000) ) { // wait for X seconds to see if the connection worked
+        delay(250);
+        debug_print(".");
+        nowTime = millis();
+      }
+
+      if (WiFi.status() == WL_CONNECTED) {
+        break; 
+      } else { // if not loop back and try again
+        debug_println("");
+      }
     }
 
     debug_println("");

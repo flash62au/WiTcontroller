@@ -63,7 +63,7 @@ Note:
     * WiThrottleProtocol.h https://github.com/flash62au/WiThrottleProtocol
 6. Copy **config_network_example.h** to **config_network.h**  
 Then edit it to include the network ssids you want to use
-7. Copy **config_keypad_example.h** to **config_keypad.h**  
+7. Copy **config_buttons_example.h** to **config_buttons.h**  
 Optionally, edit this to change the mapping of the keypad buttons to specific functions 
 8. Upload the sketch  (Select the board type as 'WEMOS LOLIN32 Lite')
 

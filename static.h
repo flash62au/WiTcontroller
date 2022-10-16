@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 0.2";
+const String appVersion = "     Version 0.3";
 const String msg_start = "Start";
 
 const String menu_menu =         "# Key Defs                * Menu";
