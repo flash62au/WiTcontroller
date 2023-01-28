@@ -91,6 +91,7 @@ int currentSpeedStep = speedStep;
 
 int heartBeatPeriod = 10; // default to 10 seconds
 long lastServerResponseTime;  // seconds since start of Arduino
+boolean heartbeatCheckEnabled = true;
 
 // don't alter the assignments here
 // alter them in config_buttons.h

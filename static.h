@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 0.3";
+const String appVersion = "     Version 0.4";
 const String msg_start = "Start";
 
 const String menu_menu =         "# Key Defs                * Menu";
@@ -41,6 +41,9 @@ const String msg_start_sleep = "Shutting Down.        E.btn ON";
 const String msg_no_loco_selected = "        No Loco selected";
 const String msg_enter_password = "Enter Password";
 
+const String msg_heartbeatCheckEnabled = "Heartbeat Check Enabled";
+const String msg_heartbeatCheckDisabled = "Heartbeat Check Disabled";
+
 // const String label_locos = "Locos: ";
 // const String label_speed = "Speed: ";
 const String label_track_power = "TRK";
@@ -77,17 +80,18 @@ const String label_track_power = "TRK";
 
 #define MAX_LOCOS     10  // maximum number of locos that can be added to the consist
 
-const String menuText[10][3] = {
+const String menuText[11][3] = {
   {"Function",    "no+# Select           * Cancel", ""}, //0
   {"Add Loco",    "no+# Add   # Roster   * Cancel", ""}, //1
   {"Drop Loco",   "no+# One   # All      * Cancel", ""}, //2
   {"Toggle Dir",  "                      # Toggle", ""}, //3
-  {"X Speed Step","# Toggle              * Cancel", ""}, //4
+  {"X Speed Step","# Toggle                * Cancel", ""}, //4
   {"Throw Point", "no+# Throw   # List   * Cancel", ""}, //5
   {"Close Point", "no+# Close   # List   * Cancel", ""}, //6
   {"Route",       "no+# Select  # List   * Cancel", ""}, //7
-  {"Trk Power",   "# Toggle              * Cancel", ""}, //8 
-  {"Disconnect",  "9+# OFF           # Disconnect", ""},  //9
+  {"Trk Power",   "# Toggle                * Cancel", ""}, //8 
+  {"Extra",       "9+# OFF 8+# HrtBt   # Discnct", ""}, //9
+  {"Heartbeat",   "                       * Close", ""}, //10
 };
 
 // if defined in config_buttons.h these values will be overwritten

@@ -138,8 +138,9 @@ Note: WiFi.h and ESPmDNS.h were automatically installed for me at some point whe
       - or \# alone to show the list from the server   \# again will show the next page
   - 0 = Function button. Followed by the loco number, Followed by \# to complete.  e.g. to set function 17 you would press '\*017\#'
   - 8 = Track Power On/Off. Followed by \# to complete.
-  - 9 = Disconnect/reconnect. 
-      - Followed by \# to complete.  
+  - 9 = Extra. 
+      - Followed by \# to Disconnect/Reconnect.  
+      - or followed by 8 to toggle the heartbeat check.
       - or followed by 9 then \# to put into deep sleep
 Pressing '\*' again before the '\#' will terminate the current command (but not start a new command)
  - \# = Pressing # alone will show the function the the numbered keys (0-9) perform, outside the menu.

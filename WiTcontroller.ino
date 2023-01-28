@@ -50,7 +50,8 @@ class MyDelegate : public WiThrottleProtocolDelegate {
   
   public:
     void heartbeatConfig(int seconds) { 
-      debug_println("Received heart beat"); 
+      debug_print("Received heartbeat. From: "); debug_print(heartBeatPeriod); 
+      debug_print(" To: "); debug_println(seconds); 
       heartBeatPeriod = seconds;
     }
     void receivedVersion(String version) {    
@@ -817,7 +818,8 @@ void loop() {
 
       setLastServerResponseTime(false);
 
-      if (lastServerResponseTime+(heartBeatPeriod*4) < millis()/1000) {
+      if ( (lastServerResponseTime+(heartBeatPeriod*4) < millis()/1000) 
+      && (heartbeatCheckEnabled) ) {
         debug_print("Disconnected - Last:");  debug_print(lastServerResponseTime); debug_print(" Current:");  debug_println(millis()/1000);
         reconnect();
       }
@@ -1237,6 +1239,8 @@ void doMenu() {
         } else { // subcommand
           if (subcommand.equals("9")) { // sleep
             deepSleepStart();
+          } else if (subcommand.equals("8")) { // disable/enable the heartbeat Check
+            toggleHeartbeatCheck();
           }
         }
         break;
@@ -1352,6 +1356,17 @@ void toggleAdditionalMultiplier() {
 
   currentSpeedStep = speedStep * speedStepCurrentMultiplier;
   writeOledSpeed();
+}
+
+void toggleHeartbeatCheck() {
+  heartbeatCheckEnabled = !heartbeatCheckEnabled;
+  debug_print("Heartbeat Check: "); 
+  if (heartbeatCheckEnabled) {
+    debug_println("Enabled");
+  } else {
+    debug_println("Disabled");
+  }
+  writeHeartbeatCheck();
 }
 
 void toggleDirection() {
@@ -1586,6 +1601,19 @@ void writeOledMenu(String soFar) {
     oledText[5] = menuText[cmd][1];
     writeOledArray(false, false);
   }
+}
+
+void writeHeartbeatCheck() {
+  menuIsShowing = false;
+  clearOledArray();
+  oledText[0] = menuText[10][0];
+  if (heartbeatCheckEnabled) {
+    oledText[1] = msg_heartbeatCheckEnabled; 
+  } else {
+    oledText[1] = msg_heartbeatCheckDisabled; 
+  }
+  oledText[5] = menuText[10][1];
+  writeOledArray(false, false);
 }
 
 void writeOledSpeed() {
