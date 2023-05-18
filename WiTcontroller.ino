@@ -1040,13 +1040,13 @@ void doKeyPress(char key, boolean pressed) {
             selectRouteList(key - '0');
             break;
           case '#':  // next page
-            if ( (page+1)*10 <= routeListSize ) {
-              if ( page < ((routeListSize/10)-1) ) {
+            if ( routeListSize > 10 ) {
+              if ( (page+1)*10 < routeListSize ) {
                 page++;
-                writeOledRouteList(""); 
               } else {
                 page = 0;
               }
+              writeOledRouteList(""); 
             }
             break;
           case '*':  // cancel
@@ -1535,7 +1535,9 @@ void writeOledTurnoutList(String soFar, TurnoutAction action) {
     int j = 0;
     for (int i=0; i<10 && i<turnoutListSize; i++) {
       j = (i<5) ? j=i : j = i+1;
-      oledText[j] = String(turnoutListIndex[i]) + ": " + turnoutListUserName[(page*10)+i].substring(0,10);
+      if (turnoutListUserName[(page*10)+i].length()>0) {
+        oledText[j] = String(turnoutListIndex[i]) + ": " + turnoutListUserName[(page*10)+i].substring(0,10);
+      }
     }
     oledText[5] = menu_turnout_list;
     writeOledArray(false, false);
@@ -1552,7 +1554,9 @@ void writeOledRouteList(String soFar) {
     int j = 0;
     for (int i=0; i<10 && i<routeListSize; i++) {
       j = (i<5) ? j=i : j = i+1;
-      oledText[j] = String(routeListIndex[i]) + ": " + routeListUserName[(page*10)+i].substring(0,10);
+      if (routeListUserName[(page*10)+i].length()>0) {
+        oledText[j] = String(routeListIndex[i]) + ": " + routeListUserName[(page*10)+i].substring(0,10);
+      }
     }
     oledText[5] = menu_route_list;
     writeOledArray(false, false);
