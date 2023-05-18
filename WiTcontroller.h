@@ -46,7 +46,7 @@ String foundWitServersNames[maxFoundWitServers];
 int foundWitServersCount = 0;
 
 //found ssids
-#define maxFoundSsids 20     // must be a multiple of 5
+#define maxFoundSsids 60     // must be a multiple of 5
 String foundSsids[maxFoundSsids];
 boolean foundSsidsOpen[maxFoundSsids];
 int foundSsidsCount = 0;
