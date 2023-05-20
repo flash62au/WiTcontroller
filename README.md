@@ -39,14 +39,17 @@ Required Components
 * OLED Display 0.96" 128x64 Blue I2C IIC SSD1306 ([Example](https://www.ebay.com.au/itm/273746192621?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2060353.m2749.l2649))
 * Case - my one was 3d printed (see below)
 * Knob ([Example](https://www.jaycar.com.au/35mm-knob-matching-equipment-style/p/HK7766?pos=7&queryId=cbd19e2486968bca41273cc2dbce54a4&sort=relevance))
+* Optional: Up to 11 additional buttons can be added, each with their own independent commands. Four of these each require a 220k pullup resister.
 
 ![Assembly diagram](WiTcontroller%20pinouts%20v0.1.png)
 
-Note:
+Notes:
 
 * My case was 3D Printed for me by peteGSX (See the [Thingiverse.](https://www.thingiverse.com/thing:5440351) )
 * The 3x4 keypad he designed the case for came from Jaycar and is slightly narrower than the one you see in the 'deconstructed' view in the video above.
 * The case requires about a dozen M2x4mm screws
+
+* For a different take on what is possible by extending the design, have a look at: https://1fatgmc.com/RailRoad/DCC/page-5-B.html
 
 ## Loading the code
 
@@ -65,6 +68,7 @@ Note:
 Then edit it to include the network ssids you want to use
 7. Copy **config_buttons_example.h** to **config_buttons.h**  
 Optionally, edit this to change the mapping of the keypad buttons to specific functions 
+Optionally, edit this to configure the additional buttons to specific functions 
 8. Upload the sketch  (Select the board type as 'WEMOS LOLIN32 Lite')
 
 Note: WiFi.h and ESPmDNS.h were automatically installed for me at some point when I installed VSC and Platform.io, but if you are using the Arduino IDE, you may need to install them manually.

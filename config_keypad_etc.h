@@ -21,7 +21,7 @@ const int encoderDebounceTime = 5;   // in miliseconds
 // *******************************************************************************************************************
 // keypad
 
-// 4x4 keaypad
+// 4x4 keypad
 // #define ROW_NUM     4 // four rows
 // #define COLUMN_NUM  4 // four columns
 // char keys[ROW_NUM][COLUMN_NUM] = {
@@ -49,8 +49,19 @@ Keypad keypad = Keypad( makeKeymap(keys), pin_rows, pin_column, ROW_NUM, COLUMN_
 const int keypadDebounceTime = 10;   // in miliseconds
 const int keypadHoldTime = 200;   // in miliseconds
 
+
 // *******************************************************************************************************************
-// oled
+// additional / optional buttons
+
+// To use the additional buttons, adjust the functions assigned to them in config_buttons.h
+#define NO_ADDITIONAL_BUTTONS 11  // If you alter this number, you must also alter the additionalButtonActions array in WiTcontroller.h
+int additionalButtonPin[NO_ADDITIONAL_BUTTONS] = {5,15,25,26,27,32,33,34,35,36,39};   // 39=VN 36=VP
+int additionalButtonType[NO_ADDITIONAL_BUTTONS] = {INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT,INPUT,INPUT,INPUT};   // 34,35,36,39 don't have an internal pullup
+boolean additionalButtonRead[NO_ADDITIONAL_BUTTONS] =     {0,0,0,0,0,0,0,0,0,0,0};
+boolean additionalButtonLastRead[NO_ADDITIONAL_BUTTONS] = {0,0,0,0,0,0,0,0,0,0,0};
+
+// *******************************************************************************************************************
+// OLED
 
 #ifdef U8X8_HAVE_HW_SPI
 #include <SPI.h>                       // add to include path [Arduino install]\hardware\arduino\avr\libraries\SPI\src

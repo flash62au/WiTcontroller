@@ -635,7 +635,6 @@ void buildWitEntry() {
 //   Encoder
 // *********************************************************************************
 
-
 AiEsp32RotaryEncoder rotaryEncoder = AiEsp32RotaryEncoder(ROTARY_ENCODER_A_PIN, ROTARY_ENCODER_B_PIN, ROTARY_ENCODER_BUTTON_PIN, ROTARY_ENCODER_VCC_PIN, ROTARY_ENCODER_STEPS);
 void IRAM_ATTR readEncoderISR() {
   rotaryEncoder.readEncoder_ISR();
@@ -750,7 +749,11 @@ void encoderSpeedChange(boolean rotationIsClockwise, int speedChange) {
     }
   }
 }
- 
+
+// *********************************************************************************
+//   keypad
+// *********************************************************************************
+
 void keypadEvent(KeypadEvent key){
   switch (keypad.getState()){
   case PRESSED:
@@ -769,6 +772,51 @@ void keypadEvent(KeypadEvent key){
     break;
   default:
     debug_print("Button "); debug_print(String(key - '0')); debug_println(" unknown.");
+  }
+}
+
+
+// *********************************************************************************
+//   Optional Additional Buttons
+// *********************************************************************************
+
+void initialiseAdditionalButtons() {
+    for (int i = 0; i < NO_ADDITIONAL_BUTTONS; i++) { 
+      if (additionalButtonActions[i] != FUNCTION_NULL) { 
+        debug_print("Additional Button: "); debug_print(i); debug_print(" pin:"); debug_println(additionalButtonPin[i]);
+        pinMode(additionalButtonPin[i], additionalButtonType[i]);
+        if (additionalButtonType[i] == INPUT_PULLUP) {
+          additionalButtonLastRead[i] = HIGH;
+        } else {
+          additionalButtonLastRead[i] = LOW;
+        }
+      }
+  }
+}
+
+void additionalButtonLoop() {
+  if (wiThrottleProtocol.getNumberOfLocomotives()>0) { // only process if there are locos aquired
+    for (int i = 0; i < NO_ADDITIONAL_BUTTONS; i++) {    
+      if (additionalButtonActions[i] != FUNCTION_NULL) {
+        additionalButtonRead[i] = digitalRead(additionalButtonPin[i]);
+        // if ( ( ((additionalButtonType[i] == INPUT_PULLUP) && (additionalButtonRead[i] == LOW)) 
+        //       || ((additionalButtonType[i] == INPUT) && (additionalButtonRead[i] == HIGH)) )
+        //     && (additionalButtonLastRead[i] != additionalButtonRead[i]) )     { // on the first press only
+
+        if (additionalButtonLastRead[i] != additionalButtonRead[i]) { // on procces on a change
+          if ( ((additionalButtonType[i] == INPUT_PULLUP) && (additionalButtonRead[i] == LOW)) 
+              || ((additionalButtonType[i] == INPUT) && (additionalButtonRead[i] == HIGH)) ) {
+            debug_print("Additional Button Pressed: "); debug_print(i); debug_print(" pin:"); debug_print(additionalButtonPin[i]); debug_print(" action:"); debug_println(additionalButtonActions[i]); 
+            doDirectAdditionalButtonCommand(i,true);
+          }else {
+            debug_print("Additional Button Released: "); debug_print(i); debug_print(" pin:"); debug_print(additionalButtonPin[i]); debug_print(" action:"); debug_println(additionalButtonActions[i]); 
+            doDirectAdditionalButtonCommand(i,false);
+          }
+        }
+
+        additionalButtonLastRead[i] = additionalButtonRead[i];
+      }
+    }
   }
 }
 
@@ -803,6 +851,8 @@ void setup() {
   keypadUseType = KEYPAD_USE_SELECT_SSID;
   encoderUseType = ENCODER_USE_OPERATION;
   ssidSelectionSource = SSID_CONNECTION_SOURCE_BROWSE;
+
+  initialiseAdditionalButtons();
 }
 
 void loop() {
@@ -827,6 +877,8 @@ void loop() {
   }
   char key = keypad.getKey();
   rotary_loop();
+
+  additionalButtonLoop(); 
 
 	// debug_println("loop:" );
 }
@@ -1080,62 +1132,83 @@ void doDirectCommand (char key, boolean pressed) {
   if (buttonAction!=FUNCTION_NULL) {
     if ( (buttonAction>=FUNCTION_0) && (buttonAction<=FUNCTION_28) ) {
       doDirectFunction(buttonAction, pressed);
-
-    } else {
+  } else {
       if (pressed) { // only process these on the key press, not the release
-        switch (buttonAction) {
-            case DIRECTION_FORWARD: {
-              changeDirection(Forward);
-              break; 
-            }
-            case DIRECTION_REVERSE: {
-              changeDirection(Reverse);
-              break; 
-            }
-            case DIRECTION_TOGGLE: {
-              toggleDirection();
-              break; 
-            }
-            case SPEED_UP: {
-              speedUp(currentSpeedStep);
-              break; 
-            }
-            case SPEED_DOWN: {
-              speedDown(currentSpeedStep);
-              break; 
-            }
-            case SPEED_UP_FAST: {
-              speedUp(currentSpeedStep*speedStepMultiplier);
-              break; 
-            }
-            case SPEED_DOWN_FAST: {
-              speedUp(currentSpeedStep*speedStepMultiplier);
-              break; 
-            }
-            case SPEED_MULTIPLIER: {
-              toggleAdditionalMultiplier();
-              break; 
-            }
-            case E_STOP: {
-              speedEstop();
-              break; 
-            }
-            case POWER_ON: {
-              powerOnOff(PowerOn);
-              break; 
-            }
-            case POWER_OFF: {
-              powerOnOff(PowerOff);
-              break; 
-            }
-            case POWER_TOGGLE: {
-              powerToggle();
-              break; 
-            }
-        }
+        doDirectAction(buttonAction);
       }
     }
   }
+}
+
+void doDirectAdditionalButtonCommand (int buttonIndex, boolean pressed) {
+  debug_print("Direct Additional Button command: "); debug_println(buttonIndex);
+  int buttonAction = additionalButtonActions[buttonIndex];
+  if (buttonAction!=FUNCTION_NULL) {
+    if ( (buttonAction>=FUNCTION_0) && (buttonAction<=FUNCTION_28) ) {
+      doDirectFunction(buttonAction, pressed);
+  } else {
+      if (pressed) { // only process these on the key press, not the release
+        doDirectAction(buttonAction);
+      }
+    }
+  }
+}
+
+void doDirectAction(int buttonAction) {
+  switch (buttonAction) {
+    case DIRECTION_FORWARD: {
+      changeDirection(Forward);
+      break; 
+    }
+    case DIRECTION_REVERSE: {
+      changeDirection(Reverse);
+      break; 
+    }
+    case DIRECTION_TOGGLE: {
+      toggleDirection();
+      break; 
+    }
+    case SPEED_STOP: {
+      speedSet(0);
+      break; 
+    }
+    case SPEED_UP: {
+      speedUp(currentSpeedStep);
+      break; 
+    }
+    case SPEED_DOWN: {
+      speedDown(currentSpeedStep);
+      break; 
+    }
+    case SPEED_UP_FAST: {
+      speedUp(currentSpeedStep*speedStepMultiplier);
+      break; 
+    }
+    case SPEED_DOWN_FAST: {
+      speedUp(currentSpeedStep*speedStepMultiplier);
+      break; 
+    }
+    case SPEED_MULTIPLIER: {
+      toggleAdditionalMultiplier();
+      break; 
+    }
+    case E_STOP: {
+      speedEstop();
+      break; 
+    }
+    case POWER_ON: {
+      powerOnOff(PowerOn);
+      break; 
+    }
+    case POWER_OFF: {
+      powerOnOff(PowerOff);
+      break; 
+    }
+    case POWER_TOGGLE: {
+      powerToggle();
+      break; 
+    }
+}
 }
 
 void doMenu() {
