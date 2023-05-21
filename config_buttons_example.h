@@ -44,6 +44,8 @@
 
 // define what each of the optional additional buttons will do
 // see static.h or README.md for details on the allowed functions
+// all must be included, just set the ones you don't need to FUNCTION_NULL
+// the button numbers relate to the GPIO pins 5,15,25,26,27,32,33,34,35,36,39    39=VN 36=VP
 #define CHOSEN_ADDITIONAL_BUTTON_0_FUNCTION FUNCTION_NULL
 #define CHOSEN_ADDITIONAL_BUTTON_1_FUNCTION FUNCTION_NULL
 #define CHOSEN_ADDITIONAL_BUTTON_2_FUNCTION FUNCTION_NULL
