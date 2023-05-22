@@ -155,3 +155,89 @@ int additionalButtonActions[NO_ADDITIONAL_BUTTONS] = {
                           CHOSEN_ADDITIONAL_BUTTON_9_FUNCTION,
                           CHOSEN_ADDITIONAL_BUTTON_10_FUNCTION
 };
+
+
+// function prototypes
+
+void displayUpdateFromWit(void);
+void ssidsLoop(void);
+void browseSsids(void);
+void selectSsidFromFound(int);
+void getSsidPasswordAndWitIpForFound(void);
+void enterSsidPassword(void);
+void showListOfSsids(void);
+void selectSsid(int);
+void connectSsid(void);
+
+void witServiceLoop(void);
+void browseWitService(void);
+void selectWitServer(int);
+void connectWitServer(void);
+void enterWitServer(void);
+void disconnectWitServer(void);
+void witEntryAddChar(char);
+void witEntryDeleteChar(char);
+
+void ssidPasswordAddChar(char);
+void ssidPasswordDeleteChar(char);
+void buildWitEntry(void);
+
+void IRAM_ATTR readEncoderISR(void);
+void rotary_onButtonClick(void);
+void rotary_loop(void);
+void encoderSpeedChange(boolean, int);
+void keypadEvent(KeypadEvent);
+void initialiseAdditionalButtons(void);
+void additionalButtonLoop(void);
+
+void setup(void);
+void loop(void);
+
+void doKeyPress(char, boolean);
+void doDirectCommand (char, boolean);
+void doDirectAdditionalButtonCommand (int, boolean);
+void doDirectAction(int);
+void doMenu(void);
+void resetMenu(void);
+
+void resetFunctionStates(void);
+String getLocoWithLength(String);
+void speedEstop(void);
+void speedDown(int);
+void speedUp(int);
+void speedSet(int);
+void releaseAllLocos(void);
+void toggleAdditionalMultiplier(void);
+void toggleHeartbeatCheck(void);
+void toggleDirection(void);
+void changeDirection(Direction);
+
+void doDirectFunction(int, boolean);
+void doFunction(int, boolean);
+
+void powerOnOff(TrackPower);
+void powerToggle(void);
+void reconnect(void);
+void setLastServerResponseTime(boolean);
+
+void selectRoster(int);
+void selectTurnoutList(int, TurnoutAction);
+void selectRouteList(int);
+
+void setAppnameForOled(void);
+void writeOledFoundSSids(String);
+void writeOledRoster(String);
+void writeOledTurnoutList(String, TurnoutAction);
+void writeOledRouteList(String);
+void writeOledEnterPassword(void);
+void writeOledMenu(String);
+void writeHeartbeatCheck(void);
+void writeOledSpeed(void);
+void writeOledFunctions(void);
+void writeOledArray(boolean, boolean);
+void writeOledArray(boolean, boolean, boolean);
+void writeOledArray(boolean, boolean, boolean, boolean);
+void clearOledArray(void);
+void writeOledDirectCommands(void);
+
+void deepSleepStart(void);

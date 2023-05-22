@@ -153,7 +153,7 @@ void ssidsLoop() {
   }
 }
 
-void browseSsids(){ // show the found SSIDs
+void browseSsids() { // show the found SSIDs
   debug_println("browseSsids()");
 
   double startTime = millis();
@@ -250,7 +250,7 @@ void enterSsidPassword() {
     ssidPasswordChanged = false;
   }
 }
-void showListOfSsids(){  // show the list from the specified values in config_network.h
+void showListOfSsids() {  // show the list from the specified values in config_network.h
   debug_println("showListOfSsids()");
 
   clearOledArray(); 
@@ -403,7 +403,7 @@ void witServiceLoop() {
   }
 }
 
-void browseWitService(){
+void browseWitService() {
   debug_println("browseWitService()");
 
   keypadUseType = KEYPAD_USE_SELECT_WITHROTTLE_SERVER;
@@ -754,7 +754,7 @@ void encoderSpeedChange(boolean rotationIsClockwise, int speedChange) {
 //   keypad
 // *********************************************************************************
 
-void keypadEvent(KeypadEvent key){
+void keypadEvent(KeypadEvent key) {
   switch (keypad.getState()){
   case PRESSED:
     debug_print("Button "); debug_print(String(key - '0')); debug_println(" pushed.");
