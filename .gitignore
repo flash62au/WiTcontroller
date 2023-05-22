@@ -49,6 +49,8 @@ build\*.*
 build/*.*
 build/sketch/*.*
 build\sketch\*.*
+build/preproc/*.*
+build\preproc\*.*
 ./build/*.*
 
 .pio
