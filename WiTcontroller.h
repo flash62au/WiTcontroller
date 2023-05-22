@@ -127,7 +127,7 @@ const String directCommandText[4][3] = {
 
 // incase the values are not defined in config_buttons.h
 // DO NOT alter the values here 
-#ifndef CHOSEN_ADDITIONAL_BUTTON_0_FUNCTION;
+#ifndef CHOSEN_ADDITIONAL_BUTTON_0_FUNCTION
   #define CHOSEN_ADDITIONAL_BUTTON_0_FUNCTION FUNCTION_NULL
   #define CHOSEN_ADDITIONAL_BUTTON_1_FUNCTION FUNCTION_NULL
   #define CHOSEN_ADDITIONAL_BUTTON_2_FUNCTION FUNCTION_NULL

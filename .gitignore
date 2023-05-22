@@ -39,7 +39,6 @@
 *.bin
 *.elf
 *.json
-*.cpp
 *.cpp.d
 *.cpp.o
 *.ino.bin
@@ -51,7 +50,6 @@ build/*.*
 build/sketch/*.*
 build\sketch\*.*
 ./build/*.*
-*.cpp
 
 .pio
 
