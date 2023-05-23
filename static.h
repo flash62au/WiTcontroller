@@ -1,21 +1,21 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 0.6";
+const String appVersion = "     Version 0.7";
 const String msg_start = "Start";
 
-const String menu_menu =         "# Key Defs                * Menu";
-const String menu_finish =       "# Finish";
-const String menu_cancel =       "                          * Cancel";
-const String menu_show_direct =  "# Show Direct";
-const String menu_roster =       "0-9        # Pg   * Cancel";
-const String menu_turnout_list = "0-9        # Pg   * Cancel";
-const String menu_route_list =   "0-9        # Pg   * Cancel";
+const String menu_menu =         "* Menu                # Key Defs";
+const String menu_finish =       "                        # Finish";
+const String menu_cancel =       "* Cancel";
+const String menu_show_direct =  "                  # Show Direct";
+const String menu_roster =       "* Cancel      0-9      #Pg";
+const String menu_turnout_list = "* Cancel      0-9      #Pg";
+const String menu_route_list =   "* Cancel      0-9      #Pg";
 
 const String menu_select_wit_service =      "0-4      # Entry      E.btn OFF";
 const String menu_select_wit_entry =        "0-9   * Back  # Go   E.btn OFF";
 const String menu_select_ssids =            "0-9     # Search      E.btn OFF";
-const String menu_select_ssids_from_found = "0-4    # Pg   9 List   E.btn OFF";
+const String menu_select_ssids_from_found = "0-4    9 List  # Pg   E.btn OFF";
 
-const String menu_enter_ssid_password =     "E Chrs  E.btn Slct  * Bck  # Go";
+const String menu_enter_ssid_password =     "E Chrs  E.btn Slct  # Go  * Bck";
 
 const String direct_command_list = "Direct Commands";
 
@@ -81,17 +81,17 @@ const String label_track_power = "TRK";
 #define MAX_LOCOS     10  // maximum number of locos that can be added to the consist
 
 const String menuText[11][3] = {
-  {"Function",    "no+# Select           * Cancel", ""}, //0
-  {"Add Loco",    "no+# Add   # Roster   * Cancel", ""}, //1
-  {"Drop Loco",   "no+# One   # All      * Cancel", ""}, //2
-  {"Toggle Dir",  "                      # Toggle", ""}, //3
-  {"X Speed Step","# Toggle                * Cancel", ""}, //4
-  {"Throw Point", "no+# Throw   # List   * Cancel", ""}, //5
-  {"Close Point", "no+# Close   # List   * Cancel", ""}, //6
-  {"Route",       "no+# Select  # List   * Cancel", ""}, //7
-  {"Trk Power",   "# Toggle                * Cancel", ""}, //8 
+  {"Function",    "* Cancel           no+# Select", ""}, //0
+  {"Add Loco",    "no+# Add   * Cancel   # Roster", ""}, //1
+  {"Drop Loco",   "no+# One    * Cancel     # All", ""}, //2
+  {"Toggle Dir",  "# Toggle                      ", ""}, //3
+  {"X Speed Step","* Cancel                # Toggle", ""}, //4
+  {"Throw Point", "no+# Throw   * Cancel   # List", ""}, //5
+  {"Close Point", "no+# Close   * Cancel   # List", ""}, //6
+  {"Route",       "no+# Select  * Cancel   # List", ""}, //7
+  {"Trk Power",   "* Cancel                # Toggle", ""}, //8 
   {"Extra",       "9+# OFF 8+# HrtBt   # Discnct", ""}, //9
-  {"Heartbeat",   "                       * Close", ""}, //10
+  {"Heartbeat",   "* Close                       ", ""}, //10
 };
 
 // if defined in config_buttons.h these values will be overwritten

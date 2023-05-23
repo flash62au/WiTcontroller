@@ -4,7 +4,7 @@
 #define ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED false
 
 // true = if the locos(s) are stationary, clicking the encoder button will toggle the direction
-#define TOGGLE_DIRECTION_ON_ENCODER_BUUTTON_PRESSED_WHEN_STATIONAY true
+#define TOGGLE_DIRECTION_ON_ENCODER_BUTTON_PRESSED_WHEN_STATIONAY true
 
 // define what each button will do as direct press (not in a menu)   * and # cannot be remapped
 // see static.h or README.md for details on the allowed functions
@@ -45,7 +45,7 @@
 // define what each of the optional additional buttons will do
 // see static.h or README.md for details on the allowed functions
 // all must be included, just set the ones you don't need to FUNCTION_NULL
-// the button numbers relate to the GPIO pins 5,15,25,26,27,32,33,34,35,36,39    39=VN 36=VP
+// the button numbers relate to the GPIO pins 5,15,25,26,27,32,33
 #define CHOSEN_ADDITIONAL_BUTTON_0_FUNCTION FUNCTION_NULL   // GPIO 5
 #define CHOSEN_ADDITIONAL_BUTTON_1_FUNCTION FUNCTION_NULL   // GPIO 15
 #define CHOSEN_ADDITIONAL_BUTTON_2_FUNCTION FUNCTION_NULL   // GPIO 25
@@ -53,7 +53,3 @@
 #define CHOSEN_ADDITIONAL_BUTTON_4_FUNCTION FUNCTION_NULL   // GPIO 27
 #define CHOSEN_ADDITIONAL_BUTTON_5_FUNCTION FUNCTION_NULL   // GPIO 32
 #define CHOSEN_ADDITIONAL_BUTTON_6_FUNCTION FUNCTION_NULL   // GPIO 33
-#define CHOSEN_ADDITIONAL_BUTTON_7_FUNCTION FUNCTION_NULL   // GPIO 34
-#define CHOSEN_ADDITIONAL_BUTTON_8_FUNCTION FUNCTION_NULL   // GPIO 35
-#define CHOSEN_ADDITIONAL_BUTTON_9_FUNCTION FUNCTION_NULL   // GPIO 36
-#define CHOSEN_ADDITIONAL_BUTTON_10_FUNCTION FUNCTION_NULL   // GPIO 39

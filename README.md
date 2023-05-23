@@ -62,7 +62,7 @@ Notes:
     * AiEsp32RotaryEncoder.h https://github.com/igorantolic/ai-esp32-rotary-encoder
     * Keypad.h https://www.arduinolibraries.info/libraries/keypad
     * U8g2lib.h   (Just get "U8g2" via the Arduino IDE Library Manager)
-5. Manually download or clone my version of WiThrottleProtocol library to you PC (this **must** be placed in the 'libraries' folder) (Note: if you 'clone', it is easier to receive updates to the code.)
+5. Manually download or clone my version of WiThrottleProtocol library to your PC (this **must** be placed in the 'libraries' folder) (Note: if you 'clone', it is easier to receive updates to the code.)
     * WiThrottleProtocol.h https://github.com/flash62au/WiThrottleProtocol
 6. Copy **config_network_example.h** to **config_network.h**  
 Then edit it to include the network ssids you want to use

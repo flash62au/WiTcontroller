@@ -54,11 +54,11 @@ const int keypadHoldTime = 200;   // in miliseconds
 // additional / optional buttons
 
 // To use the additional buttons, adjust the functions assigned to them in config_buttons.h
-#define NO_ADDITIONAL_BUTTONS 11  // If you alter this number, you must also alter the additionalButtonActions array in WiTcontroller.h
-int additionalButtonPin[NO_ADDITIONAL_BUTTONS] = {5,15,25,26,27,32,33,34,35,36,39};   // 39=VN 36=VP
-int additionalButtonType[NO_ADDITIONAL_BUTTONS] = {INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT,INPUT,INPUT,INPUT};   // 34,35,36,39 don't have an internal pullup
-boolean additionalButtonRead[NO_ADDITIONAL_BUTTONS] =     {0,0,0,0,0,0,0,0,0,0,0};
-boolean additionalButtonLastRead[NO_ADDITIONAL_BUTTONS] = {0,0,0,0,0,0,0,0,0,0,0};
+#define MAX_ADDITIONAL_BUTTONS 7  // If you alter this number, you must also alter the additionalButtonActions array in WiTcontroller.ino
+int additionalButtonPin[MAX_ADDITIONAL_BUTTONS] = {5,15,25,26,27,32,33};
+int additionalButtonType[MAX_ADDITIONAL_BUTTONS] = {INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP};   // 34,35,36,39 don't have an internal pullup
+boolean additionalButtonRead[MAX_ADDITIONAL_BUTTONS] =     {0,0,0,0,0,0,0};
+boolean additionalButtonLastRead[MAX_ADDITIONAL_BUTTONS] = {0,0,0,0,0,0,0};
 
 // *******************************************************************************************************************
 // OLED

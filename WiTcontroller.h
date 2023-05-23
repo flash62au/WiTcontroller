@@ -1,161 +1,91 @@
-
-int keypadUseType = KEYPAD_USE_OPERATION;
-int encoderUseType = ENCODER_USE_OPERATION;
-
-boolean menuCommandStarted = false;
-String menuCommand = "";
-boolean menuIsShowing = false;
-
-String oledText[18] = {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""};
-
-int currentSpeed = 0;
-Direction currentDirection = Forward;
-int speedStepCurrentMultiplier = 1;
-
-TrackPower trackPower = PowerUnknown;
-String turnoutPrefix = "";
-String routePrefix = "";
-
-// encode variables
-bool circleValues = true;
-int encoderValue = 0;
-int lastEncoderValue = 0;
-
-// server variables
-// boolean ssidConnected = false;
-String selectedSsid = "";
-String selectedSsidPassword = "";
-int ssidConnectionState = CONNECTION_STATE_DISCONNECTED;
-
-// ssid password entry
-String ssidPasswordEntered = "";
-boolean ssidPasswordChanged = true;
-char ssidPasswordCurrentChar = ssidPasswordBlankChar; 
-
-IPAddress selectedWitServerIP;
-int selectedWitServerPort = 0;
-String selectedWitServerName ="";
-int noOfWitServices = 0;
-int witConnectionState = CONNECTION_STATE_DISCONNECTED;
-
-//found wiThrottle servers
 #define maxFoundWitServers 5     // must be 5 for the moment
-IPAddress foundWitServersIPs[maxFoundWitServers];
-int foundWitServersPorts[maxFoundWitServers];
-String foundWitServersNames[maxFoundWitServers];
-int foundWitServersCount = 0;
-
-//found ssids
 #define maxFoundSsids 60     // must be a multiple of 5
-String foundSsids[maxFoundSsids];
-boolean foundSsidsOpen[maxFoundSsids];
-int foundSsidsCount = 0;
-int ssidSelectionSource;
-
-// wit Server ip entry
-String witServerIpAndPortConstructed = "###.###.###.###:#####";
-String witServerIpAndPortEntered = "";
-boolean witServerIpAndPortChanged = true;
-
-// roster variables
 #define maxRoster 60     // must be a multiple of 10
-int rosterSize = 0;
-int rosterIndex[maxRoster]; 
-String rosterName[maxRoster]; 
-int rosterAddress[maxRoster];
-char rosterLength[maxRoster];
+#define maxTurnoutList 60     // must be a multiple of 10
+#define maxRouteList 60     // must be a multiple of 10
 
-int page = 0;
 
-// turnout variables
-#define maxTurnoutList 50     // must be a multiple of 10
-int turnoutListSize = 0;
-int turnoutListIndex[maxTurnoutList]; 
-String turnoutListSysName[maxTurnoutList]; 
-String turnoutListUserName[maxTurnoutList];
-int turnoutListState[maxTurnoutList];
+extern int keypadUseType;
+extern int encoderUseType;
 
-// route variables
-#define maxRouteList 50     // must be a multiple of 10
-int routeListSize = 0;
-int routeListIndex[maxRouteList]; 
-String routeListSysName[maxRouteList]; 
-String routeListUserName[maxRouteList];
-int routeListState[maxRouteList];
+extern boolean menuCommandStarted;
+extern String menuCommand;
+extern boolean menuIsShowing;
 
-// function states
-boolean functionStates[28];
+extern String oledText[];
 
-// speedstep
-int currentSpeedStep = speedStep;
+extern int currentSpeed;
+extern Direction currentDirection;
+extern int speedStepCurrentMultiplier;
 
-int heartBeatPeriod = 10; // default to 10 seconds
-long lastServerResponseTime;  // seconds since start of Arduino
-boolean heartbeatCheckEnabled = true;
+extern TrackPower trackPower;
+extern String turnoutPrefix;
+extern String routePrefix;
 
-// don't alter the assignments here
-// alter them in config_buttons.h
+extern bool circleValues;
+extern int encoderValue;
+extern int lastEncoderValue;
 
-const char* deviceName = DEVICE_NAME;
+extern String selectedSsid;
+extern String selectedSsidPassword;
+extern int ssidConnectionState;
 
-const boolean encoderRotationClockwiseIsIncreaseSpeed = ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED;
-// false = Counterclockwise  true = clockwise
+extern String ssidPasswordEntered;
+extern boolean ssidPasswordChanged;
+extern char ssidPasswordCurrentChar; 
 
-const boolean toggleDirectionOnEncoderButtonPressWhenStationary = TOGGLE_DIRECTION_ON_ENCODER_BUUTTON_PRESSED_WHEN_STATIONAY;
-// true = if the locos(s) are stationary, clicking the encoder button will toggle the direction
+extern IPAddress selectedWitServerIP;
+extern int selectedWitServerPort;
+extern String selectedWitServerName;
+extern int noOfWitServices;
+extern int witConnectionState;
 
-//4x3 keypad
-int buttonActions[10] = { CHOSEN_KEYPAD_0_FUNCTION,
-                          CHOSEN_KEYPAD_1_FUNCTION,
-                          CHOSEN_KEYPAD_2_FUNCTION,
-                          CHOSEN_KEYPAD_3_FUNCTION,
-                          CHOSEN_KEYPAD_4_FUNCTION,
-                          CHOSEN_KEYPAD_5_FUNCTION,
-                          CHOSEN_KEYPAD_6_FUNCTION,
-                          CHOSEN_KEYPAD_7_FUNCTION,
-                          CHOSEN_KEYPAD_8_FUNCTION,
-                          CHOSEN_KEYPAD_9_FUNCTION
-};
+extern IPAddress foundWitServersIPs[];
+extern int foundWitServersPorts[];
+extern String foundWitServersNames[];
+extern int foundWitServersCount;
 
-// text that will appear when you press #
-const String directCommandText[4][3] = {
-    {CHOSEN_KEYPAD_1_DISPLAY_NAME, CHOSEN_KEYPAD_2_DISPLAY_NAME, CHOSEN_KEYPAD_3_DISPLAY_NAME},
-    {CHOSEN_KEYPAD_4_DISPLAY_NAME, CHOSEN_KEYPAD_5_DISPLAY_NAME, CHOSEN_KEYPAD_6_DISPLAY_NAME},
-    {CHOSEN_KEYPAD_7_DISPLAY_NAME, CHOSEN_KEYPAD_8_DISPLAY_NAME, CHOSEN_KEYPAD_9_DISPLAY_NAME},
-    {"* Menu", CHOSEN_KEYPAD_0_DISPLAY_NAME, "# This"}
-};
+extern String foundSsids[];
+extern boolean foundSsidsOpen[];
+extern int foundSsidsCount;
+extern int ssidSelectionSource;
 
-// incase the values are not defined in config_buttons.h
-// DO NOT alter the values here 
-#ifndef CHOSEN_ADDITIONAL_BUTTON_0_FUNCTION
-  #define CHOSEN_ADDITIONAL_BUTTON_0_FUNCTION FUNCTION_NULL
-  #define CHOSEN_ADDITIONAL_BUTTON_1_FUNCTION FUNCTION_NULL
-  #define CHOSEN_ADDITIONAL_BUTTON_2_FUNCTION FUNCTION_NULL
-  #define CHOSEN_ADDITIONAL_BUTTON_3_FUNCTION FUNCTION_NULL
-  #define CHOSEN_ADDITIONAL_BUTTON_4_FUNCTION FUNCTION_NULL
-  #define CHOSEN_ADDITIONAL_BUTTON_5_FUNCTION FUNCTION_NULL
-  #define CHOSEN_ADDITIONAL_BUTTON_6_FUNCTION FUNCTION_NULL
-  #define CHOSEN_ADDITIONAL_BUTTON_7_FUNCTION FUNCTION_NULL
-  #define CHOSEN_ADDITIONAL_BUTTON_8_FUNCTION FUNCTION_NULL
-  #define CHOSEN_ADDITIONAL_BUTTON_9_FUNCTION FUNCTION_NULL
-  #define CHOSEN_ADDITIONAL_BUTTON_10_FUNCTION FUNCTION_NULL
-#endif
+extern String witServerIpAndPortConstructed;
+extern String witServerIpAndPortEntered;
+extern boolean witServerIpAndPortChanged;
 
-//optional additional buttons
-int additionalButtonActions[NO_ADDITIONAL_BUTTONS] = { 
-                          CHOSEN_ADDITIONAL_BUTTON_0_FUNCTION,
-                          CHOSEN_ADDITIONAL_BUTTON_1_FUNCTION,
-                          CHOSEN_ADDITIONAL_BUTTON_2_FUNCTION,
-                          CHOSEN_ADDITIONAL_BUTTON_3_FUNCTION,
-                          CHOSEN_ADDITIONAL_BUTTON_4_FUNCTION,
-                          CHOSEN_ADDITIONAL_BUTTON_5_FUNCTION,
-                          CHOSEN_ADDITIONAL_BUTTON_6_FUNCTION,
-                          CHOSEN_ADDITIONAL_BUTTON_7_FUNCTION,
-                          CHOSEN_ADDITIONAL_BUTTON_8_FUNCTION,
-                          CHOSEN_ADDITIONAL_BUTTON_9_FUNCTION,
-                          CHOSEN_ADDITIONAL_BUTTON_10_FUNCTION
-};
+extern int rosterSize;
+extern int rosterIndex[]; 
+extern String rosterName[]; 
+extern int rosterAddress[];
+extern char rosterLength[];
 
+extern int page;
+
+extern int turnoutListSize;
+extern int turnoutListIndex[]; 
+extern String turnoutListSysName[]; 
+extern String turnoutListUserName[];
+extern int turnoutListState[];
+
+extern int routeListSize;
+extern int routeListIndex[]; 
+extern String routeListSysName[]; 
+extern String routeListUserName[];
+extern int routeListState[];
+extern boolean functionStates[];
+extern int currentSpeedStep;
+extern int heartBeatPeriod;
+extern long lastServerResponseTime;
+extern boolean heartbeatCheckEnabled;
+extern const char* deviceName;
+extern const boolean encoderRotationClockwiseIsIncreaseSpeed;
+extern const boolean toggleDirectionOnEncoderButtonPressWhenStationary;
+extern int buttonActions[];
+extern const String directCommandText[][3];
+extern int additionalButtonActions[];
+
+extern AiEsp32RotaryEncoder rotaryEncoder;
 
 // function prototypes
 
