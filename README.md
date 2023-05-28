@@ -43,6 +43,9 @@ Required Components
 
 ![Assembly diagram](WiTcontroller%20pinouts%20v0.1.png)
 
+![Assembly diagram - Optional Additional Buttons](WiTcontroller%20-%20Optional%20Buttons%20-%20pinouts%20v0.1.png)
+
+
 Notes:
 
 * My case was 3D Printed for me by peteGSX (See the [Thingiverse.](https://www.thingiverse.com/thing:5440351) )
