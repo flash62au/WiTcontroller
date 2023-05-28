@@ -7,12 +7,12 @@
   - Flash the sketch 
  */
 
-#include <WiFi.h>                 // https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi
+#include <WiFi.h>                 // https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi     GPL 2.1
 #include <ESPmDNS.h>              // https://github.com/espressif/arduino-esp32/blob/master/libraries/ESPmDNS (You should be able to download it from here https://github.com/espressif/arduino-esp32 Then unzip it and copy 'just' the ESPmDNS folder to your own libraries folder )
-#include <WiThrottleProtocol.h>   // https://github.com/flash62au/WiThrottleProtocol
-#include <AiEsp32RotaryEncoder.h> // https://github.com/igorantolic/ai-esp32-rotary-encoder
-#include <Keypad.h>               // https://www.arduinolibraries.info/libraries/keypad
-#include <U8g2lib.h>              // https://github.com/olikraus/u8g2  (Just get "U8g2" via the Arduino IDE Library Manager)
+#include <WiThrottleProtocol.h>   // https://github.com/flash62au/WiThrottleProtocol                           Creative Commons 4.0  Attribution-ShareAlike
+#include <AiEsp32RotaryEncoder.h> // https://github.com/igorantolic/ai-esp32-rotary-encoder                    GPL 2.0
+#include <Keypad.h>               // https://www.arduinolibraries.info/libraries/keypad                        GPL 3.0
+#include <U8g2lib.h>              // https://github.com/olikraus/u8g2  (Just get "U8g2" via the Arduino IDE Library Manager)   new-bsd
 #include <string>
 
 #include "config_network.h"      // LAN networks (SSIDs and passwords)
@@ -173,7 +173,7 @@ const String directCommandText[4][3] = {
 #endif
 
 //optional additional buttons
-int additionalButtonActions[MAX_ADDITIONAL_BUTTONS] = { 
+int additionalButtonActions[MAX_ADDITIONAL_BUTTONS] = {
                           CHOSEN_ADDITIONAL_BUTTON_0_FUNCTION,
                           CHOSEN_ADDITIONAL_BUTTON_1_FUNCTION,
                           CHOSEN_ADDITIONAL_BUTTON_2_FUNCTION,
@@ -942,7 +942,7 @@ void initialiseAdditionalButtons() {
 
 void additionalButtonLoop() {
   if (wiThrottleProtocol.getNumberOfLocomotives()>0) { // only process if there are locos aquired
-    for (int i = 0; i < MAX_ADDITIONAL_BUTTONS; i++) {    
+    for (int i = 0; i < MAX_ADDITIONAL_BUTTONS; i++) {   
       if (additionalButtonActions[i] != FUNCTION_NULL) {
         additionalButtonRead[i] = digitalRead(additionalButtonPin[i]);
         // if ( ( ((additionalButtonType[i] == INPUT_PULLUP) && (additionalButtonRead[i] == LOW)) 
