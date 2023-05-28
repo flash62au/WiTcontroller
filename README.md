@@ -44,7 +44,7 @@ Required Components
 *Standard Configuration Pinouts*
 ![Assembly diagram](WiTcontroller%20pinouts%20v0.1.png)
 
-*Pinouts for Optional Additioanl Buttons*
+*Pinouts for Optional Additional Buttons*
 ![Assembly diagram - Optional Additional Buttons](WiTcontroller%20-%20Optional%20Buttons%20-%20pinouts%20v0.1.png)
 
 
