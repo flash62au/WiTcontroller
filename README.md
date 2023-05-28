@@ -39,10 +39,12 @@ Required Components
 * OLED Display 0.96" 128x64 Blue I2C IIC SSD1306 ([Example](https://www.ebay.com.au/itm/273746192621?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2060353.m2749.l2649))
 * Case - my one was 3d printed (see below)
 * Knob ([Example](https://www.jaycar.com.au/35mm-knob-matching-equipment-style/p/HK7766?pos=7&queryId=cbd19e2486968bca41273cc2dbce54a4&sort=relevance))
-* Optional: Up to 11 additional buttons can be added, each with their own independent commands. Four of these each require a 220k pullup resister.
+* Optional: Up to 7 additional buttons can be added, each with their own independent commands.
 
+*Standard Configuration Pinouts*
 ![Assembly diagram](WiTcontroller%20pinouts%20v0.1.png)
 
+*Pinouts for Optional Additioanl Buttons*
 ![Assembly diagram - Optional Additional Buttons](WiTcontroller%20-%20Optional%20Buttons%20-%20pinouts%20v0.1.png)
 
 
