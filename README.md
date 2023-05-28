@@ -51,7 +51,7 @@ Required Components
 Notes:
 
 * My case was 3D Printed for me by peteGSX (See the [Thingiverse.](https://www.thingiverse.com/thing:5440351) )
-* The 3x4 keypad he designed the case for came from Jaycar and is slightly narrower than the one you see in the 'deconstructed' view in the video above.
+* The 3x4 keypad petGSX designed the case for came from Jaycar and is slightly narrower than the one you see in the 'deconstructed' view in the video above.
 * The case requires about a dozen M2x4mm screws
 
 * For a different take on what is possible by extending the design, have a look at: https://1fatgmc.com/RailRoad/DCC/page-5-B.html
@@ -86,7 +86,7 @@ Notes:
     * Then edit it to include the network ssids you want to use.  (Not esential, but entering passwords via the encoder is tedious.)
 7. Copy **config_buttons_example.h** to a new file **config_buttons.h**.
     * Optionally, edit this to change the mapping of the keypad buttons to specific functions.
-    * Optionally, edit this to configure the additional buttons to specific functions.
+    * Optionally, edit this to configure the additional buttons (if you have included them) to specific functions.
 8. Upload the sketch.  
     * Select the board type as 'WEMOS LOLIN32 Lite' in the "Arduino IDE*.
     * Connect the board via USB and select the appropriate port in the "Arduino IDE*.
@@ -99,21 +99,21 @@ Note: WiFi.h and ESPmDNS.h were automatically installed for me at some point whe
 ## Using WiTController
 
 **Currently functioning:**
-- provides a list of discovered SSIDs with the ability to choose one. When you select one:
+- Provides a list of discovered SSIDs with the ability to choose one. When you select one:
   - if it is one in your specified list (in the sketch), it will use that specified password 
   - if it is a DCC++EX wiFi Command Station in access Point mode, it will guess the password
   - otherwise it will ask to enter the password (Use the rotary encoder to choose each character and the encoder button to select it.  * = backspace.  # = enter the password.) 
 - Optionally provides a list of SSIDs with the specified passwords (in the sketch) to choose from
 - Auto-connects to the first found wiThrottle Protocol Server if only one found, otherwise 
-  - asks which to connect to
-  - if none found will ask to enter the IP Address and Port
+  - Asks which to connect to
+  - If none found will ask to enter the IP Address and Port
   - Guesses the wiThrottle IP address and Port for DCC++EX WiFi Access Point mode Command Stations
 - Rudimentary on-the-fly consists
 - Assign commands directly to the 1-9 buttons (in the sketch) (see list below)
-  - this is done in config_button.h
-  - latching / non-latching for the function is provided by the roster entry of wiThrottle server
+  - This is done in config_button.h
+  - Latching / non-latching for the function is provided by the roster entry of wiThrottle server
 - Optional ability to assign commands directly to the 1-7 additional buttons (in the sketch) (see list below)
-  - these are defined config_button.h
+  - These are defined config_button.h
 - Command menu (see below for full list) including:
   - Able to select and deselect locos 
     - by their DCC address, via the keypad
@@ -125,23 +125,23 @@ Note: WiFi.h and ESPmDNS.h were automatically installed for me at some point whe
   - Able to activate routes
     - from their address
     - from the first 50 routes in the server list
-  - set/unset a multiplier for the rotary encoder
+  - Set/unset a multiplier for the rotary encoder
   - Power Track On/Off
   - Disconnect / Reconnect
-  - limited dealing with unexpected disconnects.  It will throw you back to the WiThtottle Server selection screen.
+  - Limited dealing with unexpected disconnects.  It will throw you back to the WiThtottle Server selection screen.
   - Put ESP32 in deep sleep and restart it
   - Boundary between short and long DCC addresses can be configured in config_buttons.h
   - The default speed step (per encoder click) can be configured in config_buttons.h
 
 **ToDo:**
-- speed button repeat (i.e. hold the button down)
-- deal with unexpected disconnects better
+- Speed button repeat (i.e. hold the button down)
+- Deal with unexpected disconnects better
   - automatic attempt to reconnect
-- functions are currently only sent to the earliest selected loco
-- change facing of a loco in consist
-- keep a list of ip addresses and ports if mDNS doesn't provide any
-- remember (for the current session only) recently selected locos
-- restructure the '9' menu item.
+- Functions are currently only sent to the earliest selected loco
+- ability to change facing of a loco in consist
+- Keep a list of ip addresses and ports if mDNS doesn't provide any
+- Remember (for the current session only) recently selected locos
+- Restructure the '9' menu item.
 
 ### Command menu:
 - 0-9 keys = pressing these directly will do whatever you has been preset in the sketch for them to do  (see \# below)
