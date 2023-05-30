@@ -97,7 +97,9 @@ Notes:
     * Connect the board via USB and select the appropriate port in the "Arduino IDE*.
     * Click *Upload* 
 
-Note: WiFi.h and ESPmDNS.h were automatically installed for me at some point when I installed VSC and Platform.io, but if you are using the Arduino IDE, you may need to install them manually.
+Notes: 
+   * WiFi.h and ESPmDNS.h were automatically installed for me at some point when I installed with the esp32 boards, however you may need to install them manually.
+   * Later versions of the esp board support are availble and do appear to work, but if you have difficulties version 1.0.6 appears to be stable.
 
 ---
 
