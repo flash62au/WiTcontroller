@@ -60,13 +60,18 @@ Notes:
 
 1. Download the Arduino IDE.  
     * Available from  https://support.arduino.cc/hc/en-us/articles/360019833020-Download-and-install-Arduino-IDE
-2. Download the esp32 boards in the Ardyuino IDE.
-    * Use the *Boards Manager* in the *Arduino IDE*.  
-    * Search for "esp32" by Expressive Systems.  Install version 1.0.6
+2. Download the esp32 boards in the Arduino IDE.
+    * add the esp322 support with the following instructions:  (See hee for detailed instructions:  https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/)
+        * In the Arduino IDE, go to *File* > *Preferences*
+        * Enter the following into the 'Additional Board Manager URLs' field:  https://dl.espressif.com/dl/package_esp32_index.json
+    * Then Use the *Boards Manager* in the *Arduino IDE* to install the esp32 baord support
+        * *Tools* > *Board* > *Boards Manager*
+        * Search for "esp32" by Expressive Systems.  Install version 1.0.6
 3. Download or clone *this* repository. (Note: if you 'clone', it is easier to receive updates to the code.)
     * Clone 
        * Install *GitHub Desktop" from https://desktop.github.com/
-       * "Select *file* -> *Clone Repository*
+       * Create a free account on GitHub and authorise the app to allow it to connect top GitHub
+       * Select *file* -> *Clone Repository* - or 'Clone an repository from the internet' from the welcome page then select the 'URL' tab
        * Enter *https://github.com/flash62au/WiTcontroller* as the URL
        * Select a local folder to install it.  The default folder for the Arduino usually looks like "...username\Documents\Arduino\". This is a good but not esntal plase to put it.
        * Click *Clone*
@@ -75,8 +80,8 @@ Notes:
        * Click the green "Code" button and selct download zip
        * Extract the zip file to a local folder.  The default folder for the Arduino usually looks like "...username\Documents\Arduino\". This is a good but not esntal plase to put it.
 4. Load the needed libraries to your PC. These can loaded from the *Library Manager* in the *Arduino IDE*.
-    * U8g2lib.h   -  Search for "U8g2" 
-    * AiEsp32RotaryEncoder.h  - search for "Ai Esp32 Roptary Encoder"  install Version 1.4 
+    * U8g2lib.h   -  Search for "U8g2"   Install version 2.33.15
+    * AiEsp32RotaryEncoder.h  - search for "Ai Esp32 Roptary Encoder"  Install Version 1.4 
     * Keypad.h - Search for "Keypad" by Mark Stanley   install version 3.1.1
     * WiThrottleProtocol.h - Search for "WiThrottleProtocol" (not "WiThrottle")  Install version 1.0.2 or later if available
 5. These should have been automatically installed when you downloaded the esp32 boards.
