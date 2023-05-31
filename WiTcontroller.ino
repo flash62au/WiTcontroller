@@ -327,7 +327,7 @@ void browseSsids() { // show the found SSIDs
     for (int thisSsid = 0; thisSsid < numSsids; thisSsid++) {
       /// remove duplicates (repeaters and mesh networks)
       boolean found = false;
-      for (int i=0; i<foundSsidsCount; i++) {
+      for (int i=0; i<foundSsidsCount && i<maxFoundSsids; i++) {
         if (WiFi.SSID(thisSsid) == foundSsids[i]) {
           found = true;
           break;
@@ -941,27 +941,38 @@ void initialiseAdditionalButtons() {
 }
 
 void additionalButtonLoop() {
-  if (wiThrottleProtocol.getNumberOfLocomotives()>0) { // only process if there are locos aquired
-    for (int i = 0; i < MAX_ADDITIONAL_BUTTONS; i++) {   
-      if (additionalButtonActions[i] != FUNCTION_NULL) {
-        additionalButtonRead[i] = digitalRead(additionalButtonPin[i]);
-        // if ( ( ((additionalButtonType[i] == INPUT_PULLUP) && (additionalButtonRead[i] == LOW)) 
-        //       || ((additionalButtonType[i] == INPUT) && (additionalButtonRead[i] == HIGH)) )
-        //     && (additionalButtonLastRead[i] != additionalButtonRead[i]) )     { // on the first press only
+  for (int i = 0; i < MAX_ADDITIONAL_BUTTONS; i++) {   
+    if (additionalButtonActions[i] != FUNCTION_NULL) {
+      additionalButtonRead[i] = digitalRead(additionalButtonPin[i]);
+      // if ( ( ((additionalButtonType[i] == INPUT_PULLUP) && (additionalButtonRead[i] == LOW)) 
+      //       || ((additionalButtonType[i] == INPUT) && (additionalButtonRead[i] == HIGH)) )
+      //     && (additionalButtonLastRead[i] != additionalButtonRead[i]) )     { // on the first press only
 
-        if (additionalButtonLastRead[i] != additionalButtonRead[i]) { // on procces on a change
-          if ( ((additionalButtonType[i] == INPUT_PULLUP) && (additionalButtonRead[i] == LOW)) 
-              || ((additionalButtonType[i] == INPUT) && (additionalButtonRead[i] == HIGH)) ) {
-            debug_print("Additional Button Pressed: "); debug_print(i); debug_print(" pin:"); debug_print(additionalButtonPin[i]); debug_print(" action:"); debug_println(additionalButtonActions[i]); 
+      if (additionalButtonLastRead[i] != additionalButtonRead[i]) { // on procces on a change
+        if ( ((additionalButtonType[i] == INPUT_PULLUP) && (additionalButtonRead[i] == LOW)) 
+            || ((additionalButtonType[i] == INPUT) && (additionalButtonRead[i] == HIGH)) ) {
+          debug_print("Additional Button Pressed: "); debug_print(i); debug_print(" pin:"); debug_print(additionalButtonPin[i]); debug_print(" action:"); debug_println(additionalButtonActions[i]); 
+          if (wiThrottleProtocol.getNumberOfLocomotives()>0) { // only process if there are locos aquired
             doDirectAdditionalButtonCommand(i,true);
-          }else {
-            debug_print("Additional Button Released: "); debug_print(i); debug_print(" pin:"); debug_print(additionalButtonPin[i]); debug_print(" action:"); debug_println(additionalButtonActions[i]); 
+          } else { // check for actions not releted to a loco
+            int buttonAction = additionalButtonActions[i];
+            if( (buttonAction == POWER_ON) || (buttonAction == POWER_OFF) || (buttonAction == POWER_TOGGLE) ) {
+                doDirectAdditionalButtonCommand(i,true);
+            }
+          }
+        } else {
+          debug_print("Additional Button Released: "); debug_print(i); debug_print(" pin:"); debug_print(additionalButtonPin[i]); debug_print(" action:"); debug_println(additionalButtonActions[i]); 
+          if (wiThrottleProtocol.getNumberOfLocomotives()>0) { // only process if there are locos aquired
             doDirectAdditionalButtonCommand(i,false);
+          } else { // check for actions not releted to a loco
+            int buttonAction = additionalButtonActions[i];
+            if( (buttonAction == POWER_ON) || (buttonAction == POWER_OFF) || (buttonAction == POWER_TOGGLE) ) {
+                doDirectAdditionalButtonCommand(i,false);
+            }
           }
         }
-
-        additionalButtonLastRead[i] = additionalButtonRead[i];
       }
+      additionalButtonLastRead[i] = additionalButtonRead[i];
     }
   }
 }
