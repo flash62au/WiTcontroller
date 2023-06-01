@@ -121,6 +121,9 @@ int routeListState[maxRouteList];
 // function states
 boolean functionStates[28];
 
+// function labels
+String functionLabels[28];
+
 // speedstep
 int currentSpeedStep = speedStep;
 
@@ -159,6 +162,8 @@ const String directCommandText[4][3] = {
     {CHOSEN_KEYPAD_7_DISPLAY_NAME, CHOSEN_KEYPAD_8_DISPLAY_NAME, CHOSEN_KEYPAD_9_DISPLAY_NAME},
     {"* Menu", CHOSEN_KEYPAD_0_DISPLAY_NAME, "# This"}
 };
+
+bool oledDirectCommandsAreBeingDisplayed = false;
 
 // in case the values are not defined in config_buttons.h
 // DO NOT alter the values here 
@@ -226,6 +231,13 @@ class MyDelegate : public WiThrottleProtocolDelegate {
       if (functionStates[func] != state) {
         functionStates[func] = state;
         displayUpdateFromWit();
+      }
+    }
+    void receivedRosterFunctionList(String functions[28]) { 
+      debug_println("Received Fn List: "); 
+      for(int i = 0; i < 28; i++) {
+        functionLabels[i] = functions[i];
+        debug_print(" Function: "); debug_println( functions[i] );
       }
     }
     void receivedTrackPower(TrackPower state) { 
@@ -1010,6 +1022,8 @@ void setup() {
   ssidSelectionSource = SSID_CONNECTION_SOURCE_BROWSE;
 
   initialiseAdditionalButtons();
+
+  resetFunctionLabels();
 }
 
 void loop() {
@@ -1066,7 +1080,11 @@ void doKeyPress(char key, boolean pressed) {
             if ((menuCommandStarted) && (menuCommand.length()>=1)) {
               doMenu();
             } else {
-              writeOledDirectCommands();
+              if (!oledDirectCommandsAreBeingDisplayed) {
+                writeOledDirectCommands();
+              } else {
+                writeOledSpeed();
+              }
             }
             break;
 
@@ -1257,6 +1275,30 @@ void doKeyPress(char key, boolean pressed) {
               }
               writeOledRouteList(""); 
             }
+            break;
+          case '*':  // cancel
+            resetMenu();
+            writeOledSpeed();
+            break;
+          default:  // do nothing 
+            break;
+        }
+        break;
+
+      case KEYPAD_USE_SELECT_FUNCTION:
+        debug_print("key function... "); debug_println(key);
+        switch (key){
+          case '0': case '1': case '2': case '3': case '4': 
+          case '5': case '6': case '7': case '8': case '9':
+            selectFunctionList((key - '0')+(page*10));
+            break;
+          case '#':  // next page
+            if ( (page+1)*10 < 28 ) {
+              page++;
+            } else {
+              page = 0;
+            }
+            writeOledFunctionList(""); 
             break;
           case '*':  // cancel
             resetMenu();
@@ -1482,8 +1524,11 @@ void doMenu() {
           if (function != "") { // a function is specified
             doFunction(functionNumber, true);  // always act like latching i.e. pressed
           }
+          writeOledSpeed();
+        } else {
+          page = 0;
+          writeOledFunctionList("");
         }
-        writeOledSpeed();
         break;
       }
   }
@@ -1508,6 +1553,12 @@ void resetMenu() {
 void resetFunctionStates() {
   for (int i=0; i<28; i++) {
     functionStates[i] = false;
+  }
+}
+
+void resetFunctionLabels() {
+  for (int i=0; i<28; i++) {
+    functionLabels[i] = "";
   }
 }
 
@@ -1563,6 +1614,7 @@ void releaseAllLocos() {
       wiThrottleProtocol.releaseLocomotive(wiThrottleProtocol.getLocomotiveAtPosition(index));
       writeOledSpeed();
     } 
+    resetFunctionLabels();
   }
 }
 
@@ -1713,6 +1765,18 @@ void selectRouteList(int selection) {
   }
 }
 
+void selectFunctionList(int selection) {
+  debug_print("selectFunctionList() "); debug_println(selection);
+
+  if ((selection>=0) && (selection < 28)) {
+    String function = functionLabels[selection];
+    debug_print("Function Selected: "); debug_println(function);
+    doFunction(selection, true);
+    writeOledSpeed();
+    keypadUseType = KEYPAD_USE_OPERATION;
+  }
+}
+
 // *********************************************************************************
 //  oLED functions
 // *********************************************************************************
@@ -1795,6 +1859,27 @@ void writeOledRouteList(String soFar) {
   }
 }
 
+void writeOledFunctionList(String soFar) {
+  menuIsShowing = true;
+  keypadUseType = KEYPAD_USE_SELECT_FUNCTION;
+  if (soFar == "") { // nothing entered yet
+    clearOledArray();
+    int j = 0; int k = 0;
+    for (int i=0; i<10; i++) {
+      k = (page*10) + i;
+      if (k < 28) {
+        j = (i<5) ? j=i : j = i+1;
+        if (functionLabels[k].length()>0) {
+          oledText[j] = String(i) + ": " + functionLabels[k].substring(0,10);
+        }
+      }
+    }
+    oledText[5] = menu_function_list;
+    writeOledArray(false, false);
+  } else {
+    int cmd = menuCommand.substring(0, 1).toInt();
+  }
+}
 
 void writeOledEnterPassword() {
   keypadUseType = KEYPAD_USE_ENTER_SSID_PASSWORD;
@@ -1813,7 +1898,6 @@ void writeOledEnterPassword() {
   writeOledArray(false, true);
 }
 
-
 void writeOledMenu(String soFar) {
   menuIsShowing = true;
   if (soFar == "") { // nothing entered yet
@@ -1831,7 +1915,8 @@ void writeOledMenu(String soFar) {
 
     clearOledArray();
 
-    oledText[0] = "Menu: " + menuText[cmd][0]; oledText[1] =  menuCommand.substring(1, menuCommand.length());
+    oledText[0] = "> " + menuText[cmd][0] +":"; oledText[6] =  menuCommand.substring(1, menuCommand.length());
+
     oledText[5] = menuText[cmd][1];
     writeOledArray(false, false);
   }
@@ -1983,6 +2068,7 @@ void clearOledArray() {
 }
 
 void writeOledDirectCommands() {
+  oledDirectCommandsAreBeingDisplayed = true;
   clearOledArray();
   oledText[0] = direct_command_list;
   for (int i=0; i < 4; i++) {

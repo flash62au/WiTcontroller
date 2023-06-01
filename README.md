@@ -61,10 +61,10 @@ Notes:
 1. Download the Arduino IDE.  
     * Available from  https://support.arduino.cc/hc/en-us/articles/360019833020-Download-and-install-Arduino-IDE
 2. Download the esp32 boards in the Arduino IDE.
-    * add the esp322 support with the following instructions:  (See hee for detailed instructions:  https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/)
+    * add the esp322 support with the following instructions:  (See here for detailed instructions:  https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/)
         * In the Arduino IDE, go to *File* > *Preferences*
         * Enter the following into the 'Additional Board Manager URLs' field:  https://dl.espressif.com/dl/package_esp32_index.json
-    * Then Use the *Boards Manager* in the *Arduino IDE* to install the esp32 baord support
+    * Then Use the *Boards Manager* in the *Arduino IDE* to install the esp32 board support
         * *Tools* > *Board* > *Boards Manager*
         * Search for "esp32" by Expressive Systems.  Install version 1.0.6
 3. Download or clone *this* repository. (Note: if you 'clone', it is easier to receive updates to the code.)
@@ -83,7 +83,7 @@ Notes:
     * U8g2lib.h   -  Search for "U8g2"   Install version 2.33.15
     * AiEsp32RotaryEncoder.h  - search for "Ai Esp32 Roptary Encoder"  Install Version 1.4 
     * Keypad.h - Search for "Keypad" by Mark Stanley   install version 3.1.1
-    * WiThrottleProtocol.h - Search for "WiThrottleProtocol" (not "WiThrottle")  Install version 1.0.2 or later if available
+    * WiThrottleProtocol.h - Search for "WiThrottleProtocol" (not "WiThrottle")  Install version 1.0.3 or later if available
 5. These should have been automatically installed when you downloaded the esp32 boards.
     * WiFi.h  - https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi
     * ESPmDNS.h - https://github.com/espressif/arduino-esp32/blob/master/libraries/ESPmDNS
@@ -98,8 +98,9 @@ Notes:
     * Click *Upload* 
 
 Notes: 
+   * WiTcontroller version 0.10 or later requires WiThrottleProtocol version 1.0.3 or later.
    * WiFi.h and ESPmDNS.h were automatically installed for me at some point when I installed with the esp32 boards, however you may need to install them manually.
-   * Later versions of the esp board support are availble and do appear to work, but if you have difficulties version 1.0.6 appears to be stable.
+   * Later versions of the esp board support are available and do appear to work, but if you have difficulties version 1.0.6 appears to be stable.
 
 ---
 
@@ -126,6 +127,8 @@ Notes:
     - by their DCC address, via the keypad
       - On NCE systems, a leading zero (0) will force a long address
     - from the first 50 locos in the roster
+  - Able to activate any function (0-28)
+    - Rudimentary showing of the roster function labels
   - Able to throw/close turnouts/points
     - from the address
     - from the first 50 turnouts/points in the server list

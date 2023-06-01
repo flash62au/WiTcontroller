@@ -74,6 +74,7 @@ extern String routeListSysName[];
 extern String routeListUserName[];
 extern int routeListState[];
 extern boolean functionStates[];
+extern String functionLabels[];
 extern int currentSpeedStep;
 extern int heartBeatPeriod;
 extern long lastServerResponseTime;
@@ -153,6 +154,7 @@ void setLastServerResponseTime(boolean);
 void selectRoster(int);
 void selectTurnoutList(int, TurnoutAction);
 void selectRouteList(int);
+void selectFunctionList(int);
 
 void setAppnameForOled(void);
 void writeOledFoundSSids(String);

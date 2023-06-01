@@ -1,14 +1,15 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 0.9";
+const String appVersion = "     Version 0.10";
 const String msg_start = "Start";
 
-const String menu_menu =         "* Menu                # Key Defs";
-const String menu_finish =       "                        # Finish";
-const String menu_cancel =       "* Cancel";
-const String menu_show_direct =  "                  # Show Direct";
-const String menu_roster =       "* Cancel      0-9      #Pg";
-const String menu_turnout_list = "* Cancel      0-9      #Pg";
-const String menu_route_list =   "* Cancel      0-9      #Pg";
+const String menu_menu =           "* Menu                # Key Defs";
+const String menu_finish =         "                        # Finish";
+const String menu_cancel =         "* Cancel";
+const String menu_show_direct =    "                  # Show Direct";
+const String menu_roster =         "* Cancel      0-9      #Pg";
+const String menu_turnout_list =   "* Cancel      0-9      #Pg";
+const String menu_route_list =     "* Cancel      0-9      #Pg";
+const String menu_function_list =  "* Cancel      0-9      #Pg";
 
 const String menu_select_wit_service =      "0-4      # Entry      E.btn OFF";
 const String menu_select_wit_entry =        "0-9   * Back  # Go   E.btn OFF";
@@ -60,7 +61,8 @@ const String label_track_power = "TRK";
 #define KEYPAD_USE_SELECT_TURNOUTS_THROW 6
 #define KEYPAD_USE_SELECT_TURNOUTS_CLOSE 7
 #define KEYPAD_USE_SELECT_ROUTES 8
-#define KEYPAD_USE_ENTER_SSID_PASSWORD 9
+#define KEYPAD_USE_SELECT_FUNCTION 9
+#define KEYPAD_USE_ENTER_SSID_PASSWORD 10
 
 #define ENCODER_USE_OPERATION 0
 #define ENCODER_USE_SSID_PASSWORD 1
@@ -77,21 +79,22 @@ const String label_track_power = "TRK";
 #define SSID_CONNECTION_SOURCE_LIST 0
 #define SSID_CONNECTION_SOURCE_BROWSE 1
 
+#define CMD_FUNCTION 0
 
 #define MAX_LOCOS     10  // maximum number of locos that can be added to the consist
 
 const String menuText[11][3] = {
-  {"Function",    "* Cancel           no+# Select", ""}, //0
-  {"Add Loco",    "no+# Add   * Cancel   # Roster", ""}, //1
-  {"Drop Loco",   "no+# One    * Cancel     # All", ""}, //2
-  {"Toggle Dir",  "# Toggle                      ", ""}, //3
+  {"Function",    "no+# Select   * Cancel  # List", ""},   //0
+  {"Add Loco",    "no+# Add   * Cancel   # Roster", ""},   //1
+  {"Drop Loco",   "no+# One    * Cancel     # All", ""},   //2
+  {"Toggle Dir",  "# Toggle                      ", ""},   //3
   {"X Speed Step","* Cancel                # Toggle", ""}, //4
-  {"Throw Point", "no+# Throw   * Cancel   # List", ""}, //5
-  {"Close Point", "no+# Close   * Cancel   # List", ""}, //6
-  {"Route",       "no+# Select  * Cancel   # List", ""}, //7
+  {"Throw Point", "no+# Throw   * Cancel   # List", ""},   //5
+  {"Close Point", "no+# Close   * Cancel   # List", ""},   //6
+  {"Route",       "no+# Select  * Cancel   # List", ""},   //7
   {"Trk Power",   "* Cancel                # Toggle", ""}, //8 
-  {"Extra",       "9+# OFF 8+# HrtBt   # Discnct", ""}, //9
-  {"Heartbeat",   "* Close                       ", ""}, //10
+  {"Extra",       "9+# OFF 8+# HrtBt   # Discnct", ""},    //9
+  {"Heartbeat",   "* Close                       ", ""},   //10
 };
 
 // if defined in config_buttons.h these values will be overwritten
