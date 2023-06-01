@@ -20,7 +20,7 @@
 #define CHOSEN_KEYPAD_9_FUNCTION DIRECTION_FORWARD
 
 // text that will appear when you press #
-// if you rearrange the items above, modify this text to suit    * and # cannot be remapped
+// if you rearrange the items above, modify this text to suit    * and # cannot be remapped here
 #define CHOSEN_KEYPAD_0_DISPLAY_NAME "0 Lights"
 #define CHOSEN_KEYPAD_1_DISPLAY_NAME "1 Bell"
 #define CHOSEN_KEYPAD_2_DISPLAY_NAME "2 Horn"
@@ -31,6 +31,9 @@
 #define CHOSEN_KEYPAD_7_DISPLAY_NAME "7 Rev"
 #define CHOSEN_KEYPAD_8_DISPLAY_NAME "8 Estop"
 #define CHOSEN_KEYPAD_9_DISPLAY_NAME "9 Fwd"
+
+// by default, # will show the list above. if you change the following line to true, it will take you to the Loco Function Labels screen directly
+#define HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS false
 
 // DCC Addresses below or equal to this number will be treated as short addresses.  
 // DCC++EX, NCE, Digitrax use 127, Lenz use 99
@@ -53,3 +56,5 @@
 #define CHOSEN_ADDITIONAL_BUTTON_4_FUNCTION FUNCTION_NULL   // GPIO 27
 #define CHOSEN_ADDITIONAL_BUTTON_5_FUNCTION FUNCTION_NULL   // GPIO 32
 #define CHOSEN_ADDITIONAL_BUTTON_6_FUNCTION FUNCTION_NULL   // GPIO 33
+
+#define ADDITIONAL_BUTTON_DEBOUNCE_DELAY 50   // increase if you find the buttons bounce. i.e. activate twice on a single press

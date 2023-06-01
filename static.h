@@ -1,15 +1,16 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 0.10";
+const String appVersion = "     Version 0.12";
 const String msg_start = "Start";
 
-const String menu_menu =           "* Menu                # Key Defs";
-const String menu_finish =         "                        # Finish";
-const String menu_cancel =         "* Cancel";
-const String menu_show_direct =    "                  # Show Direct";
-const String menu_roster =         "* Cancel      0-9      #Pg";
-const String menu_turnout_list =   "* Cancel      0-9      #Pg";
-const String menu_route_list =     "* Cancel      0-9      #Pg";
-const String menu_function_list =  "* Cancel      0-9      #Pg";
+const String menu_menu =                   "* Menu                # Key Defs";
+const String menu_menu_hash_is_functions = "* Menu                # Functions";
+const String menu_finish =                 "                        # Finish";
+const String menu_cancel =                 "* Cancel";
+const String menu_show_direct =            "                  # Show Direct";
+const String menu_roster =                 "* Cancel      0-9      #Pg";
+const String menu_turnout_list =           "* Cancel      0-9      #Pg";
+const String menu_route_list =             "* Cancel      0-9      #Pg";
+const String menu_function_list =          "* Cancel      0-9      #Pg";
 
 const String menu_select_wit_service =      "0-4      # Entry      E.btn OFF";
 const String menu_select_wit_entry =        "0-9   * Back  # Go   E.btn OFF";

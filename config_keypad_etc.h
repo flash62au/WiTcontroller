@@ -49,7 +49,6 @@ Keypad keypad = Keypad( makeKeymap(keys), pin_rows, pin_column, ROW_NUM, COLUMN_
 const int keypadDebounceTime = 10;   // in miliseconds
 const int keypadHoldTime = 200;   // in miliseconds
 
-
 // *******************************************************************************************************************
 // additional / optional buttons
 
@@ -59,6 +58,16 @@ int additionalButtonPin[MAX_ADDITIONAL_BUTTONS] = {5,15,25,26,27,32,33};
 int additionalButtonType[MAX_ADDITIONAL_BUTTONS] = {INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP};   // 34,35,36,39 don't have an internal pullup
 boolean additionalButtonRead[MAX_ADDITIONAL_BUTTONS] =     {0,0,0,0,0,0,0};
 boolean additionalButtonLastRead[MAX_ADDITIONAL_BUTTONS] = {0,0,0,0,0,0,0};
+
+#ifndef ADDITIONAL_BUTTON_DEBOUNCE_DELAY
+#define ADDITIONAL_BUTTON_DEBOUNCE_DELAY 50   // default if not defined in config_buttons.h
+#endif
+
+// *******************************************************************************************************************
+// other options
+#ifndef HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS
+#define HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS false  // default if not defined in config_buttons.h
+#endif
 
 // *******************************************************************************************************************
 // OLED

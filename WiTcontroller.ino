@@ -187,6 +187,9 @@ int additionalButtonActions[MAX_ADDITIONAL_BUTTONS] = {
                           CHOSEN_ADDITIONAL_BUTTON_5_FUNCTION,
                           CHOSEN_ADDITIONAL_BUTTON_6_FUNCTION
 };
+unsigned long lastAdditionalButtonDebounceTime[MAX_ADDITIONAL_BUTTONS] = {0,0,0,0,0,0,0};  // the last time the output pin was toggled
+unsigned long additionalButtonDebounceDelay = ADDITIONAL_BUTTON_DEBOUNCE_DELAY;    // the debounce time
+
 
 // *********************************************************************************
 
@@ -694,7 +697,11 @@ void connectWitServer() {
     setLastServerResponseTime(true);
 
     oledText[3] = msg_connected;
-    oledText[5] = menu_menu;
+    if (!HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS) {
+      oledText[5] = menu_menu;
+    } else {
+      oledText[5] = menu_menu_hash_is_functions;
+    }
     writeOledArray(false, false);
 
     keypadUseType = KEYPAD_USE_OPERATION;
@@ -953,33 +960,36 @@ void initialiseAdditionalButtons() {
 }
 
 void additionalButtonLoop() {
+  int buttonRead;
   for (int i = 0; i < MAX_ADDITIONAL_BUTTONS; i++) {   
     if (additionalButtonActions[i] != FUNCTION_NULL) {
-      additionalButtonRead[i] = digitalRead(additionalButtonPin[i]);
-      // if ( ( ((additionalButtonType[i] == INPUT_PULLUP) && (additionalButtonRead[i] == LOW)) 
-      //       || ((additionalButtonType[i] == INPUT) && (additionalButtonRead[i] == HIGH)) )
-      //     && (additionalButtonLastRead[i] != additionalButtonRead[i]) )     { // on the first press only
+      buttonRead = digitalRead(additionalButtonPin[i]);
 
-      if (additionalButtonLastRead[i] != additionalButtonRead[i]) { // on procces on a change
-        if ( ((additionalButtonType[i] == INPUT_PULLUP) && (additionalButtonRead[i] == LOW)) 
-            || ((additionalButtonType[i] == INPUT) && (additionalButtonRead[i] == HIGH)) ) {
-          debug_print("Additional Button Pressed: "); debug_print(i); debug_print(" pin:"); debug_print(additionalButtonPin[i]); debug_print(" action:"); debug_println(additionalButtonActions[i]); 
-          if (wiThrottleProtocol.getNumberOfLocomotives()>0) { // only process if there are locos aquired
-            doDirectAdditionalButtonCommand(i,true);
-          } else { // check for actions not releted to a loco
-            int buttonAction = additionalButtonActions[i];
-            if( (buttonAction == POWER_ON) || (buttonAction == POWER_OFF) || (buttonAction == POWER_TOGGLE) ) {
-                doDirectAdditionalButtonCommand(i,true);
+      if (additionalButtonLastRead[i] != buttonRead) { // on procces on a change
+        if ((millis() - lastAdditionalButtonDebounceTime[i]) > additionalButtonDebounceDelay) {   // only process if there is sufficent delay since the last read
+          lastAdditionalButtonDebounceTime[i] = millis();
+          additionalButtonRead[i] = buttonRead;
+
+          if ( ((additionalButtonType[i] == INPUT_PULLUP) && (additionalButtonRead[i] == LOW)) 
+              || ((additionalButtonType[i] == INPUT) && (additionalButtonRead[i] == HIGH)) ) {
+            debug_print("Additional Button Pressed: "); debug_print(i); debug_print(" pin:"); debug_print(additionalButtonPin[i]); debug_print(" action:"); debug_println(additionalButtonActions[i]); 
+            if (wiThrottleProtocol.getNumberOfLocomotives()>0) { // only process if there are locos aquired
+              doDirectAdditionalButtonCommand(i,true);
+            } else { // check for actions not releted to a loco
+              int buttonAction = additionalButtonActions[i];
+              if( (buttonAction == POWER_ON) || (buttonAction == POWER_OFF) || (buttonAction == POWER_TOGGLE) ) {
+                  doDirectAdditionalButtonCommand(i,true);
+              }
             }
-          }
-        } else {
-          debug_print("Additional Button Released: "); debug_print(i); debug_print(" pin:"); debug_print(additionalButtonPin[i]); debug_print(" action:"); debug_println(additionalButtonActions[i]); 
-          if (wiThrottleProtocol.getNumberOfLocomotives()>0) { // only process if there are locos aquired
-            doDirectAdditionalButtonCommand(i,false);
-          } else { // check for actions not releted to a loco
-            int buttonAction = additionalButtonActions[i];
-            if( (buttonAction == POWER_ON) || (buttonAction == POWER_OFF) || (buttonAction == POWER_TOGGLE) ) {
-                doDirectAdditionalButtonCommand(i,false);
+          } else {
+            debug_print("Additional Button Released: "); debug_print(i); debug_print(" pin:"); debug_print(additionalButtonPin[i]); debug_print(" action:"); debug_println(additionalButtonActions[i]); 
+            if (wiThrottleProtocol.getNumberOfLocomotives()>0) { // only process if there are locos aquired
+              doDirectAdditionalButtonCommand(i,false);
+            } else { // check for actions not releted to a loco
+              int buttonAction = additionalButtonActions[i];
+              if( (buttonAction == POWER_ON) || (buttonAction == POWER_OFF) || (buttonAction == POWER_TOGGLE) ) {
+                  doDirectAdditionalButtonCommand(i,false);
+              }
             }
           }
         }
@@ -1080,10 +1090,15 @@ void doKeyPress(char key, boolean pressed) {
             if ((menuCommandStarted) && (menuCommand.length()>=1)) {
               doMenu();
             } else {
-              if (!oledDirectCommandsAreBeingDisplayed) {
-                writeOledDirectCommands();
+              if (!HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS) {
+                if (!oledDirectCommandsAreBeingDisplayed) {
+                  writeOledDirectCommands();
+                } else {
+                  oledDirectCommandsAreBeingDisplayed = false;
+                  writeOledSpeed();
+                }
               } else {
-                writeOledSpeed();
+                writeOledFunctionList(""); 
               }
             }
             break;
@@ -1967,7 +1982,11 @@ void writeOledSpeed() {
     oledText[3] = "X " + String(speedStepCurrentMultiplier);
   }
 
-  oledText[5] = menu_menu;
+    if (!HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS) {
+    oledText[5] = menu_menu;
+  } else {
+    oledText[5] = menu_menu_hash_is_functions;
+  }
   writeOledArray(false, false, false, drawTopLine);
 
   if (wiThrottleProtocol.getNumberOfLocomotives() > 0 ) {
