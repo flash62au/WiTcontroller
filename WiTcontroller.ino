@@ -1810,7 +1810,7 @@ void writeOledFoundSSids(String soFar) {
     for (int i=0; i<5 && i<foundSsidsCount; i++) {
       oledText[i] = String(i) + ": " + foundSsids[(page*5)+i];
     }
-    oledText[5] = menu_select_ssids_from_found;
+    oledText[5] = "(" + String(page) +  ") " + menu_select_ssids_from_found;
     writeOledArray(false, false);
   } else {
     int cmd = menuCommand.substring(0, 1).toInt();
@@ -1827,7 +1827,7 @@ void writeOledRoster(String soFar) {
         oledText[i] = String(rosterIndex[i]) + ": " + rosterName[(page*5)+i] + " (" + rosterAddress[(page*5)+i] + ")" ;
       }
     }
-    oledText[5] = menu_roster;
+    oledText[5] = "(" + String(page) +  ") " + menu_roster;
     writeOledArray(false, false);
   } else {
     int cmd = menuCommand.substring(0, 1).toInt();
@@ -1850,7 +1850,7 @@ void writeOledTurnoutList(String soFar, TurnoutAction action) {
         oledText[j] = String(turnoutListIndex[i]) + ": " + turnoutListUserName[(page*10)+i].substring(0,10);
       }
     }
-    oledText[5] = menu_turnout_list;
+    oledText[5] = "(" + String(page) +  ") " + menu_turnout_list;
     writeOledArray(false, false);
   } else {
     int cmd = menuCommand.substring(0, 1).toInt();
@@ -1869,7 +1869,7 @@ void writeOledRouteList(String soFar) {
         oledText[j] = String(routeListIndex[i]) + ": " + routeListUserName[(page*10)+i].substring(0,10);
       }
     }
-    oledText[5] = menu_route_list;
+    oledText[5] =  "(" + String(page) +  ") " + menu_route_list;
     writeOledArray(false, false);
   } else {
     int cmd = menuCommand.substring(0, 1).toInt();
@@ -1879,19 +1879,25 @@ void writeOledRouteList(String soFar) {
 void writeOledFunctionList(String soFar) {
   menuIsShowing = true;
   keypadUseType = KEYPAD_USE_SELECT_FUNCTION;
+  
   if (soFar == "") { // nothing entered yet
     clearOledArray();
-    int j = 0; int k = 0;
-    for (int i=0; i<10; i++) {
-      k = (functionPage*10) + i;
-      if (k < 28) {
-        j = (i<5) ? j=i : j = i+1;
-        if (functionLabels[k].length()>0) {
-          oledText[j] = String(i) + ": " + ((k<10) ? functionLabels[k].substring(0,10) : String(k) + "-" + functionLabels[k].substring(0,7)) ;
+    if (wiThrottleProtocol.getNumberOfLocomotives() > 0 ) {
+      int j = 0; int k = 0;
+      for (int i=0; i<10; i++) {
+        k = (functionPage*10) + i;
+        if (k < 28) {
+          j = (i<5) ? j=i : j = i+1;
+          if (functionLabels[k].length()>0) {
+            oledText[j] = String(i) + ": " + ((k<10) ? functionLabels[k].substring(0,10) : String(k) + "-" + functionLabels[k].substring(0,7)) ;
+          }
         }
       }
+      oledText[5] = "(" + String(functionPage) +  ") " + menu_function_list;
+    } else {
+      oledText[2] = msg_no_loco_selected;
+      oledText[5] = menu_cancel;
     }
-    oledText[5] = menu_function_list;
     writeOledArray(false, false);
   } else {
     int cmd = menuCommand.substring(0, 1).toInt();

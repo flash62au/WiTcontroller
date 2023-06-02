@@ -182,6 +182,7 @@ Notes:
       - or followed by 9 then \# to put into deep sleep
 Pressing '\*' again before the '\#' will terminate the current command (but not start a new command)
  - \# = Pressing # alone will show the function the the numbered keys (0-9) perform, outside the menu.
+       Optionally, you can configure it so that the the Function labels from the roster show 
 
 Pressing the Encoder button while the ESP32 is in Deep Sleep will revive it.
 
