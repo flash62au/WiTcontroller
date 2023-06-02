@@ -1971,13 +1971,18 @@ void writeOledMenu(String soFar) {
     oledText[5] = menuText[cmd][1];
 
     switch (soFar.charAt(0)) {
-      case MENU_ITEM_DROP_LOCO:
+      case MENU_ITEM_DROP_LOCO: {
+            if (wiThrottleProtocol.getNumberOfLocomotives() > 0) {
+              writeOledAllLocos();
+              drawTopLine = true;
+            }
+          } // fall through
       case MENU_ITEM_FUNCTION:
       case MENU_ITEM_TOGGLE_DIRECTION: {
           if (wiThrottleProtocol.getNumberOfLocomotives() <= 0 ) {
             oledText[2] = msg_no_loco_selected;
             oledText[5] = menu_cancel;
-          }
+          } 
           break;
         }
       case MENU_ITEM_EXTRAS: { // extra menu
@@ -1996,6 +2001,18 @@ void writeOledExtraSubMenu() {
   for (int i=0; i<8; i++) {
     j = (i<4) ? j=i : j = i+2;
     oledText[j+1] = (extraSubMenuText[i].length()==0) ? "" : String(i) + ": " + extraSubMenuText[i];
+  }
+}
+
+void writeOledAllLocos() {
+  int j = 0; int i = 0;
+  if (wiThrottleProtocol.getNumberOfLocomotives() > 0) {
+    for (int index=0; ((index < wiThrottleProtocol.getNumberOfLocomotives()) && (i < 8)); index++) {  //can only show first 8
+      j = (i<4) ? j=i : j = i+2;
+      // oledText[j+1] = String(i) + ": " + wiThrottleProtocol.getLocomotiveAtPosition(index);
+      oledText[j+1] = wiThrottleProtocol.getLocomotiveAtPosition(index);
+      i++;      
+    } 
   }
 }
 

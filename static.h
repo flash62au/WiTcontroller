@@ -98,8 +98,8 @@ const String label_track_power = "TRK";
 
 const String menuText[11][3] = {
   {"Function",    "no+# Select   * Cancel  # List", ""},   //0
-  {"Add Loco",    "no+# Add   * Cancel   # Roster", ""},   //1
-  {"Drop Loco",   "no+# One    * Cancel     # All", ""},   //2
+  {"Add Loco",    "addr+# Add  * Cancel  # Roster", ""},   //1
+  {"Drop Loco",   "addr+# One   * Cancel    # All", ""},   //2
   {"Toggle Dir",  "# Toggle                      ", ""},   //3
   {"X Speed Step","* Cancel                # Toggle", ""}, //4
   {"Throw Point", "no+# Throw   * Cancel   # List", ""},   //5

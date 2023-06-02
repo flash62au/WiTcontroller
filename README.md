@@ -152,7 +152,6 @@ Notes:
 - ability to change facing of a loco in consist
 - Keep a list of ip addresses and ports if mDNS doesn't provide any
 - Remember (for the current session only) recently selected locos
-- Restructure the '9' menu item.
 
 ### Command menu:
 - 0-9 keys = pressing these directly will do whatever you has been preset in the sketch for them to do  (see \# below)

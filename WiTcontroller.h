@@ -167,6 +167,7 @@ void writeOledExtraSubMenu();
 void writeHeartbeatCheck(void);
 void writeOledSpeed(void);
 void writeOledFunctions(void);
+void writeOledAllLocos(void);
 void writeOledArray(boolean, boolean);
 void writeOledArray(boolean, boolean, boolean);
 void writeOledArray(boolean, boolean, boolean, boolean);
