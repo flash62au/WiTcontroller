@@ -58,3 +58,15 @@
 #define CHOSEN_ADDITIONAL_BUTTON_6_FUNCTION FUNCTION_NULL   // GPIO 33
 
 #define ADDITIONAL_BUTTON_DEBOUNCE_DELAY 50   // increase if you find the buttons bounce. i.e. activate twice on a single press
+
+// uncomment and/or correct one (only) of the #define lines below if you need to override the default .9 inch oLED dispaly settings 
+//
+// Please select a constructor line for below depending on your display
+// U8g2 Constructor List (Frame Buffer)
+// The complete list is available here: https://github.com/olikraus/u8g2/wiki/u8g2setupcpp
+// Please update the pin numbers according to your setup. Use U8X8_PIN_NONE if the reset pin is not connected
+// this is one of the common .9 inch OLED displays
+// #define OLED_TYPE U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);
+// this is one of the common 1.3 inch OLED displays
+// #define OLED_TYPE U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);
+ 
