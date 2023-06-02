@@ -92,6 +92,7 @@ Notes:
 7. Copy **config_buttons_example.h** to a new file **config_buttons.h**.
     * Optionally, edit this to change the mapping of the keypad buttons to specific functions.
     * Optionally, edit this to configure the additional buttons (if you have included them) to specific functions.
+    * Optionally, edit this to change if you want the function buttons to display when you press #, instead of the default of showing the Key Definitions
 8. Upload the sketch.  
     * Select the board type as 'WEMOS LOLIN32 Lite' in the "Arduino IDE*.
     * Connect the board via USB and select the appropriate port in the "Arduino IDE*.
