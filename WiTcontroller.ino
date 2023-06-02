@@ -103,6 +103,7 @@ int rosterAddress[maxRoster];
 char rosterLength[maxRoster];
 
 int page = 0;
+int functionPage = 0;
 
 // turnout variables
 int turnoutListSize = 0;
@@ -1305,13 +1306,13 @@ void doKeyPress(char key, boolean pressed) {
         switch (key){
           case '0': case '1': case '2': case '3': case '4': 
           case '5': case '6': case '7': case '8': case '9':
-            selectFunctionList((key - '0')+(page*10));
+            selectFunctionList((key - '0')+(functionPage*10));
             break;
           case '#':  // next page
-            if ( (page+1)*10 < 28 ) {
-              page++;
+            if ( (functionPage+1)*10 < 28 ) {
+              functionPage++;
             } else {
-              page = 0;
+              functionPage = 0;
             }
             writeOledFunctionList(""); 
             break;
@@ -1541,7 +1542,7 @@ void doMenu() {
           }
           writeOledSpeed();
         } else {
-          page = 0;
+          functionPage = 0;
           writeOledFunctionList("");
         }
         break;
@@ -1575,6 +1576,7 @@ void resetFunctionLabels() {
   for (int i=0; i<28; i++) {
     functionLabels[i] = "";
   }
+  functionPage = 0;
 }
 
 String getLocoWithLength(String loco) {
@@ -1881,7 +1883,7 @@ void writeOledFunctionList(String soFar) {
     clearOledArray();
     int j = 0; int k = 0;
     for (int i=0; i<10; i++) {
-      k = (page*10) + i;
+      k = (functionPage*10) + i;
       if (k < 28) {
         j = (i<5) ? j=i : j = i+1;
         if (functionLabels[k].length()>0) {
