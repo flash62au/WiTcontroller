@@ -69,38 +69,38 @@ Notes:
         * Search for "esp32" by Expressive Systems.  Install version 1.0.6
 3. Download or clone *this* repository. (Note: if you 'clone', it is easier to receive updates to the code.)
     * Clone 
-       * Install *GitHub Desktop" from https://desktop.github.com/
+       * Install *GitHub Desktop* from https://desktop.github.com/
        * Create a free account on GitHub and authorise the app to allow it to connect top GitHub
        * Select *file* -> *Clone Repository* - or 'Clone an repository from the internet' from the welcome page then select the 'URL' tab
        * Enter *https://github.com/flash62au/WiTcontroller* as the URL
-       * Select a local folder to install it.  The default folder for the Arduino usually looks like "...username\Documents\Arduino\". This is a good but not esntal plase to put it.
+       * Select a local folder to install it.  The default folder for the Arduino usually looks like "...username\Documents\Arduino\". This is a good but not essential place to put it.
        * Click *Clone*
     * Download 
        * Open *https://github.com/flash62au/WiTcontroller*
-       * Click the green "Code" button and selct download zip
-       * Extract the zip file to a local folder.  The default folder for the Arduino usually looks like "...username\Documents\Arduino\". This is a good but not esntal plase to put it.
+       * Click the green "Code" button and select download zip
+       * Extract the zip file to a local folder.  The default folder for the Arduino usually looks like "...username\Documents\Arduino\". This is a good but not essential place to put it.
 4. Load the needed libraries to your PC. These can loaded from the *Library Manager* in the *Arduino IDE*.
-    * U8g2lib.h   -  Search for "U8g2"   Install version 2.33.15
-    * AiEsp32RotaryEncoder.h  - search for "Ai Esp32 Roptary Encoder"  Install Version 1.4 
-    * Keypad.h - Search for "Keypad" by Mark Stanley   install version 3.1.1
-    * WiThrottleProtocol.h - Search for "WiThrottleProtocol" (not "WiThrottle")  Install version 1.0.3 or later if available
+    * *U8g2lib.h* -  Search for "U8g2"   Install version 2.33.15
+    * *AiEsp32RotaryEncoder.h* - search for "Ai Esp32 Rotary Encoder"  Install Version 1.4 
+    * *Keypad.h* - Search for "Keypad" by Mark Stanley   install version 3.1.1
+    * *WiThrottleProtocol.h* - Search for "WiThrottleProtocol" (not "WiThrottle")  Install version 1.0.3 or later if available
 5. These should have been automatically installed when you downloaded the esp32 boards.
-    * WiFi.h  - https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi
-    * ESPmDNS.h - https://github.com/espressif/arduino-esp32/blob/master/libraries/ESPmDNS
-6. Copy **config_network_example.h** to a new file to **config_network.h**.
-    * Then edit it to include the network ssids you want to use.  (Not esential, but entering passwords via the encoder is tedious.)
-7. Copy **config_buttons_example.h** to a new file **config_buttons.h**.
+    * *WiFi.h*  - https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi
+    * *ESPmDNS.h* - https://github.com/espressif/arduino-esp32/blob/master/libraries/ESPmDNS
+6. Copy '**config_network_example.h**' to a new file to '**config_network.h**'.
+    * Then edit it to include the network ssids you want to use.  (Not essential, but entering passwords via the encoder is tedious.)
+7. Copy '**config_buttons_example.h**' to a new file '**config_buttons.h**'.
     * Optionally, edit this to change the mapping of the keypad buttons to specific functions.
     * Optionally, edit this to configure the additional buttons (if you have included them) to specific functions.
     * Optionally, edit this to change if you want the function buttons to display when you press #, instead of the default of showing the Key Definitions
 8. Upload the sketch.  
-    * Select the board type as 'WEMOS LOLIN32 Lite' in the "Arduino IDE*.
-    * Connect the board via USB and select the appropriate port in the "Arduino IDE*.
+    * Select the board type as "WEMOS LOLIN32 Lite" in the *Arduino IDE*.
+    * Connect the board via USB and select the appropriate port in the *Arduino IDE*.
     * Click *Upload* 
 
 Notes: 
    * WiTcontroller version 0.10 or later requires WiThrottleProtocol version 1.0.3 or later.
-   * WiFi.h and ESPmDNS.h were automatically installed for me at some point when I installed with the esp32 boards, however you may need to install them manually.
+   * The *WiFi.h* and *ESPmDNS.h* libraries were automatically installed for me when I installed the esp32 boards, however you may need to install them manually.
    * Later versions of the esp board support are available and do appear to work, but if you have difficulties version 1.0.6 appears to be stable.
 
 ---
