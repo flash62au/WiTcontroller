@@ -165,16 +165,29 @@ const String directCommandText[4][3] = {
 };
 
 bool oledDirectCommandsAreBeingDisplayed = false;
+boolean hashShowsFunctionsInsteadOfKeyDefs = HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS;
 
 // in case the values are not defined in config_buttons.h
 // DO NOT alter the values here 
 #ifndef CHOSEN_ADDITIONAL_BUTTON_0_FUNCTION
   #define CHOSEN_ADDITIONAL_BUTTON_0_FUNCTION FUNCTION_NULL
+#endif
+#ifndef CHOSEN_ADDITIONAL_BUTTON_1_FUNCTION
   #define CHOSEN_ADDITIONAL_BUTTON_1_FUNCTION FUNCTION_NULL
+#endif
+#ifndef CHOSEN_ADDITIONAL_BUTTON_2_FUNCTION
   #define CHOSEN_ADDITIONAL_BUTTON_2_FUNCTION FUNCTION_NULL
+#endif
+#ifndef CHOSEN_ADDITIONAL_BUTTON_3_FUNCTION
   #define CHOSEN_ADDITIONAL_BUTTON_3_FUNCTION FUNCTION_NULL
+#endif
+#ifndef CHOSEN_ADDITIONAL_BUTTON_4_FUNCTION
   #define CHOSEN_ADDITIONAL_BUTTON_4_FUNCTION FUNCTION_NULL
+#endif
+#ifndef CHOSEN_ADDITIONAL_BUTTON_5_FUNCTION
   #define CHOSEN_ADDITIONAL_BUTTON_5_FUNCTION FUNCTION_NULL
+#endif
+#ifndef CHOSEN_ADDITIONAL_BUTTON_6_FUNCTION
   #define CHOSEN_ADDITIONAL_BUTTON_6_FUNCTION FUNCTION_NULL
 #endif
 
@@ -698,7 +711,7 @@ void connectWitServer() {
     setLastServerResponseTime(true);
 
     oledText[3] = msg_connected;
-    if (!HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS) {
+    if (!hashShowsFunctionsInsteadOfKeyDefs) {
       oledText[5] = menu_menu;
     } else {
       oledText[5] = menu_menu_hash_is_functions;
@@ -1091,7 +1104,7 @@ void doKeyPress(char key, boolean pressed) {
             if ((menuCommandStarted) && (menuCommand.length()>=1)) {
               doMenu();
             } else {
-              if (!HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS) {
+              if (!hashShowsFunctionsInsteadOfKeyDefs) {
                 if (!oledDirectCommandsAreBeingDisplayed) {
                   writeOledDirectCommands();
                 } else {
@@ -1433,7 +1446,7 @@ void doMenu() {
   debug_print("Menu: "); debug_println(menuCommand);
   
   switch (menuCommand[0]) {
-    case '1': { // select loco
+    case MENU_ITEM_ADD_LOCO: { // select loco
         if (menuCommand.length()>1) {
           loco = menuCommand.substring(1, menuCommand.length());
           loco = getLocoWithLength(loco);
@@ -1447,7 +1460,7 @@ void doMenu() {
         }
         break;
       }
-    case '2': { // de-select loco
+    case MENU_ITEM_DROP_LOCO: { // de-select loco
         loco = menuCommand.substring(1, menuCommand.length());
         if (loco!="") { // a loco is specified
           loco = getLocoWithLength(loco);
@@ -1459,19 +1472,19 @@ void doMenu() {
         writeOledSpeed();
         break;
       }
-    case '3': { // change direction
+    case MENU_ITEM_TOGGLE_DIRECTION: { // change direction
         toggleDirection();
         break;
       }
-     case '4': { // toggle additional Multiplier
+     case MENU_ITEM_SPEED_STEP_MULTIPLIER: { // toggle speed step additional Multiplier
         toggleAdditionalMultiplier();
         break;
       }
-   case '5': {  // throw turnout
+   case MENU_ITEM_THROW_POINT: {  // throw point
         if (menuCommand.length()>1) {
           String turnout = turnoutPrefix + menuCommand.substring(1, menuCommand.length());
           // if (!turnout.equals("")) { // a turnout is specified
-            debug_print("throw turnout: "); debug_println(turnout);
+            debug_print("throw point: "); debug_println(turnout);
             wiThrottleProtocol.setTurnout(turnout, TurnoutThrow);
           // }
           writeOledSpeed();
@@ -1481,11 +1494,11 @@ void doMenu() {
         }
         break;
       }
-    case '6': {  // close turnout
+    case MENU_ITEM_CLOSE_POINT: {  // close point
         if (menuCommand.length()>1) {
           String turnout = turnoutPrefix + menuCommand.substring(1, menuCommand.length());
           // if (!turnout.equals("")) { // a turnout is specified
-            debug_print("close turnout: "); debug_println(turnout);
+            debug_print("close point: "); debug_println(turnout);
             wiThrottleProtocol.setTurnout(turnout, TurnoutClose);
           // }
           writeOledSpeed();
@@ -1495,7 +1508,7 @@ void doMenu() {
         }
         break;
       }
-    case '7': {  // route
+    case MENU_ITEM_ROUTE: {  // route
         if (menuCommand.length()>1) {
           String route = routePrefix + menuCommand.substring(1, menuCommand.length());
           // if (!route.equals("")) { // a loco is specified
@@ -1509,31 +1522,46 @@ void doMenu() {
         }
         break;
       }
-    case '8': {
+    case MENU_ITEM_TRACK_POWER: {
         powerToggle();
         debug_println("Power toggle");
         writeOledSpeed();
         break;
       }
-    case '9': { // disconnect/reconnect/sleep
-        String subcommand = menuCommand.substring(1, menuCommand.length());
-        if (subcommand.equals("")) { // no subcommand is specified   
-          if (witConnectionState == CONNECTION_STATE_CONNECTED) {
-            witConnectionState == CONNECTION_STATE_DISCONNECTED;
-            disconnectWitServer();
-          } else {
-            connectWitServer();
+    case MENU_ITEM_EXTRAS: { // Extra menu - e.g. disconnect/reconnect/sleep
+        char subCommand = menuCommand.charAt(1);
+        if (menuCommand.length() > 1) {
+          switch (subCommand) {
+            case '6': { // disconnect   
+                if (witConnectionState == CONNECTION_STATE_CONNECTED) {
+                  witConnectionState == CONNECTION_STATE_DISCONNECTED;
+                  disconnectWitServer();
+                } else {
+                  connectWitServer();
+                }
+                break;
+              }
+            case '7':
+            case '9': { // sleep/off
+                deepSleepStart();
+                break;
+              }
+            case '3': { // disable/enable the heartbeat Check
+                toggleHeartbeatCheck();
+                writeOledSpeed();
+                break;
+              }
+            case '0': { // toggle showing Def Keys vs Function labels
+                hashShowsFunctionsInsteadOfKeyDefs = !hashShowsFunctionsInsteadOfKeyDefs;
+                writeOledSpeed();
+              }
           }
-        } else { // subcommand
-          if (subcommand.equals("9")) { // sleep
-            deepSleepStart();
-          } else if (subcommand.equals("8")) { // disable/enable the heartbeat Check
-            toggleHeartbeatCheck();
-          }
+        } else {
+          writeOledSpeed();
         }
         break;
       }
-    case '0': { // function button
+    case MENU_ITEM_FUNCTION: { // function button
         if (menuCommand.length()>1) {
           function = menuCommand.substring(1, menuCommand.length());
           int functionNumber = function.toInt();
@@ -1923,6 +1951,7 @@ void writeOledEnterPassword() {
 
 void writeOledMenu(String soFar) {
   menuIsShowing = true;
+  bool drawTopLine = false;
   if (soFar == "") { // nothing entered yet
     clearOledArray();
     int j = 0;
@@ -1938,10 +1967,35 @@ void writeOledMenu(String soFar) {
 
     clearOledArray();
 
-    oledText[0] = "> " + menuText[cmd][0] +":"; oledText[6] =  menuCommand.substring(1, menuCommand.length());
-
+    oledText[0] = ">> " + menuText[cmd][0] +":"; oledText[6] =  menuCommand.substring(1, menuCommand.length());
     oledText[5] = menuText[cmd][1];
-    writeOledArray(false, false);
+
+    switch (soFar.charAt(0)) {
+      case MENU_ITEM_DROP_LOCO:
+      case MENU_ITEM_FUNCTION:
+      case MENU_ITEM_TOGGLE_DIRECTION: {
+          if (wiThrottleProtocol.getNumberOfLocomotives() <= 0 ) {
+            oledText[2] = msg_no_loco_selected;
+            oledText[5] = menu_cancel;
+          }
+          break;
+        }
+      case MENU_ITEM_EXTRAS: { // extra menu
+          writeOledExtraSubMenu();
+          drawTopLine = true;
+          break;
+        }
+    }
+
+    writeOledArray(false, false, true, drawTopLine);
+  }
+}
+
+void writeOledExtraSubMenu() {
+  int j = 0;
+  for (int i=0; i<8; i++) {
+    j = (i<4) ? j=i : j = i+2;
+    oledText[j+1] = (extraSubMenuText[i].length()==0) ? "" : String(i) + ": " + extraSubMenuText[i];
   }
 }
 
@@ -1990,7 +2044,7 @@ void writeOledSpeed() {
     oledText[3] = "X " + String(speedStepCurrentMultiplier);
   }
 
-    if (!HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS) {
+    if (!hashShowsFunctionsInsteadOfKeyDefs) {
     oledText[5] = menu_menu;
   } else {
     oledText[5] = menu_menu_hash_is_functions;

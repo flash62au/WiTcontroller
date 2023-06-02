@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 0.14";
+const String appVersion = "     Version 0.15";
 const String msg_start = "Start";
 
 const String menu_menu =                   "* Menu                # Key Defs";
@@ -7,6 +7,7 @@ const String menu_menu_hash_is_functions = "* Menu                # Functions";
 const String menu_finish =                 "                        # Finish";
 const String menu_cancel =                 "* Cancel";
 const String menu_show_direct =            "                  # Show Direct";
+// const String menu_direct =                 "* Cancel        0-9 Select";
 const String menu_roster =                 "* Cancel      0-9      #Pg";
 const String menu_turnout_list =           "* Cancel      0-9      #Pg";
 const String menu_route_list =             "* Cancel      0-9      #Pg";
@@ -84,6 +85,17 @@ const String label_track_power = "TRK";
 
 #define MAX_LOCOS     10  // maximum number of locos that can be added to the consist
 
+#define MENU_ITEM_FUNCTION '0'
+#define MENU_ITEM_ADD_LOCO '1'
+#define MENU_ITEM_DROP_LOCO '2'
+#define MENU_ITEM_TOGGLE_DIRECTION '3'
+#define MENU_ITEM_SPEED_STEP_MULTIPLIER '4'
+#define MENU_ITEM_THROW_POINT '5'
+#define MENU_ITEM_CLOSE_POINT '6'
+#define MENU_ITEM_ROUTE '7'
+#define MENU_ITEM_TRACK_POWER '8'
+#define MENU_ITEM_EXTRAS '9'
+
 const String menuText[11][3] = {
   {"Function",    "no+# Select   * Cancel  # List", ""},   //0
   {"Add Loco",    "no+# Add   * Cancel   # Roster", ""},   //1
@@ -94,9 +106,13 @@ const String menuText[11][3] = {
   {"Close Point", "no+# Close   * Cancel   # List", ""},   //6
   {"Route",       "no+# Select  * Cancel   # List", ""},   //7
   {"Trk Power",   "* Cancel                # Toggle", ""}, //8 
-  {"Extra",       "9+# OFF 8+# HrtBt   # Discnct", ""},    //9
-  {"Heartbeat",   "* Close                       ", ""},   //10
+  {"Extras",      "no+# Select  * Cancel         ", ""},   //9
+  {"Heartbeat",   "* Close                       ", ""}   //10
 };
+
+const String extraSubMenuText[8] = { 
+   "Fnc/Key Tgl", "", "", "Hrtbt Tgl",  
+   "", "", "Disconnect", "OFF / Sleep" };
 
 // if defined in config_buttons.h these values will be overwritten
 //

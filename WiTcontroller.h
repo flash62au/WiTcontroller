@@ -163,6 +163,7 @@ void writeOledTurnoutList(String, TurnoutAction);
 void writeOledRouteList(String);
 void writeOledEnterPassword(void);
 void writeOledMenu(String);
+void writeOledExtraSubMenu();
 void writeHeartbeatCheck(void);
 void writeOledSpeed(void);
 void writeOledFunctions(void);
