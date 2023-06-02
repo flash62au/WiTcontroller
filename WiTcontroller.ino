@@ -1885,7 +1885,7 @@ void writeOledFunctionList(String soFar) {
       if (k < 28) {
         j = (i<5) ? j=i : j = i+1;
         if (functionLabels[k].length()>0) {
-          oledText[j] = String(i) + ": " + ((k<10) ? "" : String(k) + "-") + functionLabels[k].substring(0,10);
+          oledText[j] = String(i) + ": " + ((k<10) ? functionLabels[k].substring(0,10) : String(k) + "-" + functionLabels[k].substring(0,7)) ;
         }
       }
     }
