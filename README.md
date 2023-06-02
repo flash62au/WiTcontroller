@@ -176,10 +176,11 @@ Notes:
       - or \# alone to show the list from the server   \# again will show the next page
   - 0 = Function button. Followed by the loco number, Followed by \# to complete.  e.g. to set function 17 you would press '\*017\#'
   - 8 = Track Power On/Off. Followed by \# to complete.
-  - 9 = Extra. 
-      - Followed by \# to Disconnect/Reconnect.  
-      - or followed by 8 to toggle the heartbeat check.
-      - or followed by 9 then \# to put into deep sleep
+  - 9 = Extras. 
+      - Followed by 0 then \# to toggle the action the the \# key does as a direct action, either to show the direct action key definitions, or the Function labels.  
+      - Followed by 6 then \# to Disconnect/Reconnect.  
+      - or followed by 3 to toggle the heartbeat check.
+      - or followed by 7 (or 9) then \# to put into deep sleep
 Pressing '\*' again before the '\#' will terminate the current command (but not start a new command)
  - \# = Pressing # alone will show the function the the numbered keys (0-9) perform, outside the menu.
        Optionally, you can configure it so that the the Function labels from the roster show 
