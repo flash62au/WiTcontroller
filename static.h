@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 0.15";
+const String appVersion = "     Version 0.16";
 const String msg_start = "Start";
 
 const String menu_menu =                   "* Menu                # Key Defs";
@@ -22,8 +22,10 @@ const String menu_enter_ssid_password =     "E Chrs  E.btn Slct  # Go  * Bck";
 
 const String direct_command_list = "Direct Commands";
 
-const String direction_forward = "     Fwd";
-const String direction_reverse = "     Rev";
+const String direction_forward = "Fwd";
+const String direction_reverse = "Rev";
+
+const String function_states = "Fn";
 
 const String msg_browsing_for_service ="Browsing for WiT services";
 const String msg_browsing_for_ssids ="Browsing for SSIDs";

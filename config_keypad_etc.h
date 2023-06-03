@@ -79,11 +79,8 @@ boolean additionalButtonLastRead[MAX_ADDITIONAL_BUTTONS] = {0,0,0,0,0,0,0};
 #include <Wire.h>                      // add to include path [Arduino install]\hardware\arduino\avr\libraries\Wire\src
 #endif
 
-// Please select a constructor line for below depending on your display
-// you can overide this in config_buttons.h
-//
 // U8g2 Constructor List (Frame Buffer)
-// The complete list is available here: https://github.com/olikraus/u8g2/wiki/u8g2setupcpp
+// you can overide this in config_buttons.h     DO NOT CHANGE IT HERE
 #ifndef OLED_TYPE
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);
 #else

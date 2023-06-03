@@ -2048,7 +2048,8 @@ void writeOledSpeed() {
     sSpeed = String(currentSpeed);
     sDirection = (currentDirection==Forward) ? direction_forward : direction_reverse;
 
-    oledText[0] = sLocos; oledText[7] = sDirection;
+    oledText[0] = sLocos; 
+    //oledText[7] = "     " + sDirection;  // old function state format
 
     drawTopLine = true;
 
@@ -2081,37 +2082,60 @@ void writeOledSpeed() {
   u8g2.drawStr(0, 48, label_track_power.c_str());
   u8g2.setDrawColor(1);
 
+  // direction
+  // needed for new function state format
+  u8g2.setFont(u8g2_font_profont17_tr); // medium
+  u8g2.drawStr(86,40, sDirection.c_str());
 
+  // speed
   const char *cSpeed = sSpeed.c_str();
-  u8g2.setFont(u8g2_font_inb21_mn); // big
+  // u8g2.setFont(u8g2_font_inb21_mn); // big
+  u8g2.setFont(u8g2_font_profont29_mr); // big
   int width = u8g2.getStrWidth(cSpeed);
   u8g2.drawStr(25+(55-width),45, cSpeed);
   u8g2.sendBuffer();
 }
 
 void writeOledFunctions() {
-   int x = 99;
-   for (int i=0; i < 12; i++) {
+  //  int x = 99;
+  bool anyFunctionsActive = false;
+   for (int i=0; i < 28; i++) {
      if (functionStates[i]) {
-      //  debug_print("Fn On "); debug_println(i);
-      int y = (i+2)*10-8;
-      if ((i>=4) && (i<8)) { 
-        x = 109; 
-        y = (i-2)*10-8;
-      } else if (i>=8) { 
-        x = 119; 
-        y = (i-6)*10-8;
-      }
+      // old function state format
+  //     //  debug_print("Fn On "); debug_println(i);
+  //     if (i < 12) {
+  //     int y = (i+2)*10-8;
+  //     if ((i>=4) && (i<8)) { 
+  //       x = 109; 
+  //       y = (i-2)*10-8;
+  //     } else if (i>=8) { 
+  //       x = 119; 
+  //       y = (i-6)*10-8;
+  //     }
       
-      u8g2.drawBox(x,y,8,8);
+  //     u8g2.drawBox(x,y,8,8);
+  //     u8g2.setDrawColor(0);
+  //     u8g2.setFont(u8g2_font_profont10_tf);
+  //     u8g2.drawStr( x+2, y+7, String( (i<10) ? i : i-10 ).c_str());
+  //     u8g2.setDrawColor(1);
+  //   //  } else {
+  //   //    debug_print("Fn Off "); debug_println(i);
+
+      // new function state format
+      anyFunctionsActive = true;
+      u8g2.drawBox(i*4+10,12,5,7);
       u8g2.setDrawColor(0);
-      u8g2.setFont(u8g2_font_profont10_tf);
-      u8g2.drawStr( x+2, y+7, String( (i<10) ? i : i-10 ).c_str());
+      // u8g2.setFont(u8g2_font_micro_tr);   
+      u8g2.setFont(u8g2_font_tiny_simon_tr);   
+      u8g2.drawStr( i*4+1+10, 18, String( (i<10) ? i : ((i<20) ? i-10 : i-20)).c_str());
       u8g2.setDrawColor(1);
-    //  } else {
-    //    debug_print("Fn Off "); debug_println(i);
+     }
+     if (anyFunctionsActive) {
+        u8g2.drawStr( 0, 18, (function_states + ":").c_str());
+        u8g2.drawHLine(0,19,128);
      }
    }
+  //  u8g2.drawStr( 0, 18, "0123456789012345678901234567");
 }
 
 void writeOledArray(boolean isThreeColums, boolean isPassword) {
