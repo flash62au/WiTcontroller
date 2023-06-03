@@ -1921,7 +1921,7 @@ void writeOledFunctionList(String soFar) {
           if (functionLabels[k].length()>0) {
             oledText[j] = String(i) + ": " + ((k<10) ? functionLabels[k].substring(0,10) : String(k) + "-" + functionLabels[k].substring(0,7)) ;
             if (functionStates[k]) {
-              oledTextInvert[i] = true;
+              oledTextInvert[j] = true;
             }
           }
         }
