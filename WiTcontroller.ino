@@ -47,6 +47,8 @@ String menuCommand = "";
 boolean menuIsShowing = false;
 
 String oledText[18] = {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""};
+bool oledTextInvert[18] = {false, false, false, false, false, false, false, false, false, 
+                           false, false, false, false, false, false, false, false, false};
 
 int currentSpeed = 0;
 Direction currentDirection = Forward;
@@ -1918,6 +1920,9 @@ void writeOledFunctionList(String soFar) {
           j = (i<5) ? j=i : j = i+1;
           if (functionLabels[k].length()>0) {
             oledText[j] = String(i) + ": " + ((k<10) ? functionLabels[k].substring(0,10) : String(k) + "-" + functionLabels[k].substring(0,7)) ;
+            if (functionStates[k]) {
+              oledTextInvert[i] = true;
+            }
           }
         }
       }
@@ -2168,7 +2173,14 @@ void writeOledArray(boolean isThreeColums, boolean isPassword, boolean sendBuffe
   for (int i=0; i < max; i++) {
     const char *cLine1 = oledText[i].c_str();
     if ((isPassword) && (i==2)) u8g2.setFont(u8g2_font_9x15_tf); 
+
+    if (oledTextInvert[i]) {
+      u8g2.drawBox(x,y-8,62,10);
+      u8g2.setDrawColor(0);
+    }
     u8g2.drawStr(x,y, cLine1);
+    u8g2.setDrawColor(1);
+
     if ((isPassword) && (i==2)) u8g2.setFont(u8g2_font_NokiaSmallPlain_tf); 
     y = y + 10;
     if ((i==5) || (i==11)) {
@@ -2176,6 +2188,7 @@ void writeOledArray(boolean isThreeColums, boolean isPassword, boolean sendBuffe
       y = 10;
     }
   }
+
   if (drawTopLine) u8g2.drawHLine(0,11,128);
   u8g2.drawHLine(0,51,128);
 
@@ -2186,6 +2199,7 @@ void writeOledArray(boolean isThreeColums, boolean isPassword, boolean sendBuffe
 void clearOledArray() {
   for (int i=0; i < 15; i++) {
     oledText[i] = "";
+    oledTextInvert[i] = false;
   }
 }
 
