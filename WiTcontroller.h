@@ -15,8 +15,8 @@ extern boolean menuIsShowing;
 extern String oledText[];
 extern bool oledTextInvert[];
 
-extern int currentSpeed;
-extern Direction currentDirection;
+extern int currentSpeed[];
+extern Direction currentDirection[];
 extern int speedStepCurrentMultiplier;
 
 extern TrackPower trackPower;
@@ -74,9 +74,9 @@ extern int routeListIndex[];
 extern String routeListSysName[]; 
 extern String routeListUserName[];
 extern int routeListState[];
-extern boolean functionStates[];
-extern String functionLabels[];
-extern int currentSpeedStep;
+extern boolean functionStates[][28];
+extern String functionLabels[][28];
+extern int currentSpeedStep[];
 extern int heartBeatPeriod;
 extern long lastServerResponseTime;
 extern boolean heartbeatCheckEnabled;
@@ -88,6 +88,8 @@ extern const String directCommandText[][3];
 extern int additionalButtonActions[];
 
 extern AiEsp32RotaryEncoder rotaryEncoder;
+
+extern int currentThrottleIndex;
 
 // function prototypes
 
@@ -132,23 +134,26 @@ void doDirectAction(int);
 void doMenu(void);
 void resetMenu(void);
 
-void resetFunctionStates(void);
+void resetFunctionStates(int);
+void resetFunctionLabels(int); 
+void resetAllFunctionLabels(void); 
 String getLocoWithLength(String);
 void speedEstop(void);
-void speedDown(int);
-void speedUp(int);
-void speedSet(int);
-void releaseAllLocos(void);
+void speedDown(int, int);
+void speedUp(int, int);
+void speedSet(int, int);
+void releaseAllLocos(int);
 void toggleAdditionalMultiplier(void);
 void toggleHeartbeatCheck(void);
-void toggleDirection(void);
-void changeDirection(Direction);
+void toggleDirection(int);
+void changeDirection(int, Direction);
 
 void doDirectFunction(int, boolean);
 void doFunction(int, boolean);
 
 void powerOnOff(TrackPower);
 void powerToggle(void);
+void nextThrottle(void);
 void reconnect(void);
 void setLastServerResponseTime(boolean);
 
@@ -168,6 +173,7 @@ void writeOledExtraSubMenu();
 void writeHeartbeatCheck(void);
 void writeOledSpeed(void);
 void writeOledFunctions(void);
+void writeOledFunctionList(String);
 void writeOledAllLocos(void);
 void writeOledArray(boolean, boolean);
 void writeOledArray(boolean, boolean, boolean);
@@ -176,3 +182,6 @@ void clearOledArray(void);
 void writeOledDirectCommands(void);
 
 void deepSleepStart(void);
+
+char getMultiThrottleChar(int);
+int getMultiThrottleIndex(char);

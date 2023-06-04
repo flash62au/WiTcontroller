@@ -69,6 +69,10 @@ boolean additionalButtonLastRead[MAX_ADDITIONAL_BUTTONS] = {0,0,0,0,0,0,0};
 #define HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS false  // default if not defined in config_buttons.h
 #endif
 
+#ifndef MAX_THROTTLES
+#define MAX_THROTTLES 2  // default if not defined in config_buttons.h
+#endif
+
 // *******************************************************************************************************************
 // OLED
 

@@ -13,7 +13,7 @@
 #define CHOSEN_KEYPAD_2_FUNCTION FUNCTION_2
 #define CHOSEN_KEYPAD_3_FUNCTION FUNCTION_3
 #define CHOSEN_KEYPAD_4_FUNCTION FUNCTION_4
-#define CHOSEN_KEYPAD_5_FUNCTION FUNCTION_5
+#define CHOSEN_KEYPAD_5_FUNCTION NEXT_THROTTLE
 #define CHOSEN_KEYPAD_6_FUNCTION SPEED_MULTIPLIER
 #define CHOSEN_KEYPAD_7_FUNCTION DIRECTION_REVERSE
 #define CHOSEN_KEYPAD_8_FUNCTION E_STOP
@@ -26,7 +26,7 @@
 #define CHOSEN_KEYPAD_2_DISPLAY_NAME "2 Horn"
 #define CHOSEN_KEYPAD_3_DISPLAY_NAME "3 F3"
 #define CHOSEN_KEYPAD_4_DISPLAY_NAME "4 F4"
-#define CHOSEN_KEYPAD_5_DISPLAY_NAME "5 F5"
+#define CHOSEN_KEYPAD_5_DISPLAY_NAME "5 Nxt Ttl"
 #define CHOSEN_KEYPAD_6_DISPLAY_NAME "6 X Spd"
 #define CHOSEN_KEYPAD_7_DISPLAY_NAME "7 Rev"
 #define CHOSEN_KEYPAD_8_DISPLAY_NAME "8 Estop"
@@ -44,6 +44,10 @@
 #define SPEED_STEP_MULTIPLIER 3  // for 'fast' speed steps
 // Additional multiplier.  If the multiplier is enabled from the menu, each rotation of the encoder becomes the speedStep * the AdditionalMultiplier
 #define SPEED_STEP_ADDITIONAL_MULTIPLIER 2
+
+// define the number of throttles that you want.
+// to use multiple throttles, one of the keys or buttons will need to be defined as NEXT_THROTTLE.  (keypad 5 is by default)
+// #define MAX_THROTTLES 2  // uncomment and increase the number if you need more that two throttles
 
 // define what each of the optional additional buttons will do
 // see static.h or README.md for details on the allowed functions
