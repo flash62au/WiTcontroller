@@ -708,7 +708,7 @@ void connectWitServer() {
   // Pass the delegate instance to wiThrottleProtocol
   wiThrottleProtocol.setDelegate(&myDelegate);
   // Uncomment for logging on Serial
-  wiThrottleProtocol.setLogStream(&Serial);
+  // wiThrottleProtocol.setLogStream(&Serial);
 
   debug_println("Connecting to the server...");
   clearOledArray(); 
