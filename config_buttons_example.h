@@ -48,6 +48,13 @@
 
 // ********************************************************************************************
 
+// Uncomment and increase the number if you need more than 2 throttles
+// Maximum supported by the WiThrottleProtocol is 6
+//
+// #define MAX_THROTTLES 2 
+
+// ********************************************************************************************
+
 // DCC Addresses below or equal to this number will be treated as short addresses.  
 // DCC++EX, NCE, Digitrax use 127, Lenz use 99
 #define SHORT_DCC_ADDESS_LIMIT 127  

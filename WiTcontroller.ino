@@ -51,8 +51,8 @@ String oledText[18] = {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "
 bool oledTextInvert[18] = {false, false, false, false, false, false, false, false, false, 
                            false, false, false, false, false, false, false, false, false};
 
-int currentSpeed[MAX_THROTTLES] = {0, 0};
-Direction currentDirection[MAX_THROTTLES] = {Forward, Forward};
+int currentSpeed[MAX_THROTTLES];
+Direction currentDirection[MAX_THROTTLES];
 int speedStepCurrentMultiplier = 1;
 
 TrackPower trackPower = PowerUnknown;
@@ -129,7 +129,7 @@ boolean functionStates[MAX_THROTTLES][28];
 String functionLabels[MAX_THROTTLES][28];
 
 // speedstep
-int currentSpeedStep[MAX_THROTTLES] = {speedStep, speedStep};
+int currentSpeedStep[MAX_THROTTLES];
 
 // throttle
 int currentThrottleIndex = 0;
@@ -1107,6 +1107,12 @@ void setup() {
   initialiseAdditionalButtons();
 
   resetAllFunctionLabels();
+
+  for (int i=0; i< MAX_THROTTLES; i++) {
+    currentSpeed[i] = 0;
+    currentDirection[i] = Forward;
+    currentSpeedStep[i] = speedStep;
+  }
 }
 
 void loop() {
@@ -2049,7 +2055,7 @@ void writeOledFunctionList(String soFar) {
       }
       oledText[5] = "(" + String(functionPage) +  ") " + menu_function_list;
     } else {
-      oledText[2] = msg_throttle_number + String(currentThrottleIndex);
+      oledText[2] = msg_throttle_number + String(currentThrottleIndex+1);
       oledText[3] = msg_no_loco_selected;
       oledText[5] = menu_cancel;
     }
@@ -2107,7 +2113,7 @@ void writeOledMenu(String soFar) {
       case MENU_ITEM_FUNCTION:
       case MENU_ITEM_TOGGLE_DIRECTION: {
           if (wiThrottleProtocol.getNumberOfLocomotives(getMultiThrottleChar(currentThrottleIndex)) <= 0 ) {
-            oledText[2] = msg_throttle_number + String(currentThrottleIndex);
+            oledText[2] = msg_throttle_number + String(currentThrottleIndex+1);
             oledText[3] = msg_no_loco_selected;
             oledText[5] = menu_cancel;
           } 
@@ -2178,14 +2184,14 @@ void writeOledSpeed() {
     sSpeed = String(currentSpeed[currentThrottleIndex]);
     sDirection = (currentDirection[currentThrottleIndex]==Forward) ? direction_forward : direction_reverse;
 
-    oledText[0] = "#" + String(currentThrottleIndex) + " "  + sLocos; 
+    oledText[0] = "#" + String(currentThrottleIndex+1) + " "  + sLocos; 
     //oledText[7] = "     " + sDirection;  // old function state format
 
     drawTopLine = true;
 
   } else {
     setAppnameForOled();
-    oledText[2] = msg_throttle_number + String(currentThrottleIndex);
+    oledText[2] = msg_throttle_number + String(currentThrottleIndex+1);
     oledText[3] = msg_no_loco_selected;
   }
 

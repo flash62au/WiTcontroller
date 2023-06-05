@@ -154,7 +154,7 @@ void toggleDirection(int);
 void changeDirection(int, Direction);
 
 void doDirectFunction(int, boolean);
-void doFunction(int, boolean);
+void doFunction(int, int, boolean);
 
 void powerOnOff(TrackPower);
 void powerToggle(void);
