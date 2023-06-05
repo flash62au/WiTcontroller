@@ -87,6 +87,11 @@ extern int buttonActions[];
 extern const String directCommandText[][3];
 extern int additionalButtonActions[];
 
+extern long lastSpeedSentTime;
+extern int lastSpeedSent;
+// extern int lastDirectionSent;
+extern int lastSpeedThrottleIndex;
+
 extern AiEsp32RotaryEncoder rotaryEncoder;
 
 extern int currentThrottleIndex;

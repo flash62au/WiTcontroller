@@ -137,6 +137,12 @@ int heartBeatPeriod = 10; // default to 10 seconds
 long lastServerResponseTime;  // seconds since start of Arduino
 boolean heartbeatCheckEnabled = true;
 
+// used to stop speed bounces
+long lastSpeedSentTime = 0;
+int lastSpeedSent = 0;
+// int lastDirectionSent = -1;
+int lastSpeedThrottleIndex = 0;
+
 // don't alter the assignments here
 // alter them in config_buttons.h
 
@@ -240,12 +246,20 @@ class MyDelegate : public WiThrottleProtocolDelegate {
       debug_println(description);
     }
     void receivedSpeedMultiThrottle(char multiThrottle, int speed) {             // Vnnn
-      debug_print("Received Speed: "); debug_println(speed); 
+      debug_print("Received Speed: ("); debug_print(millis()); debug_print(") speed: "); debug_println(speed); 
       int multiThrottleIndex = getMultiThrottleIndex(multiThrottle);
 
       if (currentSpeed[multiThrottleIndex] != speed) {
-        currentSpeed[multiThrottleIndex] = speed;
-        displayUpdateFromWit(multiThrottleIndex);
+        
+        // check for bounce. (intermediate speed sent back from the server, but is not up to date with the throttle)
+        if ( (lastSpeedThrottleIndex!=multiThrottleIndex)
+             || ((millis()-lastSpeedSentTime)>100)
+        ) {
+          currentSpeed[multiThrottleIndex] = speed;
+          displayUpdateFromWit(multiThrottleIndex);
+        } else {
+          debug_print("Received Speed: skipping response: ("); debug_print(millis()); debug_print(") speed: "); debug_println(speed);
+        }
       }
     }
     void receivedDirectionMultiThrottle(char multiThrottle, Direction dir) {     // R{0,1}
@@ -866,7 +880,8 @@ void rotary_onButtonClick() {
       lastTimePressed = millis();
       if (wiThrottleProtocol.getNumberOfLocomotives(getMultiThrottleChar(currentThrottleIndex))>0) {
         if (currentSpeed[currentThrottleIndex] != 0) {
-          wiThrottleProtocol.setSpeed(getMultiThrottleChar(currentThrottleIndex), 0);
+          // wiThrottleProtocol.setSpeed(getMultiThrottleChar(currentThrottleIndex), 0);
+          speedSet(currentThrottleIndex,0);
         } else {
           if (toggleDirectionOnEncoderButtonPressWhenStationary) toggleDirection(currentThrottleIndex);
         }
@@ -1705,6 +1720,12 @@ void speedSet(int multiThrottleIndex, int amt) {
     currentSpeed[multiThrottleIndex] = newSpeed;
     debug_print("Speed Set: "); debug_println(newSpeed);
 
+    // used to avoid bounce
+    lastSpeedSentTime = millis();
+    lastSpeedSent = newSpeed;
+    // lastDirectionSent = -1;
+    lastSpeedThrottleIndex = multiThrottleIndex;
+
     writeOledSpeed();
   }
 }
@@ -2217,10 +2238,10 @@ void writeOledFunctions() {
       u8g2.drawStr( i*4+1+10, 18, String( (i<10) ? i : ((i<20) ? i-10 : i-20)).c_str());
       u8g2.setDrawColor(1);
      }
-    //  if (anyFunctionsActive) {
-    //     u8g2.drawStr( 0, 18, (function_states).c_str());
+     if (anyFunctionsActive) {
+        u8g2.drawStr( 0, 18, (function_states).c_str());
     //     u8g2.drawHLine(0,19,128);
-    //  }
+     }
    }
   //  u8g2.drawStr( 0, 18, "0123456789012345678901234567");
   
