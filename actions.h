@@ -47,3 +47,5 @@
 #define DIRECTION_REVERSE 52
 
 #define NEXT_THROTTLE 53
+
+#define SPEED_STOP_THEN_TOGGLE_DIRECTION 54   // stops the loco if moving.  Toggles the direction if stationary.

@@ -49,6 +49,12 @@
 // to use multiple throttles, one of the keys or buttons will need to be defined as NEXT_THROTTLE.  (keypad 5 is by default)
 // #define MAX_THROTTLES 2  // uncomment and increase the number if you need more that two throttles
 
+// Define what the rotary encoder button does.   (Pushing down on the knob)
+// By default it will stop the loco if moving, then a second push will change the direction.
+// Uncomment and change the action if you wish it to do something else.
+// See static.h or README.md for details on the allowed functions.
+// #define ENCODER_BUTTON_ACTION SPEED_STOP_THEN_TOGGLE_DIRECTION 
+
 // define what each of the optional additional buttons will do
 // see static.h or README.md for details on the allowed functions
 // all must be included, just set the ones you don't need to FUNCTION_NULL

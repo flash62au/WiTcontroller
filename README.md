@@ -218,3 +218,5 @@ Note: you need to edit config_buttons.h to alter these assignments   (copy confi
 - DIRECTION_TOGGLE
 - DIRECTION_FORWARD
 - DIRECTION_REVERSE
+- NEXT_THROTTLE
+- SPEED_STOP_THEN_TOGGLE_DIRECTION   - stops the loco if moving.  Toggles the direction if stationary.

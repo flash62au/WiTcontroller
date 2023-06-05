@@ -41,6 +41,7 @@
 
 int keypadUseType = KEYPAD_USE_OPERATION;
 int encoderUseType = ENCODER_USE_OPERATION;
+int encoderButtonAction = ENCODER_BUTTON_ACTION;
 
 boolean menuCommandStarted = false;
 String menuCommand = "";
@@ -354,6 +355,8 @@ MyDelegate myDelegate;
 int deviceId = random(1000,9999);
 
 // *********************************************************************************
+// wifi / SSID 
+// *********************************************************************************
 
 void ssidsLoop() {
   if (ssidConnectionState == CONNECTION_STATE_DISCONNECTED) {
@@ -607,6 +610,8 @@ void connectSsid() {
 }
 
 // *********************************************************************************
+// WiThrottle 
+// *********************************************************************************
 
 void witServiceLoop() {
   if (witConnectionState == CONNECTION_STATE_DISCONNECTED) {
@@ -858,7 +863,7 @@ void buildWitEntry() {
 }
 
 // *********************************************************************************
-//   Encoder
+//   Rotary Encoder
 // *********************************************************************************
 
 AiEsp32RotaryEncoder rotaryEncoder = AiEsp32RotaryEncoder(ROTARY_ENCODER_A_PIN, ROTARY_ENCODER_B_PIN, ROTARY_ENCODER_BUTTON_PIN, ROTARY_ENCODER_VCC_PIN, ROTARY_ENCODER_STEPS);
@@ -873,20 +878,24 @@ void rotary_onButtonClick() {
         && (keypadUseType!=KEYPAD_USE_SELECT_SSID) 
         && (keypadUseType!=KEYPAD_USE_SELECT_SSID_FROM_FOUND) ) {
       static unsigned long lastTimePressed = 0;
-      if (millis() - lastTimePressed < encoderDebounceTime) {   //ignore multiple press in that time milliseconds
+      if (millis() - lastTimePressed < encoderDebounceTime) {   //ignore multiple press in that specified time
         debug_println("encoder button debounce");
         return;
       }
       lastTimePressed = millis();
-      if (wiThrottleProtocol.getNumberOfLocomotives(getMultiThrottleChar(currentThrottleIndex))>0) {
-        if (currentSpeed[currentThrottleIndex] != 0) {
-          // wiThrottleProtocol.setSpeed(getMultiThrottleChar(currentThrottleIndex), 0);
-          speedSet(currentThrottleIndex,0);
-        } else {
-          if (toggleDirectionOnEncoderButtonPressWhenStationary) toggleDirection(currentThrottleIndex);
-        }
-        currentSpeed[currentThrottleIndex] = 0;
-      }
+      // if (encoderButtonAction == SPEED_STOP_THEN_TOGGLE_DIRECTION) {
+      //   if (wiThrottleProtocol.getNumberOfLocomotives(getMultiThrottleChar(currentThrottleIndex))>0) {
+      //     if (currentSpeed[currentThrottleIndex] != 0) {
+      //       // wiThrottleProtocol.setSpeed(getMultiThrottleChar(currentThrottleIndex), 0);
+      //       speedSet(currentThrottleIndex,0);
+      //     } else {
+      //       if (toggleDirectionOnEncoderButtonPressWhenStationary) toggleDirection(currentThrottleIndex);
+      //     }
+      //     currentSpeed[currentThrottleIndex] = 0;
+      //   }
+      // } else {
+        doDirectAction(encoderButtonAction);
+      // }
       debug_println("encoder button pressed");
       writeOledSpeed();
     }  else {
@@ -1497,6 +1506,10 @@ void doDirectAction(int buttonAction) {
         nextThrottle();
         break; 
       }
+      case SPEED_STOP_THEN_TOGGLE_DIRECTION: {
+        stopThenToggleDirection();
+        break; 
+      }
   }
   // debug_println("doDirectAction(): end");
 }
@@ -1845,6 +1858,18 @@ void nextThrottle() {
   }
   if (currentThrottleIndex!=wasThrottle) {
     writeOledSpeed();
+  }
+}
+
+void stopThenToggleDirection() {
+  if (wiThrottleProtocol.getNumberOfLocomotives(getMultiThrottleChar(currentThrottleIndex))>0) {
+    if (currentSpeed[currentThrottleIndex] != 0) {
+      // wiThrottleProtocol.setSpeed(getMultiThrottleChar(currentThrottleIndex), 0);
+      speedSet(currentThrottleIndex,0);
+    } else {
+      if (toggleDirectionOnEncoderButtonPressWhenStationary) toggleDirection(currentThrottleIndex);
+    }
+    currentSpeed[currentThrottleIndex] = 0;
   }
 }
 

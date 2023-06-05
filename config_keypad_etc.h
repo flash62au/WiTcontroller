@@ -73,6 +73,10 @@ boolean additionalButtonLastRead[MAX_ADDITIONAL_BUTTONS] = {0,0,0,0,0,0,0};
 #define MAX_THROTTLES 2  // default if not defined in config_buttons.h
 #endif
 
+#ifndef ENCODER_BUTTON_ACTION
+#define ENCODER_BUTTON_ACTION SPEED_STOP_THEN_TOGGLE_DIRECTION  // default if not defined in config_buttons.h
+#endif
+
 // *******************************************************************************************************************
 // OLED
 
