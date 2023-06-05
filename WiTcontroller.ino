@@ -1600,7 +1600,6 @@ void doMenu() {
     case MENU_ITEM_TRACK_POWER: {
         powerToggle();
         debug_println("Power toggle");
-        writeOledSpeed();
         break;
       }
     case MENU_ITEM_EXTRAS: { // Extra menu - e.g. disconnect/reconnect/sleep
@@ -1839,6 +1838,7 @@ void doFunction(int multiThrottleIndex, int functionNumber, boolean pressed) {  
 void powerOnOff(TrackPower powerState) {
   wiThrottleProtocol.setTrackPower(powerState);
   trackPower = powerState;
+  writeOledSpeed();
 }
 
 void powerToggle() {
