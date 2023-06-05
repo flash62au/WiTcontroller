@@ -1,10 +1,21 @@
 #define DEVICE_NAME "WiT Controller"
 
+// ********************************************************************************************
+
 // false = Counterclockwise  true = clockwise
 #define ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED false
 
+// Define what the rotary encoder button does.   (Pushing down on the knob)
+// By default it will stop the loco if moving, then a second push will change the direction.
+// Uncomment and change the action if you wish it to do something else.
+// See static.h or README.md for details on the allowed functions.
+// #define ENCODER_BUTTON_ACTION SPEED_STOP_THEN_TOGGLE_DIRECTION 
+
 // true = if the locos(s) are stationary, clicking the encoder button will toggle the direction
+// this only takes effect if the ENCODER_BUTTON_ACTION (above) is set to SPEED_STOP_THEN_TOGGLE_DIRECTION
 #define TOGGLE_DIRECTION_ON_ENCODER_BUTTON_PRESSED_WHEN_STATIONAY true
+
+// ********************************************************************************************
 
 // define what each button will do as direct press (not in a menu)   * and # cannot be remapped
 // see static.h or README.md for details on the allowed functions
@@ -35,6 +46,8 @@
 // by default, # will show the list above. if you change the following line to true, it will take you to the Loco Function Labels screen directly
 #define HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS false
 
+// ********************************************************************************************
+
 // DCC Addresses below or equal to this number will be treated as short addresses.  
 // DCC++EX, NCE, Digitrax use 127, Lenz use 99
 #define SHORT_DCC_ADDESS_LIMIT 127  
@@ -49,11 +62,7 @@
 // to use multiple throttles, one of the keys or buttons will need to be defined as NEXT_THROTTLE.  (keypad 5 is by default)
 // #define MAX_THROTTLES 2  // uncomment and increase the number if you need more that two throttles
 
-// Define what the rotary encoder button does.   (Pushing down on the knob)
-// By default it will stop the loco if moving, then a second push will change the direction.
-// Uncomment and change the action if you wish it to do something else.
-// See static.h or README.md for details on the allowed functions.
-// #define ENCODER_BUTTON_ACTION SPEED_STOP_THEN_TOGGLE_DIRECTION 
+// ********************************************************************************************
 
 // define what each of the optional additional buttons will do
 // see static.h or README.md for details on the allowed functions
@@ -68,6 +77,8 @@
 #define CHOSEN_ADDITIONAL_BUTTON_6_FUNCTION FUNCTION_NULL   // GPIO 33
 
 #define ADDITIONAL_BUTTON_DEBOUNCE_DELAY 50   // increase if you find the buttons bounce. i.e. activate twice on a single press
+
+// ********************************************************************************************
 
 // uncomment and/or correct one (only) of the #define lines below if you need to override the default .9 inch oLED dispaly settings 
 //
