@@ -49,3 +49,5 @@
 #define NEXT_THROTTLE 53
 
 #define SPEED_STOP_THEN_TOGGLE_DIRECTION 54   // stops the loco if moving.  Toggles the direction if stationary.
+
+#define E_STOP_CURRENT_LOCO 55

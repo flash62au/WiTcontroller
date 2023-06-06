@@ -1496,6 +1496,10 @@ void doDirectAction(int buttonAction) {
         speedEstop();
         break; 
       }
+      case E_STOP_CURRENT_LOCO: {
+        speedEstopCurrentLoco();
+        break; 
+      }
       case POWER_ON: {
         powerOnOff(PowerOn);
         break; 
@@ -1710,6 +1714,13 @@ void speedEstop() {
     currentSpeed[i] = 0;
   }
   debug_println("Speed EStop"); 
+  writeOledSpeed();
+}
+
+void speedEstopCurrentLoco() {
+  wiThrottleProtocol.emergencyStop(getMultiThrottleChar(currentThrottleIndex));
+  currentSpeed[currentThrottleIndex] = 0;
+  debug_println("Speed EStop Curent Loco"); 
   writeOledSpeed();
 }
 

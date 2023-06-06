@@ -211,7 +211,8 @@ Note: you need to edit config_buttons.h to alter these assignments   (copy confi
 - SPEED_UP_FAST
 - SPEED_DOWN_FAST
 - SPEED_MULTIPLIER
-- E_STOP
+- E_STOP   - E Stop all locos on all throttles
+- E_STOP_CURRENT_LOCO - E Stop locos on current throttle only
 - POWER_TOGGLE
 - POWER_ON
 - POWER_OFF
