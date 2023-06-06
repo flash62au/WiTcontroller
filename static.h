@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 1.04";
+const String appVersion = "     Version 1.05";
 const String msg_start = "Start";
 
 const String menu_menu =                   "* Menu                # Key Defs";
@@ -25,7 +25,7 @@ const String direct_command_list = "Direct Commands";
 const String direction_forward = "Fwd";
 const String direction_reverse = "Rev";
 
-const String function_states = "fn ";
+// const String function_states = "fn ";
 
 const String msg_browsing_for_service ="Browsing for WiT services";
 const String msg_browsing_for_ssids ="Browsing for SSIDs";

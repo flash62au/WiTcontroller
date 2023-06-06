@@ -2184,7 +2184,7 @@ void writeOledSpeed() {
     sSpeed = String(currentSpeed[currentThrottleIndex]);
     sDirection = (currentDirection[currentThrottleIndex]==Forward) ? direction_forward : direction_reverse;
 
-    oledText[0] = "#" + String(currentThrottleIndex+1) + " "  + sLocos; 
+    oledText[0] = "   "  + sLocos; 
     //oledText[7] = "     " + sDirection;  // old function state format
 
     drawTopLine = true;
@@ -2207,11 +2207,18 @@ void writeOledSpeed() {
 
   if (wiThrottleProtocol.getNumberOfLocomotives(getMultiThrottleChar(currentThrottleIndex)) > 0 ) {
     writeOledFunctions();
+
+     // throttle number
+    u8g2.setDrawColor(0);
+    u8g2.drawBox(0,0,12,16);
+    u8g2.setDrawColor(1);
+    u8g2.setFont(u8g2_font_profont15_mn); // medium
+    u8g2.drawStr(1,15, String(currentThrottleIndex+1).c_str());
   }
 
   if (trackPower == PowerOn) {
     u8g2.drawBox(0,41,15,8);
-    u8g2.setDrawColor(1);
+    // u8g2.setDrawColor(1);
     u8g2.setDrawColor(0);
   }
   u8g2.setFont(u8g2_font_profont10_tf);
@@ -2262,20 +2269,18 @@ void writeOledFunctions() {
 
       // new function state format
       anyFunctionsActive = true;
-      u8g2.drawBox(i*4+10,12,5,7);
+      u8g2.drawBox(i*4+12,12,5,7);
       u8g2.setDrawColor(0);
       // u8g2.setFont(u8g2_font_micro_tr);   
       u8g2.setFont(u8g2_font_tiny_simon_tr);   
-      u8g2.drawStr( i*4+1+10, 18, String( (i<10) ? i : ((i<20) ? i-10 : i-20)).c_str());
+      u8g2.drawStr( i*4+1+12, 18, String( (i<10) ? i : ((i<20) ? i-10 : i-20)).c_str());
       u8g2.setDrawColor(1);
      }
-     if (anyFunctionsActive) {
-        u8g2.drawStr( 0, 18, (function_states).c_str());
-    //     u8g2.drawHLine(0,19,128);
-     }
+    //  if (anyFunctionsActive) {
+    //     u8g2.drawStr( 0, 18, (function_states).c_str());
+    // //     u8g2.drawHLine(0,19,128);
+    //  }
    }
-  //  u8g2.drawStr( 0, 18, "0123456789012345678901234567");
-  
   // debug_println("writeOledFunctions(): end");
 }
 
