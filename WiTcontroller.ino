@@ -1871,12 +1871,14 @@ void changeDirection(int multiThrottleIndex, Direction direction) {
 
   if (locoCount > 0) {
     currentDirection[multiThrottleIndex] = direction;
-    debug_print("Change direction: "); debug_println( (direction==Forward) ? "Forward" : "Reverse");
+    debug_print("Change direction(): "); debug_println( (direction==Forward) ? "Forward" : "Reverse");
 
     if (locoCount == 1) {
+      debug_println("Change direction(): one loco");
       wiThrottleProtocol.setDirection(multiThrottleChar, direction);  // change all
 
     } else {
+      debug_println("Change direction(): multiple locos");
       leadLoco = wiThrottleProtocol.getLeadLocomotive(multiThrottleChar);
       leadLocoCurrentDirection = wiThrottleProtocol.getDirection(multiThrottleChar, leadLoco);
 
@@ -1896,6 +1898,7 @@ void changeDirection(int multiThrottleIndex, Direction direction) {
     } 
   }
   writeOledSpeed();
+  debug_println("Change direction(): end "); 
 }
 
 void doDirectFunction(int multiThrottleIndex, int functionNumber, boolean pressed) {
