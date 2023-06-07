@@ -67,14 +67,16 @@ Notes:
     * Then Use the *Boards Manager* in the *Arduino IDE* to install the esp32 board support
         * *Tools* > *Board* > *Boards Manager*
         * Search for "esp32" by Expressive Systems.  Install version 1.0.6
-3. Download or clone *this* repository. (Note: if you 'clone', it is easier to receive updates to the code.)
-    * Clone 
+3. Download or clone *this* repository. (Note: if you 'clone' initially, it is easier to receive updates to the code by doing a 'fetch' subsequently.  See Notes below.)
+    * Clone - **First Time**
        * Install *GitHub Desktop* from https://desktop.github.com/
        * Create a free account on GitHub and authorise the app to allow it to connect top GitHub
        * Select *file* -> *Clone Repository* - or 'Clone an repository from the internet' from the welcome page then select the 'URL' tab
        * Enter *https://github.com/flash62au/WiTcontroller* as the URL
-       * Select a local folder to install it.  The default folder for the Arduino usually looks like "...username\Documents\Arduino\". This is a good but not essential place to put it.
+       * Select a local folder to install it.  The default folder for the Arduino usually looks like "...username\Documents\Arduino\". (This is a good but not essential place to put it.)
        * Click *Clone*
+       * **Subsequently**  (Anytime after the first 'clone')
+         * click *Fetch Origin* and any changes to the code will be bought down to you PC, but you config_buttons.h and config_network.h will not be touched.
     * Download 
        * Open *https://github.com/flash62au/WiTcontroller*
        * Click the green "Code" button and select download zip
@@ -100,8 +102,11 @@ Notes:
 
 Notes: 
    * WiTcontroller version 0.10 or later requires WiThrottleProtocol version 1.0.3 or later.
+   * WiTcontroller version 1.01 or later requires WiThrottleProtocol version 1.1.0 or later.
    * The *WiFi.h* and *ESPmDNS.h* libraries were automatically installed for me when I installed the esp32 boards, however you may need to install them manually.
    * Later versions of the esp board support are available and do appear to work, but if you have difficulties version 1.0.6 appears to be stable.
+   * To get the WiTcontroller sketch I recommend using either the git command line, or the far more friendly 'GitHub Desktop' app.
+     * In Github Desktop, 
 
 ---
 
