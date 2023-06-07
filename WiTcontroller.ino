@@ -726,8 +726,8 @@ void selectWitServer(int selection) {
 void connectWitServer() {
   // Pass the delegate instance to wiThrottleProtocol
   wiThrottleProtocol.setDelegate(&myDelegate);
-  // Uncomment for logging on Serial
-  wiThrottleProtocol.setLogStream(&Serial);
+  // Uncomment for logging on Serial  - DEBUG
+  // wiThrottleProtocol.setLogStream(&Serial);
 
   debug_println("Connecting to the server...");
   clearOledArray(); 
@@ -1874,11 +1874,11 @@ void changeDirection(int multiThrottleIndex, Direction direction) {
     debug_print("Change direction(): "); debug_println( (direction==Forward) ? "Forward" : "Reverse");
 
     if (locoCount == 1) {
-      debug_println("Change direction(): one loco");
+      // debug_println("Change direction(): one loco");
       wiThrottleProtocol.setDirection(multiThrottleChar, direction);  // change all
 
     } else {
-      debug_println("Change direction(): multiple locos");
+      // debug_println("Change direction(): multiple locos");
       leadLoco = wiThrottleProtocol.getLeadLocomotive(multiThrottleChar);
       leadLocoCurrentDirection = wiThrottleProtocol.getDirection(multiThrottleChar, leadLoco);
 
@@ -1898,7 +1898,7 @@ void changeDirection(int multiThrottleIndex, Direction direction) {
     } 
   }
   writeOledSpeed();
-  debug_println("Change direction(): end "); 
+  // debug_println("Change direction(): end "); 
 }
 
 void doDirectFunction(int multiThrottleIndex, int functionNumber, boolean pressed) {
