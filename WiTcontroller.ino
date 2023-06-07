@@ -727,7 +727,7 @@ void connectWitServer() {
   // Pass the delegate instance to wiThrottleProtocol
   wiThrottleProtocol.setDelegate(&myDelegate);
   // Uncomment for logging on Serial
-  // wiThrottleProtocol.setLogStream(&Serial);
+  wiThrottleProtocol.setLogStream(&Serial);
 
   debug_println("Connecting to the server...");
   clearOledArray(); 
@@ -1405,6 +1405,25 @@ void doKeyPress(char key, boolean pressed) {
         }
         break;
 
+      case KEYPAD_USE_EDIT_CONSIST:
+        debug_print("key Edit Consist... "); debug_println(key);
+        switch (key){
+          case '0': case '1': case '2': case '3': case '4': 
+          case '5': case '6': case '7': case '8': case '9':
+            if ( (key-'0') <= wiThrottleProtocol.getNumberOfLocomotives(getMultiThrottleChar(currentThrottleIndex))) {
+              selectEditConsistList(key - '0');
+            }
+            break;
+          case '*':  // cancel
+            resetMenu();
+            writeOledSpeed();
+            break;
+          default:  // do nothing 
+            break;
+        }
+        break;
+
+
       default:  // do nothing 
         break;
     }
@@ -1537,6 +1556,7 @@ void doMenu() {
           loco = getLocoWithLength(loco);
           debug_print("add Loco: "); debug_println(loco);
           wiThrottleProtocol.addLocomotive(getMultiThrottleChar(currentThrottleIndex), loco);
+          wiThrottleProtocol.getDirection(getMultiThrottleChar(currentThrottleIndex), loco);
           resetFunctionStates(currentThrottleIndex);
           writeOledSpeed();
         } else {
@@ -1616,6 +1636,15 @@ void doMenu() {
         char subCommand = menuCommand.charAt(1);
         if (menuCommand.length() > 1) {
           switch (subCommand) {
+            case '0': { // toggle showing Def Keys vs Function labels
+                hashShowsFunctionsInsteadOfKeyDefs = !hashShowsFunctionsInsteadOfKeyDefs;
+                writeOledSpeed();
+                break;
+              } 
+            case '1': { // edit consist - loco facings
+                writeOledEditConsist();
+                break;
+              } 
             case '6': { // disconnect   
                 if (witConnectionState == CONNECTION_STATE_CONNECTED) {
                   witConnectionState == CONNECTION_STATE_DISCONNECTED;
@@ -1634,10 +1663,6 @@ void doMenu() {
                 toggleHeartbeatCheck();
                 writeOledSpeed();
                 break;
-              }
-            case '0': { // toggle showing Def Keys vs Function labels
-                hashShowsFunctionsInsteadOfKeyDefs = !hashShowsFunctionsInsteadOfKeyDefs;
-                writeOledSpeed();
               }
           }
         } else {
@@ -1759,10 +1784,37 @@ void speedSet(int multiThrottleIndex, int amt) {
   }
 }
 
+void toggleLocoFacing(int multiThrottleIndex, String loco) {
+  debug_print("toggleLocoFacing(): "); debug_println(loco); 
+  for(int i=0;i<wiThrottleProtocol.getNumberOfLocomotives(getMultiThrottleChar(multiThrottleIndex));i++) {
+    if (wiThrottleProtocol.getLocomotiveAtPosition(i).equals(loco)) {
+      if (wiThrottleProtocol.getDirection(getMultiThrottleChar(multiThrottleIndex), loco) == Forward) {
+        wiThrottleProtocol.setDirection(getMultiThrottleChar(multiThrottleIndex), loco, Reverse);
+      } else {
+        wiThrottleProtocol.setDirection(getMultiThrottleChar(multiThrottleIndex), loco, Forward);
+      }
+      break;
+    }
+  } 
+}
+
+int getLocoFacing(int multiThrottleIndex, String loco) {
+  int result = Forward;
+  for(int i=0;i<wiThrottleProtocol.getNumberOfLocomotives(getMultiThrottleChar(multiThrottleIndex));i++) {
+    if (wiThrottleProtocol.getLocomotiveAtPosition(i).equals(loco)) {
+      result = wiThrottleProtocol.getDirection(getMultiThrottleChar(multiThrottleIndex), loco);
+      break;
+    }
+  }
+  return result;
+}
+
 void releaseAllLocos(int multiThrottleIndex) {
+  String loco;
   if (wiThrottleProtocol.getNumberOfLocomotives(getMultiThrottleChar(multiThrottleIndex))>0) {
     for(int index=wiThrottleProtocol.getNumberOfLocomotives(getMultiThrottleChar(multiThrottleIndex))-1;index>=0;index--) {
-      wiThrottleProtocol.releaseLocomotive(getMultiThrottleChar(multiThrottleIndex), wiThrottleProtocol.getLocomotiveAtPosition(getMultiThrottleChar(multiThrottleIndex), index));
+      loco = wiThrottleProtocol.getLocomotiveAtPosition(getMultiThrottleChar(multiThrottleIndex), index);
+      wiThrottleProtocol.releaseLocomotive(getMultiThrottleChar(multiThrottleIndex), loco);
       writeOledSpeed();  // note the relesed locos may not be visible
     } 
     resetFunctionLabels(multiThrottleIndex);
@@ -1806,22 +1858,44 @@ void toggleHeartbeatCheck() {
 
 void toggleDirection(int multiThrottleIndex) {
   if (wiThrottleProtocol.getNumberOfLocomotives(getMultiThrottleChar(multiThrottleIndex)) > 0) {
-  //   Direction direction = Reverse;
-  //   if (currentDirection == Reverse) {
-  //     direction = Forward;
-  //   }
     changeDirection(multiThrottleIndex, (currentDirection[multiThrottleIndex] == Forward) ? Reverse : Forward );
     writeOledSpeed();
   }
 }
 
 void changeDirection(int multiThrottleIndex, Direction direction) {
-  if (wiThrottleProtocol.getNumberOfLocomotives(getMultiThrottleChar(multiThrottleIndex)) > 0) {
-    wiThrottleProtocol.setDirection(getMultiThrottleChar(multiThrottleIndex), direction);
+  String loco; String leadLoco; 
+  Direction leadLocoCurrentDirection;
+  char multiThrottleChar = getMultiThrottleChar(multiThrottleIndex);
+  int locoCount = wiThrottleProtocol.getNumberOfLocomotives(multiThrottleChar);
+
+  if (locoCount > 0) {
     currentDirection[multiThrottleIndex] = direction;
     debug_print("Change direction: "); debug_println( (direction==Forward) ? "Forward" : "Reverse");
-    writeOledSpeed(); 
+
+    if (locoCount == 1) {
+      wiThrottleProtocol.setDirection(multiThrottleChar, direction);  // change all
+
+    } else {
+      leadLoco = wiThrottleProtocol.getLeadLocomotive(multiThrottleChar);
+      leadLocoCurrentDirection = wiThrottleProtocol.getDirection(multiThrottleChar, leadLoco);
+
+      for (int i=1; i<locoCount; i++) {
+        loco = wiThrottleProtocol.getLocomotiveAtPosition(i);
+        if (wiThrottleProtocol.getDirection(multiThrottleChar, loco) == leadLocoCurrentDirection) {
+          wiThrottleProtocol.setDirection(multiThrottleChar, loco, direction);
+        } else {
+          if (wiThrottleProtocol.getDirection(multiThrottleChar, loco) == Reverse) {
+            wiThrottleProtocol.setDirection(multiThrottleChar, loco, Forward);
+          } else {
+            wiThrottleProtocol.setDirection(multiThrottleChar, loco, Reverse);
+          }
+        }
+      }
+      wiThrottleProtocol.setDirection(multiThrottleChar, leadLoco, direction);
+    } 
   }
+  writeOledSpeed();
 }
 
 void doDirectFunction(int multiThrottleIndex, int functionNumber, boolean pressed) {
@@ -1954,6 +2028,18 @@ void selectFunctionList(int selection) {
     String function = functionLabels[currentThrottleIndex][selection];
     debug_print("Function Selected: "); debug_println(function);
     doFunction(currentThrottleIndex, selection, true);
+    writeOledSpeed();
+    keypadUseType = KEYPAD_USE_OPERATION;
+  }
+}
+
+void selectEditConsistList(int selection) {
+  debug_print("selectEditConsistList() "); debug_println(selection);
+
+  if (wiThrottleProtocol.getNumberOfLocomotives(getMultiThrottleChar(currentThrottleIndex)) > 1 ) {
+    String loco = wiThrottleProtocol.getLocomotiveAtPosition(selection);
+    toggleLocoFacing(currentThrottleIndex, loco);
+
     writeOledSpeed();
     keypadUseType = KEYPAD_USE_OPERATION;
   }
@@ -2117,7 +2203,7 @@ void writeOledMenu(String soFar) {
     switch (soFar.charAt(0)) {
       case MENU_ITEM_DROP_LOCO: {
             if (wiThrottleProtocol.getNumberOfLocomotives(getMultiThrottleChar(currentThrottleIndex)) > 0) {
-              writeOledAllLocos();
+              writeOledAllLocos(false);
               drawTopLine = true;
             }
           } // fall through
@@ -2149,16 +2235,35 @@ void writeOledExtraSubMenu() {
   }
 }
 
-void writeOledAllLocos() {
+void writeOledAllLocos(bool hideLeadLoco) {
+  int startAt = (hideLeadLoco) ? 1 :0;
+  debug_println("writeOledAllLocos(): ");
+  String loco;
   int j = 0; int i = 0;
   if (wiThrottleProtocol.getNumberOfLocomotives(getMultiThrottleChar(currentThrottleIndex)) > 0) {
     for (int index=0; ((index < wiThrottleProtocol.getNumberOfLocomotives(getMultiThrottleChar(currentThrottleIndex))) && (i < 8)); index++) {  //can only show first 8
       j = (i<4) ? j=i : j = i+2;
-      // oledText[j+1] = String(i) + ": " + wiThrottleProtocol.getLocomotiveAtPosition(index);
-      oledText[j+1] = wiThrottleProtocol.getLocomotiveAtPosition(getMultiThrottleChar(currentThrottleIndex), index);
+      loco = wiThrottleProtocol.getLocomotiveAtPosition(getMultiThrottleChar(currentThrottleIndex), index);
+      if (i>=startAt) {
+        oledText[j+1] = String(i) + ": " + loco;
+        if (wiThrottleProtocol.getDirection(getMultiThrottleChar(currentThrottleIndex), loco) == Reverse) {
+          oledTextInvert[j+1] = true;
+        }
+      }
       i++;      
     } 
   }
+}
+
+void writeOledEditConsist() {
+  menuIsShowing = false;
+  clearOledArray();
+  debug_println("writeOledEditConsist(): ");
+  keypadUseType = KEYPAD_USE_EDIT_CONSIST;
+  writeOledAllLocos(true);
+  oledText[0] = menuText[11][0];
+  oledText[5] = menuText[11][1];
+  writeOledArray(false, false);
 }
 
 void writeHeartbeatCheck() {
@@ -2224,7 +2329,7 @@ void writeOledSpeed() {
     u8g2.drawBox(0,0,12,16);
     u8g2.setDrawColor(1);
     u8g2.setFont(u8g2_font_profont15_mn); // medium
-    u8g2.drawStr(1,15, String(currentThrottleIndex+1).c_str());
+    u8g2.drawStr(2,15, String(currentThrottleIndex+1).c_str());
   }
 
   if (trackPower == PowerOn) {

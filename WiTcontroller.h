@@ -166,6 +166,7 @@ void selectRoster(int);
 void selectTurnoutList(int, TurnoutAction);
 void selectRouteList(int);
 void selectFunctionList(int);
+void selectEditConsistList(int);
 
 void setAppnameForOled(void);
 void writeOledFoundSSids(String);
@@ -180,6 +181,7 @@ void writeOledSpeed(void);
 void writeOledFunctions(void);
 void writeOledFunctionList(String);
 void writeOledAllLocos(void);
+void writeOledEditConsist();
 void writeOledArray(boolean, boolean);
 void writeOledArray(boolean, boolean, boolean);
 void writeOledArray(boolean, boolean, boolean, boolean);

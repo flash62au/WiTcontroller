@@ -103,6 +103,7 @@ Notes:
 Notes: 
    * WiTcontroller version 0.10 or later requires WiThrottleProtocol version 1.0.3 or later.
    * WiTcontroller version 1.01 or later requires WiThrottleProtocol version 1.1.0 or later.
+   * WiTcontroller version 1.06 or later requires WiThrottleProtocol version 1.1.1 or later.
    * The *WiFi.h* and *ESPmDNS.h* libraries were automatically installed for me when I installed the esp32 boards, however you may need to install them manually.
    * Later versions of the esp board support are available and do appear to work, but if you have difficulties version 1.0.6 appears to be stable.
    * To get the WiTcontroller sketch I recommend using either the git command line, or the far more friendly 'GitHub Desktop' app.

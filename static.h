@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 1.05";
+const String appVersion = "     Version 1.06";
 const String msg_start = "Start";
 
 const String menu_menu =                   "* Menu                # Key Defs";
@@ -68,6 +68,7 @@ const String label_track_power = "TRK";
 #define KEYPAD_USE_SELECT_ROUTES 8
 #define KEYPAD_USE_SELECT_FUNCTION 9
 #define KEYPAD_USE_ENTER_SSID_PASSWORD 10
+#define KEYPAD_USE_EDIT_CONSIST 11
 
 #define ENCODER_USE_OPERATION 0
 #define ENCODER_USE_SSID_PASSWORD 1
@@ -99,7 +100,7 @@ const String label_track_power = "TRK";
 #define MENU_ITEM_TRACK_POWER '8'
 #define MENU_ITEM_EXTRAS '9'
 
-const String menuText[11][3] = {
+const String menuText[12][3] = {
   {"Function",    "no+# Select   * Cancel  # List", ""},   //0
   {"Add Loco",    "addr+# Add  * Cancel  # Roster", ""},   //1
   {"Drop Loco",   "addr+# One   * Cancel    # All", ""},   //2
@@ -110,11 +111,12 @@ const String menuText[11][3] = {
   {"Route",       "no+# Select  * Cancel   # List", ""},   //7
   {"Trk Power",   "* Cancel                # Toggle", ""}, //8 
   {"Extras",      "no+# Select  * Cancel         ", ""},   //9
-  {"Heartbeat",   "* Close                       ", ""}   //10
+  {"Heartbeat",   "* Close                       ", ""},   //10
+  {"Edit Consist","no+# Change Dir  * Close      ", ""}    //11
 };
 
 const String extraSubMenuText[8] = { 
-   "Fnc/Key Tgl", "", "", "Hrtbt Tgl",  
+   "Fnc/Key Tgl", "Edt Consist", "", "Hrtbt Tgl",  
    "", "", "Disconnect", "OFF / Sleep" };
 
 // if defined in config_buttons.h these values will be overwritten
