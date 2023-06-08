@@ -112,7 +112,7 @@ const String menuText[12][3] = {
   {"Trk Power",   "* Cancel                # Toggle", ""}, //8 
   {"Extras",      "no Select  * Cancel         ", ""},   //9
   {"Heartbeat",   "* Close                       ", ""},   //10
-  {"Edit Consist","no Change Dir  * Close        ", ""}    //11
+  {"Edit Consist Facing","no Chng Facing   * Close", ""}    //11
 };
 
 const bool menuRequiresOneChar[12] = {
