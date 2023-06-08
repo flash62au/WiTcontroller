@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 1.08";
+const String appVersion = "     Version 1.09";
 const String msg_start = "Start";
 
 const String menu_menu =                   "* Menu                # Key Defs";
@@ -110,9 +110,24 @@ const String menuText[12][3] = {
   {"Close Point", "no+# Close   * Cancel   # List", ""},   //6
   {"Route",       "no+# Select  * Cancel   # List", ""},   //7
   {"Trk Power",   "* Cancel                # Toggle", ""}, //8 
-  {"Extras",      "no+# Select  * Cancel         ", ""},   //9
+  {"Extras",      "no Select  * Cancel         ", ""},   //9
   {"Heartbeat",   "* Close                       ", ""},   //10
   {"Edit Consist","no Change Dir  * Close        ", ""}    //11
+};
+
+const bool menuRequiresOneChar[12] = {
+  false,   //0
+  false,   //1
+  false,   //2
+  false,   //3
+  false,   //4
+  false,   //5
+  false,   //6
+  false,   //7
+  false,   //8
+  true,   //9
+  false,   //10
+  false   //11
 };
 
 const String extraSubMenuText[8] = { 

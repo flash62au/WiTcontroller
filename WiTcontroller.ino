@@ -1187,8 +1187,14 @@ void doKeyPress(char key, boolean pressed) {
           case '0': case '1': case '2': case '3': case '4': 
           case '5': case '6': case '7': case '8': case '9':
             if (menuCommandStarted) { // append to the string
-              menuCommand += key;
-              writeOledMenu(menuCommand);
+              if ((menuRequiresOneChar[menuCommand.substring(0, 1).toInt()]) 
+              && (menuCommand.length()==1)) { // only one char is required for this type of menu
+                menuCommand += key;
+                doMenu();
+              } else {  //menu type allows/requries more than one char
+                menuCommand += key;
+                writeOledMenu(menuCommand);
+              }
             } else {
               doDirectCommand(key, true);
             }
@@ -2183,6 +2189,7 @@ void writeOledEnterPassword() {
 }
 
 void writeOledMenu(String soFar) {
+  debug_print("writeOledMenu() : "); debug_println(soFar);
   menuIsShowing = true;
   bool drawTopLine = false;
   if (soFar == "") { // nothing entered yet
