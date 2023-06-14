@@ -69,6 +69,11 @@
 // to use multiple throttles, one of the keys or buttons will need to be defined as NEXT_THROTTLE.  (keypad 5 is by default)
 // #define MAX_THROTTLES 2  // uncomment and increase the number if you need more that two throttles
 
+// by default, the speed will be displayed as the the DCC speed (0-126)
+// uncomment this line to display the sppeds a percentage.
+// Note: there will be rounding errors!
+#define DISPLAY_SPEED_AS_PERCENT true
+
 // ********************************************************************************************
 
 // define what each of the optional additional buttons will do

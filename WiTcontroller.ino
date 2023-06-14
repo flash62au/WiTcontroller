@@ -177,7 +177,11 @@ const String directCommandText[4][3] = {
 };
 
 bool oledDirectCommandsAreBeingDisplayed = false;
-boolean hashShowsFunctionsInsteadOfKeyDefs = HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS;
+#ifdef HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS
+  boolean hashShowsFunctionsInsteadOfKeyDefs = HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS;
+#else
+  boolean hashShowsFunctionsInsteadOfKeyDefs = false;
+#endif
 
 // in case the values are not defined in config_buttons.h
 // DO NOT alter the values here 
@@ -1397,10 +1401,12 @@ void doKeyPress(char key, boolean pressed) {
           case '#':  // next page
             if ( (functionPage+1)*10 < 28 ) {
               functionPage++;
+              writeOledFunctionList(""); 
             } else {
               functionPage = 0;
+              keypadUseType = KEYPAD_USE_OPERATION;
+              writeOledDirectCommands();
             }
-            writeOledFunctionList(""); 
             break;
           case '*':  // cancel
             resetMenu();
@@ -1787,6 +1793,16 @@ void speedSet(int multiThrottleIndex, int amt) {
     lastSpeedThrottleIndex = multiThrottleIndex;
 
     writeOledSpeed();
+  }
+}
+
+int getDisplaySpeed(int multiThrottleIndex) {
+  if (speedDisplayAsPercent) {
+    float speed = currentSpeed[currentThrottleIndex];
+    speed = speed / 126 *100;
+    return static_cast<int>(std::round(speed));
+  } else {
+    return currentSpeed[currentThrottleIndex];
   }
 }
 
@@ -2307,7 +2323,8 @@ void writeOledSpeed() {
     for (int i=0; i < wiThrottleProtocol.getNumberOfLocomotives(getMultiThrottleChar(currentThrottleIndex)); i++) {
       sLocos = sLocos + " " + wiThrottleProtocol.getLocomotiveAtPosition(getMultiThrottleChar(currentThrottleIndex), i);
     }
-    sSpeed = String(currentSpeed[currentThrottleIndex]);
+    // sSpeed = String(currentSpeed[currentThrottleIndex]);
+    sSpeed = String(getDisplaySpeed(currentThrottleIndex));
     sDirection = (currentDirection[currentThrottleIndex]==Forward) ? direction_forward : direction_reverse;
 
     oledText[0] = "   "  + sLocos; 
@@ -2338,28 +2355,27 @@ void writeOledSpeed() {
     u8g2.setDrawColor(0);
     u8g2.drawBox(0,0,12,16);
     u8g2.setDrawColor(1);
-    u8g2.setFont(u8g2_font_profont15_mn); // medium
+    u8g2.setFont(FONT_THROTTLE_NUMBER); // medium
     u8g2.drawStr(2,15, String(currentThrottleIndex+1).c_str());
   }
 
   if (trackPower == PowerOn) {
     u8g2.drawBox(0,41,15,8);
-    // u8g2.setDrawColor(1);
     u8g2.setDrawColor(0);
   }
-  u8g2.setFont(u8g2_font_profont10_tf);
+  u8g2.setFont(FONT_TRACK_POWER);
   u8g2.drawStr(0, 48, label_track_power.c_str());
   u8g2.setDrawColor(1);
 
   // direction
   // needed for new function state format
-  u8g2.setFont(u8g2_font_profont17_tr); // medium
+  u8g2.setFont(FONT_DIRECTION); // medium
   u8g2.drawStr(86,40, sDirection.c_str());
 
   // speed
   const char *cSpeed = sSpeed.c_str();
   // u8g2.setFont(u8g2_font_inb21_mn); // big
-  u8g2.setFont(u8g2_font_profont29_mr); // big
+  u8g2.setFont(FONT_SPEED); // big
   int width = u8g2.getStrWidth(cSpeed);
   u8g2.drawStr(25+(55-width),45, cSpeed);
   u8g2.sendBuffer();
@@ -2397,8 +2413,7 @@ void writeOledFunctions() {
       anyFunctionsActive = true;
       u8g2.drawBox(i*4+12,12,5,7);
       u8g2.setDrawColor(0);
-      // u8g2.setFont(u8g2_font_micro_tr);   
-      u8g2.setFont(u8g2_font_tiny_simon_tr);   
+      u8g2.setFont(FONT_FUNCTION_INDICATORS);   
       u8g2.drawStr( i*4+1+12, 18, String( (i<10) ? i : ((i<20) ? i-10 : i-20)).c_str());
       u8g2.setDrawColor(1);
      }
@@ -2422,11 +2437,7 @@ void writeOledArray(boolean isThreeColums, boolean isPassword, boolean sendBuffe
   // debug_println("Start writeOledArray()");
   u8g2.clearBuffer();					// clear the internal memory
 
-  // u8g2.setFont(u8g2_font_ncenB08_tr);	// serif bold
-  // u8g2.setFont(u8g2_font_helvB08_te);	// helv bold
-  // u8g2.setFont(u8g2_font_helvB08_tf);	// helv
-  // u8g2.setFont(u8g2_font_likeminecraft_te); // bit wider
-  u8g2.setFont(u8g2_font_NokiaSmallPlain_tf); // small
+  u8g2.setFont(FONT_DEFAULT); // small
   
   int x=0;
   int y=10;
@@ -2439,7 +2450,7 @@ void writeOledArray(boolean isThreeColums, boolean isPassword, boolean sendBuffe
 
   for (int i=0; i < max; i++) {
     const char *cLine1 = oledText[i].c_str();
-    if ((isPassword) && (i==2)) u8g2.setFont(u8g2_font_9x15_tf); 
+    if ((isPassword) && (i==2)) u8g2.setFont(FONT_PASSWORD); 
 
     if (oledTextInvert[i]) {
       u8g2.drawBox(x,y-8,62,10);
@@ -2448,7 +2459,7 @@ void writeOledArray(boolean isThreeColums, boolean isPassword, boolean sendBuffe
     u8g2.drawStr(x,y, cLine1);
     u8g2.setDrawColor(1);
 
-    if ((isPassword) && (i==2)) u8g2.setFont(u8g2_font_NokiaSmallPlain_tf); 
+    if ((isPassword) && (i==2)) u8g2.setFont(FONT_DEFAULT); 
     y = y + 10;
     if ((i==5) || (i==11)) {
       x = x + xInc;

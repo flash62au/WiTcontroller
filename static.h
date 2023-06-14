@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 1.09";
+const String appVersion = "     Version 1.10";
 const String msg_start = "Start";
 
 const String menu_menu =                   "* Menu                # Key Defs";
@@ -154,6 +154,21 @@ const String extraSubMenuText[8] = {
   const int speedStepAdditionalMultiplier = 2;
 #endif
 
+#ifdef  DISPLAY_SPEED_AS_PERCENT
+  const bool speedDisplayAsPercent = DISPLAY_SPEED_AS_PERCENT;
+#else
+  const bool speedDisplayAsPercent = false;
+#endif
+
 String witServerIpAndPortEntryMask = "###.###.###.###:#####";
 
 const char ssidPasswordBlankChar = 164;
+
+#define FONT_DEFAULT u8g2_font_NokiaSmallPlain_tf
+#define FONT_FUNCTION_INDICATORS u8g2_font_tiny_simon_tr
+// #define FONT_THROTTLE_NUMBER u8g2_font_profont15_mn
+#define FONT_THROTTLE_NUMBER u8g2_font_neuecraft_tr
+#define FONT_PASSWORD u8g2_font_9x15_tf
+#define FONT_SPEED u8g2_font_profont29_mr
+#define FONT_DIRECTION u8g2_font_profont17_tr
+#define FONT_TRACK_POWER u8g2_font_profont10_tf
