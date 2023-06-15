@@ -7,22 +7,22 @@
 #define TOGGLE_DIRECTION_ON_ENCODER_BUTTON_PRESSED_WHEN_STATIONAY false
 
 //To enable the function on # you need to change false to true
-#define E_STOP_CURRENT_LOCO true
+// #define E_STOP_CURRENT_LOCO true
 #define ENCODER_BUTTON_ACTION NEXT_THROTTLE 
 #define MAX_THROTTLES 3  // uncomment and increase the number if you need more that two throttles
 #define HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS true
 
 // define what each button will do as direct press (not in a menu)   * and # cannot be remapped
 // see static.h or README.md for details on the allowed functions
-#define CHOSEN_KEYPAD_0_FUNCTION NEXT_THROTTLE   // Tried changing this to Next Trottle but isn't working, but I think did with one version of software
+#define CHOSEN_KEYPAD_0_FUNCTION NEXT_THROTTLE
 #define CHOSEN_KEYPAD_1_FUNCTION FUNCTION_1
 #define CHOSEN_KEYPAD_2_FUNCTION FUNCTION_2
-#define CHOSEN_KEYPAD_3_FUNCTION FUNCTION_3        //changed this to a sound function -- coupler 3
+#define CHOSEN_KEYPAD_3_FUNCTION FUNCTION_3        //changed this to a sound function -- coupler
 #define CHOSEN_KEYPAD_4_FUNCTION FUNCTION_9        // changed this to drive hold
 #define CHOSEN_KEYPAD_5_FUNCTION FUNCTION_8        // changed this to turn the prime mover (the sound loco) on/off
-#define CHOSEN_KEYPAD_6_FUNCTION POWER_TOGGLE  // Might change this to a sound decoder function since I don't use it
+#define CHOSEN_KEYPAD_6_FUNCTION E_STOP_CURRENT_LOCO  // Might change this to a sound decoder function since I don't use it
 #define CHOSEN_KEYPAD_7_FUNCTION DIRECTION_REVERSE // Might change this to a sound function since I have it mapped to an external button
-#define CHOSEN_KEYPAD_8_FUNCTION E_STOP_CURRENT_LOCO   // Might change this to a sound function since I have it mapped to an external button
+#define CHOSEN_KEYPAD_8_FUNCTION FUNCTION_0   // Might change this to a sound function since I have it mapped to an external button
 #define CHOSEN_KEYPAD_9_FUNCTION DIRECTION_FORWARD // Might change this to a sound function since I have it mapped to an external button
 
 // text that will appear when you press #
@@ -52,13 +52,14 @@
 // see static.h or README.md for details on the allowed functions
 // all must be included, just set the ones you don't need to FUNCTION_NULL
 // the button numbers relate to the GPIO pins 5,15,25,26,27,32,33  -  My external red case buttons starting from the left looking at the throttle
-#define CHOSEN_ADDITIONAL_BUTTON_0_FUNCTION FUNCTION_1   // GPIO 5   --  Bell On/Off
-#define CHOSEN_ADDITIONAL_BUTTON_1_FUNCTION FUNCTION_2   // GPIO 15   -- Horn momentary on
-#define CHOSEN_ADDITIONAL_BUTTON_2_FUNCTION DIRECTION_REVERSE   // GPIO 25   -- Changes loco direction to Reverse
-#define CHOSEN_ADDITIONAL_BUTTON_3_FUNCTION FUNCTION_0   // GPIO 26         -- Turns Lights on/off
-#define CHOSEN_ADDITIONAL_BUTTON_4_FUNCTION DIRECTION_FORWARD   // GPIO 27  -- Changes loco direction to Forward
-// #define CHOSEN_ADDITIONAL_BUTTON_5_FUNCTION E_STOP_CURRENT_LOCO  // GPIO 32 -- Emergency stop for loco only
-// #define CHOSEN_ADDITIONAL_BUTTON_6_FUNCTION POWER_TOGGLE   // GPIO 33  -- Toggles Track Power on/off/on
+#define CHOSEN_ADDITIONAL_BUTTON_0_FUNCTION FUNCTION_1   // GPIO 5 -Works
+#define CHOSEN_ADDITIONAL_BUTTON_1_FUNCTION FUNCTION_2   // GPIO 15 -  Works
+#define CHOSEN_ADDITIONAL_BUTTON_2_FUNCTION DIRECTION_REVERSE   // GPIO 25     -  Works
+#define CHOSEN_ADDITIONAL_BUTTON_3_FUNCTION FUNCTION_0   // GPIO 26         -- Turns Lights on/off  - Doesn't work  - Uses keypad 0 key – Next Throttle”
+#define CHOSEN_ADDITIONAL_BUTTON_4_FUNCTION DIRECTION_FORWARD   // GPIO 27   – Works
+#define CHOSEN_ADDITIONAL_BUTTON_5_FUNCTION E_STOP_CURRENT_LOCO  // GPIO 32   - Doesn't work – Uses keypad 8 – Lights
+#define CHOSEN_ADDITIONAL_BUTTON_6_FUNCTION POWER_TOGGLE   // GPIO 33  --   - Doesn't work – Uses keypad  6  E-Stop current loco
+
 
 // uncomment and/or correct one (only) of the #define lines below if you need to override the default .9 inch oLED dispaly settings 
 //

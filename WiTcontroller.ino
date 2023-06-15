@@ -1798,11 +1798,11 @@ void speedSet(int multiThrottleIndex, int amt) {
 
 int getDisplaySpeed(int multiThrottleIndex) {
   if (speedDisplayAsPercent) {
-    float speed = currentSpeed[currentThrottleIndex];
+    float speed = currentSpeed[multiThrottleIndex];
     speed = speed / 126 *100;
     return static_cast<int>(std::round(speed));
   } else {
-    return currentSpeed[currentThrottleIndex];
+    return currentSpeed[multiThrottleIndex];
   }
 }
 
@@ -2313,6 +2313,9 @@ void writeOledSpeed() {
   String sSpeed = "";
   String sDirection = "";
 
+  bool foundNextThrottle = false;
+  String sNextThrottleSpeedAndDirection = "";
+
   clearOledArray();
   
   boolean drawTopLine = false;
@@ -2326,6 +2329,33 @@ void writeOledSpeed() {
     // sSpeed = String(currentSpeed[currentThrottleIndex]);
     sSpeed = String(getDisplaySpeed(currentThrottleIndex));
     sDirection = (currentDirection[currentThrottleIndex]==Forward) ? direction_forward : direction_reverse;
+
+    //find the next Throttle that has any locos selected - if there is one
+    if (MAX_THROTTLES > 1) {
+      int nextThrottleIndex = currentThrottleIndex + 1;
+
+      for (int i = nextThrottleIndex; i<MAX_THROTTLES; i++) {
+        if (wiThrottleProtocol.getNumberOfLocomotives(getMultiThrottleChar(i)) > 0 ) {
+          foundNextThrottle = true;
+          nextThrottleIndex = i;
+          break;
+        }
+      }
+      if ( (!foundNextThrottle) && (currentThrottleIndex>0) ) {
+        for (int i = 0; i<currentThrottleIndex; i++) {
+          if (wiThrottleProtocol.getNumberOfLocomotives(getMultiThrottleChar(i)) > 0 ) {
+            foundNextThrottle = true;
+            nextThrottleIndex = i;
+            break;
+          }
+        }
+      }
+      if (foundNextThrottle) {
+        sNextThrottleSpeedAndDirection = String(nextThrottleIndex+1) 
+        + ": " + String(getDisplaySpeed(nextThrottleIndex))
+        + " " + ((currentDirection[nextThrottleIndex]==Forward) ? direction_forward : direction_reverse);
+      }
+    }
 
     oledText[0] = "   "  + sLocos; 
     //oledText[7] = "     " + sDirection;  // old function state format
@@ -2370,7 +2400,7 @@ void writeOledSpeed() {
   // direction
   // needed for new function state format
   u8g2.setFont(FONT_DIRECTION); // medium
-  u8g2.drawStr(86,40, sDirection.c_str());
+  u8g2.drawStr(86,37, sDirection.c_str());
 
   // speed
   const char *cSpeed = sSpeed.c_str();
@@ -2378,6 +2408,13 @@ void writeOledSpeed() {
   u8g2.setFont(FONT_SPEED); // big
   int width = u8g2.getStrWidth(cSpeed);
   u8g2.drawStr(25+(55-width),45, cSpeed);
+
+  // speed and direction of next throttle
+  if (MAX_THROTTLES > 1) {
+    u8g2.setFont(FONT_FUNCTION_INDICATORS);
+    u8g2.drawStr(90,50, sNextThrottleSpeedAndDirection.c_str() );
+  }
+
   u8g2.sendBuffer();
 
   // debug_println("writeOledSpeed(): end");
@@ -2411,7 +2448,8 @@ void writeOledFunctions() {
 
       // new function state format
       anyFunctionsActive = true;
-      u8g2.drawBox(i*4+12,12,5,7);
+      // u8g2.drawBox(i*4+12,12,5,7);
+      u8g2.drawRBox(i*4+12,12,5,7,2);
       u8g2.setDrawColor(0);
       u8g2.setFont(FONT_FUNCTION_INDICATORS);   
       u8g2.drawStr( i*4+1+12, 18, String( (i<10) ? i : ((i<20) ? i-10 : i-20)).c_str());
