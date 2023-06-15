@@ -2400,19 +2400,19 @@ void writeOledSpeed() {
   // direction
   // needed for new function state format
   u8g2.setFont(FONT_DIRECTION); // medium
-  u8g2.drawStr(86,37, sDirection.c_str());
+  u8g2.drawStr(79,37, sDirection.c_str());
 
   // speed
   const char *cSpeed = sSpeed.c_str();
   // u8g2.setFont(u8g2_font_inb21_mn); // big
   u8g2.setFont(FONT_SPEED); // big
   int width = u8g2.getStrWidth(cSpeed);
-  u8g2.drawStr(25+(55-width),45, cSpeed);
+  u8g2.drawStr(20+(55-width),45, cSpeed);
 
   // speed and direction of next throttle
   if (MAX_THROTTLES > 1) {
-    u8g2.setFont(FONT_FUNCTION_INDICATORS);
-    u8g2.drawStr(90,50, sNextThrottleSpeedAndDirection.c_str() );
+    u8g2.setFont(FONT_DEFAULT);
+    u8g2.drawStr(85,49, sNextThrottleSpeedAndDirection.c_str() );
   }
 
   u8g2.sendBuffer();
@@ -2449,10 +2449,10 @@ void writeOledFunctions() {
       // new function state format
       anyFunctionsActive = true;
       // u8g2.drawBox(i*4+12,12,5,7);
-      u8g2.drawRBox(i*4+12,12,5,7,2);
+      u8g2.drawRBox(i*4+12,12+1,5,7,2);
       u8g2.setDrawColor(0);
       u8g2.setFont(FONT_FUNCTION_INDICATORS);   
-      u8g2.drawStr( i*4+1+12, 18, String( (i<10) ? i : ((i<20) ? i-10 : i-20)).c_str());
+      u8g2.drawStr( i*4+1+12, 18+1, String( (i<10) ? i : ((i<20) ? i-10 : i-20)).c_str());
       u8g2.setDrawColor(1);
      }
     //  if (anyFunctionsActive) {
