@@ -2318,6 +2318,7 @@ void writeOledSpeed() {
   String sDirection = "";
 
   bool foundNextThrottle = false;
+  String sNextThrottleNo = "";
   String sNextThrottleSpeedAndDirection = "";
 
   clearOledArray();
@@ -2355,9 +2356,16 @@ void writeOledSpeed() {
         }
       }
       if (foundNextThrottle) {
-        sNextThrottleSpeedAndDirection = String(nextThrottleIndex+1) 
-        + ": " + String(getDisplaySpeed(nextThrottleIndex))
-        + " " + ((currentDirection[nextThrottleIndex]==Forward) ? direction_forward : direction_reverse);
+        sNextThrottleNo =  String(nextThrottleIndex+1);
+        sNextThrottleSpeedAndDirection = String(getDisplaySpeed(nextThrottleIndex));
+        if (currentDirection[nextThrottleIndex]==Forward) {
+          sNextThrottleSpeedAndDirection = sNextThrottleSpeedAndDirection + direction_forward_short;
+        } else {
+          sNextThrottleSpeedAndDirection = direction_reverse_short + sNextThrottleSpeedAndDirection;
+        }
+        // + " " + ((currentDirection[nextThrottleIndex]==Forward) ? direction_forward_short : direction_reverse_short);
+        sNextThrottleSpeedAndDirection = "  " + sNextThrottleSpeedAndDirection ;
+        sNextThrottleSpeedAndDirection = sNextThrottleSpeedAndDirection.substring(sNextThrottleSpeedAndDirection.length()-5);
       }
     }
 
@@ -2404,19 +2412,20 @@ void writeOledSpeed() {
   // direction
   // needed for new function state format
   u8g2.setFont(FONT_DIRECTION); // medium
-  u8g2.drawStr(79,37, sDirection.c_str());
+  u8g2.drawStr(78,36, sDirection.c_str());
 
   // speed
   const char *cSpeed = sSpeed.c_str();
   // u8g2.setFont(u8g2_font_inb21_mn); // big
   u8g2.setFont(FONT_SPEED); // big
   int width = u8g2.getStrWidth(cSpeed);
-  u8g2.drawStr(20+(55-width),45, cSpeed);
+  u8g2.drawStr(22+(55-width),45, cSpeed);
 
   // speed and direction of next throttle
   if (MAX_THROTTLES > 1) {
-    u8g2.setFont(FONT_DEFAULT);
-    u8g2.drawStr(85,49, sNextThrottleSpeedAndDirection.c_str() );
+    u8g2.setFont(FONT_NEXT_THROTTLE);
+    u8g2.drawStr(85+34,38, sNextThrottleNo.c_str() );
+    u8g2.drawStr(85+12,48, sNextThrottleSpeedAndDirection.c_str() );
   }
 
   u8g2.sendBuffer();

@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 1.13";
+const String appVersion = "     Version 1.14";
 const String msg_start = "Start";
 
 const String menu_menu =                   "* Menu                # Key Defs";
@@ -24,6 +24,8 @@ const String direct_command_list = "Direct Commands";
 
 const String direction_forward = "Fwd";
 const String direction_reverse = "Rev";
+const String direction_forward_short = ">";
+const String direction_reverse_short = "<";
 
 // const String function_states = "fn ";
 
@@ -170,5 +172,7 @@ const char ssidPasswordBlankChar = 164;
 #define FONT_THROTTLE_NUMBER u8g2_font_neuecraft_tr
 #define FONT_PASSWORD u8g2_font_9x15_tf
 #define FONT_SPEED u8g2_font_profont29_mr
-#define FONT_DIRECTION u8g2_font_profont17_tr
+// #define FONT_DIRECTION u8g2_font_profont17_tr
+#define FONT_DIRECTION u8g2_font_neuecraft_tr
 #define FONT_TRACK_POWER u8g2_font_profont10_tf
+#define FONT_NEXT_THROTTLE u8g2_font_6x12_m_symbols
