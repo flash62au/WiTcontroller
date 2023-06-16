@@ -2401,14 +2401,17 @@ void writeOledSpeed() {
       }
       if (foundNextThrottle) {
         sNextThrottleNo =  String(nextThrottleIndex+1);
-        sNextThrottleSpeedAndDirection = String(getDisplaySpeed(nextThrottleIndex));
-        if (currentDirection[nextThrottleIndex]==Forward) {
-          sNextThrottleSpeedAndDirection = sNextThrottleSpeedAndDirection + direction_forward_short;
-        } else {
-          sNextThrottleSpeedAndDirection = direction_reverse_short + sNextThrottleSpeedAndDirection;
-        }
+        int speed = getDisplaySpeed(nextThrottleIndex);
+        sNextThrottleSpeedAndDirection = String(speed);
+        // if (speed>0) {
+          if (currentDirection[nextThrottleIndex]==Forward) {
+            sNextThrottleSpeedAndDirection = sNextThrottleSpeedAndDirection + direction_forward_short;
+          } else {
+            sNextThrottleSpeedAndDirection = direction_reverse_short + sNextThrottleSpeedAndDirection;
+          }
+        // }
         // + " " + ((currentDirection[nextThrottleIndex]==Forward) ? direction_forward_short : direction_reverse_short);
-        sNextThrottleSpeedAndDirection = "  " + sNextThrottleSpeedAndDirection ;
+        sNextThrottleSpeedAndDirection = "     " + sNextThrottleSpeedAndDirection ;
         sNextThrottleSpeedAndDirection = sNextThrottleSpeedAndDirection.substring(sNextThrottleSpeedAndDirection.length()-5);
       }
     }
