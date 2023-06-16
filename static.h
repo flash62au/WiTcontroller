@@ -26,6 +26,7 @@ const String direction_forward = "Fwd";
 const String direction_reverse = "Rev";
 const String direction_forward_short = ">";
 const String direction_reverse_short = "<";
+const String direction_reverse_indicator = "'";
 
 // const String function_states = "fn ";
 

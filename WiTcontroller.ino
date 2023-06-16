@@ -1835,6 +1835,25 @@ int getLocoFacing(int multiThrottleIndex, String loco) {
   return result;
 }
 
+String getDisplayLocoString(int multiThrottleIndex, int index) {
+  String loco = wiThrottleProtocol.getLocomotiveAtPosition(getMultiThrottleChar(multiThrottleIndex), index);
+  String locoNumber = loco.substring(1);
+  if (!wiThrottleProtocol.getLocomotiveAtPosition(0).equals(loco)) { // not the lead loco
+    Direction leadLocoDirection = wiThrottleProtocol.getDirection(getMultiThrottleChar(multiThrottleIndex), wiThrottleProtocol.getLocomotiveAtPosition(0));
+    Direction locoDirection = leadLocoDirection;
+
+    for(int i=0;i<wiThrottleProtocol.getNumberOfLocomotives(getMultiThrottleChar(multiThrottleIndex));i++) {
+      if (wiThrottleProtocol.getLocomotiveAtPosition(i).equals(loco)) {
+        if (wiThrottleProtocol.getDirection(getMultiThrottleChar(multiThrottleIndex), loco) != leadLocoDirection) {
+          locoNumber = locoNumber + direction_reverse_indicator;
+        }
+        break;
+      }
+    }
+  }
+  return locoNumber;
+}
+
 void releaseAllLocos(int multiThrottleIndex) {
   String loco;
   if (wiThrottleProtocol.getNumberOfLocomotives(getMultiThrottleChar(multiThrottleIndex))>0) {
@@ -2329,7 +2348,8 @@ void writeOledSpeed() {
     // oledText[0] = label_locos; oledText[2] = label_speed;
   
     for (int i=0; i < wiThrottleProtocol.getNumberOfLocomotives(getMultiThrottleChar(currentThrottleIndex)); i++) {
-      sLocos = sLocos + " " + wiThrottleProtocol.getLocomotiveAtPosition(getMultiThrottleChar(currentThrottleIndex), i);
+      // sLocos = sLocos + " " + wiThrottleProtocol.getLocomotiveAtPosition(getMultiThrottleChar(currentThrottleIndex), i);
+      sLocos = sLocos + " " + getDisplayLocoString(currentThrottleIndex, i);
     }
     // sSpeed = String(currentSpeed[currentThrottleIndex]);
     sSpeed = String(getDisplaySpeed(currentThrottleIndex));
