@@ -1800,7 +1800,11 @@ int getDisplaySpeed(int multiThrottleIndex) {
   if (speedDisplayAsPercent) {
     float speed = currentSpeed[multiThrottleIndex];
     speed = speed / 126 *100;
-    return static_cast<int>(std::round(speed));
+    int iSpeed = speed;
+    if (iSpeed-speed >= 0.5) {
+      iSpeed = iSpeed + 1;
+    }
+    return iSpeed;
   } else {
     return currentSpeed[multiThrottleIndex];
   }
