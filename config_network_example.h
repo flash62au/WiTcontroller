@@ -15,4 +15,4 @@ const String routePrefixes[maxSsids] = {"IO:AUTO:", "IO:AUTO:", "IO:AUTO:", "IO:
 // If defined this must be of the form 999.999.999.999:99999  e.g. 192.168.004.001:2560
 // Each block of the ip address MUST be 3 digit. Use leading zeros if needed to insure 3 digits.
 // The port can be any number of digits
-// #define DEFAULT_IP_AND_PORT "192.168.004.001:2560"
+// #define DEFAULT_IP_AND_PORT      "192.168.004.001:2560"

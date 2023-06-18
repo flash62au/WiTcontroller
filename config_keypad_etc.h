@@ -49,6 +49,20 @@ Keypad keypad = Keypad( makeKeymap(keys), pin_rows, pin_column, ROW_NUM, COLUMN_
 const int keypadDebounceTime = 10;   // in miliseconds
 const int keypadHoldTime = 200;   // in miliseconds
 
+// consists follow functions
+#ifndef CONSIST_FUNCTION_FOLLOW_F0
+    #define CONSIST_FUNCTION_FOLLOW_F0                  CONSIST_ALL_LOCOS            // lights
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F1
+    #define CONSIST_FUNCTION_FOLLOW_F1                  CONSIST_LEAD_LOCO            // bell
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F2
+    #define CONSIST_FUNCTION_FOLLOW_F2                  CONSIST_LEAD_LOCO            // horn
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_OTHER_FUNCTIONS
+    #define CONSIST_FUNCTION_FOLLOW_OTHER_FUNCTIONS     CONSIST_LEAD_LOCO
+#endif
+
 // *******************************************************************************************************************
 // additional / optional buttons
 
@@ -60,37 +74,37 @@ boolean additionalButtonRead[MAX_ADDITIONAL_BUTTONS] =     {0,0,0,0,0,0,0};
 boolean additionalButtonLastRead[MAX_ADDITIONAL_BUTTONS] = {0,0,0,0,0,0,0};
 
 #ifndef ADDITIONAL_BUTTON_DEBOUNCE_DELAY
-#define ADDITIONAL_BUTTON_DEBOUNCE_DELAY 50   // default if not defined in config_buttons.h
+    #define ADDITIONAL_BUTTON_DEBOUNCE_DELAY 50   // default if not defined in config_buttons.h
 #endif
 
 // *******************************************************************************************************************
 // other options
 #ifndef HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS
-#define HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS false  // default if not defined in config_buttons.h
+    #define HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS false  // default if not defined in config_buttons.h
 #endif
 
 #ifndef MAX_THROTTLES
-#define MAX_THROTTLES 2  // default if not defined in config_buttons.h
+    #define MAX_THROTTLES 2  // default if not defined in config_buttons.h
 #endif
 
 #ifndef ENCODER_BUTTON_ACTION
-#define ENCODER_BUTTON_ACTION SPEED_STOP_THEN_TOGGLE_DIRECTION  // default if not defined in config_buttons.h
+    #define ENCODER_BUTTON_ACTION SPEED_STOP_THEN_TOGGLE_DIRECTION  // default if not defined in config_buttons.h
 #endif
 
 // *******************************************************************************************************************
 // OLED
 
 #ifdef U8X8_HAVE_HW_SPI
-#include <SPI.h>                       // add to include path [Arduino install]\hardware\arduino\avr\libraries\SPI\src
+    #include <SPI.h>                       // add to include path [Arduino install]\hardware\arduino\avr\libraries\SPI\src
 #endif
 #ifdef U8X8_HAVE_HW_I2C
-#include <Wire.h>                      // add to include path [Arduino install]\hardware\arduino\avr\libraries\Wire\src
+    #include <Wire.h>                      // add to include path [Arduino install]\hardware\arduino\avr\libraries\Wire\src
 #endif
 
 // U8g2 Constructor List (Frame Buffer)
 // you can overide this in config_buttons.h     DO NOT CHANGE IT HERE
 #ifndef OLED_TYPE
-U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);
+    U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);
 #else
-OLED_TYPE
+    OLED_TYPE
 #endif

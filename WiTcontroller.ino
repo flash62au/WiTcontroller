@@ -128,6 +128,9 @@ boolean functionStates[6][28];   // set to maximum possible (6 throttles)
 // function labels
 String functionLabels[6][28];   // set to maximum possible (6 throttles)
 
+// consist function follow
+int functionFollow[6][28];   // set to maximum possible (6 throttles)
+
 // speedstep
 int currentSpeedStep[6];   // set to maximum possible (6 throttles)
 
@@ -1113,6 +1116,7 @@ void setup() {
   initialiseAdditionalButtons();
 
   resetAllFunctionLabels();
+  resetAllFunctionFollow();
 
   for (int i=0; i< 6; i++) {
     currentSpeed[i] = 0;
@@ -1754,6 +1758,17 @@ void resetAllFunctionLabels() {
   }
 }
 
+void resetAllFunctionFollow() {
+  for (int i=0; i<6; i++) {
+    functionFollow[i][0] = CONSIST_FUNCTION_FOLLOW_F0;
+    functionFollow[i][1] = CONSIST_FUNCTION_FOLLOW_F1;
+    functionFollow[i][2] = CONSIST_FUNCTION_FOLLOW_F2;
+    for (int i=3; i<28; i++) {
+      functionFollow[i][i] = CONSIST_FUNCTION_FOLLOW_OTHER_FUNCTIONS;
+    }
+  }
+}
+
 String getLocoWithLength(String loco) {
   int locoNo = loco.toInt();
   String locoWithLength = "";
@@ -1986,7 +2001,8 @@ void doDirectFunction(int multiThrottleIndex, int functionNumber, boolean presse
   debug_println("doDirectFunction(): "); 
   if (wiThrottleProtocol.getNumberOfLocomotives(multiThrottleIndexChar) > 0) {
     debug_print("direct fn: "); debug_print(functionNumber); debug_println( pressed ? " Pressed" : " Released");
-    wiThrottleProtocol.setFunction(multiThrottleIndexChar, functionNumber, pressed);
+    // wiThrottleProtocol.setFunction(multiThrottleIndexChar, functionNumber, pressed);
+    doFunctionWhichLocosInConsist(multiThrottleIndex, functionNumber, pressed);
     writeOledSpeed(); 
   }
   // debug_print("doDirectFunction(): end"); 
@@ -1996,19 +2012,33 @@ void doFunction(int multiThrottleIndex, int functionNumber, boolean pressed) {  
   char multiThrottleIndexChar = getMultiThrottleChar(multiThrottleIndex);
   debug_print("doFunction(): multiThrottleIndex "); debug_println(multiThrottleIndex);
   if (wiThrottleProtocol.getNumberOfLocomotives(multiThrottleIndexChar)>0) {
-    wiThrottleProtocol.setFunction(multiThrottleIndexChar, functionNumber, true);
+    // wiThrottleProtocol.setFunction(multiThrottleIndexChar, functionNumber, true);
+    doFunctionWhichLocosInConsist(multiThrottleIndex, functionNumber, true);
     if (!functionStates[multiThrottleIndex][functionNumber]) {
       debug_print("fn: "); debug_print(functionNumber); debug_println(" Pressed");
       // functionStates[functionNumber] = true;
     } else {
       delay(20);
-      wiThrottleProtocol.setFunction(multiThrottleIndexChar,functionNumber, false);
+      // wiThrottleProtocol.setFunction(multiThrottleIndexChar,functionNumber, false);
+      doFunctionWhichLocosInConsist(multiThrottleIndex, functionNumber, false);
       debug_print("fn: "); debug_print(functionNumber); debug_println(" Released");
       // functionStates[functionNumber] = false;
     }
     writeOledSpeed(); 
   }
   // debug_println("doFunction(): ");
+}
+
+// Work out which locos in a consist should get the function
+//
+void doFunctionWhichLocosInConsist(int multiThrottleIndex, int functionNumber, boolean pressed) {
+  char multiThrottleIndexChar = getMultiThrottleChar(multiThrottleIndex);
+  if (functionFollow[multiThrottleIndex][functionNumber]==CONSIST_LEAD_LOCO) {
+    wiThrottleProtocol.setFunction(multiThrottleIndexChar,functionNumber, pressed);
+  } else {  // at the momemnt the only other option in CONSIST_ALL_LOCOS
+    wiThrottleProtocol.setFunction(multiThrottleIndexChar, "*", functionNumber, pressed);
+  }
+  debug_print("doFunctionWhichLocosInConsist(): fn: "); debug_print(functionNumber); debug_println(" Released");
 }
 
 void powerOnOff(TrackPower powerState) {
@@ -2344,7 +2374,7 @@ void writeOledExtraSubMenu() {
 }
 
 void writeOledAllLocos(bool hideLeadLoco) {
-  int startAt = (hideLeadLoco) ? 1 :0;
+  int startAt = (hideLeadLoco) ? 1 :0;  // for the loco heading menu, we don't want to show the loco 0 (lead) as an option.
   debug_println("writeOledAllLocos(): ");
   String loco;
   int j = 0; int i = 0;

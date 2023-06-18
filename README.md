@@ -101,13 +101,13 @@ Notes:
     * Click *Upload* 
 
 Notes: 
-   * WiTcontroller version 0.10 or later requires WiThrottleProtocol version 1.0.3 or later.
-   * WiTcontroller version 1.01 or later requires WiThrottleProtocol version 1.1.0 or later.
+   * WiTcontroller version 1.19 or later requires WiThrottleProtocol version 1.1.3 or later.
    * WiTcontroller version 1.06 or later requires WiThrottleProtocol version 1.1.2 or later.
+   * WiTcontroller version 1.01 or later requires WiThrottleProtocol version 1.1.0 or later.
+   * WiTcontroller version 0.10 or later requires WiThrottleProtocol version 1.0.3 or later.
    * The *WiFi.h* and *ESPmDNS.h* libraries were automatically installed for me when I installed the esp32 boards, however you may need to install them manually.
    * Later versions of the esp board support are available and do appear to work, but if you have difficulties version 1.0.6 appears to be stable.
-   * To get the WiTcontroller sketch I recommend using either the git command line, or the far more friendly 'GitHub Desktop' app.
-     * In Github Desktop, 
+   * To get the WiTcontroller sketch I recommend using either the git command line, or the far more friendly 'GitHub Desktop' app.  See instructions above.
 
 ---
 
@@ -200,7 +200,7 @@ Pressing the Encoder button while the ESP32 is in Deep Sleep will revive it.
 * 2 = FUNCTION_3 (DCC Horn/Whistle)
 * 3 = FUNCTION_3
 * 4 = FUNCTION_4
-* 5 = FUNCTION_5
+* 5 = NEXT_THROTLE
 * 6 = SPEED_MULTIPLIER
 * 7 = DIRECTION_REVERSE
 * 8 = SPEED_STOP
@@ -227,3 +227,5 @@ Note: you need to edit config_buttons.h to alter these assignments   (copy confi
 - DIRECTION_REVERSE
 - NEXT_THROTTLE
 - SPEED_STOP_THEN_TOGGLE_DIRECTION   - stops the loco if moving.  Toggles the direction if stationary.
+- MAX_THROTTLE_INCREASE    - change the number of available throttles on-the-fly
+- MAX_THROTTLE_DECREASE    - change the number of available throttles on-the-fly

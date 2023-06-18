@@ -83,6 +83,13 @@
 #define DISPLAY_SPEED_AS_PERCENT         true
 
 // ********************************************************************************************
+// DCC functions in consists
+#define CONSIST_FUNCTION_FOLLOW_F0                  CONSIST_ALL_LOCOS            // lights
+#define CONSIST_FUNCTION_FOLLOW_F1                  CONSIST_LEAD_LOCO            // bell
+#define CONSIST_FUNCTION_FOLLOW_F2                  CONSIST_LEAD_LOCO            // horn
+#define CONSIST_FUNCTION_FOLLOW_OTHER_FUNCTIONS     CONSIST_LEAD_LOCO
+
+// ********************************************************************************************
 
 // define what each of the optional additional buttons will do
 // see static.h or README.md for details on the allowed functions

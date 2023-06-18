@@ -76,6 +76,7 @@ extern String routeListUserName[];
 extern int routeListState[];
 extern boolean functionStates[][28];
 extern String functionLabels[][28];
+extern int functionFollow[][28];
 extern int currentSpeedStep[];
 extern int heartBeatPeriod;
 extern long lastServerResponseTime;
