@@ -51,8 +51,8 @@ String oledText[18] = {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "
 bool oledTextInvert[18] = {false, false, false, false, false, false, false, false, false, 
                            false, false, false, false, false, false, false, false, false};
 
-int currentSpeed[MAX_THROTTLES];
-Direction currentDirection[MAX_THROTTLES];
+int currentSpeed[6];   // set to maximum possible (6)
+Direction currentDirection[6];   // set to maximum possible (6)
 int speedStepCurrentMultiplier = 1;
 
 TrackPower trackPower = PowerUnknown;
@@ -123,17 +123,18 @@ String routeListUserName[maxRouteList];
 int routeListState[maxRouteList];
 
 // function states
-boolean functionStates[MAX_THROTTLES][28];
+boolean functionStates[6][28];   // set to maximum possible (6 throttles)
 
 // function labels
-String functionLabels[MAX_THROTTLES][28];
+String functionLabels[6][28];   // set to maximum possible (6 throttles)
 
 // speedstep
-int currentSpeedStep[MAX_THROTTLES];
+int currentSpeedStep[6];   // set to maximum possible (6 throttles)
 
 // throttle
 int currentThrottleIndex = 0;
 char currentThrottleIndexChar = '0';
+int maxThrottles = MAX_THROTTLES;
 
 int heartBeatPeriod = 10; // default to 10 seconds
 long lastServerResponseTime;  // seconds since start of Arduino
@@ -793,7 +794,7 @@ void enterWitServer() {
 
 void disconnectWitServer() {
   debug_println("disconnectWitServer()");
-  for (int i=0; i<MAX_THROTTLES; i++) {
+  for (int i=0; i<maxThrottles; i++) {
     releaseAllLocos(i);
   }
   wiThrottleProtocol.disconnect();
@@ -1113,7 +1114,7 @@ void setup() {
 
   resetAllFunctionLabels();
 
-  for (int i=0; i< MAX_THROTTLES; i++) {
+  for (int i=0; i< 6; i++) {
     currentSpeed[i] = 0;
     currentDirection[i] = Forward;
     currentSpeedStep[i] = speedStep;
@@ -1552,6 +1553,14 @@ void doDirectAction(int buttonAction) {
         stopThenToggleDirection();
         break; 
       }
+      case MAX_THROTTLE_INCREASE: {
+        changeNumberOfThrottles(true);
+        break; 
+      }
+      case MAX_THROTTLE_DECREASE: {
+        changeNumberOfThrottles(false);
+        break; 
+      }
   }
   // debug_println("doDirectAction(): end");
 }
@@ -1650,16 +1659,29 @@ void doMenu() {
         char subCommand = menuCommand.charAt(1);
         if (menuCommand.length() > 1) {
           switch (subCommand) {
-            case '0': { // toggle showing Def Keys vs Function labels
+            case EXTRA_MENU_CHAR_FUNCTION_KEY_TOGGLE: { // toggle showing Def Keys vs Function labels
                 hashShowsFunctionsInsteadOfKeyDefs = !hashShowsFunctionsInsteadOfKeyDefs;
                 writeOledSpeed();
                 break;
               } 
-            case '1': { // edit consist - loco facings
+            case EXTRA_MENU_CHAR_EDIT_CONSIST: { // edit consist - loco facings
                 writeOledEditConsist();
                 break;
               } 
-            case '6': { // disconnect   
+            case EXTRA_MENU_CHAR_HEARTBEAT_TOGGLE: { // disable/enable the heartbeat Check
+                toggleHeartbeatCheck();
+                writeOledSpeed();
+                break;
+              }
+            case EXTRA_MENU_CHAR_INCREASE_MAX_THROTTLES: { //increase number of Throttles
+                changeNumberOfThrottles(true);
+                break;
+              }
+            case EXTRA_MENU_CHAR_DECREASE_MAX_THROTTLES: { // decrease numbe rof throttles
+                changeNumberOfThrottles(false);
+                break;
+              }
+            case EXTRA_MENU_CHAR_DISCONNECT: { // disconnect   
                 if (witConnectionState == CONNECTION_STATE_CONNECTED) {
                   witConnectionState == CONNECTION_STATE_DISCONNECTED;
                   disconnectWitServer();
@@ -1668,14 +1690,9 @@ void doMenu() {
                 }
                 break;
               }
-            case '7':
-            case '9': { // sleep/off
+            case EXTRA_MENU_CHAR_OFF_SLEEP:
+            case EXTRA_MENU_CHAR_OFF_SLEEP_HIDDEN: { // sleep/off
                 deepSleepStart();
-                break;
-              }
-            case '3': { // disable/enable the heartbeat Check
-                toggleHeartbeatCheck();
-                writeOledSpeed();
                 break;
               }
           }
@@ -1732,7 +1749,7 @@ void resetFunctionLabels(int multiThrottleIndex) {
 }
 
 void resetAllFunctionLabels() {
-  for (int i=0; i<MAX_THROTTLES; i++) {
+  for (int i=0; i<maxThrottles; i++) {
     resetFunctionLabels(i);
   }
 }
@@ -1749,7 +1766,7 @@ String getLocoWithLength(String loco) {
 }
 
 void speedEstop() {
-  for (int i=0; i<MAX_THROTTLES; i++) {
+  for (int i=0; i<maxThrottles; i++) {
     wiThrottleProtocol.emergencyStop(getMultiThrottleChar(i));
     currentSpeed[i] = 0;
   }
@@ -1902,7 +1919,7 @@ void toggleAdditionalMultiplier() {
       break;
   }
 
-  for (int i=0; i<MAX_THROTTLES; i++) {
+  for (int i=0; i<maxThrottles; i++) {
     currentSpeedStep[i] = speedStep * speedStepCurrentMultiplier;
   }
   writeOledSpeed();
@@ -2012,7 +2029,7 @@ void nextThrottle() {
   debug_print("nextThrottle(): "); 
   int wasThrottle = currentThrottleIndex;
   currentThrottleIndex++;
-  if (currentThrottleIndex >= MAX_THROTTLES) {
+  if (currentThrottleIndex >= maxThrottles) {
     currentThrottleIndex = 0;
   }
   currentThrottleIndexChar = getMultiThrottleChar(currentThrottleIndex);
@@ -2020,6 +2037,24 @@ void nextThrottle() {
   if (currentThrottleIndex!=wasThrottle) {
     writeOledSpeed();
   }
+}
+
+void changeNumberOfThrottles(bool increase) {
+  if (increase) {
+    maxThrottles++;
+    if (maxThrottles>6) maxThrottles = 6;   /// can't have more than 6
+  } else {
+    maxThrottles--;
+    if (maxThrottles<1) {   /// can't have less than 1
+      maxThrottles = 1;
+    } else {
+      releaseAllLocos(maxThrottles+1);
+      if (currentThrottleIndex>=maxThrottles) {
+        nextThrottle();
+      }
+    }
+  }
+  writeOledSpeed();
 }
 
 void stopThenToggleDirection() {
@@ -2380,10 +2415,10 @@ void writeOledSpeed() {
     sDirection = (currentDirection[currentThrottleIndex]==Forward) ? direction_forward : direction_reverse;
 
     //find the next Throttle that has any locos selected - if there is one
-    if (MAX_THROTTLES > 1) {
+    if (maxThrottles > 1) {
       int nextThrottleIndex = currentThrottleIndex + 1;
 
-      for (int i = nextThrottleIndex; i<MAX_THROTTLES; i++) {
+      for (int i = nextThrottleIndex; i<maxThrottles; i++) {
         if (wiThrottleProtocol.getNumberOfLocomotives(getMultiThrottleChar(i)) > 0 ) {
           foundNextThrottle = true;
           nextThrottleIndex = i;
@@ -2469,7 +2504,7 @@ void writeOledSpeed() {
   u8g2.drawStr(22+(55-width),45, cSpeed);
 
   // speed and direction of next throttle
-  if ( (MAX_THROTTLES > 1) && (foundNextThrottle) ) {
+  if ( (maxThrottles > 1) && (foundNextThrottle) ) {
     u8g2.setFont(FONT_NEXT_THROTTLE);
     u8g2.drawStr(85+34,38, sNextThrottleNo.c_str() );
     u8g2.drawStr(85+12,48, sNextThrottleSpeedAndDirection.c_str() );

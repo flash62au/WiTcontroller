@@ -3,7 +3,7 @@ const String appVersion = "     Version 1.16";
 const String msg_start = "Start";
 
 const String menu_menu =                   "* Menu                # Key Defs";
-const String menu_menu_hash_is_functions = "* Menu                # Functions";
+const String menu_menu_hash_is_functions = "* Menu                          # Fn";
 const String menu_finish =                 "                        # Finish";
 const String menu_cancel =                 "* Cancel";
 const String menu_show_direct =            "                  # Show Direct";
@@ -33,22 +33,22 @@ const String direction_reverse_indicator = "'";
 const String msg_browsing_for_service ="Browsing for WiT services";
 const String msg_browsing_for_ssids ="Browsing for SSIDs";
 
-const String msg_no_ssids_found = "No SSIDs found";
-const String msg_ssids_listed = "  SSIDs listed";
-const String msg_ssids_found = "    SSIDs found";
+const String msg_no_ssids_found =        "No SSIDs found";
+const String msg_ssids_listed =          "  SSIDs listed";
+const String msg_ssids_found =           "    SSIDs found";
 const String msg_bounjour_setup_failed = "Unable to setup Listener";
-const String msg_no_services_found = "No services found";
+const String msg_no_services_found =     "No services found";
 const String msg_no_services_found_entry_required = "Enter witServer IP:Port";
-const String msg_services_found = " Service(s) found";
-const String msg_trying_to_connect = "Trying to Connect";
-const String msg_connected = "Connected";
-const String msg_address_label = "IP address: ";
-const String msg_connection_failed = "Connection failed";
-const String msg_disconnected = "Disconnected";
-const String msg_start_sleep = "Shutting Down.        E.btn ON";
-const String msg_throttle_number  = "          Throttle #";
-const String msg_no_loco_selected = "        No Loco selected";
-const String msg_enter_password = "Enter Password";
+const String msg_services_found =        " Service(s) found";
+const String msg_trying_to_connect =     "Trying to Connect";
+const String msg_connected =             "             Connected";
+const String msg_address_label =         "IP address: ";
+const String msg_connection_failed =     "Connection failed";
+const String msg_disconnected =          "Disconnected";
+const String msg_start_sleep =           "Shutting Down.        E.btn ON";
+const String msg_throttle_number  =      "          Throttle #";
+const String msg_no_loco_selected =      "        No Loco selected";
+const String msg_enter_password =        "Enter Password";
 
 const String msg_heartbeatCheckEnabled = "Heartbeat Check Enabled";
 const String msg_heartbeatCheckDisabled = "Heartbeat Check Disabled";
@@ -134,8 +134,25 @@ const bool menuRequiresOneChar[12] = {
 };
 
 const String extraSubMenuText[8] = { 
-   "Fnc/Key Tgl", "Edt Consist", "", "Hrtbt Tgl",  
-   "", "", "Disconnect", "OFF / Sleep" };
+   "Fnc/Key Tgl",    //0
+   "Edt Consist",    //1
+   "",               //2
+   "Hrtbt Tgl",      //3  
+   "#Throttles +",   //4
+   "#Throttles -",   //5
+   "Disconnect",     //6
+   "OFF / Sleep" };  //7
+
+#define EXTRA_MENU_CHAR_FUNCTION_KEY_TOGGLE    '0'
+#define EXTRA_MENU_CHAR_EDIT_CONSIST           '1'
+#define EXTRA_MENU_CHAR_TBA                    '2'
+#define EXTRA_MENU_CHAR_HEARTBEAT_TOGGLE       '3'
+#define EXTRA_MENU_CHAR_INCREASE_MAX_THROTTLES '4'
+#define EXTRA_MENU_CHAR_DECREASE_MAX_THROTTLES '5'
+#define EXTRA_MENU_CHAR_DISCONNECT             '6'
+#define EXTRA_MENU_CHAR_OFF_SLEEP              '7'
+#define EXTRA_MENU_CHAR_OFF_SLEEP_HIDDEN       '9'  // doesn't appera in the menu
+
 
 // if defined in config_buttons.h these values will be overwritten
 //
