@@ -95,7 +95,7 @@ int ssidSelectionSource;
 
 // wit Server ip entry
 String witServerIpAndPortConstructed = "###.###.###.###:#####";
-String witServerIpAndPortEntered = "";
+String witServerIpAndPortEntered = DEFAULT_IP_AND_PORT;
 boolean witServerIpAndPortChanged = true;
 
 // roster variables

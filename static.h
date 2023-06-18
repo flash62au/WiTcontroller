@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 1.17";
+const String appVersion = "     Version 1.18";
 const String msg_start = "Start";
 
 const String menu_menu =                   "* Menu                # Key Defs";
@@ -181,6 +181,10 @@ const String extraSubMenuText[8] = {
 #endif
 
 String witServerIpAndPortEntryMask = "###.###.###.###:#####";
+
+#ifndef DEFAULT_IP_AND_PORT 
+#define DEFAULT_IP_AND_PORT ""
+#endif
 
 const char ssidPasswordBlankChar = 164;
 
