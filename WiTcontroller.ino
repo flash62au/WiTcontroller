@@ -2492,14 +2492,12 @@ void writeOledSpeed() {
     oledText[3] = msg_no_loco_selected;
   }
 
-  if (speedStep != currentSpeedStep[currentThrottleIndex]) {
-    oledText[3] = "X " + String(speedStepCurrentMultiplier);
-  }
-    if (!hashShowsFunctionsInsteadOfKeyDefs) {
+  if (!hashShowsFunctionsInsteadOfKeyDefs) {
       oledText[5] = menu_menu;
     } else {
     oledText[5] = menu_menu_hash_is_functions;
   }
+
   writeOledArray(false, false, false, drawTopLine);
 
   if (wiThrottleProtocol.getNumberOfLocomotives(currentThrottleIndexChar) > 0 ) {
@@ -2513,18 +2511,27 @@ void writeOledSpeed() {
     u8g2.drawStr(2,15, String(currentThrottleIndex+1).c_str());
   }
 
-  if (!heartbeatCheckEnabled) {
-    u8g2.setFont(FONT_HEARTBEAT);
-    u8g2.drawGlyph(0, 31, label_heartbeat_off_glyph);
+  if (speedStep != currentSpeedStep[currentThrottleIndex]) {
+    // oledText[3] = "X " + String(speedStepCurrentMultiplier);
+    u8g2.setDrawColor(1);
+    u8g2.setFont(FONT_DEFAULT);
+    u8g2.drawStr(0, 37, ("X " + String(speedStepCurrentMultiplier)).c_str());
   }
 
   if (trackPower == PowerOn) {
-    u8g2.drawBox(0,41,15,8);
+    // u8g2.drawBox(0,41,15,8);
+    u8g2.drawBox(0,41,9,8);
     u8g2.setDrawColor(0);
   }
   u8g2.setFont(FONT_TRACK_POWER);
-  u8g2.drawStr(0, 48, label_track_power.c_str());
+  // u8g2.drawStr(0, 48, label_track_power.c_str());
+  u8g2.drawGlyph(1, 48, glyph_track_power);
   u8g2.setDrawColor(1);
+
+  if (!heartbeatCheckEnabled) {
+    u8g2.setFont(FONT_HEARTBEAT);
+    u8g2.drawGlyph(13, 48, glyph_heartbeat_off);
+  }
 
   // direction
   // needed for new function state format
