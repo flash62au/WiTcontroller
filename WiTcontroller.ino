@@ -2513,6 +2513,11 @@ void writeOledSpeed() {
     u8g2.drawStr(2,15, String(currentThrottleIndex+1).c_str());
   }
 
+  if (!heartbeatCheckEnabled) {
+    u8g2.setFont(FONT_HEARTBEAT);
+    u8g2.drawGlyph(0, 31, label_heartbeat_off_glyph);
+  }
+
   if (trackPower == PowerOn) {
     u8g2.drawBox(0,41,15,8);
     u8g2.setDrawColor(0);

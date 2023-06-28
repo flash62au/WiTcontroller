@@ -58,7 +58,7 @@
 // to use multiple throttles, one of the keys or buttons will need to be defined as NEXT_THROTTLE.  (keypad 5 is by default)
 // Maximum supported by the WiThrottleProtocol is 6
 
-// #define MAX_THROTTLES                 2          // uncomment and increase the number if you need more that two throttles
+// #define MAX_THROTTLES                 2          // uncomment and increase the number if you always need more that two throttles
 
 // ********************************************************************************************
 

@@ -12,7 +12,7 @@ const String turnoutPrefixes[maxSsids] = {"NT", "NT", "NT", "NT"};  // required 
 const String routePrefixes[maxSsids] = {"IO:AUTO:", "IO:AUTO:", "IO:AUTO:", "IO:AUTO:"};  // required if you wish to use routes  
 // this is the prefix of all route system names for YOUR system, for the wiThrottle servers on the  networks above
 
-// If defined this must be of the form 999.999.999.999:99999  e.g. 192.168.004.001:2560
+// If defined this must be of the form 999999999999:99999  e.g. "1921680040012560" equals 192.168.004.001:2560
 // Each block of the ip address MUST be 3 digit. Use leading zeros if needed to insure 3 digits.
 // The port can be any number of digits
-// #define DEFAULT_IP_AND_PORT      "192.168.004.001:2560"
+// #define DEFAULT_IP_AND_PORT      "1921680040012560"

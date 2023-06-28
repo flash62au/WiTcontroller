@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 1.19";
+const String appVersion = "     Version 1.20";
 const String msg_start = "Start";
 
 const String menu_menu =                   "* Menu                # Key Defs";
@@ -59,6 +59,7 @@ const String label_track_power = "TRK";
 // const String label_unknown = "?";
 // const String label_on = "On" ;
 // const String label_off = "Off";
+const int label_heartbeat_off_glyph = 0x00b7;
 
 #define KEYPAD_USE_OPERATION 0
 #define KEYPAD_USE_SELECT_SSID 1
@@ -137,7 +138,7 @@ const String extraSubMenuText[8] = {
    "Fnc/Key Tgl",    //0
    "Edt Consist",    //1
    "",               //2
-   "Hrtbt Tgl",      //3  
+   "Heartbt Tgl",      //3  
    "#Throttles +",   //4
    "#Throttles -",   //5
    "Disconnect",     //6
@@ -197,6 +198,7 @@ const char ssidPasswordBlankChar = 164;
 // #define FONT_DIRECTION u8g2_font_profont17_tr
 #define FONT_DIRECTION u8g2_font_neuecraft_tr
 #define FONT_TRACK_POWER u8g2_font_profont10_tf
+#define FONT_HEARTBEAT u8g2_font_open_iconic_all_1x_t
 #define FONT_NEXT_THROTTLE u8g2_font_6x12_m_symbols
 
 
