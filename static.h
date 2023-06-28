@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 1.20";
+const String appVersion = "     Version 1.21";
 const String msg_start = "Start";
 
 const String menu_menu =                   "* Menu                # Key Defs";
@@ -61,6 +61,7 @@ const String label_track_power = "TRK";
 // const String label_off = "Off";
 const int glyph_heartbeat_off = 0x00b7;
 const int glyph_track_power = 0x00eb;
+const int glyph_speed_step = 0x00d6;
 
 #define KEYPAD_USE_OPERATION 0
 #define KEYPAD_USE_SELECT_SSID 1
@@ -192,7 +193,6 @@ const char ssidPasswordBlankChar = 164;
 
 #define FONT_DEFAULT u8g2_font_NokiaSmallPlain_tf
 #define FONT_FUNCTION_INDICATORS u8g2_font_tiny_simon_tr
-// #define FONT_THROTTLE_NUMBER u8g2_font_profont15_mn
 #define FONT_THROTTLE_NUMBER u8g2_font_neuecraft_tr
 #define FONT_PASSWORD u8g2_font_9x15_tf
 #define FONT_SPEED u8g2_font_profont29_mr
@@ -201,6 +201,7 @@ const char ssidPasswordBlankChar = 164;
 // #define FONT_TRACK_POWER u8g2_font_profont10_tf
 #define FONT_TRACK_POWER u8g2_font_open_iconic_all_1x_t
 #define FONT_HEARTBEAT u8g2_font_open_iconic_all_1x_t
+#define FONT_SPEED_STEP u8g2_font_open_iconic_all_1x_t
 #define FONT_NEXT_THROTTLE u8g2_font_6x12_m_symbols
 
 

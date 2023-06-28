@@ -2514,13 +2514,16 @@ void writeOledSpeed() {
   if (speedStep != currentSpeedStep[currentThrottleIndex]) {
     // oledText[3] = "X " + String(speedStepCurrentMultiplier);
     u8g2.setDrawColor(1);
+    u8g2.setFont(FONT_SPEED_STEP);
+    u8g2.drawGlyph(1, 38, glyph_speed_step);
     u8g2.setFont(FONT_DEFAULT);
-    u8g2.drawStr(0, 37, ("X " + String(speedStepCurrentMultiplier)).c_str());
+    // u8g2.drawStr(0, 37, ("X " + String(speedStepCurrentMultiplier)).c_str());
+    u8g2.drawStr(9, 37, String(speedStepCurrentMultiplier).c_str());
   }
 
   if (trackPower == PowerOn) {
     // u8g2.drawBox(0,41,15,8);
-    u8g2.drawBox(0,41,9,8);
+    u8g2.drawRBox(0,40,9,9,1);
     u8g2.setDrawColor(0);
   }
   u8g2.setFont(FONT_TRACK_POWER);
@@ -2530,13 +2533,17 @@ void writeOledSpeed() {
 
   if (!heartbeatCheckEnabled) {
     u8g2.setFont(FONT_HEARTBEAT);
-    u8g2.drawGlyph(13, 48, glyph_heartbeat_off);
+    u8g2.drawGlyph(13, 49, glyph_heartbeat_off);
+    u8g2.setDrawColor(2);
+    u8g2.drawLine(13, 48, 20, 41);
+    // u8g2.drawLine(13, 48, 21, 40);
+    u8g2.setDrawColor(1);
   }
 
   // direction
   // needed for new function state format
   u8g2.setFont(FONT_DIRECTION); // medium
-  u8g2.drawStr(78,36, sDirection.c_str());
+  u8g2.drawStr(79,36, sDirection.c_str());
 
   // speed
   const char *cSpeed = sSpeed.c_str();
