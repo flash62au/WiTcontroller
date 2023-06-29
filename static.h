@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 1.21";
+const String appVersion = "     Version 1.22";
 const String msg_start = "Start";
 
 const String menu_menu =                   "* Menu                # Key Defs";
@@ -59,9 +59,12 @@ const String label_track_power = "TRK";
 // const String label_unknown = "?";
 // const String label_on = "On" ;
 // const String label_off = "Off";
+
 const int glyph_heartbeat_off = 0x00b7;
 const int glyph_track_power = 0x00eb;
 const int glyph_speed_step = 0x00d6;
+// const int glyph_direction_forward = 0x0070;
+// const int glyph_direction_reverse = 0x006d;
 
 #define KEYPAD_USE_OPERATION 0
 #define KEYPAD_USE_SELECT_SSID 1
@@ -117,23 +120,24 @@ const String menuText[12][3] = {
   {"Route",       "no+# Select  * Cancel   # List", ""},   //7
   {"Trk Power",   "* Cancel                # Toggle", ""}, //8 
   {"Extras",      "no Select  * Cancel         ", ""},   //9
+
   {"Heartbeat",   "* Close                       ", ""},   //10
   {"Edit Consist Facing","no Chng Facing   * Close", ""}    //11
 };
 
-const bool menuRequiresOneChar[12] = {
-  false,   //0
-  false,   //1
-  false,   //2
-  false,   //3
-  false,   //4
-  false,   //5
-  false,   //6
-  false,   //7
-  false,   //8
-  true,   //9
-  false,   //10
-  false   //11
+const int menuCharsRequired[12] = {  // 0=none effectively a direct command / 1=one used for sub menus / 2=one or more
+  2,   //0
+  2,   //1
+  2,   //2
+  0,   //3
+  0,   //4
+  2,   //5
+  2,   //6
+  2,   //7
+  0,   //8
+  1,   //9
+  2,   //10
+  2   //11
 };
 
 const String extraSubMenuText[8] = { 
@@ -186,7 +190,7 @@ const String extraSubMenuText[8] = {
 String witServerIpAndPortEntryMask = "###.###.###.###:#####";
 
 #ifndef DEFAULT_IP_AND_PORT 
-#define DEFAULT_IP_AND_PORT ""
+  #define DEFAULT_IP_AND_PORT ""
 #endif
 
 const char ssidPasswordBlankChar = 164;

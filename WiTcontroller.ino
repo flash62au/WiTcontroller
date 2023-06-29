@@ -1178,6 +1178,7 @@ void doKeyPress(char key, boolean pressed) {
             break;
 
           case '#': // end of command
+            debug_print("end of command... "); debug_print(key); debug_print ("  :  "); debug_println(menuCommand);
             if ((menuCommandStarted) && (menuCommand.length()>=1)) {
               doMenu();
             } else {
@@ -1196,14 +1197,22 @@ void doKeyPress(char key, boolean pressed) {
 
           case '0': case '1': case '2': case '3': case '4': 
           case '5': case '6': case '7': case '8': case '9':
+            debug_print("number... "); debug_print(key); debug_print ("  cmd: '"); debug_print(menuCommand); debug_println("'");
+
             if (menuCommandStarted) { // append to the string
-              if ((menuRequiresOneChar[menuCommand.substring(0, 1).toInt()]) 
-              && (menuCommand.length()==1)) { // only one char is required for this type of menu
+
+              if ((menuCharsRequired[key-48] == 0) && (menuCommand.length() == 0)) { // menu type is effectively a direct commands from this point
                 menuCommand += key;
                 doMenu();
-              } else {  //menu type allows/requries more than one char
-                menuCommand += key;
-                writeOledMenu(menuCommand);
+              } else {
+                if ((menuCharsRequired[menuCommand.substring(0,1).toInt()] == 1) && (menuCommand.length() == 1)) {  // menu type needs only one char
+                  menuCommand += key;
+                  doMenu();
+
+                } else {  //menu type allows/requires more than one char
+                  menuCommand += key;
+                  writeOledMenu(menuCommand);
+                }
               }
             } else {
               doDirectCommand(key, true);
@@ -1656,7 +1665,6 @@ void doMenu() {
       }
     case MENU_ITEM_TRACK_POWER: {
         powerToggle();
-        debug_println("Power toggle");
         break;
       }
     case MENU_ITEM_EXTRAS: { // Extra menu - e.g. disconnect/reconnect/sleep
@@ -2042,12 +2050,14 @@ void doFunctionWhichLocosInConsist(int multiThrottleIndex, int functionNumber, b
 }
 
 void powerOnOff(TrackPower powerState) {
+  debug_println("powerOnOff()");
   wiThrottleProtocol.setTrackPower(powerState);
   trackPower = powerState;
   writeOledSpeed();
 }
 
 void powerToggle() {
+  debug_println("PowerToggle()");
   if (trackPower==PowerOn) {
     powerOnOff(PowerOff);
   } else {
