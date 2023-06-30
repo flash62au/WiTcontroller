@@ -92,6 +92,7 @@ String foundSsids[maxFoundSsids];
 boolean foundSsidsOpen[maxFoundSsids];
 int foundSsidsCount = 0;
 int ssidSelectionSource;
+double startWaitForSelection;
 
 // wit Server ip entry
 String witServerIpAndPortConstructed = "###.###.###.###:#####";
@@ -263,7 +264,7 @@ class MyDelegate : public WiThrottleProtocolDelegate {
         
         // check for bounce. (intermediate speed sent back from the server, but is not up to date with the throttle)
         if ( (lastSpeedThrottleIndex!=multiThrottleIndex)
-             || ((millis()-lastSpeedSentTime)>100)
+             || ((millis()-lastSpeedSentTime)>500)
         ) {
           currentSpeed[multiThrottleIndex] = speed;
           displayUpdateFromWit(multiThrottleIndex);
@@ -395,7 +396,7 @@ void browseSsids() { // show the found SSIDs
   clearOledArray(); 
   setAppnameForOled();
   oledText[2] = msg_browsing_for_ssids;
-  writeOledArray(false, false);
+  writeOledArray(false, false, true, true);
 
   int numSsids = WiFi.scanNetworks();
   while ( (numSsids == -1)
@@ -404,6 +405,8 @@ void browseSsids() { // show the found SSIDs
     debug_print(".");
     nowTime = millis();
   }
+
+  startWaitForSelection = millis();
 
   foundSsidsCount = 0;
   if (numSsids == -1) {
@@ -484,6 +487,7 @@ void enterSsidPassword() {
 }
 void showListOfSsids() {  // show the list from the specified values in config_network.h
   debug_println("showListOfSsids()");
+  startWaitForSelection = millis();
 
   clearOledArray(); 
   setAppnameForOled(); 
@@ -491,7 +495,7 @@ void showListOfSsids() {  // show the list from the specified values in config_n
 
   if (maxSsids == 0) {
     oledText[1] = msg_no_ssids_found;
-    writeOledArray(false, false);
+    writeOledArray(false, false, true, true);
     debug_println(oledText[1]);
   
   } else {
@@ -552,7 +556,7 @@ void connectSsid() {
   clearOledArray(); 
   setAppnameForOled();
   oledText[1] = selectedSsid; oledText[2] + "connecting...";
-  writeOledArray(false, false);
+  writeOledArray(false, false, true, true);
 
   double startTime = millis();
   double nowTime = startTime;
@@ -566,7 +570,7 @@ void connectSsid() {
     setAppnameForOled(); 
     for (int i = 0; i < 3; ++i) {  // Try three times
       oledText[1] = selectedSsid; oledText[2] =  msg_trying_to_connect + " (" + String(i) + ")";
-      writeOledArray(false, false);
+      writeOledArray(false, false, true, true);
 
       nowTime = startTime;      
       WiFi.begin(cSsid, cPassword); 
@@ -591,24 +595,26 @@ void connectSsid() {
       debug_print("Connected. IP address: "); debug_println(WiFi.localIP());
       oledText[2] = msg_connected; 
       oledText[3] = msg_address_label + String(WiFi.localIP());
-      writeOledArray(false, false);
+      writeOledArray(false, false, true, true);
       // ssidConnected = true;
       ssidConnectionState = CONNECTION_STATE_CONNECTED;
       keypadUseType = KEYPAD_USE_SELECT_WITHROTTLE_SERVER;
 
       // setup the bonjour listener
-      if (!MDNS.begin("ESP32_Browser")) {
+      if (!MDNS.begin("WiTcontroller")) {
         debug_println("Error setting up MDNS responder!");
         oledText[2] = msg_bounjour_setup_failed;
-        writeOledArray(false, false);
+        writeOledArray(false, false, true, true);
         delay(2000);
         ssidConnectionState = CONNECTION_STATE_DISCONNECTED;
+      } else {
+        debug_println("MDNS responder started");
       }
 
     } else {
       debug_println(msg_connection_failed);
       oledText[2] = msg_connection_failed;
-      writeOledArray(false, false);
+      writeOledArray(false, false, true, true);
       delay(2000);
       
       WiFi.disconnect();      
@@ -652,7 +658,7 @@ void browseWitService() {
   clearOledArray(); 
   oledText[0] = appName; oledText[6] = appVersion; 
   oledText[1] = selectedSsid;   oledText[2] = msg_browsing_for_service;
-  writeOledArray(false, false);
+  writeOledArray(false, false, true, true);
 
   noOfWitServices = 0;
   while ( (noOfWitServices == 0) 
@@ -664,6 +670,7 @@ void browseWitService() {
     }
     nowTime = millis();
   }
+  debug_println("");
 
   foundWitServersCount = noOfWitServices;
   if (noOfWitServices > 0) {
@@ -671,18 +678,29 @@ void browseWitService() {
       foundWitServersNames[i] = MDNS.hostname(i);
       foundWitServersIPs[i] = MDNS.IP(i);
       foundWitServersPorts[i] = MDNS.port(i);
+      // debug_print("txt 0: key: "); debug_print(MDNS.txtKey(i,0)); debug_print(" value: '"); debug_print(MDNS.txt(i,0)); debug_println("'");
+      // debug_print("txt 1: key: "); debug_print(MDNS.txtKey(i,1)); debug_print(" value: '"); debug_print(MDNS.txt(i,1)); debug_println("'");
+      // debug_print("txt 2: key: "); debug_print(MDNS.txtKey(i,2)); debug_print(" value: '"); debug_print(MDNS.txt(i,2)); debug_println("'");
+      // debug_print("txt 3: key: "); debug_print(MDNS.txtKey(i,3)); debug_print(" value: '"); debug_println(MDNS.txt(i,3)); debug_println("'");
+      if (MDNS.hasTxt(i,"jmri")) {
+        String node = MDNS.txt(i,"node");
+        node.toLowerCase();
+        if (foundWitServersNames[i].equals(node)) {
+          foundWitServersNames[i] = "JMRI  (v" + MDNS.txt(i,"jmri") + ")";
+        }
+      }
     }
   }
   if (selectedSsid.substring(0,6) == "DCCEX_") {
     foundWitServersIPs[foundWitServersCount].fromString("192.168.4.1");
     foundWitServersPorts[foundWitServersCount] = 2560;
-    foundWitServersNames[foundWitServersCount] = "'Guessed' DCC++ WiT server";
+    foundWitServersNames[foundWitServersCount] = msg_guessed_ex_cs_wit_server;
     foundWitServersCount++;
   }
 
   if (foundWitServersCount == 0) {
     oledText[1] = msg_no_services_found;
-    writeOledArray(false, false);
+    writeOledArray(false, false, true, true);
     debug_println(oledText[1]);
     delay(1000);
     buildWitEntry();
@@ -694,8 +712,8 @@ void browseWitService() {
 
     for (int i = 0; i < foundWitServersCount; ++i) {
       // Print details for each service found
-      debug_print("  "); debug_print(i); debug_print(": "); debug_print(foundWitServersNames[i]);
-      debug_print(" ("); debug_print(foundWitServersIPs[i]); debug_print(":"); debug_print(foundWitServersPorts[i]); debug_println(")");
+      debug_print("  "); debug_print(i); debug_print(": '"); debug_print(foundWitServersNames[i]);
+      debug_print("' ("); debug_print(foundWitServersIPs[i]); debug_print(":"); debug_print(foundWitServersPorts[i]); debug_println(")");
       if (i<5) {  // only have room for 5
         String truncatedIp = ".." + foundWitServersIPs[i].toString().substring(foundWitServersIPs[i].toString().lastIndexOf("."));
         oledText[i] = String(i) + ": " + truncatedIp + ":" + String(foundWitServersPorts[i]) + " " + foundWitServersNames[i];
@@ -742,13 +760,13 @@ void connectWitServer() {
   clearOledArray(); 
   setAppnameForOled(); 
   oledText[1] = selectedWitServerIP.toString() + " : " + String(selectedWitServerPort); 
-  oledText[2] = selectedWitServerName; oledText[3] + "connecting...";
-  writeOledArray(false, false);
+  oledText[2] = selectedWitServerName; oledText[3] + msg_connecting;
+  writeOledArray(false, false, true, true);
 
   if (!client.connect(selectedWitServerIP, selectedWitServerPort)) {
     debug_println(msg_connection_failed);
     oledText[3] = msg_connection_failed;
-    writeOledArray(false, false);
+    writeOledArray(false, false, true, true);
     delay(5000);
     
     witConnectionState = CONNECTION_STATE_DISCONNECTED;
@@ -775,7 +793,7 @@ void connectWitServer() {
     } else {
       oledText[5] = menu_menu_hash_is_functions;
     }
-    writeOledArray(false, false);
+    writeOledArray(false, false, true, true);
 
     keypadUseType = KEYPAD_USE_OPERATION;
   }
@@ -790,7 +808,7 @@ void enterWitServer() {
     oledText[1] = msg_no_services_found_entry_required;
     oledText[3] = witServerIpAndPortConstructed;
     oledText[5] = menu_select_wit_entry;
-    writeOledArray(false, false);
+    writeOledArray(false, false, true, true);
     witServerIpAndPortChanged = false;
   }
 }
@@ -803,7 +821,7 @@ void disconnectWitServer() {
   wiThrottleProtocol.disconnect();
   debug_println("Disconnected from wiThrottle server\n");
   clearOledArray(); oledText[0] = msg_disconnected;
-  writeOledArray(false, false);
+  writeOledArray(false, false, true, true);
   witConnectionState = CONNECTION_STATE_DISCONNECTED;
   witServerIpAndPortChanged = true;
 }
@@ -1091,7 +1109,7 @@ void setup() {
   // i2cSetClock(0,400000);
 
   clearOledArray(); oledText[0] = appName; oledText[6] = appVersion; oledText[2] = msg_start;
-  writeOledArray(false, false);
+  writeOledArray(false, false, true, true);
 
   delay(1000);
   debug_println("Start"); 
@@ -1130,6 +1148,7 @@ void loop() {
   if (ssidConnectionState != CONNECTION_STATE_CONNECTED) {
     // connectNetwork();
     ssidsLoop();
+    checkForShutdownOnNoResponse();
   } else {  
     if (witConnectionState != CONNECTION_STATE_CONNECTED) {
       witServiceLoop();
@@ -2125,6 +2144,13 @@ void setLastServerResponseTime(boolean force) {
   // debug_print("setLastServerResponseTime "); debug_println(lastServerResponseTime);
 }
 
+void checkForShutdownOnNoResponse() {
+  if (millis()-startWaitForSelection > 240000) {  // 4 minutes
+      debug_println("Waited too long for a selection. Shutting down");
+      deepSleepStart();
+  }
+}
+
 // *********************************************************************************
 //  Select functions
 // *********************************************************************************
@@ -2500,6 +2526,7 @@ void writeOledSpeed() {
     setAppnameForOled();
     oledText[2] = msg_throttle_number + String(currentThrottleIndex+1);
     oledText[3] = msg_no_loco_selected;
+    drawTopLine = true;
   }
 
   if (!hashShowsFunctionsInsteadOfKeyDefs) {
@@ -2697,11 +2724,20 @@ void writeOledDirectCommands() {
 // *********************************************************************************
 
 void deepSleepStart() {
+  deepSleepStart(false);
+}
+
+void deepSleepStart(bool autoShutdown) {
   clearOledArray(); 
   setAppnameForOled();
-  oledText[2] = msg_start_sleep;
-  writeOledArray(false, false);
-  delay(2000);
+  int delayPeriod = 2000;
+  if (autoShutdown) {
+    oledText[2] = msg_auto_sleep;
+    delayPeriod = 10000;
+  }
+  oledText[3] = msg_start_sleep;
+  writeOledArray(false, false, true, true);
+  delay(delayPeriod);
 
   u8g2.setPowerSave(1);
   esp_deep_sleep_start();

@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 1.22";
+const String appVersion = "     Version 1.24";
 const String msg_start = "Start";
 
 const String menu_menu =                   "* Menu                # Key Defs";
@@ -42,13 +42,16 @@ const String msg_no_services_found_entry_required = "Enter witServer IP:Port";
 const String msg_services_found =        " Service(s) found";
 const String msg_trying_to_connect =     "Trying to Connect";
 const String msg_connected =             "             Connected";
+const String msg_connecting =            "             Connecting...";
 const String msg_address_label =         "IP address: ";
 const String msg_connection_failed =     "Connection failed";
 const String msg_disconnected =          "Disconnected";
+const String msg_auto_sleep =           "Waited too long for Select";
 const String msg_start_sleep =           "Shutting Down.        E.btn ON";
 const String msg_throttle_number  =      "          Throttle #";
 const String msg_no_loco_selected =      "        No Loco selected";
 const String msg_enter_password =        "Enter Password";
+const String msg_guessed_ex_cs_wit_server = "'Guessed' EX-CS WiT server";
 
 const String msg_heartbeatCheckEnabled = "Heartbeat Check Enabled";
 const String msg_heartbeatCheckDisabled = "Heartbeat Check Disabled";

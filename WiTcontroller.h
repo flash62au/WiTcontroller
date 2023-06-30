@@ -190,6 +190,7 @@ void clearOledArray(void);
 void writeOledDirectCommands(void);
 
 void deepSleepStart(void);
+void deepSleepStart(bool);
 
 char getMultiThrottleChar(int);
 int getMultiThrottleIndex(char);
