@@ -134,8 +134,12 @@ Notes:
     - by their DCC address, via the keypad
       - On NCE systems, a leading zero (0) will force a long address
     - from the first 50 locos in the roster
+  - Able to select multiple locos to create a consist
+    - Able to change the facing of the additional locos in the consists (via the 'extra' menu after selection)
   - Able to activate any function (0-28)
-    - Rudimentary showing of the roster function labels
+    - Showing of the roster function labels (from the wiThrottle server if provided)
+    - Quick access to the functions by pressing #. Temporarily enabled via the Extras menu (or permanently enabled in config_button.h)
+    - Limited ability to configure which functions are sent to the first or all locos in a consist (defined in config_button.h)
   - Able to throw/close turnouts/points
     - from the address
     - from the first 50 turnouts/points in the server list
@@ -145,17 +149,17 @@ Notes:
   - Set/unset a multiplier for the rotary encoder
   - Power Track On/Off
   - Disconnect / Reconnect
-  - Limited dealing with unexpected disconnects.  It will throw you back to the WiThtottle Server selection screen.
   - Put ESP32 in deep sleep and restart it
-  - Boundary between short and long DCC addresses can be configured in config_buttons.h
-  - The default speed step (per encoder click) can be configured in config_buttons.h
+- Have up to 6 throttles, each with an unlimited number of locos in consist. Default is 2 throttles, which can be increased or decreased temporarily via the Extras menu (or permanently enabled in config_button.h)
+- Limited dealing with unexpected disconnects.  It will throw you back to the WiThtottle Server selection screen.
+- Boundary between short and long DCC addresses can be configured in config_buttons.h
+- The default speed step (per encoder click) can be configured in config_buttons.h
+- The controller will automatically shut down if no SSID is selected or entered in 4 minutes (to conserve the battery)
 
 **ToDo:**
 - Speed button repeat (i.e. hold the button down)
 - Deal with unexpected disconnects better
   - automatic attempt to reconnect
-- Functions are currently only sent to the earliest selected loco
-- ability to change facing of a loco in consist
 - Keep a list of ip addresses and ports if mDNS doesn't provide any
 - Remember (for the current session only) recently selected locos
 
@@ -168,7 +172,7 @@ Notes:
   - 2 = release loco:
      - Followed by the loco number, followed by \# to release an individual loco.  e.g. to deselect the loco 99 you would press '\*299\#'
      - Otherwise followed directly by \#  to release all e.g. '\*2\#'
-  - 3 = Change direction.  Followed by \# to complete.  e.g. forward '\*21\#'  reverse '\*20\#'
+  - 3 = Toggle direction.
   - 4 = Set / Unset a 2 times multiplier for the rotary encoder dial.
   - 5 = Throw turnout/point.  
      - Followed by the turnout/point number, followed by the \# to complete.  e.g. Throw turnout XX12 '\*512\#'  (where XX is a prefix defined in the sketch) 
@@ -179,13 +183,18 @@ Notes:
   - 7 = Set Route.    
       - Followed by the Route number, followed by \# to complete.  e.g. to Set route XX:XX:0012 '\*60012\#'  (where \'XX:XX:\' is a prefix defined in the sketch)
       - or \# alone to show the list from the server   \# again will show the next page
-  - 0 = Function button. Followed by the loco number, Followed by \# to complete.  e.g. to set function 17 you would press '\*017\#'
-  - 8 = Track Power On/Off. Followed by \# to complete.
-  - 9 = Extras. 
-      - Followed by 0 then \# to toggle the action the the \# key does as a direct action, either to show the direct action key definitions, or the Function labels.  
-      - Followed by 6 then \# to Disconnect/Reconnect.  
-      - or followed by 3 to toggle the heartbeat check.
-      - or followed by 7 (or 9) then \# to put into deep sleep
+  - 0 = Function button. Followed by...
+      - the function number, Followed by \# to complete.  e.g. to set function 17 you would press '\*017\#'
+      - \# alone, to show the list of functions.
+  - 8 = Track Power On/Off.
+  - 9 = Extras. Followed by...
+      - 0 then \# to toggle the action the the \# key does as a direct action, either to show the direct action key definitions, or the Function labels.  
+      - 1 to change the facing of locos in a consist.
+      - 3 to toggle the heartbeat check.
+      - 4 to increase the number of available throttle (up to 6)
+      - 5 to decrease the number of available throttle (down to 1)
+      - 6 then \# to Disconnect/Reconnect.  
+      - 7 (or 9) then \# to put into deep sleep
 Pressing '\*' again before the '\#' will terminate the current command (but not start a new command)
  - \# = Pressing # alone will show the function the the numbered keys (0-9) perform, outside the menu.
        Optionally, you can configure it so that the the Function labels from the roster show 
