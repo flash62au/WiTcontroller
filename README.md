@@ -82,8 +82,8 @@ Notes:
        * Click the green "Code" button and select download zip
        * Extract the zip file to a local folder.  The default folder for the Arduino usually looks like "...username\Documents\Arduino\". This is a good but not essential place to put it.
 4. Load the needed libraries to your PC. These can loaded from the *Library Manager* in the *Arduino IDE*.
-    * *U8g2lib.h* -  Search for "U8g2"   Install version 2.33.15
-    * *AiEsp32RotaryEncoder.h* - search for "Ai Esp32 Rotary Encoder"  Install Version 1.4 
+    * *U8g2lib.h* -  Search for "U8g2"   Install version 2.34.22
+    * *AiEsp32RotaryEncoder.h* - search for "Ai Esp32 Rotary Encoder"  Install Version 1.6
     * *Keypad.h* - Search for "Keypad" by Mark Stanley   install version 3.1.1
     * *WiThrottleProtocol.h* - Search for "WiThrottleProtocol" (not "WiThrottle")  Install version 1.0.3 or later if available
 5. These should have been automatically installed when you downloaded the esp32 boards.
@@ -107,6 +107,7 @@ Notes:
    * WiTcontroller version 0.10 or later requires WiThrottleProtocol version 1.0.3 or later.
    * The *WiFi.h* and *ESPmDNS.h* libraries were automatically installed for me when I installed the esp32 boards, however you may need to install them manually.
    * Later versions of the esp board support are available and do appear to work, but if you have difficulties version 1.0.6 appears to be stable.
+   * Later versions of the libraries generally should work, but if you have difficulties use the versions listed above.
    * To get the WiTcontroller sketch I recommend using either the git command line, or the far more friendly 'GitHub Desktop' app.  See instructions above.
 
 ---
