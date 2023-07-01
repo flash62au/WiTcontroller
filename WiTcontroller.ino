@@ -89,6 +89,7 @@ int foundWitServersCount = 0;
 
 //found ssids
 String foundSsids[maxFoundSsids];
+long foundSsidRssis[maxFoundSsids];
 boolean foundSsidsOpen[maxFoundSsids];
 int foundSsidsCount = 0;
 int ssidSelectionSource;
@@ -424,6 +425,7 @@ void browseSsids() { // show the found SSIDs
       }
       if (!found) {
         foundSsids[foundSsidsCount] = WiFi.SSID(thisSsid);
+        foundSsidRssis[foundSsidsCount] = WiFi.RSSI(thisSsid);
         foundSsidsOpen[foundSsidsCount] = (WiFi.encryptionType(thisSsid) == 7) ? true : false;
         foundSsidsCount++;
       }
@@ -2232,7 +2234,9 @@ void writeOledFoundSSids(String soFar) {
   if (soFar == "") { // nothing entered yet
     clearOledArray();
     for (int i=0; i<5 && i<foundSsidsCount; i++) {
-      oledText[i] = String(i) + ": " + foundSsids[(page*5)+i];
+      if (foundSsids[(page*5)+i].length()>0) {
+        oledText[i] = String(i) + ": " + foundSsids[(page*5)+i] + "   (" + foundSsidRssis[(page*5)+i] + ")" ;
+      }
     }
     oledText[5] = "(" + String(page) +  ") " + menu_select_ssids_from_found;
     writeOledArray(false, false);

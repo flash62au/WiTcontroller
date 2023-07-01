@@ -47,6 +47,7 @@ extern String foundWitServersNames[];
 extern int foundWitServersCount;
 
 extern String foundSsids[];
+extern long foundSsidRssis[];
 extern boolean foundSsidsOpen[];
 extern int foundSsidsCount;
 extern int ssidSelectionSource;
