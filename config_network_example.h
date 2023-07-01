@@ -16,3 +16,9 @@ const String routePrefixes[maxSsids] = {"IO:AUTO:", "IO:AUTO:", "IO:AUTO:", "IO:
 // Each block of the ip address MUST be 3 digit. Use leading zeros if needed to insure 3 digits.
 // The port MUST be 5 digit. Use leading zeros if needed to insure 5 digits.
 // #define DEFAULT_IP_AND_PORT      "19216800400102560"
+
+// ********************************************************************************************
+
+// The period that the controller waits for a connection in milliseconds. Default is 10 seconds (10000ms)
+// If you are having problems connection to you network, try uncommenting the line increasing this
+// #define SSID_CONNECTION_TIMEOUT 10000

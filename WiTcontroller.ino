@@ -577,7 +577,7 @@ void connectSsid() {
 
       debug_print("Trying Network ... Checking status "); debug_print(cSsid); debug_print(" :"); debug_print(cPassword); debug_println(":");
       while ( (WiFi.status() != WL_CONNECTED) 
-        && ((nowTime-startTime) <= 10000) ) { // wait for X seconds to see if the connection worked
+        && ((nowTime-startTime) <= SSID_CONNECTION_TIMEOUT) ) { // wait for X seconds to see if the connection worked
         delay(250);
         debug_print(".");
         nowTime = millis();

@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 1.24";
+const String appVersion = "     Version 1.25";
 const String msg_start = "Start";
 
 const String menu_menu =                   "* Menu                # Key Defs";
@@ -194,6 +194,10 @@ String witServerIpAndPortEntryMask = "###.###.###.###:#####";
 
 #ifndef DEFAULT_IP_AND_PORT 
   #define DEFAULT_IP_AND_PORT ""
+#endif
+
+#ifndef SSID_CONNECTION_TIMEOUT 
+  #define SSID_CONNECTION_TIMEOUT 10000
 #endif
 
 const char ssidPasswordBlankChar = 164;
