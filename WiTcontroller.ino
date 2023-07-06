@@ -24,10 +24,7 @@
 
 #include "WiTcontroller.h"
 
-// comment out the following line to stop all console messages
-#define DEBUG 1
-
-#ifdef DEBUG
+#if WITCONTROLLER_DEBUG == 0
  #define debug_print(...) Serial.print(__VA_ARGS__)
  #define debug_println(...) Serial.print(__VA_ARGS__); Serial.print(" ("); Serial.print(millis()); Serial.println(")")
  #define debug_printf(...) Serial.printf(__VA_ARGS__)
@@ -254,8 +251,12 @@ class MyDelegate : public WiThrottleProtocolDelegate {
       debug_printf("Received Version: %s\n",version); 
     }
     void receivedServerDescription(String description) {
-      debug_print("Received Description: ");
-      debug_println(description);
+      debug_print("Received Description: "); debug_println(description);
+      if (description.substring(0,6).equals("DCC-EX")) {
+        debug_println("resetting prefixes");
+        turnoutPrefix = "";
+        routePrefix = "";
+      }
     }
     void receivedSpeedMultiThrottle(char multiThrottle, int speed) {             // Vnnn
       debug_print("Received Speed: ("); debug_print(millis()); debug_print(") speed: "); debug_println(speed); 
@@ -755,8 +756,9 @@ void selectWitServer(int selection) {
 void connectWitServer() {
   // Pass the delegate instance to wiThrottleProtocol
   wiThrottleProtocol.setDelegate(&myDelegate);
-  // Uncomment for logging on Serial  - DEBUG
-  // wiThrottleProtocol.setLogStream(&Serial);
+#if WITHROTTLE_PROTOCOL_DEBUG == 0
+  wiThrottleProtocol.setLogStream(&Serial);
+#endif
 
   debug_println("Connecting to the server...");
   clearOledArray(); 

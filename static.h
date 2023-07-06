@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 1.25";
+const String appVersion = "     Version 1.26";
 const String msg_start = "Start";
 
 const String menu_menu =                   "* Menu                # Key Defs";
@@ -218,3 +218,11 @@ const char ssidPasswordBlankChar = 164;
 
 #define CONSIST_LEAD_LOCO 0
 #define CONSIST_ALL_LOCOS 1
+
+#ifndef WITCONTROLLER_DEBUG 
+  #define WITCONTROLLER_DEBUG    0
+#endif
+
+#ifndef WITHROTTLE_PROTOCOL_DEBUG
+  #define WITHROTTLE_PROTOCOL_DEBUG   1
+#endif

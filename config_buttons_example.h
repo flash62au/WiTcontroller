@@ -122,4 +122,14 @@
 // this is one of the common 1.3 inch OLED displays
 
 // #define OLED_TYPE U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);
- 
+
+// *******************************************************************************************************************
+// Debugging
+
+// WitController console debug messages are ENABLED by default
+// to disable to console messages, set the following to  1    (i.e. 0 = on  1 = off)
+#define WITCONTROLLER_DEBUG    0
+
+// WiThrottleProtocol console debug messages are DISABLED by default
+// to enable console messages, set the follow to  0    (i.e. 0 = on  1 = off)
+#define WITHROTTLE_PROTOCOL_DEBUG   1
