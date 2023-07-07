@@ -486,7 +486,7 @@ void enterSsidPassword() {
   keypadUseType = KEYPAD_USE_ENTER_SSID_PASSWORD;
   encoderUseType = ENCODER_USE_SSID_PASSWORD;
   if (ssidPasswordChanged) { // don't refresh the screen if nothing nothing has changed
-    debug_println("enterWitServer()");
+    debug_println("enterSsidPassword()");
     writeOledEnterPassword();
     ssidPasswordChanged = false;
   }
@@ -1302,6 +1302,7 @@ void doKeyPress(char key, boolean pressed) {
             break;
           case '#': // show ip address entry screen
             witConnectionState = CONNECTION_STATE_ENTRY_REQUIRED;
+            buildWitEntry();
             enterWitServer();
             break;
           default:  // do nothing 
