@@ -22,3 +22,8 @@ const String routePrefixes[maxSsids] = {"IO:AUTO:", "IO:AUTO:", "IO:AUTO:", "IO:
 // The period that the controller waits for a connection in milliseconds. Default is 10 seconds (10000ms)
 // If you are having problems connection to you network, try uncommenting the line increasing this
 // #define SSID_CONNECTION_TIMEOUT 10000
+
+// ********************************************************************************************
+
+// Autoconnect to first found server (defaul, if not specified is true)
+#define AUTO_CONNECT_TO_FIRST_WITHROTTLE_SERVER true

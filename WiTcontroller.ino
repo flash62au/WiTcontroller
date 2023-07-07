@@ -83,6 +83,7 @@ IPAddress foundWitServersIPs[maxFoundWitServers];
 int foundWitServersPorts[maxFoundWitServers];
 String foundWitServersNames[maxFoundWitServers];
 int foundWitServersCount = 0;
+bool autoConnectToFirstWiThrottleServer = AUTO_CONNECT_TO_FIRST_WITHROTTLE_SERVER;
 
 //found ssids
 String foundSsids[maxFoundSsids];
@@ -254,8 +255,8 @@ class MyDelegate : public WiThrottleProtocolDelegate {
       debug_print("Received Description: "); debug_println(description);
       if (description.substring(0,6).equals("DCC-EX")) {
         debug_println("resetting prefixes");
-        turnoutPrefix = "";
-        routePrefix = "";
+        turnoutPrefix = DCC_EX_TURNOUT_PREFIX;
+        routePrefix = DCC_EX_ROUTE_PREFIX;
       }
     }
     void receivedSpeedMultiThrottle(char multiThrottle, int speed) {             // Vnnn
@@ -467,6 +468,8 @@ void getSsidPasswordAndWitIpForFound() {
     if (selectedSsid.substring(0,6) == "DCCEX_") {
       selectedSsidPassword = "PASS_" + selectedSsid.substring(6);
       witServerIpAndPortEntered = "19216800400102560";
+      turnoutPrefix = DCC_EX_TURNOUT_PREFIX;
+      routePrefix = DCC_EX_ROUTE_PREFIX;
     } else {
       for (int i = 0; i < maxSsids; ++i) {
         if (selectedSsid == ssids[i]) {
@@ -728,7 +731,7 @@ void browseWitService() {
     }
     writeOledArray(false, false);
 
-    if (foundWitServersCount == 1) {
+    if ( (foundWitServersCount == 1) && (autoConnectToFirstWiThrottleServer) ) {
       debug_println("WiT Selection - only 1");
       selectedWitServerIP = foundWitServersIPs[0];
       selectedWitServerPort = foundWitServersPorts[0];
