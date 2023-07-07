@@ -124,6 +124,7 @@ Notes:
   - Asks which to connect to
   - If none found will ask to enter the IP Address and Port
   - Guesses the wiThrottle IP address and Port for DCC++EX WiFi Access Point mode Command Stations
+  - optionally can add a #define (a preference) to disable this auto connect feature
 - Rudimentary on-the-fly consists
 - Assign commands directly to the 1-9 buttons (in the sketch) (see list below)
   - This is done in config_button.h
