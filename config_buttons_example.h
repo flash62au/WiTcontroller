@@ -77,6 +77,7 @@
 #define SPEED_STEP_ADDITIONAL_MULTIPLIER 2
 
 // by default, the speed will be displayed as the the DCC speed (0-126)
+// IMPORTANT: only one should be enabled.  If DISPLAY_SPEED_AS_PERCENT is enabled it will take presidence over DISPLAY_SPEED_AS_0_TO_28
 // Note: there will be rounding errors!
 
 // uncomment this line to display the speeds a percentage.
