@@ -1877,7 +1877,17 @@ int getDisplaySpeed(int multiThrottleIndex) {
     }
     return iSpeed;
   } else {
-    return currentSpeed[multiThrottleIndex];
+    if (speedDisplayAs0to28) {
+      float speed = currentSpeed[multiThrottleIndex];
+      speed = speed / 126 *28;
+      int iSpeed = speed;
+      if (iSpeed-speed >= 0.5) {
+        iSpeed = iSpeed + 1;
+      }
+      return iSpeed;
+    } else {
+      return currentSpeed[multiThrottleIndex];
+    }
   }
 }
 

@@ -77,10 +77,12 @@
 #define SPEED_STEP_ADDITIONAL_MULTIPLIER 2
 
 // by default, the speed will be displayed as the the DCC speed (0-126)
-// uncomment this line to display the sppeds a percentage.
 // Note: there will be rounding errors!
 
-#define DISPLAY_SPEED_AS_PERCENT         true
+// uncomment this line to display the speeds a percentage.
+// #define DISPLAY_SPEED_AS_PERCENT         true
+// uncomment this line to display the speeds as 0-28.
+// #define DISPLAY_SPEED_AS_0_TO_28         true
 
 // ********************************************************************************************
 // DCC functions in consists

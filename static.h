@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 1.27";
+const String appVersion = "     Version 1.28";
 const String msg_start = "Start";
 
 const String menu_menu =                   "* Menu                # Key Defs";
@@ -188,6 +188,12 @@ const String extraSubMenuText[8] = {
   const bool speedDisplayAsPercent = DISPLAY_SPEED_AS_PERCENT;
 #else
   const bool speedDisplayAsPercent = false;
+#endif
+
+#ifdef  DISPLAY_SPEED_AS_0_TO_28
+  const bool speedDisplayAs0to28 = DISPLAY_SPEED_AS_0_TO_28;
+#else
+  const bool speedDisplayAs0to28 = false;
 #endif
 
 String witServerIpAndPortEntryMask = "###.###.###.###:#####";
