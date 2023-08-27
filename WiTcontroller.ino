@@ -77,6 +77,7 @@ int selectedWitServerPort = 0;
 String selectedWitServerName ="";
 int noOfWitServices = 0;
 int witConnectionState = CONNECTION_STATE_DISCONNECTED;
+String serverType = "";
 
 //found wiThrottle servers
 IPAddress foundWitServersIPs[maxFoundWitServers];
@@ -253,7 +254,10 @@ class MyDelegate : public WiThrottleProtocolDelegate {
     }
     void receivedServerDescription(String description) {
       debug_print("Received Description: "); debug_println(description);
-      if (description.substring(0,6).equals("DCC-EX")) {
+      serverType = description.substring(0,description.indexOf(" "));
+      debug_print("ServerType: "); debug_println(serverType);
+      if (serverType.equals("DCC-EX")) {
+      // if (description.substring(0,6).equals("DCC-EX")) {
         debug_println("resetting prefixes");
         turnoutPrefix = DCC_EX_TURNOUT_PREFIX;
         routePrefix = DCC_EX_ROUTE_PREFIX;
@@ -1807,10 +1811,12 @@ void resetAllFunctionFollow() {
 String getLocoWithLength(String loco) {
   int locoNo = loco.toInt();
   String locoWithLength = "";
-  if ( (locoNo <= SHORT_DCC_ADDESS_LIMIT) && (loco.charAt(0)!='0') ) {
-    locoWithLength = "S" + loco;
-  } else {
+  if ( (locoNo > SHORT_DCC_ADDESS_LIMIT) 
+  || ( (locoNo <= SHORT_DCC_ADDESS_LIMIT) && (loco.charAt(0)=='0') && (!serverType.equals("DCC-EX" ) ) ) 
+  ) {
     locoWithLength = "L" + loco;
+  } else {
+    locoWithLength = "S" + loco;
   }
   return locoWithLength;
 }
