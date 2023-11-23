@@ -67,7 +67,7 @@ Notes:
         * Enter the following into the 'Additional Board Manager URLs' field:  https://dl.espressif.com/dl/package_esp32_index.json
     * Then Use the *Boards Manager* in the *Arduino IDE* to install the esp32 board support
         * *Tools* > *Board* > *Boards Manager*
-        * Search for "esp32" by Expressive Systems.  Install version 1.0.6
+        * Search for "esp32" by Expressive Systems.  Install version 2.0.11
 3. Download or clone *this* repository. (Note: if you 'clone' initially, it is easier to receive updates to the code by doing a 'fetch' subsequently.  See Notes below.)
     * Clone - **First Time**
        * Install *GitHub Desktop* from https://desktop.github.com/
@@ -87,7 +87,7 @@ Notes:
     * *AiEsp32RotaryEncoder.h* - search for "Ai Esp32 Rotary Encoder"  Install Version 1.6
     * *Keypad.h* - Search for "Keypad" by Mark Stanley   install version 3.1.1
     * *WiThrottleProtocol.h* - Search for "WiThrottleProtocol" (not "WiThrottle")  Install version 1.0.3 or later if available
-5. These should have been automatically installed when you downloaded the esp32 boards.
+5. These should have been automatically installed when you downloaded the esp32 boards.  *YOU SHOULD NOT NEED TO DO ANYTHING SPECIFIC TO GET THESE*
     * *WiFi.h*  - https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi
     * *ESPmDNS.h* - https://github.com/espressif/arduino-esp32/blob/master/libraries/ESPmDNS
 6. Copy '**config_network_example.h**' to a new file to '**config_network.h**'.

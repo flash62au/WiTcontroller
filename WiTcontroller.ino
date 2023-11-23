@@ -1802,8 +1802,8 @@ void resetAllFunctionFollow() {
     functionFollow[i][0] = CONSIST_FUNCTION_FOLLOW_F0;
     functionFollow[i][1] = CONSIST_FUNCTION_FOLLOW_F1;
     functionFollow[i][2] = CONSIST_FUNCTION_FOLLOW_F2;
-    for (int i=3; i<28; i++) {
-      functionFollow[i][i] = CONSIST_FUNCTION_FOLLOW_OTHER_FUNCTIONS;
+    for (int j=3; j<28; j++) {
+      functionFollow[i][j] = CONSIST_FUNCTION_FOLLOW_OTHER_FUNCTIONS;
     }
   }
 }
