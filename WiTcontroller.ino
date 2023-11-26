@@ -25,9 +25,9 @@
 #include "WiTcontroller.h"
 
 #if WITCONTROLLER_DEBUG == 0
- #define debug_print(...) Serial.print(__VA_ARGS__)
- #define debug_println(...) Serial.print(__VA_ARGS__); Serial.print(" ("); Serial.print(millis()); Serial.println(")")
- #define debug_printf(...) Serial.printf(__VA_ARGS__)
+ #define debug_print(params...) Serial.print(params)
+ #define debug_println(params...) Serial.print(params); Serial.print(" ("); Serial.print(millis()); Serial.println(")")
+ #define debug_printf(params...) Serial.printf(params)
 #else
  #define debug_print(...)
  #define debug_println(...)
@@ -250,7 +250,7 @@ class MyDelegate : public WiThrottleProtocolDelegate {
       heartBeatPeriod = seconds;
     }
     void receivedVersion(String version) {    
-      debug_printf("Received Version: %s\n",version); 
+      debug_printf("Received Version: %s\n",version.c_str()); 
     }
     void receivedServerDescription(String description) {
       debug_print("Received Description: "); debug_println(description);
@@ -574,7 +574,7 @@ void connectSsid() {
   const char *cSsid = selectedSsid.c_str();
   const char *cPassword = selectedSsidPassword.c_str();
 
-  if (cSsid!="") {
+  if (selectedSsid.length()>0) {
     debug_print("Trying Network "); debug_println(cSsid);
     clearOledArray(); 
     setAppnameForOled(); 
@@ -664,7 +664,7 @@ void browseWitService() {
   const char * service = "withrottle";
   const char * proto= "tcp";
 
-  debug_printf("Browsing for service _%s._%s.local. on %s ... ", service, proto, selectedSsid);
+  debug_printf("Browsing for service _%s._%s.local. on %s ... ", service, proto, selectedSsid.c_str());
   clearOledArray(); 
   oledText[0] = appName; oledText[6] = appVersion; 
   oledText[1] = selectedSsid;   oledText[2] = msg_browsing_for_service;
@@ -1175,7 +1175,8 @@ void loop() {
       }
     }
   }
-  char key = keypad.getKey();
+  // char key = keypad.getKey();
+  keypad.getKey();
   rotary_loop();
 
   additionalButtonLoop(); 
@@ -1613,7 +1614,7 @@ void doMenu() {
   String loco = "";
   String function = "";
   boolean result = false;
-  int index;
+  // int index;
   debug_print("Menu: "); debug_println(menuCommand);
   
   switch (menuCommand[0]) {
@@ -1726,7 +1727,7 @@ void doMenu() {
               }
             case EXTRA_MENU_CHAR_DISCONNECT: { // disconnect   
                 if (witConnectionState == CONNECTION_STATE_CONNECTED) {
-                  witConnectionState == CONNECTION_STATE_DISCONNECTED;
+                  witConnectionState = CONNECTION_STATE_DISCONNECTED;
                   disconnectWitServer();
                 } else {
                   connectWitServer();
@@ -1932,7 +1933,7 @@ String getDisplayLocoString(int multiThrottleIndex, int index) {
     Direction leadLocoDirection 
         = wiThrottleProtocol.getDirection(multiThrottleIndexChar, 
                                           wiThrottleProtocol.getLocomotiveAtPosition(multiThrottleIndexChar, 0));
-    Direction locoDirection = leadLocoDirection;
+    // Direction locoDirection = leadLocoDirection;
 
     for(int i=0;i<wiThrottleProtocol.getNumberOfLocomotives(multiThrottleIndexChar);i++) {
       if (wiThrottleProtocol.getLocomotiveAtPosition(multiThrottleIndexChar, i).equals(loco)) {
@@ -2262,8 +2263,8 @@ void writeOledFoundSSids(String soFar) {
     }
     oledText[5] = "(" + String(page) +  ") " + menu_select_ssids_from_found;
     writeOledArray(false, false);
-  } else {
-    int cmd = menuCommand.substring(0, 1).toInt();
+  // } else {
+  //   int cmd = menuCommand.substring(0, 1).toInt();
   }
 }
 
@@ -2279,8 +2280,8 @@ void writeOledRoster(String soFar) {
     }
     oledText[5] = "(" + String(page) +  ") " + menu_roster;
     writeOledArray(false, false);
-  } else {
-    int cmd = menuCommand.substring(0, 1).toInt();
+  // } else {
+  //   int cmd = menuCommand.substring(0, 1).toInt();
   }
 }
 
@@ -2295,15 +2296,15 @@ void writeOledTurnoutList(String soFar, TurnoutAction action) {
     clearOledArray();
     int j = 0;
     for (int i=0; i<10 && i<turnoutListSize; i++) {
-      j = (i<5) ? j=i : j = i+1;
+      j = (i<5) ? i : i+1;
       if (turnoutListUserName[(page*10)+i].length()>0) {
         oledText[j] = String(turnoutListIndex[i]) + ": " + turnoutListUserName[(page*10)+i].substring(0,10);
       }
     }
     oledText[5] = "(" + String(page) +  ") " + menu_turnout_list;
     writeOledArray(false, false);
-  } else {
-    int cmd = menuCommand.substring(0, 1).toInt();
+  // } else {
+  //   int cmd = menuCommand.substring(0, 1).toInt();
   }
 }
 
@@ -2314,15 +2315,15 @@ void writeOledRouteList(String soFar) {
     clearOledArray();
     int j = 0;
     for (int i=0; i<10 && i<routeListSize; i++) {
-      j = (i<5) ? j=i : j = i+1;
+      j = (i<5) ? i : i+1;
       if (routeListUserName[(page*10)+i].length()>0) {
         oledText[j] = String(routeListIndex[i]) + ": " + routeListUserName[(page*10)+i].substring(0,10);
       }
     }
     oledText[5] =  "(" + String(page) +  ") " + menu_route_list;
     writeOledArray(false, false);
-  } else {
-    int cmd = menuCommand.substring(0, 1).toInt();
+  // } else {
+  //   int cmd = menuCommand.substring(0, 1).toInt();
   }
 }
 
@@ -2337,7 +2338,7 @@ void writeOledFunctionList(String soFar) {
       for (int i=0; i<10; i++) {
         k = (functionPage*10) + i;
         if (k < 28) {
-          j = (i<5) ? j=i : j = i+1;
+          j = (i<5) ? i : i+1;
           // if (functionLabels[currentThrottleIndex][k].length()>0) {
             oledText[j] = String(i) + ": " 
             + ((k<10) ? functionLabels[currentThrottleIndex][k].substring(0,10) : String(k) 
@@ -2356,8 +2357,8 @@ void writeOledFunctionList(String soFar) {
       oledText[5] = menu_cancel;
     }
     writeOledArray(false, false);
-  } else {
-    int cmd = menuCommand.substring(0, 1).toInt();
+  // } else {
+  //   int cmd = menuCommand.substring(0, 1).toInt();
   }
 }
 
@@ -2386,7 +2387,7 @@ void writeOledMenu(String soFar) {
     clearOledArray();
     int j = 0;
     for (int i=1; i<10; i++) {
-      j = (i<6) ? j=i : j = i+1;
+      j = (i<6) ? i : i+1;
       oledText[j-1] = String(i) + ": " + menuText[i][0];
     }
     oledText[10] = "0: " + menuText[0][0];
@@ -2430,7 +2431,7 @@ void writeOledMenu(String soFar) {
 void writeOledExtraSubMenu() {
   int j = 0;
   for (int i=0; i<8; i++) {
-    j = (i<4) ? j=i : j = i+2;
+    j = (i<4) ? i : i+2;
     oledText[j+1] = (extraSubMenuText[i].length()==0) ? "" : String(i) + ": " + extraSubMenuText[i];
   }
 }
@@ -2442,7 +2443,7 @@ void writeOledAllLocos(bool hideLeadLoco) {
   int j = 0; int i = 0;
   if (wiThrottleProtocol.getNumberOfLocomotives(currentThrottleIndexChar) > 0) {
     for (int index=0; ((index < wiThrottleProtocol.getNumberOfLocomotives(currentThrottleIndexChar)) && (i < 8)); index++) {  //can only show first 8
-      j = (i<4) ? j=i : j = i+2;
+      j = (i<4) ? i : i+2;
       loco = wiThrottleProtocol.getLocomotiveAtPosition(currentThrottleIndexChar, index);
       if (i>=startAt) {
         oledText[j+1] = String(i) + ": " + loco;
@@ -2630,7 +2631,7 @@ void writeOledSpeed() {
 void writeOledFunctions() {
   debug_println("writeOledFunctions():");
   //  int x = 99;
-  bool anyFunctionsActive = false;
+  // bool anyFunctionsActive = false;
    for (int i=0; i < 28; i++) {
      if (functionStates[currentThrottleIndex][i]) {
       // old function state format
@@ -2654,7 +2655,7 @@ void writeOledFunctions() {
   //   //    debug_print("Fn Off "); debug_println(i);
 
       // new function state format
-      anyFunctionsActive = true;
+      // anyFunctionsActive = true;
       // u8g2.drawBox(i*4+12,12,5,7);
       u8g2.drawRBox(i*4+12,12+1,5,7,2);
       u8g2.setDrawColor(0);

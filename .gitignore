@@ -57,4 +57,3 @@ build\preproc\*.*
 
 config_network.h
 config_buttons.h
-platformio.ini
