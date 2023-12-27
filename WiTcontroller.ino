@@ -682,16 +682,24 @@ void browseWitService() {
   writeOledArray(false, false, true, true);
 
   noOfWitServices = 0;
-  while ( (noOfWitServices == 0) 
-    && ((nowTime-startTime) <= 5000) ) { // try for 5 seconds
-    noOfWitServices = MDNS.queryService(service, proto);
-    if (noOfWitServices == 0 ) {
-      delay(500);
-      debug_print(".");
+  if ( (selectedSsid.substring(0,6) == "DCCEX_") && (selectedSsid.length()==12) ) {
+    debug_println(bypass_wit_server_search);
+    oledText[1] = bypass_wit_server_search;
+    writeOledArray(false, false, true, true);
+    delay(500);
+  } else {
+    while ( (noOfWitServices == 0) 
+      && ((nowTime-startTime) <= 5000) ) { // try for 5 seconds
+      noOfWitServices = MDNS.queryService(service, proto);
+      if (noOfWitServices == 0 ) {
+        delay(500);
+        debug_print(".");
+      }
+      nowTime = millis();
     }
-    nowTime = millis();
+    debug_println("");
   }
-  debug_println("");
+  
 
   foundWitServersCount = noOfWitServices;
   if (noOfWitServices > 0) {
@@ -712,7 +720,7 @@ void browseWitService() {
       }
     }
   }
-  if (selectedSsid.substring(0,6) == "DCCEX_") {
+  if ( (selectedSsid.substring(0,6) == "DCCEX_") && (selectedSsid.length()==12) ) {
     foundWitServersIPs[foundWitServersCount].fromString("192.168.4.1");
     foundWitServersPorts[foundWitServersCount] = 2560;
     foundWitServersNames[foundWitServersCount] = msg_guessed_ex_cs_wit_server;
