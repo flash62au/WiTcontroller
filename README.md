@@ -102,7 +102,8 @@ Notes:
     * Click *Upload* 
 
 Notes: 
-   * WiTcontroller version 1.19 or later requires WiThrottleProtocol version 1.1.3 or later.
+   * WiTcontroller version 1.33 or later requires WiThrottleProtocol version 1.1.6 or later.
+   * WiTcontroller version 1.19 - 1.32 requires WiThrottleProtocol version 1.1.3 - 1.1.5.
    * WiTcontroller version 1.06 or later requires WiThrottleProtocol version 1.1.2 or later.
    * WiTcontroller version 1.01 or later requires WiThrottleProtocol version 1.1.0 or later.
    * WiTcontroller version 0.10 or later requires WiThrottleProtocol version 1.0.3 or later.
@@ -140,7 +141,7 @@ Notes:
     - from the first 50 locos in the roster
   - Able to select multiple locos to create a consist
     - Able to change the facing of the additional locos in the consists (via the 'extra' menu after selection)
-  - Able to activate any function (0-28)
+  - Able to activate any function (0-31)
     - Showing of the roster function labels (from the wiThrottle server if provided)
     - Quick access to the functions by pressing #. Temporarily enabled via the Extras menu (or permanently enabled in config_button.h)
     - Limited ability to configure which functions are sent to the first or all locos in a consist (defined in config_button.h)
@@ -223,7 +224,7 @@ Pressing the Encoder button while the ESP32 is in Deep Sleep will revive it.
 
 Note: you need to edit config_buttons.h to alter these assignments   (copy config_buttons_example.h)
 - FUNCTION_NULL   - don't do anything
-- FUNCTION_0 - FUNCTION_28
+- FUNCTION_0 - FUNCTION_31
 - SPEED_STOP
 - SPEED_UP
 - SPEED_DOWN

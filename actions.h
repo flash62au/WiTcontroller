@@ -29,6 +29,9 @@
 #define FUNCTION_26 26
 #define FUNCTION_27 27
 #define FUNCTION_28 28
+#define FUNCTION_29 29
+#define FUNCTION_30 30
+#define FUNCTION_31 31
 
 #define SPEED_STOP 30
 #define SPEED_UP 31
