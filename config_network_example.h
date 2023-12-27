@@ -25,5 +25,8 @@ const String routePrefixes[maxSsids] = {"IO:AUTO:", "IO:AUTO:", "IO:AUTO:", "IO:
 
 // ********************************************************************************************
 
+// Autoconnect to first SSID in the list above (default, if not specified is false)
+// #define AUTO_CONNECT_TO_FIRST_DEFINED_SERVER true
+
 // Autoconnect to first found server (defaul, if not specified is true)
 #define AUTO_CONNECT_TO_FIRST_WITHROTTLE_SERVER true

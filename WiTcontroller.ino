@@ -84,6 +84,7 @@ IPAddress foundWitServersIPs[maxFoundWitServers];
 int foundWitServersPorts[maxFoundWitServers];
 String foundWitServersNames[maxFoundWitServers];
 int foundWitServersCount = 0;
+bool autoConnectToFirstDefinedServer = AUTO_CONNECT_TO_FIRST_DEFINED_SERVER;
 bool autoConnectToFirstWiThrottleServer = AUTO_CONNECT_TO_FIRST_WITHROTTLE_SERVER;
 
 //found ssids
@@ -449,6 +450,16 @@ void browseSsids() { // show the found SSIDs
 
     keypadUseType = KEYPAD_USE_SELECT_SSID_FROM_FOUND;
     ssidConnectionState = CONNECTION_STATE_SELECTION_REQUIRED;
+
+    if ((foundSsidsCount>0) && (autoConnectToFirstDefinedServer)) {
+      for (int i=0; i<foundSsidsCount; i++) { 
+        if (foundSsids[i] == ssids[0]) {
+          ssidConnectionState = CONNECTION_STATE_SELECTED;
+          selectedSsid = foundSsids[i];
+          getSsidPasswordAndWitIpForFound();
+        }
+      }
+    }
   }
 }
 

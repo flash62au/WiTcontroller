@@ -83,10 +83,10 @@ Notes:
        * Click the green "Code" button and select download zip
        * Extract the zip file to a local folder.  The default folder for the Arduino usually looks like "...username\Documents\Arduino\". This is a good but not essential place to put it.
 4. Load the needed libraries to your PC. These can loaded from the *Library Manager* in the *Arduino IDE*.
-    * *U8g2lib.h* -  Search for "U8g2"   Install version 2.34.22
-    * *AiEsp32RotaryEncoder.h* - search for "Ai Esp32 Rotary Encoder"  Install Version 1.6
-    * *Keypad.h* - Search for "Keypad" by Mark Stanley   install version 3.1.1
-    * *WiThrottleProtocol.h* - Search for "WiThrottleProtocol" (not "WiThrottle")  Install version 1.0.3 or later if available
+    * *U8g2lib.h* -  Search for "U8g2".   Install version 2.34.22
+    * *AiEsp32RotaryEncoder.h* - search for "Ai Esp32 Rotary Encoder".  Install Version 1.6
+    * *Keypad.h* - Search for "Keypad" by Mark Stanley.   Install version 3.1.1
+    * *WiThrottleProtocol.h* - Search for "WiThrottleProtocol" (not "WiThrottle").  Install version 1.0.3 or later if available
 5. These should have been automatically installed when you downloaded the esp32 boards.  *YOU SHOULD NOT NEED TO DO ANYTHING SPECIFIC TO GET THESE*
     * *WiFi.h*  - https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi
     * *ESPmDNS.h* - https://github.com/espressif/arduino-esp32/blob/master/libraries/ESPmDNS
