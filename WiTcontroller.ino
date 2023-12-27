@@ -480,7 +480,7 @@ void getSsidPasswordAndWitIpForFound() {
     selectedSsidPassword = "";
     turnoutPrefix = "";
     routePrefix = "";
-    if (selectedSsid.substring(0,6) == "DCCEX_") {
+    if ( (selectedSsid.substring(0,6) == "DCCEX_") && (selectedSsid.length()==12) ) {
       selectedSsidPassword = "PASS_" + selectedSsid.substring(6);
       witServerIpAndPortEntered = "19216800400102560";
       turnoutPrefix = DCC_EX_TURNOUT_PREFIX;
