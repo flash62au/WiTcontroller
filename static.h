@@ -51,7 +51,7 @@ const String msg_start_sleep =           "Shutting Down.        E.btn ON";
 const String msg_throttle_number  =      "          Throttle #";
 const String msg_no_loco_selected =      "        No Loco selected";
 const String msg_enter_password =        "Enter Password";
-const String msg_guessed_ex_cs_wit_server = "'Guessed' EX-CS WiT server";Hi,  as god 
+const String msg_guessed_ex_cs_wit_server = "'Guessed' EX-CS WiT server";
 
 const String msg_heartbeatCheckEnabled = "Heartbeat Check Enabled";
 const String msg_heartbeatCheckDisabled = "Heartbeat Check Disabled";
