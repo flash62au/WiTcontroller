@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 1.34";
+const String appVersion = "     Version 1.35";
 const String msg_start = "Start";
 
 const String menu_menu =                   "* Menu                # Key Defs";
@@ -244,4 +244,8 @@ const char ssidPasswordBlankChar = 164;
 
 #ifndef AUTO_CONNECT_TO_FIRST_WITHROTTLE_SERVER
   #define AUTO_CONNECT_TO_FIRST_WITHROTTLE_SERVER true
+#endif
+
+#ifndef OUTBOUND_COMMANDS_MINIMUM_DELAY
+  #define OUTBOUND_COMMANDS_MINIMUM_DELAY 50
 #endif

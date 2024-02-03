@@ -86,6 +86,7 @@ String foundWitServersNames[maxFoundWitServers];
 int foundWitServersCount = 0;
 bool autoConnectToFirstDefinedServer = AUTO_CONNECT_TO_FIRST_DEFINED_SERVER;
 bool autoConnectToFirstWiThrottleServer = AUTO_CONNECT_TO_FIRST_WITHROTTLE_SERVER;
+int outboundCmdsMininumDelay = OUTBOUND_COMMANDS_MINIMUM_DELAY;
 
 //found ssids
 String foundSsids[maxFoundSsids];
@@ -807,8 +808,8 @@ void connectWitServer() {
   } else {
     debug_print("Connected to server: ");   debug_println(selectedWitServerIP); debug_println(selectedWitServerPort);
 
-    // Pass the communication to WiThrottle
-    wiThrottleProtocol.connect(&client);
+    // Pass the communication to WiThrottle. + Set the mimimum period between sent commands
+    wiThrottleProtocol.connect(&client, outboundCmdsMininumDelay);
     debug_println("WiThrottle connected");
 
     wiThrottleProtocol.setDeviceName(deviceName);  
