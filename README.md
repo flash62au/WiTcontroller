@@ -1,6 +1,6 @@
 # WiTcontroller
 
-A WiTcontroller is a simple DIY, handheld controller that talks to a wThrottle Server (JMRI, DCC++EX and many others) using the wiThrottle protocol to control DCC model trains. 
+A WiTcontroller is a simple DIY, handheld controller that talks to a WiThrottle Server (JMRI, DCC-EX  EX-CommandStation and many others) using the WiThrottle protocol to control DCC model trains. 
 
 [See a video of it in use here.](https://youtu.be/RKnhfBCP_SQ)
 
@@ -19,7 +19,7 @@ A WiTcontroller is a simple DIY, handheld controller that talks to a wThrottle S
 
 2. Loading the code (sketch) requires downloading of one of the IDEs, this sketch, the libraries, etc. so some experience with Arduinos is helpful, but not critical.
 
-3. A wiThrottle Server to connect to. WiTcontroller will work with any wiThrottle Server. e.g.
+3. A WiThrottle Server to connect to. WiTcontroller will work with any WiThrottle Server. e.g.
 
     * JMRI
     * DCC++EX
@@ -121,13 +121,13 @@ Notes:
 **Currently functioning:**
 - Provides a list of discovered SSIDs with the ability to choose one. When you select one:
   - if it is one in your specified list (in the sketch), it will use that specified password 
-  - if it is a DCC++EX wiFi Command Station in access Point mode, it will guess the password
+  - if it is a DCC++EX WiFi Command Station in access Point mode, it will guess the password
   - otherwise it will ask to enter the password (Use the rotary encoder to choose each character and the encoder button to select it.  * = backspace.  # = enter the password.) 
 - Optionally provides a list of SSIDs with the specified passwords (in the sketch) to choose from
-- Auto-connects to the first found wiThrottle Protocol Server if only one found, otherwise 
+- Auto-connects to the first found WiThrottle Protocol Server if only one found, otherwise 
   - Asks which to connect to
   - If none found will ask to enter the IP Address and Port
-  - Guesses the wiThrottle IP address and Port for DCC++EX WiFi Access Point mode Command Stations
+  - Guesses the WiThrottle IP address and Port for DCC++EX WiFi Access Point mode Command Stations
   - optionally can add a #define (a preference) to disable this auto connect feature
 - Rudimentary on-the-fly consists
 - Assign commands directly to the 1-9 buttons (in the sketch) (see list below)
@@ -143,7 +143,7 @@ Notes:
   - Able to select multiple locos to create a consist
     - Able to change the facing of the additional locos in the consists (via the 'extra' menu after selection)
   - Able to activate any function (0-31)
-    - Showing of the roster function labels (from the wiThrottle server if provided)
+    - Showing of the roster function labels (from the WiThrottle server if provided)
     - Quick access to the functions by pressing #. Temporarily enabled via the Extras menu (or permanently enabled in config_button.h)
     - Limited ability to configure which functions are sent to the first or all locos in a consist (defined in config_button.h)
   - Able to throw/close turnouts/points
@@ -157,7 +157,7 @@ Notes:
   - Disconnect / Reconnect
   - Put ESP32 in deep sleep and restart it
 - Have up to 6 throttles, each with an unlimited number of locos in consist. Default is 2 throttles, which can be increased or decreased temporarily via the Extras menu (or permanently enabled in config_button.h)
-- Limited dealing with unexpected disconnects.  It will throw you back to the WiThtottle Server selection screen.
+- Limited dealing with unexpected disconnects.  It will throw you back to the WiThrottle Server selection screen.
 - Boundary between short and long DCC addresses can be configured in config_buttons.h
 - The default speed step (per encoder click) can be configured in config_buttons.h
 - The controller will automatically shut down if no SSID is selected or entered in 4 minutes (to conserve the battery)

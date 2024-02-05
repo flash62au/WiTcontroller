@@ -87,6 +87,7 @@ int foundWitServersCount = 0;
 bool autoConnectToFirstDefinedServer = AUTO_CONNECT_TO_FIRST_DEFINED_SERVER;
 bool autoConnectToFirstWiThrottleServer = AUTO_CONNECT_TO_FIRST_WITHROTTLE_SERVER;
 int outboundCmdsMininumDelay = OUTBOUND_COMMANDS_MINIMUM_DELAY;
+int sendCommandsTwice = SEND_COMMANDS_TWICE;
 
 //found ssids
 String foundSsids[maxFoundSsids];
@@ -1881,6 +1882,7 @@ void speedSet(int multiThrottleIndex, int amt) {
     if (newSpeed >126) { newSpeed = 126; }
     if (newSpeed <0) { newSpeed = 0; }
     wiThrottleProtocol.setSpeed(multiThrottleIndexChar, newSpeed);
+    if (sendCommandsTwice) { wiThrottleProtocol.setSpeed(multiThrottleIndexChar, newSpeed); }
     currentSpeed[multiThrottleIndex] = newSpeed;
     debug_print("Speed Set: "); debug_println(newSpeed);
 
@@ -1925,8 +1927,10 @@ void toggleLocoFacing(int multiThrottleIndex, String loco) {
     if (wiThrottleProtocol.getLocomotiveAtPosition(multiThrottleIndexChar, i).equals(loco)) {
       if (wiThrottleProtocol.getDirection(multiThrottleIndexChar, loco) == Forward) {
         wiThrottleProtocol.setDirection(multiThrottleIndexChar, loco, Reverse);
+        if (sendCommandsTwice) { wiThrottleProtocol.setDirection(multiThrottleIndexChar, loco, Reverse); }
       } else {
         wiThrottleProtocol.setDirection(multiThrottleIndexChar, loco, Forward);
+        if (sendCommandsTwice) { wiThrottleProtocol.setDirection(multiThrottleIndexChar, loco, Forward); }
       }
       break;
     }
@@ -1974,6 +1978,7 @@ void releaseAllLocos(int multiThrottleIndex) {
     for(int index=wiThrottleProtocol.getNumberOfLocomotives(multiThrottleIndexChar)-1;index>=0;index--) {
       loco = wiThrottleProtocol.getLocomotiveAtPosition(multiThrottleIndexChar, index);
       wiThrottleProtocol.releaseLocomotive(multiThrottleIndexChar, loco);
+      if (sendCommandsTwice) { wiThrottleProtocol.releaseLocomotive(multiThrottleIndexChar, loco); }
       writeOledSpeed();  // note the released locos may not be visible
     } 
     resetFunctionLabels(multiThrottleIndex);
@@ -1984,6 +1989,7 @@ void releaseOneLoco(int multiThrottleIndex, String loco) {
   debug_print("releaseOneLoco(): "); debug_print(multiThrottleIndex); debug_print(": "); debug_println(loco);
   char multiThrottleIndexChar = getMultiThrottleChar(multiThrottleIndex);
   wiThrottleProtocol.releaseLocomotive(multiThrottleIndexChar, loco);
+  if (sendCommandsTwice) { wiThrottleProtocol.releaseLocomotive(multiThrottleIndexChar, loco); }
   resetFunctionLabels(multiThrottleIndex);
   debug_println("releaseOneLoco(): end"); 
 }
@@ -2043,6 +2049,7 @@ void changeDirection(int multiThrottleIndex, Direction direction) {
     if (locoCount == 1) {
       // debug_println("Change direction(): one loco");
       wiThrottleProtocol.setDirection(multiThrottleChar, direction);  // change all
+      if (sendCommandsTwice) { wiThrottleProtocol.setDirection(multiThrottleChar, direction); } // change all
 
     } else {
       // debug_println("Change direction(): multiple locos");
@@ -2053,15 +2060,19 @@ void changeDirection(int multiThrottleIndex, Direction direction) {
         loco = wiThrottleProtocol.getLocomotiveAtPosition(multiThrottleChar, i);
         if (wiThrottleProtocol.getDirection(multiThrottleChar, loco) == leadLocoCurrentDirection) {
           wiThrottleProtocol.setDirection(multiThrottleChar, loco, direction);
+          if (sendCommandsTwice) { wiThrottleProtocol.setDirection(multiThrottleChar, loco, direction); }
         } else {
           if (wiThrottleProtocol.getDirection(multiThrottleChar, loco) == Reverse) {
             wiThrottleProtocol.setDirection(multiThrottleChar, loco, Forward);
+            if (sendCommandsTwice) { wiThrottleProtocol.setDirection(multiThrottleChar, loco, Forward); }
           } else {
             wiThrottleProtocol.setDirection(multiThrottleChar, loco, Reverse);
+            if (sendCommandsTwice) { wiThrottleProtocol.setDirection(multiThrottleChar, loco, Reverse); }
           }
         }
       }
       wiThrottleProtocol.setDirection(multiThrottleChar, leadLoco, direction);
+      if (sendCommandsTwice) { wiThrottleProtocol.setDirection(multiThrottleChar, leadLoco, direction); }
     } 
   }
   writeOledSpeed();
@@ -2107,8 +2118,10 @@ void doFunctionWhichLocosInConsist(int multiThrottleIndex, int functionNumber, b
   char multiThrottleIndexChar = getMultiThrottleChar(multiThrottleIndex);
   if (functionFollow[multiThrottleIndex][functionNumber]==CONSIST_LEAD_LOCO) {
     wiThrottleProtocol.setFunction(multiThrottleIndexChar,functionNumber, pressed);
+    if (sendCommandsTwice) { wiThrottleProtocol.setFunction(multiThrottleIndexChar,functionNumber, pressed); }
   } else {  // at the momemnt the only other option in CONSIST_ALL_LOCOS
     wiThrottleProtocol.setFunction(multiThrottleIndexChar, "*", functionNumber, pressed);
+    if (sendCommandsTwice) { wiThrottleProtocol.setFunction(multiThrottleIndexChar, "*", functionNumber, pressed); }
   }
   debug_print("doFunctionWhichLocosInConsist(): fn: "); debug_print(functionNumber); debug_println(" Released");
 }
@@ -2207,6 +2220,7 @@ void selectRoster(int selection) {
     String loco = String(rosterLength[selection]) + rosterAddress[selection];
     debug_print("add Loco: "); debug_println(loco);
     wiThrottleProtocol.addLocomotive(currentThrottleIndexChar, loco);
+    if (sendCommandsTwice) { wiThrottleProtocol.addLocomotive(currentThrottleIndexChar, loco); }
     wiThrottleProtocol.getDirection(currentThrottleIndexChar, loco);
     wiThrottleProtocol.getSpeed(currentThrottleIndexChar);
     resetFunctionStates(currentThrottleIndex);

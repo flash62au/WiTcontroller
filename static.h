@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 1.35";
+const String appVersion = "     Version 1.36";
 const String msg_start = "Start";
 
 const String menu_menu =                   "* Menu                # Key Defs";
@@ -248,4 +248,8 @@ const char ssidPasswordBlankChar = 164;
 
 #ifndef OUTBOUND_COMMANDS_MINIMUM_DELAY
   #define OUTBOUND_COMMANDS_MINIMUM_DELAY 50
+#endif
+
+#ifndef SEND_COMMANDS_TWICE
+  #define SEND_COMMANDS_TWICE false
 #endif
