@@ -102,6 +102,7 @@ Notes:
     * Click *Upload* 
 
 Notes: 
+   * WiTcontroller version 1.38 or later requires WiThrottleProtocol version 1.1.8 or later.
    * WiTcontroller version 1.35 or later requires WiThrottleProtocol version 1.1.7 or later.
    * WiTcontroller version 1.33 or later requires WiThrottleProtocol version 1.1.6 or later.
    * WiTcontroller version 1.19 - 1.32 requires WiThrottleProtocol version 1.1.3 - 1.1.5.
@@ -244,3 +245,31 @@ Note: you need to edit config_buttons.h to alter these assignments   (copy confi
 - SPEED_STOP_THEN_TOGGLE_DIRECTION   - stops the loco if moving.  Toggles the direction if stationary.
 - MAX_THROTTLE_INCREASE    - change the number of available throttles on-the-fly
 - MAX_THROTTLE_DECREASE    - change the number of available throttles on-the-fly
+
+
+## Change Log
+
+### V1.38
+- fix problem with wifiTrax
+
+### V1.36 & V1.37
+- failed attempt to fix problem with wifiTrax
+
+### V1.35
+- add option to send commands twice
+
+### V1.34
+- minimum time separation/delay between commands sent
+
+### V1.33
+- changes to allow the use of VSC
+
+### V1.32
+- add support for 32 functions
+- bypass WiT server search if EX-CS is in AP mode
+
+### v1.31
+- option to auto-connect to first SSID
+
+### prior 
+- various

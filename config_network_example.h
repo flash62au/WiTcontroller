@@ -44,5 +44,3 @@ const String routePrefixes[maxSsids] = {"IO:AUTO:", "IO:AUTO:", "IO:AUTO:", "IO:
 
 // For some reason WifiTrax WFD-30 system don't respond unless the commands are sent twice
 // uncomment this to send loco commands twice
-
-// #define SEND_COMMANDS_TWICE true

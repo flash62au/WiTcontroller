@@ -134,5 +134,5 @@
 #define WITCONTROLLER_DEBUG    0
 
 // WiThrottleProtocol console debug messages are DISABLED by default
-// to enable console messages, set the follow to  0    (i.e. 0 = on  1 = off)
-#define WITHROTTLE_PROTOCOL_DEBUG   1
+// to enable console messages, set the following to  0    (i.e. 0 = on  1 = off)
+// #define WITHROTTLE_PROTOCOL_DEBUG   0
