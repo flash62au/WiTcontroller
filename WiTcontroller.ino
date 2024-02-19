@@ -607,8 +607,7 @@ void connectSsid() {
       }
 
       if (WiFi.status() == WL_CONNECTED) {
-        if (selectedSsid.indexOf("wftrx_")>=0) {
-        // if (selectedSsid.indexOf("pra")>=0) {
+        if (selectedSsid.indexOf(SSID_NAME_FOR_COMMANDS_NEED_TO_BE_SENT_TWICE)>=0) {  // default is "wftrx_"
           speedCommandsNeedToBeSentTwice = true;
           debug_println("wifiTrax - Commands need to be sent twice");
         }
