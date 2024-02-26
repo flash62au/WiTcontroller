@@ -102,6 +102,7 @@ Notes:
     * Click *Upload* 
 
 Notes: 
+   * WiTcontroller version 1.39 or later requires WiThrottleProtocol version 1.1.11 or later.
    * WiTcontroller version 1.38 or later requires WiThrottleProtocol version 1.1.10 or later.
    * WiTcontroller version 1.35 or later requires WiThrottleProtocol version 1.1.7 or later.
    * WiTcontroller version 1.33 or later requires WiThrottleProtocol version 1.1.6 or later.

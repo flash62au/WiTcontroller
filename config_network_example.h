@@ -42,8 +42,8 @@ const String routePrefixes[maxSsids] = {"IO:AUTO:", "IO:AUTO:", "IO:AUTO:", "IO:
 
 // ********************************************************************************************
 
-// For some reason WifiTrax WFD-30 system don't respond unless the speed commands are sent twice
-// Speed commands will be sent twice if the SSID name contains "wftrx_"
+// For some reason WifiTrax WFD-30 system don't respond unless the commands are preceeded with CR+LF
+// These will be sent if the SSID name contains "wftrx_"
 // uncomment and change then name in the following line if you need to do it for a different SSID name
 
-// #define SSID_NAME_FOR_COMMANDS_NEED_TO_BE_SENT_TWICE "wftrx_"
+// #define SSID_NAME_FOR_COMMANDS_NEED_LEADING_CR_LF "wftrx_"

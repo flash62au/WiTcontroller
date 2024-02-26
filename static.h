@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 1.38";
+const String appVersion = "     Version 1.39";
 const String msg_start = "Start";
 
 const String menu_menu =                   "* Menu                # Key Defs";
@@ -250,6 +250,6 @@ const char ssidPasswordBlankChar = 164;
   #define OUTBOUND_COMMANDS_MINIMUM_DELAY 50
 #endif
 
-#ifndef SSID_NAME_FOR_COMMANDS_NEED_TO_BE_SENT_TWICE
-  #define SSID_NAME_FOR_COMMANDS_NEED_TO_BE_SENT_TWICE "wftrx_"
+#ifndef SSID_NAME_FOR_COMMANDS_NEED_LEADING_CR_LF
+  #define SSID_NAME_FOR_COMMANDS_NEED_LEADING_CR_LF "wftrx_"
 #endif

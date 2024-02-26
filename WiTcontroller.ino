@@ -87,7 +87,7 @@ int foundWitServersCount = 0;
 bool autoConnectToFirstDefinedServer = AUTO_CONNECT_TO_FIRST_DEFINED_SERVER;
 bool autoConnectToFirstWiThrottleServer = AUTO_CONNECT_TO_FIRST_WITHROTTLE_SERVER;
 int outboundCmdsMininumDelay = OUTBOUND_COMMANDS_MINIMUM_DELAY;
-bool speedCommandsNeedToBeSentTwice = false;
+bool commandsNeedLeadingCrLf = false;
 
 //found ssids
 String foundSsids[maxFoundSsids];
@@ -607,9 +607,9 @@ void connectSsid() {
       }
 
       if (WiFi.status() == WL_CONNECTED) {
-        if (selectedSsid.indexOf(SSID_NAME_FOR_COMMANDS_NEED_TO_BE_SENT_TWICE)>=0) {  // default is "wftrx_"
-          speedCommandsNeedToBeSentTwice = true;
-          debug_print(SSID_NAME_FOR_COMMANDS_NEED_TO_BE_SENT_TWICE); debug_println(" - Commands need to be sent twice");
+        if (selectedSsid.indexOf(SSID_NAME_FOR_COMMANDS_NEED_LEADING_CR_LF)>=0) {  // default is "wftrx_"
+          commandsNeedLeadingCrLf = true;
+          debug_print(SSID_NAME_FOR_COMMANDS_NEED_LEADING_CR_LF); debug_println(" - Commands need to be sent twice");
         }
 
         break; 
@@ -820,7 +820,7 @@ void connectWitServer() {
 
     wiThrottleProtocol.setDeviceName(deviceName);  
     wiThrottleProtocol.setDeviceID(String(deviceId));  
-    wiThrottleProtocol.setSpeedCommandsNeedToBeSentTwice(speedCommandsNeedToBeSentTwice);
+    wiThrottleProtocol.setCommandsNeedLeadingCrLf(commandsNeedLeadingCrLf);
 
     witConnectionState = CONNECTION_STATE_CONNECTED;
     setLastServerResponseTime(true);
