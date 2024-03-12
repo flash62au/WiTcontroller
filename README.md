@@ -102,6 +102,7 @@ Notes:
     * Click *Upload* 
 
 Notes: 
+   * WiTcontroller version 1.41 or later requires WiThrottleProtocol version 1.1.12 or later.
    * WiTcontroller version 1.39 or later requires WiThrottleProtocol version 1.1.11 or later.
    * WiTcontroller version 1.38 or later requires WiThrottleProtocol version 1.1.10 or later.
    * WiTcontroller version 1.35 or later requires WiThrottleProtocol version 1.1.7 or later.
@@ -250,7 +251,13 @@ Note: you need to edit config_buttons.h to alter these assignments   (copy confi
 
 ## Change Log
 
-### V1.38
+### V1.41
+  - support for broadcast messages. Requires WiThrottleProtocol version 1.1.12 or later.
+
+### V1.40
+ - fix for the debounce of the rotary encoder button. Will now ignore rotations when the button is pressed for (default) 200ms.  The #define for the debounce has been moved from config_keypad_etc.h to config_buttons as: #define ROTARY_ENCODER_DEBOUNCE_TIME 200
+
+### V1.38 & V1.39 
 - fix problem with wifiTrax
 
 ### V1.36 & V1.37

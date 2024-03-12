@@ -17,6 +17,10 @@
 
 #define TOGGLE_DIRECTION_ON_ENCODER_BUTTON_PRESSED_WHEN_STATIONAY         true
 
+// rotary encode debounce time
+// increase if you find the encoder buttons bounce (activate twice) or you get speed changes when you press the encoder button
+// #define ROTARY_ENCODER_DEBOUNCE_TIME 200
+
 // ********************************************************************************************
 
 // define what each button will do as direct press (not in a menu)   * and # cannot be remapped

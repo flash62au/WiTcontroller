@@ -16,8 +16,6 @@
 #define ROTARY_ENCODER_VCC_PIN -1 /* 27 put -1 of Rotary encoder Vcc is connected directly to 3,3V; else you can use declared output pin for powering rotary encoder */
 #define ROTARY_ENCODER_STEPS 2 //depending on your encoder - try 1,2 or 4 to get expected behaviour
 
-const int encoderDebounceTime = 5;   // in miliseconds
-
 // *******************************************************************************************************************
 // keypad
 
