@@ -251,6 +251,9 @@ Note: you need to edit config_buttons.h to alter these assignments   (copy confi
 
 ## Change Log
 
+### V1.42
+ - minor bug fix
+ 
 ### V1.41
   - support for broadcast messages. Requires WiThrottleProtocol version 1.1.12 or later.
 
