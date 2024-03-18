@@ -1,5 +1,3 @@
-#define DEVICE_NAME "WiT Controller"
-
 // ********************************************************************************************
 
 // false = Counter clockwise  true = clockwise
@@ -60,16 +58,11 @@
 
 // define the number of throttles that you want.
 // to use multiple throttles, one of the keys or buttons will need to be defined as NEXT_THROTTLE.  (keypad 5 is by default)
-// Maximum supported by the WiThrottleProtocol is 6
+// Maximum supported by the DccExController is 6
 
 // #define MAX_THROTTLES                 2          // uncomment and increase the number if you always need more that two throttles
 
 // ********************************************************************************************
-
-// DCC Addresses below or equal to this number will be treated as short addresses.  
-// DCC++EX, NCE, Digitrax use 127, Lenz use 99
-
-#define SHORT_DCC_ADDESS_LIMIT         127  
 
 // speed increase for each click of the encoder 
 
@@ -111,11 +104,22 @@
 #define CHOSEN_ADDITIONAL_BUTTON_5_FUNCTION     FUNCTION_NULL   // GPIO 32
 #define CHOSEN_ADDITIONAL_BUTTON_6_FUNCTION     FUNCTION_NULL   // GPIO 33
 
-#define ADDITIONAL_BUTTON_DEBOUNCE_DELAY        50           // increase if you find the buttons bounce. i.e. activate twice on a single press
+// *******************************************************************************************************************
+// additional / optional buttons
+
+// To use the additional buttons, adjust the functions assigned to them in config_buttons.h
+// #define MAX_ADDITIONAL_BUTTONS 7  // If you alter this number, you must also alter the additionalButtonActions array in WiTcontroller.ino
+// #define ADDITIONAL_BUTTONS_PINS      {5,15,25,26,27,32,33}
+// #define ADDITIONAL_BUTTONS_TYPE      {INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP}
+//                                      // 34,35,36,39 don't have an internal pullup
+
+// default = 50
+// increase if you find the buttons bounce. i.e. activate twice on a single press
+// #define ADDITIONAL_BUTTON_DEBOUNCE_DELAY        50    
 
 // ********************************************************************************************
 
-// uncomment and/or correct one (only) of the #define lines below if you need to override the default .9 inch oLED dispaly settings 
+// uncomment and/or correct one (only) of the #define lines below if you need to override the default .9 inch oLED display settings 
 //
 // Please select a constructor line for below depending on your display
 // U8g2 Constructor List (Frame Buffer)
@@ -123,20 +127,79 @@
 // Please update the pin numbers according to your setup. Use U8X8_PIN_NONE if the reset pin is not connected
 
 // this is one of the common .9 inch OLED displays and is included by default
-
 // #define OLED_TYPE U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);
 
 // this is one of the common 1.3 inch OLED displays
-
 // #define OLED_TYPE U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);
 
 // *******************************************************************************************************************
 // Debugging
 
-// WitController console debug messages are ENABLED by default
-// to disable to console messages, set the following to  1    (i.e. 0 = on  1 = off)
-#define WITCONTROLLER_DEBUG    0
+// DccExController console debug messages are ENABLED by default
+// to disable to console messages, uncomment and set the following to  1    (i.e. 0 = on  1 = off)
+// #define DCCEXCONTROLLER_DEBUG    0
 
-// WiThrottleProtocol console debug messages are DISABLED by default
-// to enable console messages, set the following to  0    (i.e. 0 = on  1 = off)
-// #define WITHROTTLE_PROTOCOL_DEBUG   0
+// DCCEXProtocol console debug messages are DISABLED by default
+// to enable to console messages, uncomment and set the following to  0    (i.e. 0 = on  1 = off)
+// #define DCCEXPROTOCOL_DEBUG    1
+
+// *******************************************************************************************************************
+// Default latching/momentary functions - Direct mapping only 
+
+// uncomment any of these lines if you wish to change.  latching = true or momentary = false
+// F1 & F1 default to momentary
+//#define F0_LATCHING false
+//#define F1_LATCHING true
+//#define F2_LATCHING true
+
+// *******************************************************************************************************************
+// Default function labels
+
+// uncomment any of these lines if you wish to change the labels
+//#define F0_LABEL "Light"
+//#define F1_LABEL "Bell"
+//#define F2_LABEL "Horn"
+
+// *******************************************************************************************************************
+// encoder hardware
+// 
+// uncomment and change as needed
+// defaults are for the Small ESP32
+
+// large EPS32
+// #define ROTARY_ENCODER_A_PIN 33
+// #define ROTARY_ENCODER_B_PIN 32
+// #define ROTARY_ENCODER_BUTTON_PIN 27
+
+// Small ESP32
+// #define ROTARY_ENCODER_A_PIN 12
+// #define ROTARY_ENCODER_B_PIN 14
+// #define ROTARY_ENCODER_BUTTON_PIN 13
+
+// #define ROTARY_ENCODER_VCC_PIN -1 /* 27 put -1 of Rotary encoder Vcc is connected directly to 3,3V; else you can use declared output pin for powering rotary encoder */
+// #define ROTARY_ENCODER_STEPS 2 //depending on your encoder - try 1,2 or 4 to get expected behaviour
+
+// *******************************************************************************************************************
+// keypad hardware
+//
+// uncomment and change as needed
+// defaults are for the Small 4x3 keypad
+
+// 4x4 keypad
+// #define ROW_NUM     4
+// #define COLUMN_NUM  4
+// #define KEYPAD_KEYS {'1', '2', '3', 'A'},  {'4', '5', '6', 'B'},  {'7', '8', '9', 'C'},  {'*', '0', '#', 'D'}
+// #define KEYPAD_ROW_PINS    {19, 18, 5, 17}
+// #define KEYPAD_COLUMN_PINS {16, 4, 2, 15}
+
+// 4x3 keypad - default
+// #define ROW_NUM     4
+// #define COLUMN_NUM  3
+// #define KEYPAD_KEYS  {'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}, {'*', '0', '#'}
+// #define KEYPAD_ROW_PINS    {19, 18, 17, 16}
+// #define KEYPAD_COLUMN_PINS { 4, 0, 2}
+
+// in miliseconds
+
+// #define KEYPAD_DEBOUNCE_TIME 10
+// #define KEYPAD_HOLD_TIME 200

@@ -251,6 +251,10 @@ Note: you need to edit config_buttons.h to alter these assignments   (copy confi
 
 ## Change Log
 
+### V1.43
+ - text, button and display PIN configurations moved to defines that can be overridden in personal config_buttons_etc.h files
+ - no functional changes
+
 ### V1.42
  - minor bug fix
  
