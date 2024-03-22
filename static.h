@@ -1,6 +1,9 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 1.43";
+const String appVersion = "     Version 1.44";
 
+#ifndef DEVICE_NAME
+   #define DEVICE_NAME "WiTcontroller"
+#endif
 
 #ifndef MENU_TEXT_MENU
    #define MENU_TEXT_MENU                      "* Menu                # Key Defs"
@@ -443,6 +446,11 @@ String witServerIpAndPortEntryMask = "###.###.###.###:#####";
 #endif
 
 const char ssidPasswordBlankChar = 164;
+
+
+#ifndef SHORT_DCC_ADDRESS_LIMIT
+  #define SHORT_DCC_ADDRESS_LIMIT 127
+#endif
 
 // *******************************************************************************************************************
 

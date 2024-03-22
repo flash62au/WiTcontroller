@@ -1894,8 +1894,8 @@ void resetAllFunctionFollow() {
 String getLocoWithLength(String loco) {
   int locoNo = loco.toInt();
   String locoWithLength = "";
-  if ( (locoNo > SHORT_DCC_ADDESS_LIMIT) 
-  || ( (locoNo <= SHORT_DCC_ADDESS_LIMIT) && (loco.charAt(0)=='0') && (!serverType.equals("DCC-EX" ) ) ) 
+  if ( (locoNo > SHORT_DCC_ADDRESS_LIMIT) 
+  || ( (locoNo <= SHORT_DCC_ADDRESS_LIMIT) && (loco.charAt(0)=='0') && (!serverType.equals("DCC-EX" ) ) ) 
   ) {
     locoWithLength = "L" + loco;
   } else {
