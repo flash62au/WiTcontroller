@@ -41,15 +41,9 @@
 #define E_STOP 35
 #define SPEED_MULTIPLIER 36
 
-#define POWER_TOGGLE 40
-#define POWER_ON 41
-#define POWER_OFF 42
-
 #define DIRECTION_TOGGLE 50
 #define DIRECTION_FORWARD 51
 #define DIRECTION_REVERSE 52
-
-#define NEXT_THROTTLE 53
 
 #define SPEED_STOP_THEN_TOGGLE_DIRECTION 54   // stops the loco if moving.  Toggles the direction if stationary.
 
@@ -57,3 +51,19 @@
 
 #define MAX_THROTTLE_INCREASE 56
 #define MAX_THROTTLE_DECREASE 57
+
+// actions that are not related to a loco need to be above 500
+
+#define POWER_TOGGLE 501
+#define POWER_ON 502
+#define POWER_OFF 503
+
+#define NEXT_THROTTLE 510
+
+#define CUSTOM_1 521
+#define CUSTOM_2 522
+#define CUSTOM_3 523
+#define CUSTOM_4 524
+#define CUSTOM_5 525
+#define CUSTOM_6 526
+#define CUSTOM_7 527

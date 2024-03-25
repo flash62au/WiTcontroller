@@ -102,6 +102,7 @@ Notes:
     * Click *Upload* 
 
 Notes: 
+   * WiTcontroller version 1.45 or later requires WiThrottleProtocol version 1.1.14 or later.
    * WiTcontroller version 1.41 or later requires WiThrottleProtocol version 1.1.12 or later.
    * WiTcontroller version 1.39 or later requires WiThrottleProtocol version 1.1.11 or later.
    * WiTcontroller version 1.38 or later requires WiThrottleProtocol version 1.1.10 or later.
@@ -250,6 +251,9 @@ Note: you need to edit config_buttons.h to alter these assignments   (copy confi
 
 
 ## Change Log
+
+### V1.44
+- support for optional custom commands
 
 ### V1.43
 - bug fix

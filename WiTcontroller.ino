@@ -1168,8 +1168,7 @@ void additionalButtonLoop() {
               doDirectAdditionalButtonCommand(i,true);
             } else { // check for actions not releted to a loco
               int buttonAction = additionalButtonActions[i];
-              if( (buttonAction == POWER_ON) || (buttonAction == POWER_OFF) 
-              || (buttonAction == POWER_TOGGLE)  || (buttonAction == NEXT_THROTTLE) ) {
+              if (buttonAction >= 500) {
                   doDirectAdditionalButtonCommand(i,true);
               }
             }
@@ -1179,8 +1178,7 @@ void additionalButtonLoop() {
               doDirectAdditionalButtonCommand(i,false);
             } else { // check for actions not releted to a loco
               int buttonAction = additionalButtonActions[i];
-              if( (buttonAction == POWER_ON) || (buttonAction == POWER_OFF)
-              || (buttonAction == POWER_TOGGLE)  || (buttonAction == NEXT_THROTTLE) ) {
+              if (buttonAction >= 500) {
                   doDirectAdditionalButtonCommand(i,false);
               }
             }
@@ -1686,6 +1684,34 @@ void doDirectAction(int buttonAction) {
       }
       case MAX_THROTTLE_DECREASE: {
         changeNumberOfThrottles(false);
+        break; 
+      }
+      case CUSTOM_1: {
+        wiThrottleProtocol.sendCommand(CUSTOM_COMMAND_1);
+        break; 
+      }
+      case CUSTOM_2: {
+        wiThrottleProtocol.sendCommand(CUSTOM_COMMAND_2);
+        break; 
+      }
+      case CUSTOM_3: {
+        wiThrottleProtocol.sendCommand(CUSTOM_COMMAND_3);
+        break; 
+      }
+      case CUSTOM_4: {
+        wiThrottleProtocol.sendCommand(CUSTOM_COMMAND_4);
+        break; 
+      }
+      case CUSTOM_5: {
+        wiThrottleProtocol.sendCommand(CUSTOM_COMMAND_5);
+        break; 
+      }
+      case CUSTOM_6: {
+        wiThrottleProtocol.sendCommand(CUSTOM_COMMAND_6);
+        break; 
+      }
+      case CUSTOM_7: {
+        wiThrottleProtocol.sendCommand(CUSTOM_COMMAND_7);
         break; 
       }
   }

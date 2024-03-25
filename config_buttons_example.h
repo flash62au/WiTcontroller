@@ -105,6 +105,21 @@
 #define CHOSEN_ADDITIONAL_BUTTON_6_FUNCTION     FUNCTION_NULL   // GPIO 33
 
 // *******************************************************************************************************************
+// additional / optional commands
+// these can be any legigitmate WiThrottle protocol command encosed in quotes or double quotes
+// refer to https://www.jmri.org/help/en/package/jmri/jmrit/withrottle/Protocol.shtml
+
+// alert message
+// #define CUSTOM_COMMAND_1 "HMHello World"
+// set route R500  (DCCEX system route perfix is 'R')
+// #define CUSTOM_COMMAND_2 "PRA2R500"
+// #define CUSTOM_COMMAND_3 ""
+// #define CUSTOM_COMMAND_4 ""
+// #define CUSTOM_COMMAND_5 ""
+// #define CUSTOM_COMMAND_6 ""
+// #define CUSTOM_COMMAND_7 ""
+
+// *******************************************************************************************************************
 // additional / optional buttons
 
 // To use the additional buttons, adjust the functions assigned to them in config_buttons.h

@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 1.44";
+const String appVersion = "     Version 1.45";
 
 #ifndef DEVICE_NAME
    #define DEVICE_NAME "WiTcontroller"
@@ -589,3 +589,30 @@ const char ssidPasswordBlankChar = 164;
 #else
     OLED_TYPE
 #endif
+
+// *******************************************************************************************************************
+// additional / optional commands
+//  these can be any legigitmate WiThrottle protocol command
+// refer to https://www.jmri.org/help/en/package/jmri/jmrit/withrottle/Protocol.shtml
+
+#ifndef CUSTOM_COMMAND_1
+   #define CUSTOM_COMMAND_1 ""
+#endif 
+#ifndef CUSTOM_COMMAND_2
+   #define CUSTOM_COMMAND_2 ""
+#endif 
+#ifndef CUSTOM_COMMAND_3
+   #define CUSTOM_COMMAND_3 ""
+#endif 
+#ifndef CUSTOM_COMMAND_4
+   #define CUSTOM_COMMAND_4 ""
+#endif 
+#ifndef CUSTOM_COMMAND_5
+   #define CUSTOM_COMMAND_5 ""
+#endif 
+#ifndef CUSTOM_COMMAND_6
+   #define CUSTOM_COMMAND_6 ""
+#endif 
+#ifndef CUSTOM_COMMAND_7
+   #define CUSTOM_COMMAND_7 ""
+#endif 
