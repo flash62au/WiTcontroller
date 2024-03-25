@@ -1139,22 +1139,24 @@ void initialiseAdditionalButtons() {
   for (int i = 0; i < MAX_ADDITIONAL_BUTTONS; i++) { 
     if (additionalButtonActions[i] != FUNCTION_NULL) { 
       debug_print("Additional Button: "); debug_print(i); debug_print(" pin:"); debug_println(additionalButtonPin[i]);
-      pinMode(additionalButtonPin[i], additionalButtonType[i]);
-      if (additionalButtonType[i] == INPUT_PULLUP) {
-        additionalButtonLastRead[i] = HIGH;
-      } else {
-        additionalButtonLastRead[i] = LOW;
+      if (additionalButtonPin[i]>=0) {
+        pinMode(additionalButtonPin[i], additionalButtonType[i]);
+        if (additionalButtonType[i] == INPUT_PULLUP) {
+          additionalButtonLastRead[i] = HIGH;
+        } else {
+          additionalButtonLastRead[i] = LOW;
+        }
       }
+      lastAdditionalButtonDebounceTime[i] = 0;
     }
-    lastAdditionalButtonDebounceTime[i] = 0;
   }
 }
 
 void additionalButtonLoop() {
   int buttonRead;
   for (int i = 0; i < MAX_ADDITIONAL_BUTTONS; i++) {   
-    if (additionalButtonActions[i] != FUNCTION_NULL) {
-      buttonRead = digitalRead(additionalButtonPin[i]);
+    if ( (additionalButtonActions[i] != FUNCTION_NULL) && (additionalButtonPin[i]>=0) ) {
+        buttonRead = digitalRead(additionalButtonPin[i]);
 
       if (additionalButtonLastRead[i] != buttonRead) { // on procces on a change
         if ((millis() - lastAdditionalButtonDebounceTime[i]) > additionalButtonDebounceDelay) {   // only process if there is sufficent delay since the last read

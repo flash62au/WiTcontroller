@@ -60,7 +60,7 @@ Keypad keypad = Keypad( makeKeymap(keys), pin_rows, pin_column, ROW_NUM, COLUMN_
 
 // To use the additional buttons, adjust the functions assigned to them in config_buttons.h
 #ifndef MAX_ADDITIONAL_BUTTONS
-    #define MAX_ADDITIONAL_BUTTONS 7  // If you alter this number, you must also alter the additionalButtonActions array in WiTcontroller.ino
+    #define MAX_ADDITIONAL_BUTTONS 7  
 #endif
 #ifndef ADDITIONAL_BUTTONS_PINS
     #define ADDITIONAL_BUTTONS_PINS      {5,15,25,26,27,32,33}

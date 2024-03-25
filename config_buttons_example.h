@@ -106,7 +106,7 @@
 
 // *******************************************************************************************************************
 // additional / optional commands
-// these can be any legigitmate WiThrottle protocol command encosed in quotes or double quotes
+// these can be any legitimate WiThrottle protocol command encosed in quotes or double quotes
 // refer to https://www.jmri.org/help/en/package/jmri/jmrit/withrottle/Protocol.shtml
 
 // alert message
@@ -118,19 +118,6 @@
 // #define CUSTOM_COMMAND_5 ""
 // #define CUSTOM_COMMAND_6 ""
 // #define CUSTOM_COMMAND_7 ""
-
-// *******************************************************************************************************************
-// additional / optional buttons
-
-// To use the additional buttons, adjust the functions assigned to them in config_buttons.h
-// #define MAX_ADDITIONAL_BUTTONS 7  // If you alter this number, you must also alter the additionalButtonActions array in WiTcontroller.ino
-// #define ADDITIONAL_BUTTONS_PINS      {5,15,25,26,27,32,33}
-// #define ADDITIONAL_BUTTONS_TYPE      {INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP}
-//                                      // 34,35,36,39 don't have an internal pullup
-
-// default = 50
-// increase if you find the buttons bounce. i.e. activate twice on a single press
-// #define ADDITIONAL_BUTTON_DEBOUNCE_DELAY        50    
 
 // ********************************************************************************************
 
@@ -200,13 +187,6 @@
 // uncomment and change as needed
 // defaults are for the Small 4x3 keypad
 
-// 4x4 keypad
-// #define ROW_NUM     4
-// #define COLUMN_NUM  4
-// #define KEYPAD_KEYS {'1', '2', '3', 'A'},  {'4', '5', '6', 'B'},  {'7', '8', '9', 'C'},  {'*', '0', '#', 'D'}
-// #define KEYPAD_ROW_PINS    {19, 18, 5, 17}
-// #define KEYPAD_COLUMN_PINS {16, 4, 2, 15}
-
 // 4x3 keypad - default
 // #define ROW_NUM     4
 // #define COLUMN_NUM  3
@@ -214,7 +194,40 @@
 // #define KEYPAD_ROW_PINS    {19, 18, 17, 16}
 // #define KEYPAD_COLUMN_PINS { 4, 0, 2}
 
+// 4x4 keypad
+// #define ROW_NUM     4
+// #define COLUMN_NUM  4
+// #define KEYPAD_KEYS {'1', '2', '3', 'A'},  {'4', '5', '6', 'B'},  {'7', '8', '9', 'C'},  {'*', '0', '#', 'D'}
+// #define KEYPAD_ROW_PINS    {19, 18, 17, 16}
+// #define KEYPAD_COLUMN_PINS {4, 0, 2, 15}
+
+
 // in miliseconds
 
 // #define KEYPAD_DEBOUNCE_TIME 10
 // #define KEYPAD_HOLD_TIME 200
+
+// *******************************************************************************************************************
+// Additional / optional buttons
+// For the 4x3 Keypad 7 buttons can be used
+// For the 4x4 keypad, only 6 buttons can be used withh the 'normal' pins and the last pin MUST be set to -1, 
+//                     or one of pins 34,35,36,39 can be used with additional hardware (see below)
+
+// for the 4x3 keypad - default
+// To use the additional buttons, adjust the functions assigned to them in config_buttons.h
+// #define ADDITIONAL_BUTTONS_PINS      {5,15,25,26,27,32,33}
+// #define ADDITIONAL_BUTTONS_TYPE      {INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP}
+
+// for the 4x4 keypad - default
+// To use the additional buttons, adjust the functions assigned to them in config_buttons.h
+// #define ADDITIONAL_BUTTONS_PINS      {5,15,25,26,27,32,-1}  // last pin must be set to -1
+// #define ADDITIONAL_BUTTONS_TYPE      {INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP}
+
+// Note: pins 34,35,36,39 can be used but don't have an internal pullup, 
+//       so need additional hardware (resister) if you wish to use one of them
+
+
+// default = 50
+// increase if you find the buttons bounce. i.e. activate twice on a single press
+// #define ADDITIONAL_BUTTON_DEBOUNCE_DELAY        50    
+

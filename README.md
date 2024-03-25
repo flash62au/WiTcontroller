@@ -48,6 +48,9 @@ Required Components
 *Pinouts for Optional Additional Buttons*
 ![Assembly diagram - Optional Additional Buttons](WiTcontroller%20-%20Optional%20Buttons%20-%20pinouts%20v0.1.png)
 
+*Pinouts for Optional 4x4 keypad and Additional Buttons*
+![Assembly diagram - 4x4 keypad and Optional Additional Buttons](WiTcontroller%20-%204x4%20keypad,%20Optional%20Buttons%20-%20pinouts%20v0.1.png)
+
 
 Notes:
 
@@ -251,6 +254,9 @@ Note: you need to edit config_buttons.h to alter these assignments   (copy confi
 
 
 ## Change Log
+
+### V1.45
+- support for 4x4 keypads
 
 ### V1.44
 - support for optional custom commands
