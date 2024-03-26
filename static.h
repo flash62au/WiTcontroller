@@ -616,3 +616,52 @@ const char ssidPasswordBlankChar = 164;
 #ifndef CUSTOM_COMMAND_7
    #define CUSTOM_COMMAND_7 ""
 #endif 
+
+
+
+// *******************************************************************************************************************
+// defult direct functions
+
+#ifndef CHOSEN_KEYPAD_0_FUNCTION
+   #define CHOSEN_KEYPAD_0_FUNCTION     FUNCTION_0
+#endif
+#ifndef CHOSEN_KEYPAD_1_FUNCTION
+   #define CHOSEN_KEYPAD_1_FUNCTION     FUNCTION_1
+#endif
+#ifndef CHOSEN_KEYPAD_2_FUNCTION
+   #define CHOSEN_KEYPAD_2_FUNCTION     FUNCTION_2
+#endif
+#ifndef CHOSEN_KEYPAD_3_FUNCTION
+   #define CHOSEN_KEYPAD_3_FUNCTION     FUNCTION_3
+#endif
+#ifndef CHOSEN_KEYPAD_4_FUNCTION
+   #define CHOSEN_KEYPAD_4_FUNCTION     FUNCTION_4
+#endif
+#ifndef CHOSEN_KEYPAD_5_FUNCTION
+   #define CHOSEN_KEYPAD_5_FUNCTION     NEXT_THROTTLE
+#endif
+#ifndef CHOSEN_KEYPAD_6_FUNCTION
+   #define CHOSEN_KEYPAD_6_FUNCTION     SPEED_MULTIPLIER
+#endif
+#ifndef CHOSEN_KEYPAD_7_FUNCTION
+   #define CHOSEN_KEYPAD_7_FUNCTION     DIRECTION_REVERSE
+#endif
+#ifndef CHOSEN_KEYPAD_8_FUNCTION
+   #define CHOSEN_KEYPAD_8_FUNCTION     E_STOP
+#endif
+#ifndef CHOSEN_KEYPAD_9_FUNCTION
+   #define CHOSEN_KEYPAD_9_FUNCTION     DIRECTION_FORWARD
+#endif
+#ifndef CHOSEN_KEYPAD_A_FUNCTION
+   #define CHOSEN_KEYPAD_A_FUNCTION     CUSTOM_1
+#endif
+#ifndef CHOSEN_KEYPAD_B_FUNCTION
+   #define CHOSEN_KEYPAD_B_FUNCTION     CUSTOM_2
+#endif
+#ifndef CHOSEN_KEYPAD_C_FUNCTION
+   #define CHOSEN_KEYPAD_C_FUNCTION     CUSTOM_3
+#endif
+#ifndef CHOSEN_KEYPAD_D_FUNCTION
+   #define CHOSEN_KEYPAD_D_FUNCTION     CUSTOM_4
+#endif
+   

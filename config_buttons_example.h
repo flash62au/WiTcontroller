@@ -34,6 +34,10 @@
 #define CHOSEN_KEYPAD_7_FUNCTION     DIRECTION_REVERSE
 #define CHOSEN_KEYPAD_8_FUNCTION     E_STOP
 #define CHOSEN_KEYPAD_9_FUNCTION     DIRECTION_FORWARD
+// #define CHOSEN_KEYPAD_A_FUNCTION     CUSTOM_1
+// #define CHOSEN_KEYPAD_B_FUNCTION     CUSTOM_2
+// #define CHOSEN_KEYPAD_C_FUNCTION     CUSTOM_3
+// #define CHOSEN_KEYPAD_D_FUNCTION     CUSTOM_4
 
 // text that will appear when you press #
 // if you rearrange the items above, modify this text to suit    * and # cannot be remapped here
@@ -210,7 +214,7 @@
 // *******************************************************************************************************************
 // Additional / optional buttons
 // For the 4x3 Keypad 7 buttons can be used
-// For the 4x4 keypad, only 6 buttons can be used withh the 'normal' pins and the last pin MUST be set to -1, 
+// For the 4x4 keypad, only 6 buttons can be used with the 'normal' pins and the last pin MUST be set to -1, 
 //                     or one of pins 34,35,36,39 can be used with additional hardware (see below)
 
 // for the 4x3 keypad - default

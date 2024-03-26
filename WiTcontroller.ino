@@ -178,8 +178,9 @@ const boolean encoderRotationClockwiseIsIncreaseSpeed = ENCODER_ROTATION_CLOCKWI
 const boolean toggleDirectionOnEncoderButtonPressWhenStationary = TOGGLE_DIRECTION_ON_ENCODER_BUTTON_PRESSED_WHEN_STATIONAY;
 // true = if the locos(s) are stationary, clicking the encoder button will toggle the direction
 
-//4x3 keypad
-int buttonActions[10] = { CHOSEN_KEYPAD_0_FUNCTION,
+//4x3 keypad only uses 0-9
+//4x4 uses all 14 
+int buttonActions[14] = { CHOSEN_KEYPAD_0_FUNCTION,
                           CHOSEN_KEYPAD_1_FUNCTION,
                           CHOSEN_KEYPAD_2_FUNCTION,
                           CHOSEN_KEYPAD_3_FUNCTION,
@@ -188,7 +189,11 @@ int buttonActions[10] = { CHOSEN_KEYPAD_0_FUNCTION,
                           CHOSEN_KEYPAD_6_FUNCTION,
                           CHOSEN_KEYPAD_7_FUNCTION,
                           CHOSEN_KEYPAD_8_FUNCTION,
-                          CHOSEN_KEYPAD_9_FUNCTION
+                          CHOSEN_KEYPAD_9_FUNCTION,
+                          CHOSEN_KEYPAD_A_FUNCTION,
+                          CHOSEN_KEYPAD_B_FUNCTION,
+                          CHOSEN_KEYPAD_C_FUNCTION,
+                          CHOSEN_KEYPAD_D_FUNCTION
 };
 
 // text that will appear when you press #
@@ -1332,7 +1337,7 @@ void doKeyPress(char key, boolean pressed) {
             }
             break;
 
-          default:  //A, B, C, D
+          default:  // A, B, C, D
             doDirectCommand(key, true);
             break;
         }
@@ -1585,7 +1590,13 @@ void doKeyPress(char key, boolean pressed) {
 
 void doDirectCommand (char key, boolean pressed) {
   debug_print("doDirectCommand(): "); debug_println(key);
-  int buttonAction = buttonActions[(key - '0')];
+  int buttonAction = 0 ;
+  if (key<=57) {
+    buttonAction = buttonActions[(key - '0')];
+  } else {
+    buttonAction = buttonActions[(key - 55)]; // A, B, C, D
+  }
+  debug_print("doDirectCommand(): Action: "); debug_println(buttonAction);
   if (buttonAction!=FUNCTION_NULL) {
     if ( (buttonAction>=FUNCTION_0) && (buttonAction<=FUNCTION_31) ) {
       doDirectFunction(currentThrottleIndex, buttonAction, pressed);
