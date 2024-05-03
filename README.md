@@ -1,4 +1,8 @@
-# WiTcontroller
+# WiTcontroller for ESP32C3
+
+< Under Modification >
+
+< Note :  Modified so that it can be used with EPS32C3. by HMX>
 
 A WiTcontroller is a simple DIY, handheld controller that talks to a WiThrottle Server (JMRI, DCC-EX  EX-CommandStation and many others) using the WiThrottle protocol to control DCC model trains. 
 
