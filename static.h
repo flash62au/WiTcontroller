@@ -585,7 +585,8 @@ const char ssidPasswordBlankChar = 164;
 // U8g2 Constructor List (Frame Buffer)
 // you can overide this in config_buttons.h     DO NOT CHANGE IT HERE
 #ifndef OLED_TYPE
-    U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);
+   // U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);
+  U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 9, /* data=*/ 8); // HMX 2023-08-
 #else
     OLED_TYPE
 #endif

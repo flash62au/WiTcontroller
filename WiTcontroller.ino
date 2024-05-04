@@ -1,16 +1,20 @@
 /**
- * This app turns the ESP32 into a Bluetooth LE keyboard that is intended to act as a dedicated
- * gamepad for the JMRI or any wiThrottle server.
-
-  Instructions:
-  - Update WiFi SSIDs and passwords as necessary in config_network.h.
-  - Flash the sketch 
+This repository ported Mr. A's B to ESP32C3.
+config has been modified to match HMX P-004 and P-008.
  */
+
+#define ESP32C3 // HMX 2023-08-14
+#define HMX_P008 // HMX 2023-08-14
 
 #include <WiFi.h>                 // https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi     GPL 2.1
 #include <ESPmDNS.h>              // https://github.com/espressif/arduino-esp32/blob/master/libraries/ESPmDNS (You should be able to download it from here https://github.com/espressif/arduino-esp32 Then unzip it and copy 'just' the ESPmDNS folder to your own libraries folder )
 #include <WiThrottleProtocol.h>   // https://github.com/flash62au/WiThrottleProtocol                           Creative Commons 4.0  Attribution-ShareAlike
+#ifdef ESP32C3 // HMX 2023-08-14
+#include <RotaryEncoder.h>        // https://www.mathertel.de/Arduino/RotaryEncoderLibrary.aspx
+#endif 
+#ifndef ESP32C3 // HMX 2023-08-14
 #include <AiEsp32RotaryEncoder.h> // https://github.com/igorantolic/ai-esp32-rotary-encoder                    GPL 2.0
+#endif 
 #include <Keypad.h>               // https://www.arduinolibraries.info/libraries/keypad                        GPL 3.0
 #include <U8g2lib.h>              // https://github.com/olikraus/u8g2  (Just get "U8g2" via the Arduino IDE Library Manager)   new-bsd
 #include <string>
@@ -148,6 +152,11 @@ int functionFollow[6][MAX_FUNCTIONS];   // set to maximum possible (6 throttles)
 
 // speedstep
 int currentSpeedStep[6];   // set to maximum possible (6 throttles)
+
+// Not_set_speed
+int Not_set_speed = -1 ; // HMX 2023-08-14
+int Not_set_multiThrottleIndex  ; // HMX 2023-08-14
+char Not_set_IndexChar; // HMX 2023-08-14
 
 // throttle
 int currentThrottleIndex = 0;
@@ -312,7 +321,8 @@ class MyDelegate : public WiThrottleProtocolDelegate {
         
         // check for bounce. (intermediate speed sent back from the server, but is not up to date with the throttle)
         if ( (lastSpeedThrottleIndex!=multiThrottleIndex)
-             || ((millis()-lastSpeedSentTime)>500)
+             // || ((millis()-lastSpeedSentTime)>500) 'HMX 2023-08-14
+             || ((millis() - lastSpeedSentTime) > 1000)  // HMX 2023-08-14
         ) {
           currentSpeed[multiThrottleIndex] = speed;
           displayUpdateFromWit(multiThrottleIndex);
@@ -979,10 +989,18 @@ void buildWitEntry() {
 //   Rotary Encoder
 // *********************************************************************************
 
+#ifdef ESP32C3 // HMX 2023-08-14
+RotaryEncoder* encoder1 = nullptr;
+IRAM_ATTR void checkPosition() {
+  encoder1->tick();
+}
+#endif 
+#ifndef ESP32C3 // HMX 2023-08-14
 AiEsp32RotaryEncoder rotaryEncoder = AiEsp32RotaryEncoder(ROTARY_ENCODER_A_PIN, ROTARY_ENCODER_B_PIN, ROTARY_ENCODER_BUTTON_PIN, ROTARY_ENCODER_VCC_PIN, ROTARY_ENCODER_STEPS);
 void IRAM_ATTR readEncoderISR() {
   rotaryEncoder.readEncoder_ISR();
 }
+#endif // HMX 2023-08-14
 
 void rotary_onButtonClick() {
    if (encoderUseType == ENCODER_USE_OPERATION) {
@@ -1024,6 +1042,71 @@ void rotary_onButtonClick() {
    }
 }
 
+
+#ifdef ESP32C3 // HMX 2023-08-14
+void HMX_rotary_loop() {
+  static int lastSwitchValue = digitalRead(ROTARY_ENCODER_BUTTON_PIN);
+
+  encoder1->tick();  // just call tick() to check the state.
+  encoderValue = encoder1->getPosition();
+  if (lastEncoderValue != encoderValue) { //don't print anything unless value changed
+    delay(50);
+    encoder1->tick();  // just call tick() to check the state.
+    encoderValue = encoder1->getPosition();
+
+    if (encoderUseType == ENCODER_USE_OPERATION) {
+      if (wiThrottleProtocol.getNumberOfLocomotives(currentThrottleIndexChar) > 0) {
+        if (encoderValue > lastEncoderValue) {
+          if (abs(encoderValue - lastEncoderValue) < 2) {
+            encoderSpeedChange(true, currentSpeedStep[currentThrottleIndex]);
+          } else if (abs(encoderValue - lastEncoderValue) < 3) {
+            encoderSpeedChange(true, currentSpeedStep[currentThrottleIndex]*speedStepMultiplier);
+          } else {
+            encoderSpeedChange(true, currentSpeedStep[currentThrottleIndex]*speedStepMultiplier * 2);
+          }
+        } else {
+          if (abs(encoderValue - lastEncoderValue) < 2) {
+            encoderSpeedChange(false, currentSpeedStep[currentThrottleIndex]);
+          } else if (abs(encoderValue - lastEncoderValue) < 3) {
+            encoderSpeedChange(false, currentSpeedStep[currentThrottleIndex]*speedStepMultiplier);
+          } else {
+            encoderSpeedChange(false, currentSpeedStep[currentThrottleIndex]*speedStepMultiplier * 2);
+          }
+        }
+      }
+    } else { // (encoderUseType == ENCODER_USE_SSID_PASSWORD)
+      if (encoderValue > lastEncoderValue) {
+        if (ssidPasswordCurrentChar == ssidPasswordBlankChar) {
+          ssidPasswordCurrentChar = 66; // 'B'
+        } else {
+          ssidPasswordCurrentChar = ssidPasswordCurrentChar - 1;
+          if ((ssidPasswordCurrentChar < 32) || (ssidPasswordCurrentChar > 126) ) {
+            ssidPasswordCurrentChar = 126;  // '~'
+          }
+        }
+      } else {
+        if (ssidPasswordCurrentChar == ssidPasswordBlankChar) {
+          ssidPasswordCurrentChar = 64; // '@'
+        } else {
+          ssidPasswordCurrentChar = ssidPasswordCurrentChar + 1;
+          if (ssidPasswordCurrentChar > 126) {
+            ssidPasswordCurrentChar = 32; // ' ' space
+          }
+        }
+      }
+      ssidPasswordChanged = true;
+      writeOledEnterPassword();
+    }
+    lastEncoderValue = encoderValue;
+  }
+  int SwitchValue = digitalRead(ROTARY_ENCODER_BUTTON_PIN);
+  if (SwitchValue != lastSwitchValue && SwitchValue == 1) {
+    rotary_onButtonClick();
+  }
+  lastSwitchValue = SwitchValue;
+}
+#endif // HMX 2023-08-14
+#ifndef ESP32C3 // HMX 2023-08-14
 void rotary_loop() {
   if (rotaryEncoder.encoderChanged()) {   //don't print anything unless value changed
     
@@ -1093,6 +1176,7 @@ void rotary_loop() {
     rotary_onButtonClick();
   }
 }
+#endif // HMX 2023-08-14
 
 void encoderSpeedChange(boolean rotationIsClockwise, int speedChange) {
   if (encoderRotationClockwiseIsIncreaseSpeed) {
@@ -1212,24 +1296,37 @@ void setup() {
   delay(1000);
   debug_println("Start"); 
 
+#ifdef ESP32C3 // HMX 2023-08-14
+  // Encoder //
+  encoder1 = new RotaryEncoder(ROTARY_ENCODER_A_PIN, ROTARY_ENCODER_B_PIN, RotaryEncoder::LatchMode::TWO03);
+  attachInterrupt(digitalPinToInterrupt(ROTARY_ENCODER_A_PIN), checkPosition, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(ROTARY_ENCODER_B_PIN), checkPosition, CHANGE);
+  // Switch //
+  pinMode(ROTARY_ENCODER_BUTTON_PIN, INPUT_PULLUP);
+
+#endif // HMX 2023-08-14
+#ifndef ESP32C3 // HMX 2023-08-14
   rotaryEncoder.begin();  //initialize rotary encoder
   rotaryEncoder.setup(readEncoderISR);
   //set boundaries and if values should cycle or not 
   rotaryEncoder.setBoundaries(0, 1000, circleValues); //minValue, maxValue, circleValues true|false (when max go to min and vice versa)
   //rotaryEncoder.disableAcceleration(); //acceleration is now enabled by default - disable if you don't need it
   rotaryEncoder.setAcceleration(100); //or set the value - larger number = more acceleration; 0 or 1 means disabled acceleration
-
+#endif // HMX 2023-08-14
   keypad.addEventListener(keypadEvent); // Add an event listener for this keypad
   keypad.setDebounceTime(KEYPAD_DEBOUNCE_TIME);
   keypad.setHoldTime(KEYPAD_HOLD_TIME);
-
-  esp_sleep_enable_ext0_wakeup(GPIO_NUM_13,0); //1 = High, 0 = Low
+  // HMX 2023-08-14 for ESP32C3
+  esp_deep_sleep_enable_gpio_wakeup(GPIO_NUM_20, ESP_GPIO_WAKEUP_GPIO_HIGH);
+  // esp_sleep_enable_ext0_wakeup(GPIO_NUM_13,0); //1 = High, 0 = Low // HMX 2023-10-29
 
   keypadUseType = KEYPAD_USE_SELECT_SSID;
   encoderUseType = ENCODER_USE_OPERATION;
   ssidSelectionSource = SSID_CONNECTION_SOURCE_BROWSE;
 
+#ifndef HMX_P008 // HMX 2023-08-14
   initialiseAdditionalButtons();
+#endif
 
   resetAllFunctionLabels();
   resetAllFunctionFollow();
@@ -1264,9 +1361,28 @@ void loop() {
   }
   // char key = keypad.getKey();
   keypad.getKey();
+#ifdef ESP32C3 // HMX 2023-08-14
+  HMX_rotary_loop();
+#endif // HMX 2023-08-14
+#ifndef ESP32C3 // HMX 2023-08-14
   rotary_loop();
+#endif // HMX 2023-08-14
 
+#ifndef HMX_P008 // HMX 2023-08-14
   additionalButtonLoop(); 
+#endif // HMX 2023-08-14
+
+// HMX 2023-08-14
+  if (Not_set_speed > -1 && (millis() - lastSpeedSentTime) > 500) {
+    wiThrottleProtocol.setSpeed(Not_set_IndexChar, Not_set_speed);
+    currentSpeed[Not_set_multiThrottleIndex] = Not_set_speed;
+    lastSpeedSentTime = millis();
+    lastSpeedSent = Not_set_speed;
+    lastSpeedThrottleIndex = Not_set_multiThrottleIndex;
+    writeOledSpeed();
+    Not_set_speed = -1;
+  }
+// HMX 2023-08-14
 
 	// debug_println("loop:" );
 }

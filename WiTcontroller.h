@@ -94,7 +94,12 @@ extern int lastSpeedSent;
 // extern int lastDirectionSent;
 extern int lastSpeedThrottleIndex;
 
+#ifdef ESP32C3 // HMX 2023-08-14
+// extern RotaryEncoder encoder1;
+#endif // 
+#ifndef ESP32C3 // HMX 2023-08-14
 extern AiEsp32RotaryEncoder rotaryEncoder;
+#endif // 
 
 extern int currentThrottleIndex;
 
