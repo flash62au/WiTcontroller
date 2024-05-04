@@ -26,9 +26,9 @@ ESP32とに比較として次の制限があります。<BR>
 ・スリープからの復帰には電源の再投入が必要です。<BR>
 
 ---
-## HMX P004
+## HMX P008
 *Photo01*
-![Photo](HMX_P004_Photo01.jpg)
+![Photo](HMX_P008_Photo01.jpg)
 
 *Photo02*
 ![Wire Drawing](HMX_P004_DWG.jpg)
