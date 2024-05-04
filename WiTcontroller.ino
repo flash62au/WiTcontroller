@@ -1,5 +1,5 @@
 /**
-This repository ported Mr. A's B to ESP32C3.
+This repository ported Mr Peter Akers' WiTcontroller to ESP32C3.
 config has been modified to match HMX P-004 and P-008.
  */
 
