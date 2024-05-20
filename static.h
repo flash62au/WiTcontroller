@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 1.45";
+const String appVersion = "     Version 1.46";
 
 #ifndef DEVICE_NAME
    #define DEVICE_NAME "WiTcontroller"
@@ -665,3 +665,18 @@ const char ssidPasswordBlankChar = 164;
    #define CHOSEN_KEYPAD_D_FUNCTION     CUSTOM_4
 #endif
    
+#ifndef USE_ROTARY_ENCODER_FOR_THROTTLE
+   #define USE_ROTARY_ENCODER_FOR_THROTTLE true
+#endif
+#ifndef THROTTLE_POT_PIN
+   #define THROTTLE_POT_PIN 39
+#endif
+#ifndef THROTTLE_POT_USE_NOTCHES
+   #define THROTTLE_POT_USE_NOTCHES true
+#endif
+#ifndef THROTTLE_POT_NOTCH_VALUES   
+   #define THROTTLE_POT_NOTCH_VALUES {1111,1347,1591,1833,2105,2379,2622,2837};
+#endif
+#ifndef THROTTLE_POT_NOTCH_SPEEDS
+   #define THROTTLE_POT_NOTCH_SPEEDS {0,18,36,54,72,90,108,127}
+#endif

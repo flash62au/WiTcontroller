@@ -61,6 +61,16 @@ bool circleValues = true;
 int encoderValue = 0;
 int lastEncoderValue = 0;
 
+// pot values
+bool useRotaryEncoderForThrottle = USE_ROTARY_ENCODER_FOR_THROTTLE;
+int throttlePotPin = THROTTLE_POT_PIN;
+bool throttlePotUseNotches = THROTTLE_POT_USE_NOTCHES;
+int throttlePotNotchValues[] = THROTTLE_POT_NOTCH_VALUES; 
+int throttlePotNotchSpeeds[] = THROTTLE_POT_NOTCH_SPEEDS;
+int throttlePotNotch = 0;
+int throttlePotTargetSpeed = 0;
+int lastThrottlePotValue = 0;
+
 // server variables
 // boolean ssidConnected = false;
 String selectedSsid = "";
@@ -305,7 +315,7 @@ class MyDelegate : public WiThrottleProtocolDelegate {
       }
     }
     void receivedSpeedMultiThrottle(char multiThrottle, int speed) {             // Vnnn
-      debug_print("Received Speed: ("); debug_print(millis()); debug_print(") speed: "); debug_println(speed); 
+      debug_print("Received Speed: ("); debug_print(millis()); debug_print(") throttle: "); debug_print(multiThrottle);  debug_print(" speed: "); debug_println(speed); 
       int multiThrottleIndex = getMultiThrottleIndex(multiThrottle);
 
       if (currentSpeed[multiThrottleIndex] != speed) {
@@ -1110,6 +1120,47 @@ void encoderSpeedChange(boolean rotationIsClockwise, int speedChange) {
   }
 }
 
+
+// *********************************************************************************
+//   Throttle Pot
+// *********************************************************************************
+
+void throttlePot_loop() {
+  // Read the throttle pot to see what notch it is on.
+  int currentThrottlePotNotch = throttlePotNotch;
+
+  int potValue = ( analogRead(throttlePotPin) );  //Reads the analog value on the throttle pin.
+
+  if (potValue!=lastThrottlePotValue) { 
+    lastThrottlePotValue = potValue;
+    // debug_print("Pot Value: "); debug_println(potValue);
+
+    if (throttlePotUseNotches) { // use notches
+      throttlePotNotch = 0;
+      for (int i=0; i<8; i++) {
+        if (potValue < throttlePotNotchValues[i]) {    /// Check to see if it is in notch i
+          throttlePotTargetSpeed = throttlePotNotchSpeeds[i];
+          throttlePotNotch = i;
+          break;
+        }                
+      } 
+      if (throttlePotNotch!=currentThrottlePotNotch) {
+            speedSet(currentThrottleIndex, throttlePotTargetSpeed);
+      }
+
+    } else { // use a linear speed
+      double newSpeed = potValue-throttlePotNotchValues[0];
+      newSpeed = newSpeed / (throttlePotNotchValues[7]-throttlePotNotchValues[0]);
+      newSpeed = newSpeed * 127;
+      if (newSpeed<0) { newSpeed = 0; }
+      else if (newSpeed>127) { newSpeed = 127; }
+      int iSpeed = newSpeed;
+      debug_print("newSpeed: "); debug_print(newSpeed); debug_print(" iSpeed: "); debug_println(iSpeed);
+      speedSet(currentThrottleIndex, iSpeed);
+    }  
+  }
+}
+
 // *********************************************************************************
 //   keypad
 // *********************************************************************************
@@ -1190,6 +1241,8 @@ void additionalButtonLoop() {
               }
             }
           }
+        } else {
+          debug_println("Ignoring Additional Button Press");
         }
       }
       additionalButtonLastRead[i] = additionalButtonRead[i];
@@ -1263,8 +1316,9 @@ void loop() {
     }
   }
   // char key = keypad.getKey();
-  keypad.getKey();
-  rotary_loop();
+  keypad.getKey(); 
+  if (useRotaryEncoderForThrottle) { rotary_loop(); }
+  else { throttlePot_loop(); }
 
   additionalButtonLoop(); 
 
