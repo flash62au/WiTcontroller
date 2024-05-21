@@ -265,7 +265,7 @@ confg_buttons.h can include the following optional defines:
 
   If ``USE_ROTARY_ENCODER_FOR_THROTTLE`` is set to ``false`` the rotary encoder is ignored and a pot on the pin defined with ``THROTTLE_POT_PIN`` will be used instead.
 
-  You must specify the PIN to be used.  Currently PINs 34, 35 and 39 are the only ones that cannot be used by the app for other purposes, so these are the safest to use.  this should be connected to the centre pin of the pot. The 3v and GND should be connected to the outer pins of the pot.
+  You must specify the PIN to be used.  Currently PINs 34, 35 and 39 are the only ones that cannot be used by the app for other purposes, so these are the safest to use.  This should be connected to the centre pin of the pot. The 3v and GND should be connected to the outer pins of the pot.
 
     Note that eventually the app will upgraded to support a brake and reverser pots.  These will use pins 34 and 35 by default.
 
@@ -285,8 +285,14 @@ confg_buttons.h can include the following optional defines:
 
   Sumner Patterson is developing an app to help find the appropriate pot values for ``THROTTLE_POT_NOTCH_VALUES``.
 
+### instructions for optional use of a voltage divider to show the battery charge level
+
+TBA
 
 ## Change Log
+
+### V1.47
+- support for optionally using a voltage divider to show the battery charge level
 
 ### V1.46
 - support for optionally using a potentiometer (pot) instead of the encoder for the throttle

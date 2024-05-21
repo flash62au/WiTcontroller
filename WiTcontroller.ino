@@ -13,6 +13,7 @@
 #include <AiEsp32RotaryEncoder.h> // https://github.com/igorantolic/ai-esp32-rotary-encoder                    GPL 2.0
 #include <Keypad.h>               // https://www.arduinolibraries.info/libraries/keypad                        GPL 3.0
 #include <U8g2lib.h>              // https://github.com/olikraus/u8g2  (Just get "U8g2" via the Arduino IDE Library Manager)   new-bsd
+#include <Pangodream_18650_CL.h>
 #include <string>
 
 #include "config_network.h"      // LAN networks (SSIDs and passwords)
@@ -61,7 +62,7 @@ bool circleValues = true;
 int encoderValue = 0;
 int lastEncoderValue = 0;
 
-// pot values
+// throttle pot values
 bool useRotaryEncoderForThrottle = USE_ROTARY_ENCODER_FOR_THROTTLE;
 int throttlePotPin = THROTTLE_POT_PIN;
 bool throttlePotUseNotches = THROTTLE_POT_USE_NOTCHES;
@@ -70,6 +71,12 @@ int throttlePotNotchSpeeds[] = THROTTLE_POT_NOTCH_SPEEDS;
 int throttlePotNotch = 0;
 int throttlePotTargetSpeed = 0;
 int lastThrottlePotValue = 0;
+
+// battery test values
+bool useBatteryTest = USE_BATTERY_TEST;
+int batteryTestPin = BATTERY_TEST_PIN;
+int lastBatteryTestValue = 0; 
+Pangodream_18650_CL BL(BATTERY_TEST_PIN);
 
 // server variables
 // boolean ssidConnected = false;
@@ -1120,7 +1127,6 @@ void encoderSpeedChange(boolean rotationIsClockwise, int speedChange) {
   }
 }
 
-
 // *********************************************************************************
 //   Throttle Pot
 // *********************************************************************************
@@ -1158,6 +1164,26 @@ void throttlePot_loop() {
       debug_print("newSpeed: "); debug_print(newSpeed); debug_print(" iSpeed: "); debug_println(iSpeed);
       speedSet(currentThrottleIndex, iSpeed);
     }  
+  }
+}
+
+// *********************************************************************************
+//   Battery Test
+// *********************************************************************************
+
+void batteryTest_loop() {
+  // Read the battery pin
+
+  debug_print("battery pin Value: "); debug_println(analogRead(batteryTestPin));  //Reads the analog value on the throttle pin.
+  int batteryTestValue = BL.getBatteryChargeLevel();
+  
+  // debug_print("batteryTestValue: "); debug_println(batteryTestValue); 
+
+  if (batteryTestValue!=lastBatteryTestValue) { 
+    lastBatteryTestValue = BL.getBatteryChargeLevel();
+    if ( (keypadUseType==KEYPAD_USE_OPERATION) && (!menuIsShowing)) {
+      writeOledSpeed();
+    }
   }
 }
 
@@ -1292,6 +1318,7 @@ void setup() {
     currentDirection[i] = Forward;
     currentSpeedStep[i] = speedStep;
   }
+
 }
 
 void loop() {
@@ -1319,8 +1346,9 @@ void loop() {
   keypad.getKey(); 
   if (useRotaryEncoderForThrottle) { rotary_loop(); }
   else { throttlePot_loop(); }
-
   additionalButtonLoop(); 
+
+  if (useBatteryTest) { batteryTest_loop(); }
 
 	// debug_println("loop:" );
 }
@@ -2815,6 +2843,10 @@ void writeOledSpeed() {
     } else {
     // oledText[5] = menu_menu_hash_is_functions;
     setMenuTextForOled(menu_menu_hash_is_functions);
+  }
+
+  if (useBatteryTest) {
+    oledText[2] = "" + String(lastBatteryTestValue) + "%";
   }
 
   writeOledArray(false, false, false, drawTopLine);
