@@ -1174,7 +1174,7 @@ void throttlePot_loop() {
 void batteryTest_loop() {
   // Read the battery pin
 
-  debug_print("battery pin Value: "); debug_println(analogRead(batteryTestPin));  //Reads the analog value on the throttle pin.
+  // debug_print("battery pin Value: "); debug_println(analogRead(batteryTestPin));  //Reads the analog value on the throttle pin.
   int batteryTestValue = BL.getBatteryChargeLevel();
   
   // debug_print("batteryTestValue: "); debug_println(batteryTestValue); 
