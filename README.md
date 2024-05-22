@@ -283,11 +283,19 @@ confg_buttons.h can include the following optional defines:
 
   a) You must define the values the pot will send at at zero throw and full throw in the first and last of the 8 values in ``THROTTLE_POT_NOTCH_VALUES``.  The other values will be ignored but you still need to include 8 values.  (They can be zero.)  Note that you should avoid the value zero (0) for notch zero.  Use at least 1 instead.
 
-  Sumner Patterson is developing an app to help find the appropriate pot values for ``THROTTLE_POT_NOTCH_VALUES``.
+  Sumner Patterson is developing an app to help find the appropriate pot values for the ``THROTTLE_POT_NOTCH_VALUES``.
 
 ### instructions for optional use of a voltage divider to show the battery charge level
 
 TBA
+
+Recommend adding a physical power switch as this will continually drain the battery, even when no being used.
+
+*Pinouts for Optional Battery Monitor*
+![Assembly diagram - Optional Battery Monitor](WiTcontroller%20-%20Optional%20battery%20monitor.png)
+
+---
+---
 
 ## Change Log
 
