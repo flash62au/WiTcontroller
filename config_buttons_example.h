@@ -56,7 +56,7 @@
 // by default, # will show the list above. 
 // if you change the following line to true, it will take you to the Loco Function Labels screen directly
 
-#define HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS         false
+#define HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS         true
 
 // ********************************************************************************************
 

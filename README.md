@@ -291,6 +291,9 @@ TBA
 
 ## Change Log
 
+### V1.48
+- change the battery charge level to an icon/glyph
+
 ### V1.47
 - support for optionally using a voltage divider to show the battery charge level
 

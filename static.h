@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 1.47";
+const String appVersion = "     Version 1.48";
 
 #ifndef DEVICE_NAME
    #define DEVICE_NAME "WiTcontroller"
@@ -463,7 +463,7 @@ const char ssidPasswordBlankChar = 164;
 #define FONT_DIRECTION u8g2_font_neuecraft_tr
 // #define FONT_TRACK_POWER u8g2_font_profont10_tf
 #define FONT_TRACK_POWER u8g2_font_open_iconic_all_1x_t
-#define FONT_HEARTBEAT u8g2_font_open_iconic_all_1x_t
+#define FONT_HEARTBEAT u8g2_font_open_iconic_all_1x_t // and battery
 #define FONT_SPEED_STEP u8g2_font_open_iconic_all_1x_t
 #define FONT_NEXT_THROTTLE u8g2_font_6x12_m_symbols
 
