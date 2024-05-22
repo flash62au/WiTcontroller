@@ -299,7 +299,10 @@ Recommend adding a physical power switch as this will continually drain the batt
 
 ## Change Log
 
-### V1.48
+### V1.50
+- option to have the battery to show as a percent
+
+### V1.49
 - change the battery check to once ever 10 seconds
 
 ### V1.48

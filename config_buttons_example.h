@@ -259,3 +259,4 @@
 //
 // #define USE_BATTERY_TEST true
 // #define USE_BATTERY_TEST_PIN 34
+// #define USE_BATTERY_PERCENT_INSTEAD_OF_ICON false

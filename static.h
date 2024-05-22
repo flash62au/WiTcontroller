@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 1.49";
+const String appVersion = "     Version 1.50";
 
 #ifndef DEVICE_NAME
    #define DEVICE_NAME "WiTcontroller"
@@ -685,4 +685,7 @@ const char ssidPasswordBlankChar = 164;
 #endif
 #ifndef BATTERY_TEST_PIN
    #define BATTERY_TEST_PIN 34
+#endif
+#ifndef USE_BATTERY_PERCENT_INSTEAD_OF_ICON
+   #define USE_BATTERY_PERCENT_INSTEAD_OF_ICON false
 #endif
