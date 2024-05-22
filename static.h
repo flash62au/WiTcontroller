@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 1.48";
+const String appVersion = "     Version 1.49";
 
 #ifndef DEVICE_NAME
    #define DEVICE_NAME "WiTcontroller"

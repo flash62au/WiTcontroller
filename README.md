@@ -300,6 +300,9 @@ Recommend adding a physical power switch as this will continually drain the batt
 ## Change Log
 
 ### V1.48
+- change the battery check to once ever 10 seconds
+
+### V1.48
 - change the battery charge level to an icon/glyph
 
 ### V1.47

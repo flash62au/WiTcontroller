@@ -13,7 +13,7 @@
 #include <AiEsp32RotaryEncoder.h> // https://github.com/igorantolic/ai-esp32-rotary-encoder                    GPL 2.0
 #include <Keypad.h>               // https://www.arduinolibraries.info/libraries/keypad                        GPL 3.0
 #include <U8g2lib.h>              // https://github.com/olikraus/u8g2  (Just get "U8g2" via the Arduino IDE Library Manager)   new-bsd
-#include <Pangodream_18650_CL.h>
+#include "Pangodream_18650_CL.h"
 #include <string>
 
 #include "config_network.h"      // LAN networks (SSIDs and passwords)
@@ -76,6 +76,7 @@ int lastThrottlePotValue = 0;
 bool useBatteryTest = USE_BATTERY_TEST;
 int batteryTestPin = BATTERY_TEST_PIN;
 int lastBatteryTestValue = 0; 
+double lastBatteryCheckTime = 0;
 Pangodream_18650_CL BL(BATTERY_TEST_PIN);
 
 // server variables
@@ -1174,15 +1175,18 @@ void throttlePot_loop() {
 void batteryTest_loop() {
   // Read the battery pin
 
-  // debug_print("battery pin Value: "); debug_println(analogRead(batteryTestPin));  //Reads the analog value on the throttle pin.
-  int batteryTestValue = BL.getBatteryChargeLevel();
-  
-  // debug_print("batteryTestValue: "); debug_println(batteryTestValue); 
+  if(millis()-lastBatteryCheckTime>10000) {
+    lastBatteryCheckTime = millis();
+    // debug_print("battery pin Value: "); debug_println(analogRead(batteryTestPin));  //Reads the analog value on the throttle pin.
+    int batteryTestValue = BL.getBatteryChargeLevel();
+    
+    // debug_print("batteryTestValue: "); debug_println(batteryTestValue); 
 
-  if (batteryTestValue!=lastBatteryTestValue) { 
-    lastBatteryTestValue = BL.getBatteryChargeLevel();
-    if ( (keypadUseType==KEYPAD_USE_OPERATION) && (!menuIsShowing)) {
-      writeOledSpeed();
+    if (batteryTestValue!=lastBatteryTestValue) { 
+      lastBatteryTestValue = BL.getBatteryChargeLevel();
+      if ( (keypadUseType==KEYPAD_USE_OPERATION) && (!menuIsShowing)) {
+        writeOledSpeed();
+      }
     }
   }
 }
