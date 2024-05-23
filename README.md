@@ -299,6 +299,9 @@ Recommend adding a physical power switch as this will continually drain the batt
 
 ## Change Log
 
+### V1.51
+- changed option to have the battery to show icon as well as a percent
+
 ### V1.50
 - option to have the battery to show as a percent
 

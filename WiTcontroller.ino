@@ -75,7 +75,7 @@ int lastThrottlePotValue = 0;
 // battery test values
 bool useBatteryTest = USE_BATTERY_TEST;
 int batteryTestPin = BATTERY_TEST_PIN;
-bool useBatteryPercentInsteadOfIcon = USE_BATTERY_PERCENT_INSTEAD_OF_ICON;
+bool useBatteryPercentAsWellAsIcon = USE_BATTERY_PERCENT_AS_WELL_AS_ICON;
 int lastBatteryTestValue = 0; 
 double lastBatteryCheckTime = 0;
 Pangodream_18650_CL BL(BATTERY_TEST_PIN);
@@ -2864,20 +2864,22 @@ void writeOledSpeed() {
   }
 
   if (useBatteryTest) {
-    // int lastBatteryTestValue = random(0,100);
-    if (!useBatteryPercentInsteadOfIcon) {
-      u8g2.setFont(FONT_HEARTBEAT);
-      u8g2.setDrawColor(1);
-      u8g2.drawStr(1, 30, String("Z").c_str());
-      if (lastBatteryTestValue>10) u8g2.drawLine(2, 24, 2, 27);
-      if (lastBatteryTestValue>25) u8g2.drawLine(3, 24, 3, 27);
-      if (lastBatteryTestValue>50) u8g2.drawLine(4, 24, 4, 27);
-      if (lastBatteryTestValue>75) u8g2.drawLine(5, 24, 5, 27);
-      if (lastBatteryTestValue>90) u8g2.drawLine(6, 24, 6, 27);
-      
-      u8g2.setFont(FONT_DEFAULT);
-    } else {
-      u8g2.drawStr(1,30, String(String(lastBatteryTestValue)+"%").c_str());
+    int lastBatteryTestValue = random(0,100);
+    u8g2.setFont(FONT_HEARTBEAT);
+    u8g2.setDrawColor(1);
+    u8g2.drawStr(1, 30, String("Z").c_str());
+    if (lastBatteryTestValue>10) u8g2.drawLine(2, 24, 2, 27);
+    if (lastBatteryTestValue>25) u8g2.drawLine(3, 24, 3, 27);
+    if (lastBatteryTestValue>50) u8g2.drawLine(4, 24, 4, 27);
+    if (lastBatteryTestValue>75) u8g2.drawLine(5, 24, 5, 27);
+    if (lastBatteryTestValue>90) u8g2.drawLine(6, 24, 6, 27);
+    
+    u8g2.setFont(FONT_FUNCTION_INDICATORS);
+    if (!useBatteryPercentAsWellAsIcon) {
+      u8g2.drawStr(1,22, String(String(lastBatteryTestValue)+"%").c_str());
+    }
+    if(lastBatteryTestValue<4) {
+      u8g2.drawStr(11,29, String("LOW").c_str());
     }
   }
 
