@@ -294,12 +294,16 @@ Recommend adding a physical power switch as this will continually drain the batt
 *Pinouts for Optional Battery Monitor*
 ![Assembly diagram - Optional Battery Monitor](WiTcontroller%20-%20Optional%20battery%20monitor.png)
 
----.
+---
 ---
 
 ## Change Log
 
 ### V1
+
+### V1.52
+- Made two changes in main code 1. Comment out random values when displaying battery percentage
+- and 2.Invert logic for the test to display the battery percentage 
 
 ### V1.51
 - changed option to have the battery to show icon as well as a percent
