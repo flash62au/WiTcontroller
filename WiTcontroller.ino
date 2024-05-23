@@ -2864,7 +2864,7 @@ void writeOledSpeed() {
   }
 
   if (useBatteryTest) {
-    int lastBatteryTestValue = random(0,100);
+    //int lastBatteryTestValue = random(0,100);
     u8g2.setFont(FONT_HEARTBEAT);
     u8g2.setDrawColor(1);
     u8g2.drawStr(1, 30, String("Z").c_str());
@@ -2875,7 +2875,7 @@ void writeOledSpeed() {
     if (lastBatteryTestValue>90) u8g2.drawLine(6, 24, 6, 27);
     
     u8g2.setFont(FONT_FUNCTION_INDICATORS);
-    if (!useBatteryPercentAsWellAsIcon) {
+    if (useBatteryPercentAsWellAsIcon) {
       u8g2.drawStr(1,22, String(String(lastBatteryTestValue)+"%").c_str());
     }
     if(lastBatteryTestValue<4) {
