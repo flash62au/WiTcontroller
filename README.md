@@ -299,6 +299,10 @@ Recommend adding a physical power switch as this will continually drain the batt
 
 ## Change Log
 
+### V1.53
+- Add support for hardware build that utilises a bare EC11 rotary encoder (with no physical resistor pullups) in place of the KY040 encoder module (which incorporates physical pullups)
+- This version will switch on GPIO internal pullups if EC11_PULLUPS_REQUIRED is set true in config_buttons.h
+
 ### V1.52
 - Made two changes in main code 1. Comment out random values when displaying battery percentage
 - and 2.Invert logic for the test to display the battery percentage 

@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 1.51";
+const String appVersion = "     Version 1.53";
 
 #ifndef DEVICE_NAME
    #define DEVICE_NAME "WiTcontroller"
@@ -541,6 +541,14 @@ const char ssidPasswordBlankChar = 164;
 
 #ifndef SEARCH_ROSTER_ON_ENTRY_OF_DCC_ADDRESS
   #define SEARCH_ROSTER_ON_ENTRY_OF_DCC_ADDRESS false
+#endif
+
+// *******************************************************************************************************************
+// if bare EC11 rotary encoder is used rather than KY040 then ESP32 GPIO internal pullups must be enabled. Set default to be false
+// as the prototype build used KY040 encoder module that incorporates physical resistors
+
+#ifndef EC11_PULLUPS_REQUIRED
+  #define EC11_PULLUPS_REQUIRED false
 #endif
 
 // *******************************************************************************************************************

@@ -19,6 +19,13 @@
 // increase if you find the encoder buttons bounce (activate twice) or you get speed changes when you press the encoder button
 // #define ROTARY_ENCODER_DEBOUNCE_TIME 200
 
+//Internal GPIO pullups required if the hardware build utilises a bare EC11 rotary encoder in place of a
+//KY040 encoder module. (The encoder module has physical pullups fitted)
+//true = bare EC11 used for hardware build WITHOUT any physical pullups, GPIO pullups will ne enabled in main
+//false = KY040 module used in hardware build OR bare EC11 used but with physical pullup resistors (default false)
+
+#define EC11_PULLUPS_REQUIRED         false
+
 // ********************************************************************************************
 
 // define what each button will do as direct press (not in a menu)   * and # cannot be remapped
