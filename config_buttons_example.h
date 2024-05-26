@@ -256,7 +256,10 @@
 // *******************************************************************************************************************
 // Battery Test
 // To use a battery test
+//  USE_BATTERY_SLEEP_AT_PERCENT - will put the device to sleep if the battery falls below this level
+//                               - set to 0 (zero) to disable
 //
 // #define USE_BATTERY_TEST true
 // #define USE_BATTERY_TEST_PIN 34
 // #define USE_BATTERY_PERCENT_AS_WELL_AS_ICON false
+// #define USE_BATTERY_SLEEP_AT_PERCENT 3   // will put the device to sleep if the battery falls below this level

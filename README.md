@@ -299,6 +299,9 @@ Recommend adding a physical power switch as this will continually drain the batt
 
 ## Change Log
 
+### V1.53
+- added auto deep sleep on low battery 
+
 ### V1.52
 - Made two changes in main code 1. Comment out random values when displaying battery percentage
 - and 2.Invert logic for the test to display the battery percentage 

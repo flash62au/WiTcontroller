@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 1.51";
+const String appVersion = "              v1.53";
 
 #ifndef DEVICE_NAME
    #define DEVICE_NAME "WiTcontroller"
@@ -165,6 +165,9 @@ const int last_oled_screen_direct_commands =  9;
 #ifndef MSG_AUTO_SLEEP
    #define MSG_AUTO_SLEEP               "Waited too long for Select"
 #endif
+#ifndef MSG_BATTERY_SLEEP
+   #define MSG_BATTERY_SLEEP            "Battery critically low"
+#endif
 #ifndef MSG_START_SLEEP
    #define MSG_START_SLEEP              "Shutting Down.        E.btn ON"
 #endif
@@ -193,18 +196,17 @@ const int last_oled_screen_direct_commands =  9;
    #define MSG_HEARTBEAT_CHECK_DISABLED "Heartbeat Check Disabled"
 #endif
 
-// const String label_locos = "Locos: ";
-// const String label_speed = "Speed: ";
 const String label_track_power = "TRK";
-// const String label_unknown = "?";
-// const String label_on = "On" ;
-// const String label_off = "Off";
 
 const int glyph_heartbeat_off = 0x00b7;
 const int glyph_track_power = 0x00eb;
 const int glyph_speed_step = 0x00d6;
 // const int glyph_direction_forward = 0x0070;
 // const int glyph_direction_reverse = 0x006d;
+
+#define SLEEP_REASON_COMMAND 0
+#define SLEEP_REASON_INACTIVITY 1
+#define SLEEP_REASON_BATTERY 2
 
 #define KEYPAD_USE_OPERATION 0
 #define KEYPAD_USE_SELECT_SSID 1
@@ -688,4 +690,7 @@ const char ssidPasswordBlankChar = 164;
 #endif
 #ifndef USE_BATTERY_PERCENT_AS_WELL_AS_ICON
    #define USE_BATTERY_PERCENT_AS_WELL_AS_ICON false
+#endif
+#ifndef USE_BATTERY_SLEEP_AT_PERCENT
+   #define USE_BATTERY_SLEEP_AT_PERCENT 3
 #endif

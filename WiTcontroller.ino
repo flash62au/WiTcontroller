@@ -13,9 +13,9 @@
 #include <AiEsp32RotaryEncoder.h> // https://github.com/igorantolic/ai-esp32-rotary-encoder                    GPL 2.0
 #include <Keypad.h>               // https://www.arduinolibraries.info/libraries/keypad                        GPL 3.0
 #include <U8g2lib.h>              // https://github.com/olikraus/u8g2  (Just get "U8g2" via the Arduino IDE Library Manager)   new-bsd
-#include "Pangodream_18650_CL.h"
 #include <string>
 
+#include "Pangodream_18650_CL.h"
 #include "config_network.h"      // LAN networks (SSIDs and passwords)
 #include "config_buttons.h"      // keypad buttons assignments
 #include "config_keypad_etc.h"   // hardware config - GPIOs - keypad, encoder; oled display type
@@ -860,8 +860,8 @@ void connectWitServer() {
   debug_println("Connecting to the server...");
   clearOledArray(); 
   setAppnameForOled(); 
-  oledText[1] = selectedWitServerIP.toString() + " : " + String(selectedWitServerPort); 
-  oledText[2] = selectedWitServerName; oledText[3] + MSG_CONNECTING;
+  oledText[1] = "      " + selectedWitServerIP.toString() + " : " + String(selectedWitServerPort); 
+  oledText[2] = "      " + selectedWitServerName; oledText[3] + MSG_CONNECTING;
   writeOledArray(false, false, true, true);
 
   if (!client.connect(selectedWitServerIP, selectedWitServerPort)) {
@@ -898,6 +898,8 @@ void connectWitServer() {
       setMenuTextForOled(menu_menu_hash_is_functions);
     }
     writeOledArray(false, false, true, true);
+    writeOledBattery();
+    u8g2.sendBuffer();
 
     keypadUseType = KEYPAD_USE_OPERATION;
   }
@@ -1188,6 +1190,9 @@ void batteryTest_loop() {
       if ( (keypadUseType==KEYPAD_USE_OPERATION) && (!menuIsShowing)) {
         writeOledSpeed();
       }
+    }
+    if (lastBatteryTestValue<USE_BATTERY_SLEEP_AT_PERCENT) { // shutdown if <3% battery
+      deepSleepStart(SLEEP_REASON_BATTERY);
     }
   }
 }
@@ -2863,35 +2868,7 @@ void writeOledSpeed() {
     u8g2.drawStr(2,15, String(currentThrottleIndex+1).c_str());
   }
 
-  if (useBatteryTest) {
-    //int lastBatteryTestValue = random(0,100);
-    u8g2.setFont(FONT_HEARTBEAT);
-    u8g2.setDrawColor(1);
-    u8g2.drawStr(1, 30, String("Z").c_str());
-    if (lastBatteryTestValue>10) u8g2.drawLine(2, 24, 2, 27);
-    if (lastBatteryTestValue>25) u8g2.drawLine(3, 24, 3, 27);
-    if (lastBatteryTestValue>50) u8g2.drawLine(4, 24, 4, 27);
-    if (lastBatteryTestValue>75) u8g2.drawLine(5, 24, 5, 27);
-    if (lastBatteryTestValue>90) u8g2.drawLine(6, 24, 6, 27);
-    
-    u8g2.setFont(FONT_FUNCTION_INDICATORS);
-    if (useBatteryPercentAsWellAsIcon) {
-      u8g2.drawStr(1,22, String(String(lastBatteryTestValue)+"%").c_str());
-    }
-    if(lastBatteryTestValue<4) {
-      u8g2.drawStr(11,29, String("LOW").c_str());
-    }
-  }
-
-  if (speedStep != currentSpeedStep[currentThrottleIndex]) {
-    // oledText[3] = "X " + String(speedStepCurrentMultiplier);
-    u8g2.setDrawColor(1);
-    u8g2.setFont(FONT_SPEED_STEP);
-    u8g2.drawGlyph(1, 38, glyph_speed_step);
-    u8g2.setFont(FONT_DEFAULT);
-    // u8g2.drawStr(0, 37, ("X " + String(speedStepCurrentMultiplier)).c_str());
-    u8g2.drawStr(9, 37, String(speedStepCurrentMultiplier).c_str());
-  }
+  writeOledBattery();
 
   if (trackPower == PowerOn) {
     // u8g2.drawBox(0,41,15,8);
@@ -2934,6 +2911,38 @@ void writeOledSpeed() {
   u8g2.sendBuffer();
 
   // debug_println("writeOledSpeed(): end");
+}
+
+void writeOledBattery() {
+    if (useBatteryTest) {
+    //int lastBatteryTestValue = random(0,100);
+    u8g2.setFont(FONT_HEARTBEAT);
+    u8g2.setDrawColor(1);
+    u8g2.drawStr(1, 30, String("Z").c_str());
+    if (lastBatteryTestValue>10) u8g2.drawLine(2, 24, 2, 27);
+    if (lastBatteryTestValue>25) u8g2.drawLine(3, 24, 3, 27);
+    if (lastBatteryTestValue>50) u8g2.drawLine(4, 24, 4, 27);
+    if (lastBatteryTestValue>75) u8g2.drawLine(5, 24, 5, 27);
+    if (lastBatteryTestValue>90) u8g2.drawLine(6, 24, 6, 27);
+    
+    u8g2.setFont(FONT_FUNCTION_INDICATORS);
+    if (useBatteryPercentAsWellAsIcon) {
+      u8g2.drawStr(1,22, String(String(lastBatteryTestValue)+"%").c_str());
+    }
+    if(lastBatteryTestValue<5) {
+      u8g2.drawStr(11,29, String("LOW").c_str());
+    }
+  }
+
+  if (speedStep != currentSpeedStep[currentThrottleIndex]) {
+    // oledText[3] = "X " + String(speedStepCurrentMultiplier);
+    u8g2.setDrawColor(1);
+    u8g2.setFont(FONT_SPEED_STEP);
+    u8g2.drawGlyph(1, 38, glyph_speed_step);
+    u8g2.setFont(FONT_DEFAULT);
+    // u8g2.drawStr(0, 37, ("X " + String(speedStepCurrentMultiplier)).c_str());
+    u8g2.drawStr(9, 37, String(speedStepCurrentMultiplier).c_str());
+  }
 }
 
 void writeOledFunctions() {
@@ -3063,15 +3072,18 @@ void writeOledDirectCommands() {
 // *********************************************************************************
 
 void deepSleepStart() {
-  deepSleepStart(false);
+  deepSleepStart(SLEEP_REASON_COMMAND);
 }
 
-void deepSleepStart(bool autoShutdown) {
+void deepSleepStart(int shutdownReason) {
   clearOledArray(); 
   setAppnameForOled();
   int delayPeriod = 2000;
-  if (autoShutdown) {
+  if (shutdownReason==SLEEP_REASON_INACTIVITY) {
     oledText[2] = MSG_AUTO_SLEEP;
+    delayPeriod = 10000;
+  } else if (shutdownReason==SLEEP_REASON_BATTERY) {
+    oledText[2] = MSG_BATTERY_SLEEP;
     delayPeriod = 10000;
   }
   oledText[3] = MSG_START_SLEEP;
