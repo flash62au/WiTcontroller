@@ -546,6 +546,14 @@ const char ssidPasswordBlankChar = 164;
 #endif
 
 // *******************************************************************************************************************
+// if bare EC11 rotary encoder is used rather than KY040 then ESP32 GPIO internal pullups must be enabled. Set default to be false
+// as the prototype build used KY040 encoder module that incorporates physical resistors
+
+#ifndef EC11_PULLUPS_REQUIRED
+  #define EC11_PULLUPS_REQUIRED false
+#endif
+
+// *******************************************************************************************************************
 // consists follow functions
 #ifndef CONSIST_FUNCTION_FOLLOW_F0
     #define CONSIST_FUNCTION_FOLLOW_F0                  CONSIST_ALL_LOCOS            // lights

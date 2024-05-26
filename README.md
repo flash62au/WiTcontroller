@@ -300,6 +300,8 @@ Recommend adding a physical power switch as this will continually drain the batt
 ## Change Log
 
 ### V1.53
+- Add support for hardware build that utilises a bare EC11 rotary encoder (with no physical resistor pullups) in place of the KY040 encoder module (which incorporates physical pullups)
+- This version will switch on GPIO internal pullups if EC11_PULLUPS_REQUIRED is set true in config_buttons.h
 - added auto deep sleep on low battery 
 
 ### V1.52

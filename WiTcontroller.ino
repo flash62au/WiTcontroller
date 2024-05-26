@@ -1308,6 +1308,13 @@ void setup() {
   //rotaryEncoder.disableAcceleration(); //acceleration is now enabled by default - disable if you don't need it
   rotaryEncoder.setAcceleration(100); //or set the value - larger number = more acceleration; 0 or 1 means disabled acceleration
 
+  //if EC11 is used in hardware build WITHOUT physical pullup resistore, then make then enable GPIO pullups on EC11 A and B inputs
+  if (EC11_PULLUPS_REQUIRED) {
+    // debug_println("EC11 A and B input pins, enabling GPIO pullups " );
+    pinMode(ROTARY_ENCODER_A_PIN, INPUT_PULLUP);
+    pinMode(ROTARY_ENCODER_B_PIN, INPUT_PULLUP);
+  }
+
   keypad.addEventListener(keypadEvent); // Add an event listener for this keypad
   keypad.setDebounceTime(KEYPAD_DEBOUNCE_TIME);
   keypad.setHoldTime(KEYPAD_HOLD_TIME);
