@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "     Version 1.45";
+const String appVersion = "    Version 1.45";
 
 #ifndef DEVICE_NAME
    #define DEVICE_NAME "WiTcontroller"
@@ -20,9 +20,19 @@ const String appVersion = "     Version 1.45";
 #ifndef MENU_TEXT_SHOW_DIRECT
    #define MENU_TEXT_SHOW_DIRECT               "                  # Show Direct"
 #endif
+
+#define MENU_TEXT_ROSTER                    "* Cancel    0-9     #Pg"
+#define MENU_TEXT_TURNOUT_LIST              "* Cancel    0-9     #Pg"
+#define MENU_TEXT_TURNOUT_LIST              "* Cancel    0-9     #Pg"
+#define MENU_TEXT_ROUTE_LIST                "* Cancel    0-9     #Pg"
+#define MENU_TEXT_SELECT_WIT_SERVICE        "0-9 # Entry E.btn OFF" // HMX 2024-05-12
+#define MENU_TEXT_SELECT_SSIDS_FROM_FOUND   "0-9 *:List  #:Pg"
+//___________________________________________012345678901234567890________
+
 #ifndef MENU_TEXT_ROSTER
    #define MENU_TEXT_ROSTER                    "* Cancel      0-9      #Pg"
 #endif
+
 #ifndef MENU_TEXT_TURNOUT_LIST
    #define MENU_TEXT_TURNOUT_LIST              "* Cancel      0-9      #Pg"
 #endif
@@ -42,7 +52,7 @@ const String appVersion = "     Version 1.45";
    #define MENU_TEXT_SELECT_SSIDS              "0-9     # Search      E.btn OFF"
 #endif
 #ifndef MENU_TEXT_SELECT_SSIDS_FROM_FOUND
-   #define MENU_TEXT_SELECT_SSIDS_FROM_FOUND   "0-4    9 List  # Pg   E.btn OFF"
+   #define MENU_TEXT_SELECT_SSIDS_FROM_FOUND   "0-9  * List  # Pg  E.btn OFF"
 #endif
 #ifndef MENU_TEXT_ENTER_SSID_PASSWORD
    #define MENU_TEXT_ENTER_SSID_PASSWORD       "E Chrs  E.btn Slct  # Go  * Bck"
@@ -168,8 +178,12 @@ const int last_oled_screen_direct_commands =  9;
 #ifndef MSG_START_SLEEP
    #define MSG_START_SLEEP              "Shutting Down.        E.btn ON"
 #endif
+
+#define MSG_THROTTLE_NUMBER          "    Throttle #" // HMX 1014-05-12
+#define MSG_NO_LOCO_SELECTED         "  No Loco selected" // HMX 1014-05-12
+
 #ifndef MSG_THROTTLE_NUMBER
-   #define MSG_THROTTLE_NUMBER          "          Throttle #"
+   #define MSG_THROTTLE_NUMBER          "           Throttle #"
 #endif
 #ifndef MSG_NO_LOCO_SELECTED
    #define MSG_NO_LOCO_SELECTED         "        No Loco selected"
@@ -409,7 +423,8 @@ const String extraSubMenuText[8] = {
 #ifdef SPEED_STEP
   const int speedStep = SPEED_STEP;
 #else
-  const int speedStep = 4;
+  // const int speedStep = 4;
+ 
 #endif
 #ifdef SPEED_STEP_MULTIPLIER
   const int speedStepMultiplier = SPEED_STEP_MULTIPLIER;  // for 'fast' speed steps
@@ -454,6 +469,8 @@ const char ssidPasswordBlankChar = 164;
 
 // *******************************************************************************************************************
 
+#ifndef ST7735 // HMX 2024-05-12 
+
 #define FONT_DEFAULT u8g2_font_NokiaSmallPlain_tf
 #define FONT_FUNCTION_INDICATORS u8g2_font_tiny_simon_tr
 #define FONT_THROTTLE_NUMBER u8g2_font_neuecraft_tr
@@ -466,6 +483,8 @@ const char ssidPasswordBlankChar = 164;
 #define FONT_HEARTBEAT u8g2_font_open_iconic_all_1x_t
 #define FONT_SPEED_STEP u8g2_font_open_iconic_all_1x_t
 #define FONT_NEXT_THROTTLE u8g2_font_6x12_m_symbols
+
+#endif
 
 // *******************************************************************************************************************
 
@@ -574,7 +593,7 @@ const char ssidPasswordBlankChar = 164;
 
 // *******************************************************************************************************************
 // OLED
-
+#ifndef ST7735
 #ifdef U8X8_HAVE_HW_SPI
     #include <SPI.h>                       // add to include path [Arduino install]\hardware\arduino\avr\libraries\SPI\src
 #endif
@@ -589,6 +608,7 @@ const char ssidPasswordBlankChar = 164;
   U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 9, /* data=*/ 8); // HMX 2023-08-
 #else
     OLED_TYPE
+#endif
 #endif
 
 // *******************************************************************************************************************

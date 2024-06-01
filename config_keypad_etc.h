@@ -3,12 +3,12 @@
 // *******************************************************************************************************************
 // encoder
 
-// HMX P004/P008 ESP32C3
-#ifdef HMX_P008
-#define ROTARY_ENCODER_A_PIN 4
+// HMX P026 ESP32C3
+#ifdef HMX_P026
+#define ROTARY_ENCODER_A_PIN 18
 #define ROTARY_ENCODER_B_PIN 19
-#define ROTARY_ENCODER_BUTTON_PIN 20
-#define ROTARY_ENCODER_VCC_PIN -1
+#define ROTARY_ENCODER_BUTTON_PIN 9
+#define ROTARY_ENCODER_VCC_PIN 0
 #define ROTARY_ENCODER_STEPS 1
 #endif
 
@@ -34,13 +34,13 @@
 // keypad
 
 
-// HMX P008 4x3 keypad
-#ifdef HMX_P008
-#define ROW_NUM     3 // four rows
-#define COLUMN_NUM  4 // four columns
-#define KEYPAD_KEYS  { '1', '4', '7', '*' },  { '2', '5', '8', '0' },  { '3', '6', '9', '#' }
-#define KEYPAD_ROW_PINS {1, 10, 7} // GIOP19, GIOP18, GIOP5, GIOP17 connect to the row pins
-#define KEYPAD_COLUMN_PINS { 6, 5, 18, 21} // GIOP16, GIOP4, GIOP0 connect to the column pins
+// HMX P026 4x3 keypad HMX 2024-05-12 
+#ifdef HMX_P026
+#define ROW_NUM     4 // four rows
+#define COLUMN_NUM  3 // four columns
+#define KEYPAD_KEYS  {'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}, {'*', '0', '#'}
+#define KEYPAD_ROW_PINS  { 2, 1, 10, 8 } //  connect to the row pins
+#define KEYPAD_COLUMN_PINS { 3, 20, 21 } // connect to the column pins
 #endif
 
 // 4x3 keypad

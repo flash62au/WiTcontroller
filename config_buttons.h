@@ -70,7 +70,7 @@
 
 // speed increase for each click of the encoder 
 
-#define SPEED_STEP                       4
+#define SPEED_STEP                       1          // HMX 2024-06-01
 #define SPEED_STEP_MULTIPLIER            3          // for 'fast' speed steps
 
 // Additional multiplier.  If the multiplier is enabled from the menu, each rotation of the encoder becomes the speedStep * the AdditionalMultiplier

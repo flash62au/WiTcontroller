@@ -3,20 +3,35 @@ This repository ported Mr Peter Akers' WiTcontroller to ESP32C3.
 config has been modified to match HMX P-004 and P-008.
  */
 
+/*
+ * 2024-05-12 Change to ST7735 128x128 TFT Display
+ * 
+ * 
+ * 
+ * 
+ * 
+*/
+
 #define ESP32C3 // HMX 2023-08-14
-#define HMX_P008 // HMX 2023-08-14
+#define ST7735 // HMX 2024-05-12
+#define HMX_P026 // HMX 2024-05-12
 
 #include <WiFi.h>                 // https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi     GPL 2.1
 #include <ESPmDNS.h>              // https://github.com/espressif/arduino-esp32/blob/master/libraries/ESPmDNS (You should be able to download it from here https://github.com/espressif/arduino-esp32 Then unzip it and copy 'just' the ESPmDNS folder to your own libraries folder )
 #include <WiThrottleProtocol.h>   // https://github.com/flash62au/WiThrottleProtocol                           Creative Commons 4.0  Attribution-ShareAlike
 #ifdef ESP32C3 // HMX 2023-08-14
 #include <RotaryEncoder.h>        // https://www.mathertel.de/Arduino/RotaryEncoderLibrary.aspx
-#endif 
-#ifndef ESP32C3 // HMX 2023-08-14
+#else
 #include <AiEsp32RotaryEncoder.h> // https://github.com/igorantolic/ai-esp32-rotary-encoder                    GPL 2.0
 #endif 
 #include <Keypad.h>               // https://www.arduinolibraries.info/libraries/keypad                        GPL 3.0
+#ifdef ST7735 
+#include <TFT_eSPI.h> // HMX 2023-OCT-29 Graphics and font library for ST7735 driver chip
+#include <SPI.h>  // HMX 2023-OCT-29 for ST7735
+#else
 #include <U8g2lib.h>              // https://github.com/olikraus/u8g2  (Just get "U8g2" via the Arduino IDE Library Manager)   new-bsd
+#endif 
+
 #include <string>
 
 #include "config_network.h"      // LAN networks (SSIDs and passwords)
@@ -37,6 +52,23 @@ config has been modified to match HMX P-004 and P-008.
  #define debug_println(...)
  #define debug_printf(...)
 #endif
+
+#ifdef ST7735 
+// Color definitions // HMX 2023-OCT-29 for ST7735
+#define BLACK    0x0000
+#define RED      0x001F
+#define BLUE     0xF800
+#define GREEN    0x07E0
+#define CYAN     0x07FF
+#define MAGENTA  0xF81F
+#define YELLOW   0xFFE0
+#define WHITE    0xFFFF
+#define GREY     0x5AEB
+
+// TFT Display // HMX 2023-OCT-29 for ST7735
+TFT_eSPI tft = TFT_eSPI();  // Invoke library, pins defined in User_Setup.h
+TFT_eSprite buf = TFT_eSprite(&tft);
+#endif 
 
 // *********************************************************************************
 
@@ -1057,17 +1089,21 @@ void HMX_rotary_loop() {
     if (encoderUseType == ENCODER_USE_OPERATION) {
       if (wiThrottleProtocol.getNumberOfLocomotives(currentThrottleIndexChar) > 0) {
         if (encoderValue > lastEncoderValue) {
-          if (abs(encoderValue - lastEncoderValue) < 2) {
+          //if (abs(encoderValue - lastEncoderValue) < 2) {
+          if (abs(encoderValue - lastEncoderValue) < 3) { // HMX 2024-06-01
             encoderSpeedChange(true, currentSpeedStep[currentThrottleIndex]);
-          } else if (abs(encoderValue - lastEncoderValue) < 3) {
+          //} else if (abs(encoderValue - lastEncoderValue) < 3) {
+          } else if (abs(encoderValue - lastEncoderValue) < 5) { // HMX 2024-06-01
             encoderSpeedChange(true, currentSpeedStep[currentThrottleIndex]*speedStepMultiplier);
           } else {
             encoderSpeedChange(true, currentSpeedStep[currentThrottleIndex]*speedStepMultiplier * 2);
           }
         } else {
-          if (abs(encoderValue - lastEncoderValue) < 2) {
+          //if (abs(encoderValue - lastEncoderValue) < 2) {
+          if (abs(encoderValue - lastEncoderValue) < 3) { // HMX 2024-06-01
             encoderSpeedChange(false, currentSpeedStep[currentThrottleIndex]);
-          } else if (abs(encoderValue - lastEncoderValue) < 3) {
+          //} else if (abs(encoderValue - lastEncoderValue) < 3) {
+          } else if (abs(encoderValue - lastEncoderValue) < 5) { // HMX 2024-06-01
             encoderSpeedChange(false, currentSpeedStep[currentThrottleIndex]*speedStepMultiplier);
           } else {
             encoderSpeedChange(false, currentSpeedStep[currentThrottleIndex]*speedStepMultiplier * 2);
@@ -1281,14 +1317,52 @@ void additionalButtonLoop() {
   }
 }
 
+#ifdef ST7735
+// *********************************************************************************
+//  tft
+// *********************************************************************************
+
+// HMX 2023-OCT-29
+
+void clearScreen() {
+  tft.fillScreen(BLACK);
+}
+
+void clearBuffer() {
+  buf.fillSprite(BLACK);
+}
+
+void pushBuffer() {
+  buf.pushSprite(0, 0);
+  clearBuffer();
+}
+
+void setupTFT() {
+  tft.init();
+  tft.setRotation(0);
+  clearScreen();
+  tft.setTextColor(WHITE);
+
+  buf.setColorDepth(1);
+  buf.createSprite(128, 128);
+  clearBuffer();
+  pushBuffer();
+}
+#endif
+
 // *********************************************************************************
 //  Setup and Loop
 // *********************************************************************************
 
 void setup() {
+
+#ifdef ST7735 
+  setupTFT();
+#else
   Serial.begin(115200);
   u8g2.begin();
   // i2cSetClock(0,400000);
+#endif
 
   clearOledArray(); oledText[0] = appName; oledText[6] = appVersion; oledText[2] = MSG_START;
   writeOledArray(false, false, true, true);
@@ -1324,12 +1398,17 @@ void setup() {
   encoderUseType = ENCODER_USE_OPERATION;
   ssidSelectionSource = SSID_CONNECTION_SOURCE_BROWSE;
 
-#ifndef HMX_P008 // HMX 2023-08-14
+#ifndef HMX_P026 // HMX 2023-08-14
   initialiseAdditionalButtons();
+#endif
+
+#ifdef HMX_P026
+//  pinMode(ROTARY_ENCODER_BUTTON_PIN, INPUT_PULLUP); // HMX 2023-OCT-29 R3
 #endif
 
   resetAllFunctionLabels();
   resetAllFunctionFollow();
+
 
   for (int i=0; i< 6; i++) {
     currentSpeed[i] = 0;
@@ -1363,12 +1442,11 @@ void loop() {
   keypad.getKey();
 #ifdef ESP32C3 // HMX 2023-08-14
   HMX_rotary_loop();
-#endif // HMX 2023-08-14
-#ifndef ESP32C3 // HMX 2023-08-14
+#else
   rotary_loop();
-#endif // HMX 2023-08-14
+#endif 
 
-#ifndef HMX_P008 // HMX 2023-08-14
+#ifndef HMX_P026 // HMX 2023-08-14
   additionalButtonLoop(); 
 #endif // HMX 2023-08-14
 
@@ -1540,11 +1618,15 @@ void doKeyPress(char key, boolean pressed) {
         debug_print("key ssid from found... "); debug_println(key);
         switch (key){
           case '0': case '1': case '2': case '3': case '4': 
-            selectSsidFromFound(key - '0'+(page*5));
+          case '5': case '6': case '7': case '8': case '9': // HMX 2024-05-12
+            // selectSsidFromFound(key - '0'+(page*5));
+            selectSsidFromFound(key - '0'+(page*10));
             break;
           case '#': // next page
-            if (foundSsidsCount>5) {
-              if ( (page+1)*5 < foundSsidsCount ) {
+            //if (foundSsidsCount>5) {
+              // if ( (page+1)*5 < foundSsidsCount ) {
+            if (foundSsidsCount>10) {
+              if ( (page+1)*10 < foundSsidsCount ) {
                 page++;
               } else {
                 page = 0;
@@ -1552,7 +1634,7 @@ void doKeyPress(char key, boolean pressed) {
               writeOledFoundSSids(""); 
             }
             break;
-          case '9': // show in code list of SSIDs
+          case '*': // show in code list of SSIDs
             ssidConnectionState = CONNECTION_STATE_DISCONNECTED;
             keypadUseType = KEYPAD_USE_SELECT_SSID;
             ssidSelectionSource = SSID_CONNECTION_SOURCE_LIST;
@@ -2485,6 +2567,7 @@ void selectEditConsistList(int selection) {
 //  oLED functions
 // *********************************************************************************
 
+#ifndef ST7735 // HMX 2024-05-12 
 void setAppnameForOled() {
   oledText[0] = appName; oledText[6] = appVersion; 
 }
@@ -3068,6 +3151,7 @@ void writeOledDirectCommands() {
   writeOledArray(true, false);
   menuCommandStarted = false;
 }
+#endif
 
 // *********************************************************************************
 
@@ -3087,6 +3171,8 @@ void deepSleepStart(bool autoShutdown) {
   writeOledArray(false, false, true, true);
   delay(delayPeriod);
 
+#ifndef ST7735
   u8g2.setPowerSave(1);
+#endif
   esp_deep_sleep_start();
 }
