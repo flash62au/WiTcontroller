@@ -860,8 +860,8 @@ void connectWitServer() {
   debug_println("Connecting to the server...");
   clearOledArray(); 
   setAppnameForOled(); 
-  oledText[1] = "      " + selectedWitServerIP.toString() + " : " + String(selectedWitServerPort); 
-  oledText[2] = "      " + selectedWitServerName; oledText[3] + MSG_CONNECTING;
+  oledText[1] = "        " + selectedWitServerIP.toString() + " : " + String(selectedWitServerPort); 
+  oledText[2] = "        " + selectedWitServerName; oledText[3] + MSG_CONNECTING;
   writeOledArray(false, false, true, true);
 
   if (!client.connect(selectedWitServerIP, selectedWitServerPort)) {

@@ -255,7 +255,7 @@ Note: you need to edit config_buttons.h to alter these assignments   (copy confi
 
 ### instructions for optional use of a potentiometer (pot) instead of the encoder for the throttle
 
-confg_buttons.h can include the following optional defines:
+config_buttons.h can include the following optional defines:
 
   * \#define USE_ROTARY_ENCODER_FOR_THROTTLE false
   * \#define THROTTLE_POT_PIN 39
@@ -298,6 +298,9 @@ Recommend adding a physical power switch as this will continually drain the batt
 ---
 
 ## Change Log
+
+### V1.54
+- minor format change 
 
 ### V1.53
 - Add support for hardware build that utilises a bare EC11 rotary encoder (with no physical resistor pullups) in place of the KY040 encoder module (which incorporates physical pullups)
