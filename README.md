@@ -1,8 +1,6 @@
-# WiTcontroller for ESP32C3
+# WiTcontroller for ESP32C3 and ST7735
 
 < Sttile under Modification >
-
-< まだ未完成です！ >
 
 I modified Mr Peter Akers' WiTcontroller so that it can be used with ESP32C3.
 I should express my respect for his great accomplishment.
@@ -24,14 +22,15 @@ Compared to ESP32, it has the following limitations:<BR>
 ESP32とに比較として次の制限があります。<BR>
 ・I/Oの数が限定されるために拡張性がありません。<BR>
 ・スリープからの復帰には電源の再投入が必要です。<BR>
+・ST7735のLED電源はきれません。つまり手動でOFFしてください。<BR>
 
 ---
-## HMX P008
+## HMX P026
 *Photo01*
-![Photo](HMX_P008_Photo01.jpg)
+![Photo](HMX_P026_Photo01.jpg)
 
 *Photo02*
-![Wire Drawing](HMX_P004_DWG.jpg)
+![Wire Drawing](HMX_P026_DWG.jpg)
 
 ## Prerequisites
 TBA
