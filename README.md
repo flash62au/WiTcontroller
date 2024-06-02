@@ -139,7 +139,7 @@ Notes:
 - Rudimentary on-the-fly consists
 - Assign commands directly to the 1-9 buttons (in the sketch) (see list below)
   - This is done in config_button.h
-  - Latching / non-latching for the function is provided by the roster entry of wiThrottle server
+  - Latching / non-latching for the function is provided by the roster entry of WiThrottle server
 - Optionally use a potentiometer (pot) instead of the rotary encoder
 - Optional ability to assign commands directly to the 1-7 additional buttons (in the sketch) (see list below)
   - These are defined config_button.h
@@ -253,6 +253,8 @@ Note: you need to edit config_buttons.h to alter these assignments   (copy confi
 - MAX_THROTTLE_INCREASE    - change the number of available throttles on-the-fly
 - MAX_THROTTLE_DECREASE    - change the number of available throttles on-the-fly
 
+---
+
 ### instructions for optional use of a potentiometer (pot) instead of the encoder for the throttle
 
 config_buttons.h can include the following optional defines:
@@ -285,7 +287,9 @@ config_buttons.h can include the following optional defines:
 
   Sumner Patterson is developing an app to help find the appropriate pot values for the ``THROTTLE_POT_NOTCH_VALUES``.
 
-### instructions for optional use of a voltage divider to show the battery charge level
+---
+
+### Instructions for optional use of a voltage divider to show the battery charge level
 
 TBA
 
