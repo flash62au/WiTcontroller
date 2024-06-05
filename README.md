@@ -269,8 +269,6 @@ config_buttons.h can include the following optional defines:
 
   You must specify the PIN to be used.  Currently PINs 34, 35 and 39 are the only ones that cannot be used by the app for other purposes, so these are the safest to use.  This should be connected to the centre pin of the pot. The 3v and GND should be connected to the outer pins of the pot.
 
-    Note that eventually the app will upgraded to support a brake and reverser pots.  These will use pins 34 and 35 by default.
-
   The pot can be set to have 8 defined 'notches' (the default) or just a linear value.
 
   If you want to have the 8 notches:
@@ -293,7 +291,7 @@ config_buttons.h can include the following optional defines:
 
 TBA
 
-Recommend adding a physical power switch as this will continually drain the battery, even when no being used.
+Recommend adding a physical power switch as this will continually drain the battery, even when not being used.
 
 *Pinouts for Optional Battery Monitor*
 ![Assembly diagram - Optional Battery Monitor](WiTcontroller%20-%20Optional%20battery%20monitor.png)
