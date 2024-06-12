@@ -148,13 +148,13 @@
 // *******************************************************************************************************************
 // Debugging
 
-// DccExController console debug messages are ENABLED by default
+// WiTcontroller console debug messages are ENABLED by default
 // to disable to console messages, uncomment and set the following to  1    (i.e. 0 = on  1 = off)
-// #define DCCEXCONTROLLER_DEBUG    0
+// #define WITCONTROLLER_DEBUG    0
 
-// DCCEXProtocol console debug messages are DISABLED by default
+// WiThrottle Protocol console debug messages are DISABLED by default
 // to enable to console messages, uncomment and set the following to  0    (i.e. 0 = on  1 = off)
-// #define DCCEXPROTOCOL_DEBUG    1
+// #define WITHROTTLE_PROTOCOL_DEBUG    1
 
 // *******************************************************************************************************************
 // Default latching/momentary functions - Direct mapping only 
