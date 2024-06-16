@@ -741,3 +741,16 @@ const char ssidPasswordBlankChar = 164;
 #ifndef USE_BATTERY_SLEEP_AT_PERCENT
    #define USE_BATTERY_SLEEP_AT_PERCENT 3
 #endif
+
+// ***************************************************
+//  ESPmDNS problem
+
+#ifndef USING_OLDER_ESPMDNS
+   #define USING_OLDER_ESPMDNS false
+#endif
+
+#if USING_OLDER_ESPMDNS == true
+  #define ESPMDNS_IP_ATTRIBUTE_NAME MDNS.IP(i)
+#else
+  #define ESPMDNS_IP_ATTRIBUTE_NAME MDNS.address(i)
+#endif
