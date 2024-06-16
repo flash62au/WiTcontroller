@@ -62,6 +62,9 @@ Notes:
 
 ## Loading the code
 
+**WARNING!**
+The latest versions of the ESP32 Board Library (3.0.0 and later) have renamed an attribute. The code has been modified to reflect this.  If you are using an earlier version then you need to include the define ``#define USING_OLDER_ESPMDNS true``
+
 1. Download the Arduino IDE.  
     * Available from  https://support.arduino.cc/hc/en-us/articles/360019833020-Download-and-install-Arduino-IDE
 2. Download the esp32 boards in the Arduino IDE.

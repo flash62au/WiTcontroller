@@ -627,10 +627,44 @@ const char ssidPasswordBlankChar = 164;
    #define CUSTOM_COMMAND_7 ""
 #endif 
 
-
-
 // *******************************************************************************************************************
-// defult direct functions
+// default direct functions
+
+// Labels that will appear in the UI
+// These should match the actual  command below
+
+#ifndef CHOSEN_KEYPAD_0_DISPLAY_NAME
+   #define CHOSEN_KEYPAD_0_DISPLAY_NAME "0 Lights"
+#endif
+#ifndef CHOSEN_KEYPAD_1_DISPLAY_NAME
+   #define CHOSEN_KEYPAD_1_DISPLAY_NAME "1 Bell"
+#endif
+#ifndef CHOSEN_KEYPAD_2_DISPLAY_NAME
+   #define CHOSEN_KEYPAD_2_DISPLAY_NAME "2 Horn"
+#endif
+#ifndef CHOSEN_KEYPAD_3_DISPLAY_NAME
+   #define CHOSEN_KEYPAD_3_DISPLAY_NAME "3 F3"
+#endif
+#ifndef CHOSEN_KEYPAD_4_DISPLAY_NAME
+   #define CHOSEN_KEYPAD_4_DISPLAY_NAME "4 F4"
+#endif
+#ifndef CHOSEN_KEYPAD_5_DISPLAY_NAME
+   #define CHOSEN_KEYPAD_5_DISPLAY_NAME "5 Nxt Ttl"
+#endif
+#ifndef CHOSEN_KEYPAD_6_DISPLAY_NAME
+   #define CHOSEN_KEYPAD_6_DISPLAY_NAME "6 X Spd"
+#endif
+#ifndef CHOSEN_KEYPAD_7_DISPLAY_NAME
+   #define CHOSEN_KEYPAD_7_DISPLAY_NAME "7 Rev"
+#endif
+#ifndef CHOSEN_KEYPAD_8_DISPLAY_NAME
+   #define CHOSEN_KEYPAD_8_DISPLAY_NAME "8 Estop"
+#endif
+#ifndef CHOSEN_KEYPAD_9_DISPLAY_NAME
+   #define CHOSEN_KEYPAD_9_DISPLAY_NAME "9 Fwd"
+#endif
+
+// actual commands
 
 #ifndef CHOSEN_KEYPAD_0_FUNCTION
    #define CHOSEN_KEYPAD_0_FUNCTION     FUNCTION_0
@@ -675,6 +709,8 @@ const char ssidPasswordBlankChar = 164;
    #define CHOSEN_KEYPAD_D_FUNCTION     CUSTOM_4
 #endif
    
+// *******************************************************************************************************************
+
 #ifndef USE_ROTARY_ENCODER_FOR_THROTTLE
    #define USE_ROTARY_ENCODER_FOR_THROTTLE true
 #endif
@@ -690,6 +726,9 @@ const char ssidPasswordBlankChar = 164;
 #ifndef THROTTLE_POT_NOTCH_SPEEDS
    #define THROTTLE_POT_NOTCH_SPEEDS {0,18,36,54,72,90,108,127}
 #endif
+
+// *******************************************************************************************************************
+
 #ifndef USE_BATTERY_TEST
    #define USE_BATTERY_TEST false
 #endif

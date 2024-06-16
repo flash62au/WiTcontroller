@@ -1,4 +1,13 @@
 // ********************************************************************************************
+//  ESPmDNS problem
+// 
+// The latest versions of the ESP32 Board Library (3.0.0 and later) have renamed 
+// an atribute. The code has been modified to reflect this.  
+// If you are using an earlier version then you need uncomment the folowing line
+
+// #define USING_OLDER_ESPMDNS true
+
+// ********************************************************************************************
 
 // false = Counter clockwise  true = clockwise
 #define ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED                     false
@@ -29,7 +38,7 @@
 // ********************************************************************************************
 
 // define what each button will do as direct press (not in a menu)   * and # cannot be remapped
-// see static.h or README.md for details on the allowed functions
+// see actions.h or README.md for details on the allowed functions
 
 #define CHOSEN_KEYPAD_0_FUNCTION     FUNCTION_0
 #define CHOSEN_KEYPAD_1_FUNCTION     FUNCTION_1
@@ -69,7 +78,7 @@
 
 // define the number of throttles that you want.
 // to use multiple throttles, one of the keys or buttons will need to be defined as NEXT_THROTTLE.  (keypad 5 is by default)
-// Maximum supported by the DccExController is 6
+// Maximum supported by the WiTcontroller is 6
 
 // #define MAX_THROTTLES                 2          // uncomment and increase the number if you always need more that two throttles
 

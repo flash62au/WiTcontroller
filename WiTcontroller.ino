@@ -15,7 +15,8 @@
 #include <U8g2lib.h>              // https://github.com/olikraus/u8g2  (Just get "U8g2" via the Arduino IDE Library Manager)   new-bsd
 #include <string>
 
-#include "Pangodream_18650_CL.h"
+#include "Pangodream_18650_CL.h"  // https://github.com/pangodream/18650CL  
+
 #include "config_network.h"      // LAN networks (SSIDs and passwords)
 #include "config_buttons.h"      // keypad buttons assignments
 #include "config_keypad_etc.h"   // hardware config - GPIOs - keypad, encoder; oled display type
@@ -775,7 +776,8 @@ void browseWitService() {
   if (noOfWitServices > 0) {
     for (int i = 0; ((i < noOfWitServices) && (i<maxFoundWitServers)); ++i) {
       foundWitServersNames[i] = MDNS.hostname(i);
-      foundWitServersIPs[i] = MDNS.IP(i);
+      // foundWitServersIPs[i] = MDNS.IP(i);
+      foundWitServersIPs[i] = ESPMDNS_IP_ATTRIBUTE_NAME;
       foundWitServersPorts[i] = MDNS.port(i);
       // debug_print("txt 0: key: "); debug_print(MDNS.txtKey(i,0)); debug_print(" value: '"); debug_print(MDNS.txt(i,0)); debug_println("'");
       // debug_print("txt 1: key: "); debug_print(MDNS.txtKey(i,1)); debug_print(" value: '"); debug_print(MDNS.txt(i,1)); debug_println("'");
