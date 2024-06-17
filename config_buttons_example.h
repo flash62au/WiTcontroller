@@ -1,13 +1,4 @@
 // ********************************************************************************************
-//  ESPmDNS problem
-// 
-// The latest versions of the ESP32 Board Library (3.0.0 and later) have renamed 
-// an atribute. The code has been modified to reflect this.  
-// If you are using an earlier version then you need uncomment the folowing line
-
-// #define USING_OLDER_ESPMDNS true
-
-// ********************************************************************************************
 
 // false = Counter clockwise  true = clockwise
 #define ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED                     false

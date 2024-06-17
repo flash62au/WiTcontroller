@@ -62,8 +62,7 @@ Notes:
 
 ## Loading the code
 
-**WARNING!**
-The latest versions of the ESP32 Board Library (3.0.0 and later) have renamed an attribute. The code has been modified to reflect this.  If you are using an earlier version then you need to include the define ``#define USING_OLDER_ESPMDNS true``
+  **WARNING!**
 
 1. Download the Arduino IDE.  
     * Available from  https://support.arduino.cc/hc/en-us/articles/360019833020-Download-and-install-Arduino-IDE
@@ -303,6 +302,9 @@ Recommend adding a physical power switch as this will continually drain the batt
 ---
 
 ## Change Log
+
+### V1.55
+- automated fix the latest versions of the ESP32 Board Library (3.0.0 and later) having renamed an atribute. The code now automatically adjusts for this.  
 
 ### V1.54
 - minor format change 

@@ -2047,6 +2047,7 @@ String getLocoWithLength(String loco) {
 void speedEstop() {
   for (int i=0; i<maxThrottles; i++) {
     wiThrottleProtocol.emergencyStop(getMultiThrottleChar(i));
+    speedSet(getMultiThrottleChar(i),0);
     currentSpeed[i] = 0;
   }
   debug_println("Speed EStop"); 
@@ -2055,7 +2056,7 @@ void speedEstop() {
 
 void speedEstopCurrentLoco() {
   wiThrottleProtocol.emergencyStop(currentThrottleIndexChar);
-  currentSpeed[currentThrottleIndex] = 0;
+  speedSet(currentThrottleIndexChar,0);
   debug_println("Speed EStop Curent Loco"); 
   writeOledSpeed();
 }

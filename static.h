@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "              v1.54";
+const String appVersion = "              v1.55";
 
 #ifndef DEVICE_NAME
    #define DEVICE_NAME "WiTcontroller"
@@ -745,11 +745,17 @@ const char ssidPasswordBlankChar = 164;
 // ***************************************************
 //  ESPmDNS problem
 
-#ifndef USING_OLDER_ESPMDNS
-   #define USING_OLDER_ESPMDNS false
-#endif
+// #ifndef USING_OLDER_ESPMDNS
+//    #define USING_OLDER_ESPMDNS false
+// #endif
 
-#if USING_OLDER_ESPMDNS == true
+// #if USING_OLDER_ESPMDNS == true
+//   #define ESPMDNS_IP_ATTRIBUTE_NAME MDNS.IP(i)
+// #else
+//   #define ESPMDNS_IP_ATTRIBUTE_NAME MDNS.address(i)
+// #endif
+
+#if ESP_IDF_VERSION_MAJOR < 5
   #define ESPMDNS_IP_ATTRIBUTE_NAME MDNS.IP(i)
 #else
   #define ESPMDNS_IP_ATTRIBUTE_NAME MDNS.address(i)
