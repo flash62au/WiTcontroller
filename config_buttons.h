@@ -17,7 +17,8 @@
 
 // rotary encode debounce time
 // increase if you find the encoder buttons bounce (activate twice) or you get speed changes when you press the encoder button
-// #define ROTARY_ENCODER_DEBOUNCE_TIME 200
+// Use for doubleclick // HMX 2024-07-06
+#define ROTARY_ENCODER_DEBOUNCE_TIME 500 // HMX 2024-07-06 (200->500)
 
 // ********************************************************************************************
 
@@ -28,12 +29,12 @@
 #define CHOSEN_KEYPAD_1_FUNCTION     FUNCTION_1
 #define CHOSEN_KEYPAD_2_FUNCTION     FUNCTION_2
 #define CHOSEN_KEYPAD_3_FUNCTION     FUNCTION_3
-#define CHOSEN_KEYPAD_4_FUNCTION     FUNCTION_4
-#define CHOSEN_KEYPAD_5_FUNCTION     NEXT_THROTTLE
-#define CHOSEN_KEYPAD_6_FUNCTION     SPEED_MULTIPLIER
-#define CHOSEN_KEYPAD_7_FUNCTION     DIRECTION_REVERSE
-#define CHOSEN_KEYPAD_8_FUNCTION     E_STOP
-#define CHOSEN_KEYPAD_9_FUNCTION     DIRECTION_FORWARD
+#define CHOSEN_KEYPAD_4_FUNCTION     FUNCTION_4 
+#define CHOSEN_KEYPAD_5_FUNCTION     FUNCTION_5 // HMX 2024-07-06
+#define CHOSEN_KEYPAD_6_FUNCTION     FUNCTION_6 // HMX 2024-07-06
+#define CHOSEN_KEYPAD_7_FUNCTION     FUNCTION_7 // HMX 2024-07-06
+#define CHOSEN_KEYPAD_8_FUNCTION     FUNCTION_8 // HMX 2024-07-06
+#define CHOSEN_KEYPAD_9_FUNCTION     NEXT_THROTTLE // HMX 2024-07-06
 // #define CHOSEN_KEYPAD_A_FUNCTION     CUSTOM_1
 // #define CHOSEN_KEYPAD_B_FUNCTION     CUSTOM_2
 // #define CHOSEN_KEYPAD_C_FUNCTION     CUSTOM_3
@@ -43,15 +44,15 @@
 // if you rearrange the items above, modify this text to suit    * and # cannot be remapped here
 
 #define CHOSEN_KEYPAD_0_DISPLAY_NAME     "0 Lights"
-#define CHOSEN_KEYPAD_1_DISPLAY_NAME     "1 Bell"
+#define CHOSEN_KEYPAD_1_DISPLAY_NAME     "1 Sound"
 #define CHOSEN_KEYPAD_2_DISPLAY_NAME     "2 Horn"
 #define CHOSEN_KEYPAD_3_DISPLAY_NAME     "3 F3"
 #define CHOSEN_KEYPAD_4_DISPLAY_NAME     "4 F4"
-#define CHOSEN_KEYPAD_5_DISPLAY_NAME     "5 Nxt Ttl"
-#define CHOSEN_KEYPAD_6_DISPLAY_NAME     "6 X Spd"
-#define CHOSEN_KEYPAD_7_DISPLAY_NAME     "7 Rev"
-#define CHOSEN_KEYPAD_8_DISPLAY_NAME     "8 Estop"
-#define CHOSEN_KEYPAD_9_DISPLAY_NAME     "9 Fwd"
+#define CHOSEN_KEYPAD_5_DISPLAY_NAME     "5 F5" // HMX 2024-07-06
+#define CHOSEN_KEYPAD_6_DISPLAY_NAME     "6 F6" // HMX 2024-07-06
+#define CHOSEN_KEYPAD_7_DISPLAY_NAME     "7 F7" // HMX 2024-07-06
+#define CHOSEN_KEYPAD_8_DISPLAY_NAME     "8 F8" // HMX 2024-07-06
+#define CHOSEN_KEYPAD_9_DISPLAY_NAME     "9 Nxt Ttl" // HMX 2024-07-06
 
 // by default, # will show the list above. 
 // if you change the following line to true, it will take you to the Loco Function Labels screen directly
@@ -114,7 +115,7 @@
 // refer to https://www.jmri.org/help/en/package/jmri/jmrit/withrottle/Protocol.shtml
 
 // alert message
-// #define CUSTOM_COMMAND_1 "HMHello World"
+// #define CUSTOM_COMMAND_1 "Hello World"
 // set route R500  (DCCEX system route perfix is 'R')
 // #define CUSTOM_COMMAND_2 "PRA2R500"
 // #define CUSTOM_COMMAND_3 ""
