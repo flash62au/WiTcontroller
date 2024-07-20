@@ -1193,7 +1193,7 @@ void batteryTest_loop() {
         writeOledSpeed();
       }
     }
-    if (lastBatteryTestValue<USE_BATTERY_SLEEP_AT_PERCENT) { // shutdown if <3% battery
+    if (lastBatteryTestValue<USE_BATTERY_SLEEP_AT_PERCENT) { // shutdown if <x% battery
       deepSleepStart(SLEEP_REASON_BATTERY);
     }
   }

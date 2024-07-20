@@ -31,16 +31,16 @@
 // define what each button will do as direct press (not in a menu)   * and # cannot be remapped
 // see actions.h or README.md for details on the allowed functions
 
-#define CHOSEN_KEYPAD_0_FUNCTION     FUNCTION_0
-#define CHOSEN_KEYPAD_1_FUNCTION     FUNCTION_1
-#define CHOSEN_KEYPAD_2_FUNCTION     FUNCTION_2
-#define CHOSEN_KEYPAD_3_FUNCTION     FUNCTION_3
-#define CHOSEN_KEYPAD_4_FUNCTION     FUNCTION_4
-#define CHOSEN_KEYPAD_5_FUNCTION     NEXT_THROTTLE
-#define CHOSEN_KEYPAD_6_FUNCTION     SPEED_MULTIPLIER
-#define CHOSEN_KEYPAD_7_FUNCTION     DIRECTION_REVERSE
-#define CHOSEN_KEYPAD_8_FUNCTION     E_STOP
-#define CHOSEN_KEYPAD_9_FUNCTION     DIRECTION_FORWARD
+// #define CHOSEN_KEYPAD_0_FUNCTION     FUNCTION_0
+// #define CHOSEN_KEYPAD_1_FUNCTION     FUNCTION_1
+// #define CHOSEN_KEYPAD_2_FUNCTION     FUNCTION_2
+// #define CHOSEN_KEYPAD_3_FUNCTION     FUNCTION_3
+// #define CHOSEN_KEYPAD_4_FUNCTION     FUNCTION_4
+// #define CHOSEN_KEYPAD_5_FUNCTION     NEXT_THROTTLE
+// #define CHOSEN_KEYPAD_6_FUNCTION     SPEED_MULTIPLIER
+// #define CHOSEN_KEYPAD_7_FUNCTION     DIRECTION_REVERSE
+// #define CHOSEN_KEYPAD_8_FUNCTION     E_STOP
+// #define CHOSEN_KEYPAD_9_FUNCTION     DIRECTION_FORWARD
 // #define CHOSEN_KEYPAD_A_FUNCTION     CUSTOM_1
 // #define CHOSEN_KEYPAD_B_FUNCTION     CUSTOM_2
 // #define CHOSEN_KEYPAD_C_FUNCTION     CUSTOM_3
@@ -49,16 +49,16 @@
 // text that will appear when you press #
 // if you rearrange the items above, modify this text to suit    * and # cannot be remapped here
 
-#define CHOSEN_KEYPAD_0_DISPLAY_NAME     "0 Lights"
-#define CHOSEN_KEYPAD_1_DISPLAY_NAME     "1 Bell"
-#define CHOSEN_KEYPAD_2_DISPLAY_NAME     "2 Horn"
-#define CHOSEN_KEYPAD_3_DISPLAY_NAME     "3 F3"
-#define CHOSEN_KEYPAD_4_DISPLAY_NAME     "4 F4"
-#define CHOSEN_KEYPAD_5_DISPLAY_NAME     "5 Nxt Ttl"
-#define CHOSEN_KEYPAD_6_DISPLAY_NAME     "6 X Spd"
-#define CHOSEN_KEYPAD_7_DISPLAY_NAME     "7 Rev"
-#define CHOSEN_KEYPAD_8_DISPLAY_NAME     "8 Estop"
-#define CHOSEN_KEYPAD_9_DISPLAY_NAME     "9 Fwd"
+// #define CHOSEN_KEYPAD_0_DISPLAY_NAME     "0 Lights"
+// #define CHOSEN_KEYPAD_1_DISPLAY_NAME     "1 Bell"
+// #define CHOSEN_KEYPAD_2_DISPLAY_NAME     "2 Horn"
+// #define CHOSEN_KEYPAD_3_DISPLAY_NAME     "3 F3"
+// #define CHOSEN_KEYPAD_4_DISPLAY_NAME     "4 F4"
+// #define CHOSEN_KEYPAD_5_DISPLAY_NAME     "5 Nxt Ttl"
+// #define CHOSEN_KEYPAD_6_DISPLAY_NAME     "6 X Spd"
+// #define CHOSEN_KEYPAD_7_DISPLAY_NAME     "7 Rev"
+// #define CHOSEN_KEYPAD_8_DISPLAY_NAME     "8 Estop"
+// #define CHOSEN_KEYPAD_9_DISPLAY_NAME     "9 Fwd"
 
 // by default, # will show the list above. 
 // if you change the following line to true, it will take you to the Loco Function Labels screen directly
