@@ -96,7 +96,7 @@ Notes:
     * *WiFi.h*  - https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi
     * *ESPmDNS.h* - https://github.com/espressif/arduino-esp32/blob/master/libraries/ESPmDNS
 6. Copy '**config_network_example.h**' to a new file to '**config_network.h**'.
-    * Then edit it to include the network ssids you want to use.  (Not essential, but entering passwords via the encoder is tedious.)
+    * Then edit it to include the network SSIDs you want to use.  (Not essential, but entering passwords via the encoder is tedious.)
 7. Copy '**config_buttons_example.h**' to a new file '**config_buttons.h**'.
     * Optionally, edit this to change the mapping of the keypad buttons to specific functions.
     * Optionally, edit this to configure the additional buttons (if you have included them) to specific functions.
@@ -298,6 +298,13 @@ Recommend adding a physical power switch as this will continually drain the batt
 *Pinouts for Optional Battery Monitor*
 ![Assembly diagram - Optional Battery Monitor](WiTcontroller%20-%20Optional%20battery%20monitor.png)
 
+
+### Instructions for German Translations     Anleitung für deutsche Übersetzungen
+
+The file ``Deutsche Übersetzungen.txt`` contains German translations (by Google Translate).  Add the contents of this file (cut and paste) into your ``config_buttons.h`` to see manus and messages in German.
+
+Die Datei „Deutsche Übersetzungen.txt“ enthält deutsche Übersetzungen (von Google Translate).  Fügen Sie den Inhalt dieser Datei (Ausschneiden und Einfügen) in Ihre „config_buttons.h“ ein, um Handbücher und Meldungen auf Deutsch anzuzeigen.
+
 ---
 ---
 
@@ -305,6 +312,7 @@ Recommend adding a physical power switch as this will continually drain the batt
 
 ### V1.55
 - automated fix the latest versions of the ESP32 Board Library (3.0.0 and later) having renamed an atribute. The code now automatically adjusts for this.  
+- German translation file included
 
 ### V1.54
 - minor format change 

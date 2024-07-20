@@ -270,3 +270,6 @@
 // #define BATTERY_TEST_PIN 34
 // #define USE_BATTERY_PERCENT_AS_WELL_AS_ICON false
 // #define USE_BATTERY_SLEEP_AT_PERCENT 3   // will put the device to sleep if the battery falls below this level
+
+// *******************************************************************************************************************
+//
