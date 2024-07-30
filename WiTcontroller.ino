@@ -833,7 +833,7 @@ void browseWitService() {
   
   } else {
     debug_print(noOfWitServices);  debug_println(MSG_SERVICES_FOUND);
-    clearOledArray(); oledText[1] = MSG_SERVICES_FOUND;
+    clearOledArray(); oledText[3] = MSG_SERVICES_FOUND;
 
     for (int i = 0; i < foundWitServersCount; ++i) {
       // Print details for each service found
