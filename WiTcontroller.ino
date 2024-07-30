@@ -1,29 +1,34 @@
 /**
- * This app turns the ESP32 into a Bluetooth LE keyboard that is intended to act as a dedicated
- * gamepad for the JMRI or any wiThrottle server.
+ * This app turns an ESP32 into a dedicated Model Railway Controller for use
+ * with JMRI or any wiThrottle server.
 
   Instructions:
-  - Update WiFi SSIDs and passwords as necessary in config_network.h.
-  - Flash the sketch 
+  - Refer to the readme at https://github.com/flash62au/WiTcontroller
  */
 
-#include <WiFi.h>                 // https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi     GPL 2.1
-#include <ESPmDNS.h>              // https://github.com/espressif/arduino-esp32/blob/master/libraries/ESPmDNS (You should be able to download it from here https://github.com/espressif/arduino-esp32 Then unzip it and copy 'just' the ESPmDNS folder to your own libraries folder )
-#include <WiThrottleProtocol.h>   // https://github.com/flash62au/WiThrottleProtocol                           Creative Commons 4.0  Attribution-ShareAlike
-#include <AiEsp32RotaryEncoder.h> // https://github.com/igorantolic/ai-esp32-rotary-encoder                    GPL 2.0
-#include <Keypad.h>               // https://www.arduinolibraries.info/libraries/keypad                        GPL 3.0
-#include <U8g2lib.h>              // https://github.com/olikraus/u8g2  (Just get "U8g2" via the Arduino IDE Library Manager)   new-bsd
 #include <string>
 
+// use the Arduino IDE 'Boards' Manager to get these libraries
+#include <WiFi.h>                 // https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi     GPL 2.1
+#include <ESPmDNS.h>              // https://github.com/espressif/arduino-esp32/blob/master/libraries/ESPmDNS (You should be able to download it from here https://github.com/espressif/arduino-esp32 Then unzip it and copy 'just' the ESPmDNS folder to your own libraries folder )
+
+// use the Arduino IDE 'Library' Manager to get these libraries
+#include <Keypad.h>               // https://www.arduinolibraries.info/libraries/keypad                        GPL 3.0
+#include <U8g2lib.h>              // https://github.com/olikraus/u8g2  (Just get "U8g2" via the Arduino IDE Library Manager)   new-bsd
+#include <WiThrottleProtocol.h>   // https://github.com/flash62au/WiThrottleProtocol                           Creative Commons 4.0  Attribution-ShareAlike
+#include <AiEsp32RotaryEncoder.h> // https://github.com/igorantolic/ai-esp32-rotary-encoder                    GPL 2.0
+
+// this library is included with the WiTController code
 #include "Pangodream_18650_CL.h"  // https://github.com/pangodream/18650CL  
 
+// create these files by copying the example files and editing them as needed
 #include "config_network.h"      // LAN networks (SSIDs and passwords)
 #include "config_buttons.h"      // keypad buttons assignments
-#include "config_keypad_etc.h"   // hardware config - GPIOs - keypad, encoder; oled display type
 
-#include "static.h"              // change for non-english languages
+// DO NOT ALTER these files
+#include "config_keypad_etc.h"
+#include "static.h"
 #include "actions.h"
-
 #include "WiTcontroller.h"
 
 #if WITCONTROLLER_DEBUG == 0
@@ -72,14 +77,25 @@ int throttlePotNotchSpeeds[] = THROTTLE_POT_NOTCH_SPEEDS;
 int throttlePotNotch = 0;
 int throttlePotTargetSpeed = 0;
 int lastThrottlePotValue = 0;
+int lastThrottlePotReadTime = -1;
 
 // battery test values
 bool useBatteryTest = USE_BATTERY_TEST;
-int batteryTestPin = BATTERY_TEST_PIN;
+#if USE_BATTERY_TEST
+  #if USE_BATTERY_PERCENT_AS_WELL_AS_ICON
+    ShowBattery showBatteryTest = ICON_AND_PERCENT;
+  #else 
+    ShowBattery showBatteryTest = ICON_ONLY;
+  #endif
+#else
+  ShowBattery showBatteryTest = NONE;
+#endif
 bool useBatteryPercentAsWellAsIcon = USE_BATTERY_PERCENT_AS_WELL_AS_ICON;
 int lastBatteryTestValue = 0; 
 double lastBatteryCheckTime = 0;
-Pangodream_18650_CL BL(BATTERY_TEST_PIN);
+#if USE_BATTERY_TEST
+  Pangodream_18650_CL BL(BATTERY_TEST_PIN,BATTERY_CONVERSION_FACTOR);
+#endif
 
 // server variables
 // boolean ssidConnected = false;
@@ -662,11 +678,18 @@ void connectSsid() {
       nowTime = startTime;      
       WiFi.begin(cSsid, cPassword); 
 
+      int j = 0;
+      int tempTimer = millis();
       debug_print("Trying Network ... Checking status "); debug_print(cSsid); debug_print(" :"); debug_print(cPassword); debug_println(":");
       while ( (WiFi.status() != WL_CONNECTED) 
-        && ((nowTime-startTime) <= SSID_CONNECTION_TIMEOUT) ) { // wait for X seconds to see if the connection worked
-        delay(250);
-        debug_print(".");
+            && ((nowTime-startTime) <= SSID_CONNECTION_TIMEOUT) ) { // wait for X seconds to see if the connection worked
+        if (millis() > tempTimer + 250) {
+          oledText[3] = getDots(j);
+          writeOledArray(false, false, true, true);
+          j++;
+          debug_print(".");
+          tempTimer = millis();
+        }
         nowTime = millis();
       }
 
@@ -759,13 +782,14 @@ void browseWitService() {
     writeOledArray(false, false, true, true);
     delay(500);
   } else {
+    int j = 0;
     while ( (noOfWitServices == 0) 
-      && ((nowTime-startTime) <= 5000) ) { // try for 5 seconds
+    && ((nowTime-startTime) <= 10000)) { // try for 10 seconds 
       noOfWitServices = MDNS.queryService(service, proto);
-      if (noOfWitServices == 0 ) {
-        delay(500);
-        debug_print(".");
-      }
+      oledText[3] = getDots(j);
+      writeOledArray(false, false, true, true);
+      j++;
+      debug_print(".");
       nowTime = millis();
     }
     debug_println("");
@@ -1138,6 +1162,11 @@ void encoderSpeedChange(boolean rotationIsClockwise, int speedChange) {
 // *********************************************************************************
 
 void throttlePot_loop() {
+  if (millis() < lastThrottlePotReadTime + 100) { // only ready it one every x seconds
+    return;
+  }
+  lastThrottlePotReadTime = millis();
+
   // Read the throttle pot to see what notch it is on.
   int currentThrottlePotNotch = throttlePotNotch;
 
@@ -1784,6 +1813,10 @@ void doDirectAction(int buttonAction) {
         powerToggle();
         break; 
       }
+      case SHOW_HIDE_BATTERY: {
+        batteryShowToggle();
+        break; 
+      }
       case NEXT_THROTTLE: {
         nextThrottle();
         break; 
@@ -2045,19 +2078,19 @@ String getLocoWithLength(String loco) {
 }
 
 void speedEstop() {
+  debug_println("Speed EStop"); 
+  wiThrottleProtocol.emergencyStop();
   for (int i=0; i<maxThrottles; i++) {
-    wiThrottleProtocol.emergencyStop(getMultiThrottleChar(i));
     speedSet(getMultiThrottleChar(i),0);
     currentSpeed[i] = 0;
   }
-  debug_println("Speed EStop"); 
   writeOledSpeed();
 }
 
 void speedEstopCurrentLoco() {
+  debug_println("Speed EStop Curent Loco"); 
   wiThrottleProtocol.emergencyStop(currentThrottleIndexChar);
   speedSet(currentThrottleIndexChar,0);
-  debug_println("Speed EStop Curent Loco"); 
   writeOledSpeed();
 }
 
@@ -2365,6 +2398,23 @@ void changeNumberOfThrottles(bool increase) {
   writeOledSpeed();
 }
 
+void batteryShowToggle() {
+  debug_println("batteryShowToggle()");
+  switch (showBatteryTest) {
+    case ICON_ONLY: 
+      showBatteryTest = ICON_AND_PERCENT;
+      break;
+    case ICON_AND_PERCENT: 
+      showBatteryTest = NONE;
+      break;
+    case NONE: 
+    default:
+      showBatteryTest = ICON_ONLY;
+      break;
+  }
+  writeOledSpeed();
+}
+
 void stopThenToggleDirection() {
   if (wiThrottleProtocol.getNumberOfLocomotives(currentThrottleIndexChar)>0) {
     if (currentSpeed[currentThrottleIndex] != 0) {
@@ -2398,6 +2448,13 @@ void checkForShutdownOnNoResponse() {
       debug_println("Waited too long for a selection. Shutting down");
       deepSleepStart();
   }
+}
+
+String getDots(int howMany) {
+  //             123456789_123456789_123456789_123456789_123456789_123456789_
+  String dots = "............................................................";
+  if (howMany>dots.length()) howMany = dots.length();
+  return dots.substring(0,howMany);
 }
 
 // *********************************************************************************
@@ -2885,13 +2942,13 @@ void writeOledSpeed() {
     u8g2.drawRBox(0,40,9,9,1);
     u8g2.setDrawColor(0);
   }
-  u8g2.setFont(FONT_TRACK_POWER);
+  u8g2.setFont(FONT_GLYPHS);
   // u8g2.drawStr(0, 48, label_track_power.c_str());
   u8g2.drawGlyph(1, 48, glyph_track_power);
   u8g2.setDrawColor(1);
 
   if (!heartbeatCheckEnabled) {
-    u8g2.setFont(FONT_HEARTBEAT);
+    u8g2.setFont(FONT_GLYPHS);
     u8g2.drawGlyph(13, 49, glyph_heartbeat_off);
     u8g2.setDrawColor(2);
     u8g2.drawLine(13, 48, 20, 41);
@@ -2924,34 +2981,32 @@ void writeOledSpeed() {
 }
 
 void writeOledBattery() {
-    if (useBatteryTest) {
+  if ( (useBatteryTest) && (showBatteryTest!=NONE) && (lastBatteryCheckTime>0)) {
     //int lastBatteryTestValue = random(0,100);
-    u8g2.setFont(FONT_HEARTBEAT);
+    u8g2.setFont(FONT_GLYPHS);
     u8g2.setDrawColor(1);
-    u8g2.drawStr(1, 30, String("Z").c_str());
-    if (lastBatteryTestValue>10) u8g2.drawLine(2, 24, 2, 27);
-    if (lastBatteryTestValue>25) u8g2.drawLine(3, 24, 3, 27);
-    if (lastBatteryTestValue>50) u8g2.drawLine(4, 24, 4, 27);
-    if (lastBatteryTestValue>75) u8g2.drawLine(5, 24, 5, 27);
-    if (lastBatteryTestValue>90) u8g2.drawLine(6, 24, 6, 27);
+    // int x = 13; int y = 28;
+    int x = 120; int y = 11;
+    // if (useBatteryPercentAsWellAsIcon) x = 102;
+    if (showBatteryTest==ICON_AND_PERCENT) x = 102;
+    u8g2.drawStr(x, y, String("Z").c_str());
+    if (lastBatteryTestValue>10) u8g2.drawLine(x+1, y-6, x+1, y-3);
+    if (lastBatteryTestValue>25) u8g2.drawLine(x+2, y-6, x+2, y-3);
+    if (lastBatteryTestValue>50) u8g2.drawLine(x+3, y-6, x+3, y-3);
+    if (lastBatteryTestValue>75) u8g2.drawLine(x+4, y-6, x+4, y-3);
+    if (lastBatteryTestValue>90) u8g2.drawLine(x+5, y-6, x+5, y-3);
     
-    u8g2.setFont(FONT_FUNCTION_INDICATORS);
-    if (useBatteryPercentAsWellAsIcon) {
-      u8g2.drawStr(1,22, String(String(lastBatteryTestValue)+"%").c_str());
+    // if (useBatteryPercentAsWellAsIcon) {
+    if (showBatteryTest==ICON_AND_PERCENT) {
+      // x = 13; y = 36;
+      x = 112; y = 10;
+      u8g2.setFont(FONT_FUNCTION_INDICATORS);
+      if(lastBatteryTestValue<5) {
+        u8g2.drawStr(x,y, String("LOW").c_str());
+      } else {
+        u8g2.drawStr(x,y, String(String(lastBatteryTestValue)+"%").c_str());
+      }
     }
-    if(lastBatteryTestValue<5) {
-      u8g2.drawStr(11,29, String("LOW").c_str());
-    }
-  }
-
-  if (speedStep != currentSpeedStep[currentThrottleIndex]) {
-    // oledText[3] = "X " + String(speedStepCurrentMultiplier);
-    u8g2.setDrawColor(1);
-    u8g2.setFont(FONT_SPEED_STEP);
-    u8g2.drawGlyph(1, 38, glyph_speed_step);
-    u8g2.setFont(FONT_DEFAULT);
-    // u8g2.drawStr(0, 37, ("X " + String(speedStepCurrentMultiplier)).c_str());
-    u8g2.drawStr(9, 37, String(speedStepCurrentMultiplier).c_str());
   }
 }
 
@@ -3042,7 +3097,10 @@ void writeOledArray(boolean isThreeColums, boolean isPassword, boolean sendBuffe
     }
   }
 
-  if (drawTopLine) u8g2.drawHLine(0,11,128);
+  if (drawTopLine) {
+    u8g2.drawHLine(0,11,128);
+    writeOledBattery();
+  }
   u8g2.drawHLine(0,51,128);
 
   if (sendBuffer) u8g2.sendBuffer();					// transfer internal memory to the display

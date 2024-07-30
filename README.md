@@ -66,8 +66,8 @@ Notes:
 
 1. Download the Arduino IDE.  
     * Available from  https://support.arduino.cc/hc/en-us/articles/360019833020-Download-and-install-Arduino-IDE
-2. Download the esp32 boards in the Arduino IDE.
-    * add the esp322 support with the following instructions:  (See here for detailed instructions:  https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/)
+2. Download the **esp32** boards in the Arduino IDE.
+    * Add the esp322 support with the following instructions:  (See here for detailed instructions:  https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/)
         * In the Arduino IDE, go to *File* > *Preferences*
         * Enter the following into the 'Additional Board Manager URLs' field:  https://dl.espressif.com/dl/package_esp32_index.json
     * Then Use the *Boards Manager* in the *Arduino IDE* to install the esp32 board support
@@ -86,27 +86,44 @@ Notes:
     * Download 
        * Open *https://github.com/flash62au/WiTcontroller*
        * Click the green "Code" button and select download zip
-       * Extract the zip file to a local folder.  The default folder for the Arduino usually looks like "...username\Documents\Arduino\". This is a good but not essential place to put it.
-4. Load the needed libraries to your PC. These can loaded from the *Library Manager* in the *Arduino IDE*.
+       * Extract the zip file to a local folder.  The default folder for the Arduino usually looks like "...username\Documents\Arduino\". This is a good, but not essential, place to put it.
+4. Load the needed libraries to your PC. <br/> These *MUST BE* loaded from the *Library Manager* in the *Arduino IDE*. 
     * *U8g2lib.h* -  Search for "U8g2".   Install version 2.34.22
     * *AiEsp32RotaryEncoder.h* - search for "Ai Esp32 Rotary Encoder".  Install Version 1.6
     * *Keypad.h* - Search for "Keypad" by Mark Stanley.   Install version 3.1.1
-    * *WiThrottleProtocol.h* - Search for "WiThrottleProtocol" (not "WiThrottle").  Install version 1.1.14 or later if available
+    * *WiThrottleProtocol.h* - Search for "WiThrottleProtocol" (not "WiThrottle").  Install version 1.1.14 or later if available.
+    
+      Note: <br/> **DO NOT** download these libraries *directly*. Use the *Library Manager*. <br/> **DO NOT** put them in the WiTcontroller folder.
 5. These should have been automatically installed when you downloaded the esp32 boards.  *YOU SHOULD NOT NEED TO DO ANYTHING SPECIFIC TO GET THESE*
     * *WiFi.h*  - https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi
     * *ESPmDNS.h* - https://github.com/espressif/arduino-esp32/blob/master/libraries/ESPmDNS
-6. Copy '**config_network_example.h**' to a new file to '**config_network.h**'.
-    * Then edit it to include the network SSIDs you want to use.  (Not essential, but entering passwords via the encoder is tedious.)
-7. Copy '**config_buttons_example.h**' to a new file '**config_buttons.h**'.
+
+      Note: <br/> **DO NOT** download these libraries *directly*. Use the *Boards Manager*. <br/> **DO NOT** put them in the WiTcontroller folder.
+6. Copy the two example config files. <br/> You will need to use a *File Manger* type of app on the PC to do this.
+    * Copy ``config_network_example.h`` to a new file to ``config_network.h``. 
+    * Copy ``config_buttons_example.h`` to a new file ``config_buttons.h``.
+
+      Note: <br/> these files are not included in the download, so that you can personalise your configuration without fear that those configurations will be overridden if you update (download again) the WiTcontoller code.
+
+6. Open the Arduino IDE and **THEN** find and open the ``WiTcontoller.ino`` file.
+
+      Note: <br/> *If you open the file **from** the IDE*, rather then opening it from a File Manager, will automatically open *all the files in the WiTcontroller folder* in the IDE. 
+      
+      Whereas, *if you open it from a File manger app* (by double clicking on it) only the file you selected will open.
+
+7. Edit your personal ``config_network.h`` file. 
+    * Edit it to include the network SSIDs you want to use.  (Not essential, but entering passwords via the encoder is tedious.)
+7. Edit your personal ``config_buttons.h`` file.
     * Optionally, edit this to change the mapping of the keypad buttons to specific functions.
     * Optionally, edit this to configure the additional buttons (if you have included them) to specific functions.
     * Optionally, edit this to change if you want the function buttons to display when you press #, instead of the default of showing the Key Definitions
 8. Upload the sketch.  
-    * Select the board type as "WEMOS LOLIN32 Lite" in the *Arduino IDE*.
+    * Select the board type as ``WEMOS LOLIN32 Lite`` in the *Arduino IDE*.
     * Connect the board via USB and select the appropriate port in the *Arduino IDE*.
-    * Click *Upload* 
+    * Click ``Upload`` **-->**
 
 Notes: 
+   * WiTcontroller version 1.57 or later requires WiThrottleProtocol version 1.1.20 or later for the E_STOP and E_STOP_CURRENT_LOCO to work correctly.
    * WiTcontroller version 1.45 or later requires WiThrottleProtocol version 1.1.14 or later.
    * WiTcontroller version 1.41 or later requires WiThrottleProtocol version 1.1.12 or later.
    * WiTcontroller version 1.39 or later requires WiThrottleProtocol version 1.1.11 or later.
@@ -247,6 +264,7 @@ Note: you need to edit config_buttons.h to alter these assignments   (copy confi
 - POWER_TOGGLE
 - POWER_ON
 - POWER_OFF
+- SHOW_HIDE_BATTERY
 - DIRECTION_TOGGLE
 - DIRECTION_FORWARD
 - DIRECTION_REVERSE
@@ -291,19 +309,45 @@ config_buttons.h can include the following optional defines:
 
 ### Instructions for optional use of a voltage divider to show the battery charge level
 
-TBA
+*To enable the battery monitor*, set the following to ``true``. The default is ``false``.
 
-Recommend adding a physical power switch as this will continually drain the battery, even when not being used.
+``#define USE_BATTERY_TEST true``
 
-*Pinouts for Optional Battery Monitor*
-![Assembly diagram - Optional Battery Monitor](WiTcontroller%20-%20Optional%20battery%20monitor.png)
+*To set which pin to use.* The default is ``36``.
+
+``#define BATTERY_TEST_PIN 36``
+
+If the battery does not show 100% when plugged into the charger, you may need to adjust this value. The default is ``1.7``.
+
+``#define BATTERY_CONVERSION_FACTOR 1.7``
+
+*To show the calculated percentage*, set the following to ``true`` The default is ``false``.
+
+``#define USE_BATTERY_PERCENT_AS_WELL_AS_ICON true``
+
+*To force the HandCab to go to sleep at a specific level*, set this value. (e.g. to 3 or 5.) A value of less than zero (e.g. -1) will disable the feature. By default it is disabled (-1).
+
+``#define USE_BATTERY_SLEEP_AT_PERCENT 3``
+
+The display of the battery can be temporarily toggled by setting a key or button to ``SHOW_HIDE_BATTERY``.  The display will cycle between none, icon only and icon plus percent value. Note that ``USE_BATTERY_TEST`` must be set to `true` for this to have any effect.
+
+    Note: 
+    I recommend adding a physical power switch to disconnect the battery as this feature will, slowly, continually drain the battery, even when not being used.
+
+---
 
 
 ### Instructions for German Translations     Anleitung für deutsche Übersetzungen
 
-The file ``Deutsche Übersetzungen.txt`` contains German translations (by Google Translate).  Add the contents of this file (cut and paste) into your ``config_buttons.h`` to see manus and messages in German.
+The file ``Deutsche Übersetzungen.txt`` contains German translations (by Google Translate).  Add the contents of this file (cut and paste) into your ``config_buttons.h`` to see menus and messages in German.
 
-Die Datei „Deutsche Übersetzungen.txt“ enthält deutsche Übersetzungen (von Google Translate).  Fügen Sie den Inhalt dieser Datei (Ausschneiden und Einfügen) in Ihre „config_buttons.h“ ein, um Handbücher und Meldungen auf Deutsch anzuzeigen.
+Die Datei ``Deutsche Übersetzungen.txt`` enthält deutsche Übersetzungen (von Google Translate).  Fügen Sie den Inhalt dieser Datei (Ausschneiden und Einfügen) in Ihre ``config_buttons.h`` ein, um Menüs und Meldungen auf Deutsch anzuzeigen.
+
+I would appreciate any assistance to improve these translations.
+If you are interested, please contact me directly for instructions.
+
+Ich würde mich über jede Hilfe zur Verbesserung dieser Übersetzungen freuen.
+Bei Interesse kontaktieren Sie mich bitte direkt für eine Anleitung.
 
 ---
 ---
@@ -311,7 +355,14 @@ Die Datei „Deutsche Übersetzungen.txt“ enthält deutsche Übersetzungen (vo
 ## Change Log
 
 ### V1.55
-- automated fix the latest versions of the ESP32 Board Library (3.0.0 and later) having renamed an atribute. The code now automatically adjusts for this.  
+- Moved the battery position to the top line
+- added an Action to show or hide the battery
+- Added some of the UI improvements from HandCab
+- Fixed the E_STOP VS E_STOP_CURRENT_LOCO. Requires WiThrottleProtocol version 1.1.20 to actually work differently.
+- Updated documentation. (Particularly on the use of the battery)
+
+### V1.55
+- automated fix the latest versions of the ESP32 Board Library (3.0.0 and later) having renamed an attribute. The code now automatically adjusts for this.  
 - German translation file included
 
 ### V1.54

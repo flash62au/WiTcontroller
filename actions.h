@@ -58,6 +58,8 @@
 #define POWER_ON 502
 #define POWER_OFF 503
 
+#define SHOW_HIDE_BATTERY 504   // the battery test must be enabled for this to have any effect
+
 #define NEXT_THROTTLE 510
 
 #define CUSTOM_1 521
