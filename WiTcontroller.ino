@@ -1208,7 +1208,7 @@ void throttlePot_loop() {
 
 void batteryTest_loop() {
   // Read the battery pin
-
+#if USE_BATTERY_TEST
   if(millis()-lastBatteryCheckTime>10000) {
     lastBatteryCheckTime = millis();
     // debug_print("battery pin Value: "); debug_println(analogRead(batteryTestPin));  //Reads the analog value on the throttle pin.
@@ -1226,6 +1226,7 @@ void batteryTest_loop() {
       deepSleepStart(SLEEP_REASON_BATTERY);
     }
   }
+#endif
 }
 
 // *********************************************************************************

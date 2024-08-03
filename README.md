@@ -354,7 +354,10 @@ Bei Interesse kontaktieren Sie mich bitte direkt für eine Anleitung.
 
 ## Change Log
 
-### V1.55
+### V1.58
+- bug fix when not using the battery test
+
+### V1.56 / 1.57
 - Moved the battery position to the top line
 - added an Action to show or hide the battery
 - Added some of the UI improvements from HandCab
