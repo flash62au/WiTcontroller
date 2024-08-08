@@ -1,3 +1,7 @@
+//
+// DO NOT alter this file
+// 
+
 #define FUNCTION_NULL -1 // do nothing
 
 #define FUNCTION_0 0 // lights

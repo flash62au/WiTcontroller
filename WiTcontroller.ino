@@ -247,30 +247,6 @@ bool oledDirectCommandsAreBeingDisplayed = false;
   boolean hashShowsFunctionsInsteadOfKeyDefs = false;
 #endif
 
-// in case the values are not defined in config_buttons.h
-// DO NOT alter the values here 
-#ifndef CHOSEN_ADDITIONAL_BUTTON_0_FUNCTION
-  #define CHOSEN_ADDITIONAL_BUTTON_0_FUNCTION FUNCTION_NULL
-#endif
-#ifndef CHOSEN_ADDITIONAL_BUTTON_1_FUNCTION
-  #define CHOSEN_ADDITIONAL_BUTTON_1_FUNCTION FUNCTION_NULL
-#endif
-#ifndef CHOSEN_ADDITIONAL_BUTTON_2_FUNCTION
-  #define CHOSEN_ADDITIONAL_BUTTON_2_FUNCTION FUNCTION_NULL
-#endif
-#ifndef CHOSEN_ADDITIONAL_BUTTON_3_FUNCTION
-  #define CHOSEN_ADDITIONAL_BUTTON_3_FUNCTION FUNCTION_NULL
-#endif
-#ifndef CHOSEN_ADDITIONAL_BUTTON_4_FUNCTION
-  #define CHOSEN_ADDITIONAL_BUTTON_4_FUNCTION FUNCTION_NULL
-#endif
-#ifndef CHOSEN_ADDITIONAL_BUTTON_5_FUNCTION
-  #define CHOSEN_ADDITIONAL_BUTTON_5_FUNCTION FUNCTION_NULL
-#endif
-#ifndef CHOSEN_ADDITIONAL_BUTTON_6_FUNCTION
-  #define CHOSEN_ADDITIONAL_BUTTON_6_FUNCTION FUNCTION_NULL
-#endif
-
 //optional additional buttons
 int additionalButtonActions[MAX_ADDITIONAL_BUTTONS] = {
                           CHOSEN_ADDITIONAL_BUTTON_0_FUNCTION,
@@ -428,6 +404,25 @@ class MyDelegate : public WiThrottleProtocolDelegate {
         routeListUserName[index] = userName;
         routeListState[index] = state;
       }
+    }
+
+    void addressStealNeeded(String address, String entry) { // MTSaddr<;>addr
+      // char multiThrottleIndexChar;
+      // for(int i=0;i<MAX_THROTTLES;i++) {
+      //   multiThrottleIndexChar = getMultiThrottleChar(i);
+      //   for(int j=0;j<wiThrottleProtocol.getNumberOfLocomotives(multiThrottleIndexChar);j++) {
+      //     if (wiThrottleProtocol.getLocomotiveAtPosition(multiThrottleIndexChar, j).equals(address)) {
+      //       wiThrottleProtocol.stealLocomotive(multiThrottleIndexChar, address);
+      //       return;
+      //     }
+      //   }
+      // }
+      stealLoco(currentThrottleIndex, address);      
+    }
+
+    void addressStealNeededMultiThrottle(char multiThrottle, String address, String entry) {      
+      // wiThrottleProtocol.stealLocomotive(multiThrottle, address);
+      stealLoco(multiThrottle, address);
     }
 };
 
@@ -2154,6 +2149,10 @@ int getDisplaySpeed(int multiThrottleIndex) {
       return currentSpeed[multiThrottleIndex];
     }
   }
+}
+
+void stealLoco(int multiThrottleIndex, String loco) {
+  wiThrottleProtocol.stealLocomotive(multiThrottleIndex, loco);  
 }
 
 void toggleLocoFacing(int multiThrottleIndex, String loco) {

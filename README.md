@@ -354,6 +354,9 @@ Bei Interesse kontaktieren Sie mich bitte direkt für eine Anleitung.
 
 ## Change Log
 
+### V1.59
+- Experimental attempt to automatically steal locos on Dijitrax systems
+
 ### V1.58
 - bug fix when not using the battery test
 

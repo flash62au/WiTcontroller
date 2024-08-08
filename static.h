@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "v1.58";
+const String appVersion = "v1.59";
 
 #ifndef DEVICE_NAME
    #define DEVICE_NAME "WiTcontroller"
@@ -710,6 +710,30 @@ const char ssidPasswordBlankChar = 164;
 #endif
 #ifndef CHOSEN_KEYPAD_D_FUNCTION
    #define CHOSEN_KEYPAD_D_FUNCTION     CUSTOM_4
+#endif
+
+// *******************************************************************************************************************
+
+#ifndef CHOSEN_ADDITIONAL_BUTTON_0_FUNCTION
+  #define CHOSEN_ADDITIONAL_BUTTON_0_FUNCTION FUNCTION_NULL
+#endif
+#ifndef CHOSEN_ADDITIONAL_BUTTON_1_FUNCTION
+  #define CHOSEN_ADDITIONAL_BUTTON_1_FUNCTION FUNCTION_NULL
+#endif
+#ifndef CHOSEN_ADDITIONAL_BUTTON_2_FUNCTION
+  #define CHOSEN_ADDITIONAL_BUTTON_2_FUNCTION FUNCTION_NULL
+#endif
+#ifndef CHOSEN_ADDITIONAL_BUTTON_3_FUNCTION
+  #define CHOSEN_ADDITIONAL_BUTTON_3_FUNCTION FUNCTION_NULL
+#endif
+#ifndef CHOSEN_ADDITIONAL_BUTTON_4_FUNCTION
+  #define CHOSEN_ADDITIONAL_BUTTON_4_FUNCTION FUNCTION_NULL
+#endif
+#ifndef CHOSEN_ADDITIONAL_BUTTON_5_FUNCTION
+  #define CHOSEN_ADDITIONAL_BUTTON_5_FUNCTION FUNCTION_NULL
+#endif
+#ifndef CHOSEN_ADDITIONAL_BUTTON_6_FUNCTION
+  #define CHOSEN_ADDITIONAL_BUTTON_6_FUNCTION FUNCTION_NULL
 #endif
    
 // *******************************************************************************************************************
