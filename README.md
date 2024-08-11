@@ -1,6 +1,6 @@
 # WiTcontroller
 
-A WiTcontroller is a simple DIY, handheld controller that talks to a WiThrottle Server (JMRI, DCC-EX  EX-CommandStation and many others) using the WiThrottle protocol to control DCC model trains. 
+A WiTcontroller is a simple DIY, handheld controller that talks to a WiThrottle Server (JMRI, DCC-EX, EX-CommandStation and many others) using the WiThrottle protocol to control DCC model trains. 
 
 [See a video of it in use here.](https://youtu.be/RKnhfBCP_SQ)
 
@@ -238,7 +238,26 @@ Pressing the Encoder button while the ESP32 is in Deep Sleep will revive it.
 
 ### Screens
 
+## WiFI/SSID Connection Screens
+
+![Start-up and browsing for SSIDs](images/screenshots/browsing_for_ssids.jpg)
+
+![Trying to to connect to SSID](images/screenshots/trying_to_connect.jpg)
+
+![SSIDs](images/screenshots/ssid_list.jpg)
+
+![Connecting to SSID](images/screenshots/trying_to_connect.jpg)
+
+## WiThrottle Server Connection Screens
+
+![WiThrottle Server List](images/screenshots/wit_server_list.jpg)
+
+
 #### Throttle Screen
+
+![Throttle Screen with no loco acquired](images/screenshots/throttle_no_loco_acquired.jpg)
+
+![Throttle Screev](images/screenshots/throttle.jpg)
 
 ```
 TT LLLL LLLL LLLL               BBBBB
@@ -248,7 +267,7 @@ f f f f f f f f f f f f f f f f f f f
               SSSSS  DDDD
               SSSSS            
 M             SSSSS              llll
-P  h                            d sss
+P  h                          d sss d
 -------------------------------------
 mmmmmmmmm
 ```
@@ -265,6 +284,15 @@ mmmmmmmmm
 * M    = Speed step multiplier
 * P    = Track Power
 * BBBB = Optional battery state
+* mmmm =  menu, other instructions or broadcast messages
+
+#### * Menu
+
+![Menu](images/screenshots/menu.jpg)
+
+#### # Direction Commands List
+
+![Direct Commands List](images/screenshots/direct_commands_list.jpg)
 
 ----
 
