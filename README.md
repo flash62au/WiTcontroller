@@ -354,6 +354,9 @@ Bei Interesse kontaktieren Sie mich bitte direkt für eine Anleitung.
 
 ## Change Log
 
+### V1.60
+- ignore broadcast alert "Steal from other WiThrottle or JMRI throttle Required"
+
 ### V1.59
 - Experimental attempt to automatically steal locos on Dijitrax systems
 

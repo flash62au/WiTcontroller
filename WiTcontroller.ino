@@ -310,7 +310,10 @@ class MyDelegate : public WiThrottleProtocolDelegate {
     void receivedAlert(String message) {
       debug_print("Broadcast Alert: ");
       debug_println(message);
-      if ( (!message.equals("Connected")) && (!message.equals("Connecting..")) ) {
+      if ( (!message.equals("Connected")) 
+          && (!message.equals("Connecting.."))
+          && (!message.equals("Steal from other WiThrottle or JMRI throttle Required"))
+        ) {
         broadcastMessageText = String(message);
         broadcastMessageTime = millis();
         refreshOled();
