@@ -2939,6 +2939,7 @@ void writeOledSpeed() {
   }
 
   writeOledBattery();
+  writeOledSpeedStepMultiplier();
 
   if (trackPower == PowerOn) {
     // u8g2.drawBox(0,41,15,8);
@@ -2981,6 +2982,18 @@ void writeOledSpeed() {
   u8g2.sendBuffer();
 
   // debug_println("writeOledSpeed(): end");
+}
+
+void writeOledSpeedStepMultiplier() {
+  if (speedStep != currentSpeedStep[currentThrottleIndex]) {
+    // oledText[3] = "X " + String(speedStepCurrentMultiplier);
+    u8g2.setDrawColor(1);
+    u8g2.setFont(FONT_GLYPHS);
+    u8g2.drawGlyph(1, 38, glyph_speed_step);
+    u8g2.setFont(FONT_DEFAULT);
+    // u8g2.drawStr(0, 37, ("X " + String(speedStepCurrentMultiplier)).c_str());
+    u8g2.drawStr(9, 37, String(speedStepCurrentMultiplier).c_str());
+  }
 }
 
 void writeOledBattery() {

@@ -422,6 +422,10 @@ Bei Interesse kontaktieren Sie mich bitte direkt für eine Anleitung.
 
 ## Change Log
 
+### V1.61
+- Bug fix - Speed step multiplier not being displayed
+- Added screenshots to the Readme
+
 ### V1.60
 - ignore broadcast alert "Steal from other WiThrottle or JMRI throttle Required"
 
