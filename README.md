@@ -240,30 +240,30 @@ Pressing the Encoder button while the ESP32 is in Deep Sleep will revive it.
 
 ## WiFI/SSID Connection Screens
 
-*Start-up - browsing for SSIDs*
+*Start-up - browsing for SSIDs*<br />
 ![Start-up - browsing for SSIDs](images/screenshots/browsing_for_ssids.jpg)
 
-*SSID (WiFi networks) list*
+*SSID (WiFi networks) list*<br />
 ![SSID list](images/screenshots/ssid_list.jpg)
 
-*Trying to to connect to SSID*
+*Trying to to connect to SSID*<br />
 ![Trying to to connect to SSID](images/screenshots/trying_to_connect.jpg)
 
-*Connecting to SSID*
+*Connecting to SSID*<br />
 ![Connecting to SSID](images/screenshots/trying_to_connect.jpg)
 
 ## WiThrottle Server Connection Screens
 
-*WiThrottle Server List*
+*WiThrottle Server List*<br />
 ![WiThrottle Server List](images/screenshots/wit_server_list.jpg)
 
 
 #### Throttle Screen
 
-*Throttle Screen with no loco acquired*
+*Throttle Screen with no loco acquired*<br />
 ![Throttle Screen with no loco acquired](images/screenshots/throttle_no_loco_acquired.jpg)
 
-*Throttle Screen - with locos selected on throttle 1 and throttle 2*
+*Throttle Screen - with locos selected on throttle 1 and throttle 2*<br />
 ![Throttle Screen](images/screenshots/throttle.jpg)
 
 ```
