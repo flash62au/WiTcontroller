@@ -1,6 +1,6 @@
 # WiTcontroller
 
-A WiTcontroller is a simple DIY, handheld controller that talks to a WiThrottle Server (JMRI, DCC-EX, EX-CommandStation and many others) using the WiThrottle protocol to control DCC model trains. 
+A WiTcontroller is a simple DIY, handheld controller that talks to a WiThrottle Server (JMRI, DCC-EX EX-CommandStation, Digitrax LnWi and many others) using the WiThrottle protocol to control DCC model trains. 
 
 [See a video of it in use here.](https://youtu.be/RKnhfBCP_SQ)
 
@@ -15,7 +15,7 @@ A WiTcontroller is a simple DIY, handheld controller that talks to a WiThrottle 
 
 1. Some basic soldering skills.  
 
-    The components will work if just plugged together using jumpers, but they take a lot of space that way, so soldering them together is advised to make it hand held.
+    The components will work if just plugged together using jumpers, but they take a lot of space that way, so soldering them together is advised to make it more hand held.
 
 2. Loading the code (sketch) requires downloading of one of the IDEs, this sketch, the libraries, etc. so some experience with Arduinos is helpful, but not critical.
 
@@ -24,7 +24,7 @@ A WiTcontroller is a simple DIY, handheld controller that talks to a WiThrottle 
     * JMRI
     * DCC-EX EX-CommandStation
     * MRC WiFi
-    * Dijitrax LnWi
+    * Digitrax LnWi
 
 ---
 
@@ -44,7 +44,8 @@ A WiTcontroller is a simple DIY, handheld controller that talks to a WiThrottle 
 ### Optional Components
 
 * Optional: Up to 7 additional push buttons can be added, each with their own independent commands. ([Example](https://www.jaycar.com.au/red-miniature-pushbutton-spst-momentary-action-125v-1a-rating/p/SP0710))
-* Optional: A 1.3" OLED Display 128x64 can be used instead of the 0.96" OLED Display 128x64 ([Example](https://www.aliexpress.com/item/32683094040.html?spm=a2g0o.order_list.order_list_main.110.25621802jRBB7y))
+* Optional: A 1.3" OLED Display 128x64 can be used instead of the 0.96" OLED Display 128x64 ([Example](https://www.aliexpress.com/item/32683094040.html?spm=a2g0o.order_list.order_list_main.110.25621802jRBB7y)) Note: You will need to make a small configuration change for this to work correctly.
+* Optional: You can use a 4x4 keypad instead of the 3x4 keypad. Note: You will need to make a small configuration change in ``config_buttons.h`` for this to work correctly.
 
 ### Pinouts
 
@@ -56,6 +57,31 @@ A WiTcontroller is a simple DIY, handheld controller that talks to a WiThrottle 
 
 *Pinouts for Optional 4x4 keypad and Additional Buttons*
 ![Assembly diagram - 4x4 keypad and Optional Additional Buttons](WiTcontroller%20-%204x4%20keypad,%20Optional%20Buttons%20-%20pinouts%20v0.1.png)
+
+*Default Pins for the keypads*
+
+3x4 Keypad - Left to Right
+ * C1 PIN 0
+ * R0 PIN 19
+ * C0 PIN 4
+ * R3 PIN 16
+ * C2 PIN 2
+ * R2 PIN 17
+ * R1 PIN 18
+
+4x4 keypad - Left to Right
+ * C0 PIN 4
+ * C1 PIN 0
+ * C2 PIN 2
+ * C3 PIN 33
+ * R0 PIN 19
+ * R1 PIN 18
+ * R2 PIN 17
+ * R3 PIN 16
+ 
+Notes: 
+
+* Different keypads often arrange the pins on the base of the keypad differently.  So it is important make sure the pins on the keypad are correctly identified and adjusted as needed.
 
 ### Case
 
