@@ -334,7 +334,7 @@ mmmmmmmmm
 
 ![Menu](images/screenshots/menu.jpg)
 
-#### # Direction Commands List
+#### # Direct Commands List
 
 ![Direct Commands List](images/screenshots/direct_commands_list.jpg)
 
