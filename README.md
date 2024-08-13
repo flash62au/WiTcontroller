@@ -22,7 +22,7 @@ A WiTcontroller is a simple DIY, handheld controller that talks to a WiThrottle 
 3. A WiThrottle Server to connect to. WiTcontroller will work with any WiThrottle Server. e.g.
 
     * JMRI
-    * DCC++EX
+    * DCC-EX EX-CommandStation
     * MRC WiFi
     * Dijitrax LnWi
 
@@ -30,17 +30,23 @@ A WiTcontroller is a simple DIY, handheld controller that talks to a WiThrottle 
 
 ## Building
 
-Required Components
+### Required Components
 
 * WeMos Lite LOLIN32  (ESP32 Arduino with LiPo charger) ([Example](https://www.ebay.com.au/itm/284800618644?hash=item424f709094:g:-soAAOSwHslfC9ce&frcectupt=true))
 * 3x4 Keypad  ([Example](https://www.jaycar.com.au/12-key-numeric-keypad/p/SP0770?pos=2&queryId=20aedf107668ad42c6fe1f8b7f7a9ca7))
 * Polymer Lithium Ion Battery LiPo 400mAh 3.7V 502535 JST Connector (or larger capacity) ([500mAh Example](https://www.ebay.com.au/itm/133708965793?hash=item1f21ace7a1:g:tlwAAOSwfORgYqYK))
 * KY-040 Rotary Encoder Module ([Example](https://www.ebay.com.au/itm/394147297055?hash=item5bc502771f:g:gr0AAOSwcixiwo2~&frcectupt=true))
-* OLED Display 0.96" 128x64 Blue I2C IIC SSD1306 ([Example](https://www.ebay.com.au/itm/273746192621?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2060353.m2749.l2649))
+* OLED Display 0.96" 128x64 I2C IIC SSD1306 ([Example](https://www.ebay.com.au/itm/273746192621?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2060353.m2749.l2649))
 * Case - my one was 3d printed (see below)
 * Knob ([Example](https://www.jaycar.com.au/35mm-knob-matching-equipment-style/p/HK7766?pos=7&queryId=cbd19e2486968bca41273cc2dbce54a4&sort=relevance))
 * Wire - If you plan to solder the connections,which is the recommended approach, then stranded, coloured wire is advisable.  ([Example](https://www.jaycar.com.au/rainbow-cable-16-core-sold-per-metre/p/WM4516))
-* Optional: Up to 7 additional buttons can be added, each with their own independent commands.
+
+### Optional Components
+
+* Optional: Up to 7 additional push buttons can be added, each with their own independent commands. ([Example](https://www.jaycar.com.au/red-miniature-pushbutton-spst-momentary-action-125v-1a-rating/p/SP0710))
+* Optional: A 1.3" OLED Display 128x64 can be used instead of the 0.96" OLED Display 128x64 ([Example](https://www.aliexpress.com/item/32683094040.html?spm=a2g0o.order_list.order_list_main.110.25621802jRBB7y))
+
+### Pinouts
 
 *Standard Configuration Pinouts*
 ![Assembly diagram](WiTcontroller%20pinouts%20v0.1.png)
@@ -51,6 +57,11 @@ Required Components
 *Pinouts for Optional 4x4 keypad and Additional Buttons*
 ![Assembly diagram - 4x4 keypad and Optional Additional Buttons](WiTcontroller%20-%204x4%20keypad,%20Optional%20Buttons%20-%20pinouts%20v0.1.png)
 
+### Case
+
+![3D printer case 1](images/witcontroller1.jpg)
+
+![3D printed case 2](images/witcontroller1.jpg)
 
 Notes:
 
