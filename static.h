@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "v1.61";
+const String appVersion = "v1.66";
 
 #ifndef DEVICE_NAME
    #define DEVICE_NAME "WiTcontroller"
@@ -247,17 +247,6 @@ const int glyph_speed_step = 0x00d6;
 
 #define MAX_FUNCTIONS 32
 
-#define MENU_ITEM_FUNCTION '0'
-#define MENU_ITEM_ADD_LOCO '1'
-#define MENU_ITEM_DROP_LOCO '2'
-#define MENU_ITEM_TOGGLE_DIRECTION '3'
-#define MENU_ITEM_SPEED_STEP_MULTIPLIER '4'
-#define MENU_ITEM_THROW_POINT '5'
-#define MENU_ITEM_CLOSE_POINT '6'
-#define MENU_ITEM_ROUTE '7'
-#define MENU_ITEM_TRACK_POWER '8'
-#define MENU_ITEM_EXTRAS '9'
-
 
 #ifndef MENU_ITEM_TEXT_TITLE_FUNCTION
    #define MENU_ITEM_TEXT_TITLE_FUNCTION               "Function"
@@ -272,7 +261,7 @@ const int glyph_speed_step = 0x00d6;
    #define MENU_ITEM_TEXT_TITLE_TOGGLE_DIRECTION       "Toggle Dir"
 #endif
 #ifndef MENU_ITEM_TEXT_TITLE_SPEED_STEP_MULTIPLIER
-   #define MENU_ITEM_TEXT_TITLE_SPEED_STEP_MULTIPLIER  "X Speed Step"
+   #define MENU_ITEM_TEXT_TITLE_SPEED_STEP_MULTIPLIER  "X SpeedStep"
 #endif
 #ifndef MENU_ITEM_TEXT_TITLE_THROW_POINT
    #define MENU_ITEM_TEXT_TITLE_THROW_POINT            "Throw Point"
@@ -320,9 +309,9 @@ const int glyph_speed_step = 0x00d6;
 #ifndef MENU_ITEM_TEXT_MENU_ROUTE
    #define MENU_ITEM_TEXT_MENU_ROUTE                  "no+# Select  * Cancel   # List"
 #endif
-#ifndef MENU_ITEM_TEXT_MENU_TRACK_POWER
-   #define MENU_ITEM_TEXT_MENU_TRACK_POWER            "* Cancel                # Toggle"
-#endif
+// #ifndef MENU_ITEM_TEXT_MENU_TRACK_POWER
+//    #define MENU_ITEM_TEXT_MENU_TRACK_POWER            "* Cancel                # Toggle"
+// #endif
 #ifndef MENU_ITEM_TEXT_MENU_EXTRAS
    #define MENU_ITEM_TEXT_MENU_EXTRAS                 "no Select  * Cancel         "
 #endif
@@ -332,37 +321,7 @@ const int glyph_speed_step = 0x00d6;
 #ifndef MENU_ITEM_TEXT_MENU_EDIT_CONSIST
    #define MENU_ITEM_TEXT_MENU_EDIT_CONSIST           "no Chng Facing   * Close"
 #endif
-
-const String menuText[12][3] = {
-  {MENU_ITEM_TEXT_TITLE_FUNCTION,              MENU_ITEM_TEXT_MENU_FUNCTION, ""},   //0
-  {MENU_ITEM_TEXT_TITLE_ADD_LOCO,              MENU_ITEM_TEXT_MENU_ADD_LOCO, ""},   //1
-  {MENU_ITEM_TEXT_TITLE_DROP_LOCO,             MENU_ITEM_TEXT_MENU_DROP_LOCO, ""},   //2
-  {MENU_ITEM_TEXT_TITLE_TOGGLE_DIRECTION,      MENU_ITEM_TEXT_MENU_TOGGLE_DIRECTION, ""},   //3
-  {MENU_ITEM_TEXT_TITLE_SPEED_STEP_MULTIPLIER, MENU_ITEM_TEXT_MENU_SPEED_STEP_MULTIPLIER, ""}, //4
-  {MENU_ITEM_TEXT_TITLE_THROW_POINT,           MENU_ITEM_TEXT_MENU_THROW_POINT, ""},   //5
-  {MENU_ITEM_TEXT_TITLE_CLOSE_POINT,           MENU_ITEM_TEXT_MENU_CLOSE_POINT, ""},   //6
-  {MENU_ITEM_TEXT_TITLE_ROUTE,                 MENU_ITEM_TEXT_MENU_ROUTE, ""},   //7
-  {MENU_ITEM_TEXT_TITLE_TRACK_POWER,           MENU_ITEM_TEXT_MENU_TRACK_POWER, ""}, //8 
-  {MENU_ITEM_TEXT_TITLE_EXTRAS,                MENU_ITEM_TEXT_MENU_EXTRAS, ""},   //9
-
-  {MENU_ITEM_TEXT_TITLE_HEARTBEAT,             MENU_ITEM_TEXT_MENU_HEARTBEAT, ""},   //10
-  {MENU_ITEM_TEXT_TITLE_EDIT_CONSIST,          MENU_ITEM_TEXT_MENU_EDIT_CONSIST, ""}    //11
-};
-
-const int menuCharsRequired[12] = {  // 0=none effectively a direct command / 1=one used for sub menus / 2=one or more
-  2,   //0
-  2,   //1
-  2,   //2
-  0,   //3
-  0,   //4
-  2,   //5
-  2,   //6
-  2,   //7
-  0,   //8
-  1,   //9
-  2,   //10
-  2   //11
-};
+#define MENU_ITEM_TEXT_MENU_NA                     ""   // for items that don't require showing a menu
 
 
 #ifndef EXTRA_MENU_TEXT_CHAR_FUNCTION_KEY_TOGGLE
@@ -390,25 +349,91 @@ const int menuCharsRequired[12] = {  // 0=none effectively a direct command / 1=
    #define EXTRA_MENU_TEXT_CHAR_OFF_SLEEP              "OFF / Sleep"
 #endif
 
-const String extraSubMenuText[8] = { 
-   EXTRA_MENU_TEXT_CHAR_FUNCTION_KEY_TOGGLE,      //0
-   EXTRA_MENU_TEXT_CHAR_EDIT_CONSIST,             //1
-   EXTRA_MENU_TEXT_CHAR_TBA,                      //2
-   EXTRA_MENU_TEXT_CHAR_HEARTBEAT_TOGGLE,         //3  
-   EXTRA_MENU_TEXT_CHAR_INCREASE_MAX_THROTTLES,   //4
-   EXTRA_MENU_TEXT_CHAR_DECREASE_MAX_THROTTLES,   //5
-   EXTRA_MENU_TEXT_CHAR_DISCONNECT,               //6
-   EXTRA_MENU_TEXT_CHAR_OFF_SLEEP };              //7
+#define MENU_ITEM_TYPE_DIRECT_COMMAND 0
+#define MENU_ITEM_TYPE_SELECT_FROM_LIST 1
+#define MENU_ITEM_TYPE_SUB_MENU 2
+#define MENU_ITEM_TYPE_ONE_OR_MORE_CHARS 3
 
-#define EXTRA_MENU_CHAR_FUNCTION_KEY_TOGGLE    '0'
-#define EXTRA_MENU_CHAR_EDIT_CONSIST           '1'
-#define EXTRA_MENU_CHAR_TBA                    '2'
-#define EXTRA_MENU_CHAR_HEARTBEAT_TOGGLE       '3'
-#define EXTRA_MENU_CHAR_INCREASE_MAX_THROTTLES '4'
-#define EXTRA_MENU_CHAR_DECREASE_MAX_THROTTLES '5'
-#define EXTRA_MENU_CHAR_DISCONNECT             '6'
-#define EXTRA_MENU_CHAR_OFF_SLEEP              '7'
-#define EXTRA_MENU_CHAR_OFF_SLEEP_HIDDEN       '9'  // doesn't appear in the menu
+// menu items
+
+#ifndef USER_DEFINED_MENUS
+   #define MENU_ITEM_FUNCTION               '0'
+   #define MENU_ITEM_ADD_LOCO               '1'
+   #define MENU_ITEM_DROP_LOCO              '2'
+   #define MENU_ITEM_TOGGLE_DIRECTION       '3'
+   #define MENU_ITEM_SPEED_STEP_MULTIPLIER  '4'
+   #define MENU_ITEM_THROW_POINT            '5'
+   #define MENU_ITEM_CLOSE_POINT            '6'
+   #define MENU_ITEM_ROUTE                  '7'
+   #define MENU_ITEM_TRACK_POWER            '8'
+   #define MENU_ITEM_EXTRAS                 '9'
+
+   #define MENU_ITEM_FUNCTION_KEY_TOGGLE    'A'
+   #define MENU_ITEM_EDIT_CONSIST           'B'
+   #define MENU_ITEM_TBA                    'C'
+   #define MENU_ITEM_HEARTBEAT_TOGGLE       'D'
+   #define MENU_ITEM_INCREASE_MAX_THROTTLES 'E'
+   #define MENU_ITEM_DECREASE_MAX_THROTTLES 'F'
+   #define MENU_ITEM_DISCONNECT             'G'
+   #define MENU_ITEM_OFF_SLEEP              'H'
+   //#define MENU_ITEM_TBA                    'I'
+   //#define MENU_ITEM_TBA                    'J'
+#endif
+
+#ifndef USER_DEFINED_MENUS
+   // menu item labels, menu to appear at the bottom of the screen
+   const String menuText[20][2] = {
+      {MENU_ITEM_TEXT_TITLE_FUNCTION,              MENU_ITEM_TEXT_MENU_FUNCTION},      //0
+      {MENU_ITEM_TEXT_TITLE_ADD_LOCO,              MENU_ITEM_TEXT_MENU_ADD_LOCO},      //1
+      {MENU_ITEM_TEXT_TITLE_DROP_LOCO,             MENU_ITEM_TEXT_MENU_DROP_LOCO},     //2
+      {MENU_ITEM_TEXT_TITLE_TOGGLE_DIRECTION,      MENU_ITEM_TEXT_MENU_NA},            //3
+      {MENU_ITEM_TEXT_TITLE_SPEED_STEP_MULTIPLIER, MENU_ITEM_TEXT_MENU_NA},            //4
+      {MENU_ITEM_TEXT_TITLE_THROW_POINT,           MENU_ITEM_TEXT_MENU_THROW_POINT},   //5
+      {MENU_ITEM_TEXT_TITLE_CLOSE_POINT,           MENU_ITEM_TEXT_MENU_CLOSE_POINT},   //6
+      {MENU_ITEM_TEXT_TITLE_ROUTE,                 MENU_ITEM_TEXT_MENU_ROUTE},         //7
+      {MENU_ITEM_TEXT_TITLE_TRACK_POWER,           MENU_ITEM_TEXT_MENU_NA},            //8 
+      {MENU_ITEM_TEXT_TITLE_EXTRAS,                MENU_ITEM_TEXT_MENU_EXTRAS},        //9
+      {EXTRA_MENU_TEXT_CHAR_FUNCTION_KEY_TOGGLE,   MENU_ITEM_TEXT_MENU_NA},            // 10 A
+      {EXTRA_MENU_TEXT_CHAR_EDIT_CONSIST,          MENU_ITEM_TEXT_MENU_EDIT_CONSIST},  // 11 B
+      {EXTRA_MENU_TEXT_CHAR_TBA,                   MENU_ITEM_TEXT_MENU_NA},            // 12 C
+      {EXTRA_MENU_TEXT_CHAR_HEARTBEAT_TOGGLE,      MENU_ITEM_TEXT_MENU_NA},            // 13 D
+      {EXTRA_MENU_TEXT_CHAR_INCREASE_MAX_THROTTLES,MENU_ITEM_TEXT_MENU_NA},            // 14 E
+      {EXTRA_MENU_TEXT_CHAR_DECREASE_MAX_THROTTLES,MENU_ITEM_TEXT_MENU_NA},            // 15 F
+      {EXTRA_MENU_TEXT_CHAR_DISCONNECT,            MENU_ITEM_TEXT_MENU_NA},            // 16 G
+      {EXTRA_MENU_TEXT_CHAR_OFF_SLEEP,             MENU_ITEM_TEXT_MENU_NA},            // 17 H
+      {EXTRA_MENU_TEXT_CHAR_TBA,                   MENU_ITEM_TEXT_MENU_NA},            // 18 I
+      {EXTRA_MENU_TEXT_CHAR_TBA,                   MENU_ITEM_TEXT_MENU_NA}             // 19 J
+   };
+#else 
+   const String menuText[20][2] = MENU_STRUCTURE;
+#endif
+
+#ifndef USER_DEFINED_MENUS
+   const int menuCharsRequired[20] = {  
+      MENU_ITEM_TYPE_ONE_OR_MORE_CHARS, //0
+      MENU_ITEM_TYPE_ONE_OR_MORE_CHARS, //1
+      MENU_ITEM_TYPE_ONE_OR_MORE_CHARS, //2
+      MENU_ITEM_TYPE_DIRECT_COMMAND,    //3
+      MENU_ITEM_TYPE_DIRECT_COMMAND,    //4
+      MENU_ITEM_TYPE_ONE_OR_MORE_CHARS, //5
+      MENU_ITEM_TYPE_ONE_OR_MORE_CHARS, //6
+      MENU_ITEM_TYPE_ONE_OR_MORE_CHARS, //7
+      MENU_ITEM_TYPE_DIRECT_COMMAND,    //8
+      MENU_ITEM_TYPE_SUB_MENU,          //9
+      MENU_ITEM_TYPE_DIRECT_COMMAND,    //10 A
+      MENU_ITEM_TYPE_DIRECT_COMMAND,  //11 B
+      MENU_ITEM_TYPE_DIRECT_COMMAND,    //12 C
+      MENU_ITEM_TYPE_DIRECT_COMMAND,    //13 D
+      MENU_ITEM_TYPE_DIRECT_COMMAND,    //14 E
+      MENU_ITEM_TYPE_DIRECT_COMMAND,    //15 F
+      MENU_ITEM_TYPE_DIRECT_COMMAND,    //16 G
+      MENU_ITEM_TYPE_DIRECT_COMMAND,    //17 H
+      MENU_ITEM_TYPE_DIRECT_COMMAND,    //18 I
+      MENU_ITEM_TYPE_DIRECT_COMMAND     //19 J
+   };
+#else 
+   const int menuCharsRequired[20] = MENU_CHARS_REQUIRED;
+#endif
 
 // if defined in config_buttons.h these values will be overwritten
 //
@@ -513,18 +538,6 @@ const char ssidPasswordBlankChar = 164;
 #endif
 
 // *******************************************************************************************************************
-
-#ifndef F0_LATCHING
-  #define F0_LATCHING true
-#endif
-
-#ifndef F1_LATCHING
-  #define F1_LATCHING false
-#endif
-
-#ifndef F2_LATCHING
-  #define F2_LATCHING false
-#endif
 
 #ifndef F0_LABEL
   #define F0_LABEL "Light"
@@ -735,7 +748,32 @@ const char ssidPasswordBlankChar = 164;
 #ifndef CHOSEN_ADDITIONAL_BUTTON_6_FUNCTION
   #define CHOSEN_ADDITIONAL_BUTTON_6_FUNCTION FUNCTION_NULL
 #endif
-   
+
+#ifndef ADDITIONAL_BUTTON_OVERRIDE_DEFAULT_LATCHING
+   #define ADDITIONAL_BUTTON_OVERRIDE_DEFAULT_LATCHING true
+#endif
+#ifndef ADDITIONAL_BUTTON_0_LATCHING
+   #define ADDITIONAL_BUTTON_0_LATCHING true
+#endif
+#ifndef ADDITIONAL_BUTTON_1_LATCHING
+   #define ADDITIONAL_BUTTON_1_LATCHING true
+#endif
+#ifndef ADDITIONAL_BUTTON_2_LATCHING
+   #define ADDITIONAL_BUTTON_2_LATCHING true
+#endif
+#ifndef ADDITIONAL_BUTTON_3_LATCHING
+   #define ADDITIONAL_BUTTON_3_LATCHING true
+#endif
+#ifndef ADDITIONAL_BUTTON_4_LATCHING
+   #define ADDITIONAL_BUTTON_4_LATCHING true
+#endif
+#ifndef ADDITIONAL_BUTTON_5_LATCHING
+   #define ADDITIONAL_BUTTON_5_LATCHING true
+#endif
+#ifndef ADDITIONAL_BUTTON_6_LATCHING
+   #define ADDITIONAL_BUTTON_6_LATCHING true
+#endif
+
 // *******************************************************************************************************************
 
 #ifndef USE_ROTARY_ENCODER_FOR_THROTTLE

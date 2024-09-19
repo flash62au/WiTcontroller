@@ -47,9 +47,9 @@ int keypadUseType = KEYPAD_USE_OPERATION;
 int encoderUseType = ENCODER_USE_OPERATION;
 int encoderButtonAction = ENCODER_BUTTON_ACTION;
 
-boolean menuCommandStarted = false;
+bool menuCommandStarted = false;
 String menuCommand = "";
-boolean menuIsShowing = false;
+bool menuIsShowing = false;
 
 String oledText[18] = {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""};
 bool oledTextInvert[18] = {false, false, false, false, false, false, false, false, false, 
@@ -98,14 +98,14 @@ double lastBatteryCheckTime = 0;
 #endif
 
 // server variables
-// boolean ssidConnected = false;
+// bool ssidConnected = false;
 String selectedSsid = "";
 String selectedSsidPassword = "";
 int ssidConnectionState = CONNECTION_STATE_DISCONNECTED;
 
 // ssid password entry
 String ssidPasswordEntered = "";
-boolean ssidPasswordChanged = true;
+bool ssidPasswordChanged = true;
 char ssidPasswordCurrentChar = ssidPasswordBlankChar; 
 
 IPAddress selectedWitServerIP;
@@ -128,7 +128,7 @@ bool commandsNeedLeadingCrLf = false;
 //found ssids
 String foundSsids[maxFoundSsids];
 long foundSsidRssis[maxFoundSsids];
-boolean foundSsidsOpen[maxFoundSsids];
+bool foundSsidsOpen[maxFoundSsids];
 int foundSsidsCount = 0;
 int ssidSelectionSource;
 double startWaitForSelection;
@@ -136,7 +136,7 @@ double startWaitForSelection;
 // wit Server ip entry
 String witServerIpAndPortConstructed = "###.###.###.###:#####";
 String witServerIpAndPortEntered = DEFAULT_IP_AND_PORT;
-boolean witServerIpAndPortChanged = true;
+bool witServerIpAndPortChanged = true;
 
 // roster variables
 int rosterSize = 0;
@@ -156,7 +156,7 @@ long broadcastMessageTime = 0;
 int lastOledScreen = 0;
 String lastOledStringParameter = "";
 int lastOledIntParameter = 0;
-boolean lastOledBooleanParameter = false;
+bool lastOledBoolParameter = false;
 TurnoutAction lastOledTurnoutParameter = TurnoutToggle;
 
 // turnout variables
@@ -174,7 +174,7 @@ String routeListUserName[maxRouteList];
 int routeListState[maxRouteList];
 
 // function states
-boolean functionStates[6][MAX_FUNCTIONS];   // set to maximum possible (6 throttles)
+bool functionStates[6][MAX_FUNCTIONS];   // set to maximum possible (6 throttles)
 
 // function labels
 String functionLabels[6][MAX_FUNCTIONS];   // set to maximum possible (6 throttles)
@@ -192,7 +192,7 @@ int maxThrottles = MAX_THROTTLES;
 
 int heartBeatPeriod = 10; // default to 10 seconds
 long lastServerResponseTime;  // seconds since start of Arduino
-boolean heartbeatCheckEnabled = true;
+bool heartbeatCheckEnabled = true;
 
 // used to stop speed bounces
 long lastSpeedSentTime = 0;
@@ -208,10 +208,10 @@ const char* deviceName = DEVICE_NAME;
 static unsigned long rotaryEncoderButtonLastTimePressed = 0;
 const int rotaryEncoderButtonEncoderDebounceTime = ROTARY_ENCODER_DEBOUNCE_TIME;   // in miliseconds
 
-const boolean encoderRotationClockwiseIsIncreaseSpeed = ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED;
+const bool encoderRotationClockwiseIsIncreaseSpeed = ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED;
 // false = Counterclockwise  true = clockwise
 
-const boolean toggleDirectionOnEncoderButtonPressWhenStationary = TOGGLE_DIRECTION_ON_ENCODER_BUTTON_PRESSED_WHEN_STATIONAY;
+const bool toggleDirectionOnEncoderButtonPressWhenStationary = TOGGLE_DIRECTION_ON_ENCODER_BUTTON_PRESSED_WHEN_STATIONAY;
 // true = if the locos(s) are stationary, clicking the encoder button will toggle the direction
 
 //4x3 keypad only uses 0-9
@@ -242,9 +242,9 @@ const String directCommandText[4][3] = {
 
 bool oledDirectCommandsAreBeingDisplayed = false;
 #ifdef HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS
-  boolean hashShowsFunctionsInsteadOfKeyDefs = HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS;
+  bool hashShowsFunctionsInsteadOfKeyDefs = HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS;
 #else
-  boolean hashShowsFunctionsInsteadOfKeyDefs = false;
+  bool hashShowsFunctionsInsteadOfKeyDefs = false;
 #endif
 
 //optional additional buttons
@@ -257,10 +257,20 @@ int additionalButtonActions[MAX_ADDITIONAL_BUTTONS] = {
                           CHOSEN_ADDITIONAL_BUTTON_5_FUNCTION,
                           CHOSEN_ADDITIONAL_BUTTON_6_FUNCTION
 };
+bool additionalButtonOverrideDefaultLatching = ADDITIONAL_BUTTON_OVERRIDE_DEFAULT_LATCHING;
+int additionalButtonLatching[MAX_ADDITIONAL_BUTTONS] = {
+                          ADDITIONAL_BUTTON_0_LATCHING,
+                          ADDITIONAL_BUTTON_1_LATCHING,
+                          ADDITIONAL_BUTTON_2_LATCHING,
+                          ADDITIONAL_BUTTON_3_LATCHING,
+                          ADDITIONAL_BUTTON_4_LATCHING,
+                          ADDITIONAL_BUTTON_5_LATCHING,
+                          ADDITIONAL_BUTTON_6_LATCHING
+};
 unsigned long lastAdditionalButtonDebounceTime[MAX_ADDITIONAL_BUTTONS] = {0,0,0,0,0,0,0};  // the last time the output pin was toggled
 unsigned long additionalButtonDebounceDelay = ADDITIONAL_BUTTON_DEBOUNCE_DELAY;    // the debounce time
-boolean additionalButtonRead[MAX_ADDITIONAL_BUTTONS];
-boolean additionalButtonLastRead[MAX_ADDITIONAL_BUTTONS];
+bool additionalButtonRead[MAX_ADDITIONAL_BUTTONS];
+bool additionalButtonLastRead[MAX_ADDITIONAL_BUTTONS];
 
 // *********************************************************************************
 
@@ -269,7 +279,7 @@ void displayUpdateFromWit(int multiThrottleIndex) {
   debug_print(" menuIsShowing "); debug_print(menuIsShowing);
   debug_print(" multiThrottleIndex "); debug_print(multiThrottleIndex);
   debug_println("");
-  if ( (keypadUseType==KEYPAD_USE_OPERATION) && (!menuIsShowing) 
+  if ( (keypadUseType == KEYPAD_USE_OPERATION) && (!menuIsShowing) 
   && (multiThrottleIndex==currentThrottleIndex) ) {
     writeOledSpeed();
   }
@@ -344,6 +354,19 @@ class MyDelegate : public WiThrottleProtocolDelegate {
         currentDirection[multiThrottleIndex] = dir;
         displayUpdateFromWit(multiThrottleIndex);
       }
+    }
+    void receivedDirectionMultiThrottle(char multiThrottle, String loco, Direction dir) {     // R{0,1}
+      debug_print("Received Direction: loco: "); debug_print(loco); debug_print(" Received Direction: "); debug_println(dir); 
+      // int multiThrottleIndex = getMultiThrottleIndex(multiThrottle);
+
+      // if (wiThrottleProtocol.getNumberOfLocomotives(currentThrottleIndexChar) > 0) {
+      //   for (int index=0; index < wiThrottleProtocol.getNumberOfLocomotives(currentThrottleIndexChar); index++) {  //can only show first 8
+      //     if (loco.equals(wiThrottleProtocol.getLocomotiveAtPosition(currentThrottleIndexChar, index));
+      //       if (wiThrottleProtocol.getDirection(currentThrottleIndexChar, loco) == Reverse) {
+      //         oledTextInvert[j+1] = true;
+      //       }
+      //   } 
+      // }
     }
     void receivedFunctionStateMultiThrottle(char multiThrottle, uint8_t func, bool state) { 
       debug_print("Received Fn: "); debug_print(func); debug_print(" State: "); debug_println( (state) ? "True" : "False" );
@@ -501,7 +524,7 @@ void browseSsids() { // show the found SSIDs
   } else {
     for (int thisSsid = 0; thisSsid < numSsids; thisSsid++) {
       /// remove duplicates (repeaters and mesh networks)
-      boolean found = false;
+      bool found = false;
       for (int i=0; i<foundSsidsCount && i<maxFoundSsids; i++) {
         if (WiFi.SSID(thisSsid) == foundSsids[i]) {
           found = true;
@@ -1139,7 +1162,7 @@ void rotary_loop() {
   }
 }
 
-void encoderSpeedChange(boolean rotationIsClockwise, int speedChange) {
+void encoderSpeedChange(bool rotationIsClockwise, int speedChange) {
   if (encoderRotationClockwiseIsIncreaseSpeed) {
     if (rotationIsClockwise) {
       speedUp(currentThrottleIndex, speedChange);
@@ -1216,7 +1239,7 @@ void batteryTest_loop() {
 
     if (batteryTestValue!=lastBatteryTestValue) { 
       lastBatteryTestValue = BL.getBatteryChargeLevel();
-      if ( (keypadUseType==KEYPAD_USE_OPERATION) && (!menuIsShowing)) {
+      if ( (keypadUseType == KEYPAD_USE_OPERATION) && (!menuIsShowing)) {
         writeOledSpeed();
       }
     }
@@ -1232,6 +1255,7 @@ void batteryTest_loop() {
 // *********************************************************************************
 
 void keypadEvent(KeypadEvent key) {
+  debug_print("keypadEvent((): "); debug_println(key); 
   switch (keypad.getState()){
   case PRESSED:
     debug_print("Button "); debug_print(String(key - '0')); debug_println(" pushed.");
@@ -1404,13 +1428,15 @@ void loop() {
 //  Key press and Menu
 // *********************************************************************************
 
-void doKeyPress(char key, boolean pressed) {
-  debug_print("doKeyPress(): "); 
+void doKeyPress(char key, bool pressed) {
+    debug_print("doKeyPress(): key: "); debug_print(key); debug_print(" keypadUseType: ");debug_println(keypadUseType);
 
   if (pressed)  { //pressed
+    debug_println("doKeyPress(): pressed"); 
     switch (keypadUseType) {
       case KEYPAD_USE_OPERATION:
-        debug_print("key operation... "); debug_println(key);
+        debug_print("doKeyPress(): key operation... "); debug_println(key);
+
         switch (key) {
           case '*':  // menu command
             menuCommand = "";
@@ -1419,13 +1445,13 @@ void doKeyPress(char key, boolean pressed) {
               writeOledSpeed();
             } else {
               menuCommandStarted = true;
-              debug_println("Command started");
-              writeOledMenu("");
+              debug_println("doKeyPress(): Command started");
+              writeOledMenu("", true);
             }
             break;
 
           case '#': // end of command
-            debug_print("end of command... "); debug_print(key); debug_print ("  :  "); debug_println(menuCommand);
+            debug_print("doKeyPress(): end of command... "); debug_print(key); debug_print ("  :  "); debug_println(menuCommand);
             if ((menuCommandStarted) && (menuCommand.length()>=1)) {
               doMenu();
             } else {
@@ -1443,29 +1469,57 @@ void doKeyPress(char key, boolean pressed) {
             break;
 
           case '0': case '1': case '2': case '3': case '4': 
-          case '5': case '6': case '7': case '8': case '9':
-            debug_print("number... "); debug_print(key); debug_print ("  cmd: '"); debug_print(menuCommand); debug_println("'");
+          case '5': case '6': case '7': case '8': case '9': 
+          {
+            debug_print("doKeyPress(): number... "); debug_print(key); 
+            debug_print ("  cmd: '"); debug_println(menuCommand); 
+            debug_print("' : "); debug_println(menuCharsRequired[menuCommand.substring(0,1).toInt()]);
+
+            int index0 = key-48;
+            int index1 = 0;
+            if (menuCommand.length() >= 0) index1 = menuCommand.charAt(0)-48;
+            int index2 = 0;
+            if (menuCommand.length() >= 1) index2 = menuCommand.charAt(1)-48;
 
             if (menuCommandStarted) { // append to the string
 
-              if ((menuCharsRequired[key-48] == 0) && (menuCommand.length() == 0)) { // menu type is effectively a direct commands from this point
+              // if ( ((menuCommand.length() == 0) && (menuCharsRequired[key-48] == MENU_ITEM_TYPE_DIRECT_COMMAND))
+              // || ((menuCommand.length() == 1) && (menuCharsRequired[menuCommand.charAt(0)-48] == MENU_ITEM_TYPE_SUB_MENU))
+              // || ((menuCommand.length() == 1) && (menuCharsRequired[menuCommand.charAt(0)-48] == MENU_ITEM_TYPE_DIRECT_COMMAND))
+              // || ((menuCommand.length() == 2) && (menuCharsRequired[menuCommand.charAt(1)-38] == MENU_ITEM_TYPE_DIRECT_COMMAND)) ) { 
+
+              if ( ((menuCommand.length() == 0) 
+                    && (menuCharsRequired[index0] == MENU_ITEM_TYPE_DIRECT_COMMAND))
+              || ((menuCommand.length() == 1) 
+                    &&  ( (menuCharsRequired[index1] == MENU_ITEM_TYPE_SUB_MENU)
+                       || (menuCharsRequired[index1] == MENU_ITEM_TYPE_DIRECT_COMMAND) ))
+              || ((menuCommand.length() == 2) 
+                    &&  ( (menuCharsRequired[index2] == MENU_ITEM_TYPE_DIRECT_COMMAND) )) ) { 
+                debug_println("doKeyPress(): MENU_ITEM_TYPE_DIRECT_COMMAND : ");
                 menuCommand += key;
                 doMenu();
               } else {
-                if ((menuCharsRequired[menuCommand.substring(0,1).toInt()] == 1) && (menuCommand.length() == 1)) {  // menu type needs only one char
+                if ((menuCharsRequired[index0] == MENU_ITEM_TYPE_SUB_MENU) 
+                && (menuCommand.length() == 0)) {  // menu type needs only one char
+                  debug_println("doKeyPress(): MENU_ITEM_TYPE_SUB_MENU : "); 
                   menuCommand += key;
-                  doMenu();
-
+                  writeOledMenu(menuCommand, false);
+                // } else if ( (menuCharsRequired[index0] == MENU_ITEM_TYPE_SELECT_FROM_LIST) 
+                //           && (menuCommand.length() == 0)) {  // menu type needs only one char
+                //   debug_println("doKeyPress(): MENU_ITEM_TYPE_SELECT_FROM_LIST : "); 
+                //   menuCommand += key;
+                //   writeOledMenu(menuCommand, false);
                 } else {  //menu type allows/requires more than one char
+                  debug_println("doKeyPress(): MENU_ITEM_TYPE_ONE_OR_MORE");
                   menuCommand += key;
-                  writeOledMenu(menuCommand);
+                  writeOledMenu(menuCommand, true);
                 }
               }
             } else {
               doDirectCommand(key, true);
             }
             break;
-
+          }
           default:  // A, B, C, D
             doDirectCommand(key, true);
             break;
@@ -1473,7 +1527,7 @@ void doKeyPress(char key, boolean pressed) {
         break;
 
       case KEYPAD_USE_ENTER_WITHROTTLE_SERVER:
-        debug_print("key: Enter wit... "); debug_println(key);
+        debug_print("doKeyPress(): key: Enter wit... "); debug_println(key);
         switch (key){
           case '0': case '1': case '2': case '3': case '4': 
           case '5': case '6': case '7': case '8': case '9':
@@ -1494,7 +1548,7 @@ void doKeyPress(char key, boolean pressed) {
         break;
 
       case KEYPAD_USE_ENTER_SSID_PASSWORD:
-        debug_print("key: Enter password... "); debug_println(key);
+        debug_print("doKeyPress(): key: Enter password... "); debug_println(key);
         switch (key){
           case '0': case '1': case '2': case '3': case '4': 
           case '5': case '6': case '7': case '8': case '9':
@@ -1516,7 +1570,7 @@ void doKeyPress(char key, boolean pressed) {
         break;
 
       case KEYPAD_USE_SELECT_WITHROTTLE_SERVER:
-        debug_print("key: Select wit... "); debug_println(key);
+        debug_print("doKeyPress(): key: Select wit... "); debug_println(key);
         switch (key){
           case '0': case '1': case '2': case '3': case '4':
             selectWitServer(key - '0');
@@ -1532,7 +1586,7 @@ void doKeyPress(char key, boolean pressed) {
         break;
 
       case KEYPAD_USE_SELECT_SSID:
-        debug_print("key ssid... "); debug_println(key);
+        debug_print("doKeyPress(): key ssid... "); debug_println(key);
         switch (key){
           case '0': case '1': case '2': case '3': case '4': 
           case '5': case '6': case '7': case '8': case '9':
@@ -1550,7 +1604,7 @@ void doKeyPress(char key, boolean pressed) {
         break;
 
       case KEYPAD_USE_SELECT_SSID_FROM_FOUND:
-        debug_print("key ssid from found... "); debug_println(key);
+        debug_print("doKeyPress(): key ssid from found... "); debug_println(key);
         switch (key){
           case '0': case '1': case '2': case '3': case '4': 
             selectSsidFromFound(key - '0'+(page*5));
@@ -1576,7 +1630,7 @@ void doKeyPress(char key, boolean pressed) {
         break;
 
       case KEYPAD_USE_SELECT_ROSTER:
-        debug_print("key Roster... "); debug_println(key);
+        debug_print("doKeyPress(): key Roster... "); debug_println(key);
         switch (key){
           case '0': case '1': case '2': case '3': case '4': 
           case '5': case '6': case '7': case '8': case '9':
@@ -1603,7 +1657,7 @@ void doKeyPress(char key, boolean pressed) {
 
       case KEYPAD_USE_SELECT_TURNOUTS_THROW:
       case KEYPAD_USE_SELECT_TURNOUTS_CLOSE:
-        debug_print("key turnouts... "); debug_println(key);
+        debug_print("doKeyPress(): key turnouts... "); debug_println(key);
         switch (key){
           case '0': case '1': case '2': case '3': case '4': 
           case '5': case '6': case '7': case '8': case '9':
@@ -1629,7 +1683,7 @@ void doKeyPress(char key, boolean pressed) {
         break;
 
       case KEYPAD_USE_SELECT_ROUTES:
-        debug_print("key routes... "); debug_println(key);
+        debug_print("doKeyPress(): key routes... "); debug_println(key);
         switch (key){
           case '0': case '1': case '2': case '3': case '4': 
           case '5': case '6': case '7': case '8': case '9':
@@ -1655,7 +1709,7 @@ void doKeyPress(char key, boolean pressed) {
         break;
 
       case KEYPAD_USE_SELECT_FUNCTION:
-        debug_print("key function... "); debug_println(key);
+        debug_print("doKeyPress(): key function... "); debug_println(key);
         switch (key){
           case '0': case '1': case '2': case '3': case '4': 
           case '5': case '6': case '7': case '8': case '9':
@@ -1698,27 +1752,27 @@ void doKeyPress(char key, boolean pressed) {
         }
         break;
 
-
       default:  // do nothing 
         break;
     }
 
   } else {  // released
+    debug_println("doKeyPress(): released"); 
     if (keypadUseType == KEYPAD_USE_OPERATION) {
       if ( (!menuCommandStarted) && (key>='0') && (key<='D')) { // only process releases for the numeric keys + A,B,C,D and only if a menu command has not be started
-        debug_println("Operation - Process key release");
+        debug_println("doKeyPress(): Operation - Process key release");
         doDirectCommand(key, false);
       } else {
-        debug_println("Non-Operation - Process key release");
+        debug_println("doKeyPress(): Non-Operation - Don't process key release");
       }
     }
   }
 
-  // debug_println("doKeyPress(): end"); 
+  debug_println("doKeyPress(): end"); 
 }
 
-void doDirectCommand (char key, boolean pressed) {
-  debug_print("doDirectCommand(): "); debug_println(key);
+void doDirectCommand(char key, bool pressed) {
+  debug_print("doDirectCommand(): key: "); debug_println(key);
   int buttonAction = 0 ;
   if (key<=57) {
     buttonAction = buttonActions[(key - '0')];
@@ -1738,13 +1792,30 @@ void doDirectCommand (char key, boolean pressed) {
   // debug_println("doDirectCommand(): end"); 
 }
 
-void doDirectAdditionalButtonCommand (int buttonIndex, boolean pressed) {
-  debug_print("doDirectAdditionalButtonCommand(): "); debug_println(buttonIndex);
+void doDirectAdditionalButtonCommand (int buttonIndex, bool pressed) {
+  debug_print("doDirectAdditionalButtonCommand(): index: "); debug_println(buttonIndex);
   int buttonAction = additionalButtonActions[buttonIndex];
+
   if (buttonAction!=FUNCTION_NULL) {
     if ( (buttonAction>=FUNCTION_0) && (buttonAction<=FUNCTION_31) ) {
-      doDirectFunction(currentThrottleIndex, buttonAction, pressed);
-  } else {
+
+      if (additionalButtonOverrideDefaultLatching) {
+        bool latch = additionalButtonLatching[buttonIndex];
+        bool currentlyOn = functionStates[currentThrottleIndex][buttonAction];
+
+        if (!latch) {
+          doDirectFunction(currentThrottleIndex, buttonAction, pressed, true);
+        } else {
+          if ( (!currentlyOn) && (pressed) ) {
+            doDirectFunction(currentThrottleIndex, buttonAction, true, true);
+          } else if ( (currentlyOn) && (pressed) ) {
+            doDirectFunction(currentThrottleIndex, buttonAction, false, true);
+          }
+        }
+      } else {
+        doDirectFunction(currentThrottleIndex, buttonAction, pressed, false);
+      }
+    } else { // not a function
       if (pressed) { // only process these on the key press, not the release
         doDirectAction(buttonAction);
       }
@@ -1867,14 +1938,43 @@ void doDirectAction(int buttonAction) {
 void doMenu() {
   String loco = "";
   String function = "";
-  boolean result = false;
-  // int index;
-  debug_print("Menu: "); debug_println(menuCommand);
+  bool menuCommandStartedTemp = false;
+  debug_print("doMenu(): "); debug_println(menuCommand);
   
   switch (menuCommand[0]) {
+    case MENU_ITEM_EXTRAS: { // Extra menu 
+        char subCommand = menuCommand.charAt(1);
+        if (menuCommand.length() > 1) { // must be a submenu command
+          // debug_println("doMenu(): length>1");
+          doMenuCommand(subCommand+65-48); // convert '0'-'9' to 'A' - 'J'
+          menuCommandStartedTemp = true;
+        } else {
+          // debug_println("doMenu(): else");
+          writeOledSpeed();
+        }
+        break;
+      }
+      default: {
+        // debug_println("doMenu(): default");
+        doMenuCommand(menuCommand[0]);
+        // menuCommandStartedTemp = false;
+      }
+  }
+  menuCommandStarted = menuCommandStartedTemp; 
+  debug_println("doMenu(): end");
+}
+
+void doMenuCommand(char menuItem) {
+  debug_print("doMenuCommand(): "); debug_print(menuCommand); debug_print(" : "); debug_println(menuItem);
+  String loco = "";
+  String function = "";
+  int startAt = 1;               // in main menu
+  if (menuItem>'9') startAt = 2; // in the submenu
+
+    switch (menuItem) {
     case MENU_ITEM_ADD_LOCO: { // select loco
-        if (menuCommand.length()>1) {
-          loco = menuCommand.substring(1, menuCommand.length());
+        if (menuCommand.length()>startAt) {
+          loco = menuCommand.substring(startAt, menuCommand.length());
           loco = getLocoWithLength(loco);
           debug_print("add Loco: "); debug_println(loco);
           wiThrottleProtocol.addLocomotive(currentThrottleIndexChar, loco);
@@ -1889,7 +1989,7 @@ void doMenu() {
         break;
       }
     case MENU_ITEM_DROP_LOCO: { // de-select loco
-        loco = menuCommand.substring(1, menuCommand.length());
+        loco = menuCommand.substring(startAt, menuCommand.length());
         if (loco!="") { // a loco is specified
           loco = getLocoWithLength(loco);
           releaseOneLoco(currentThrottleIndex, loco);
@@ -1908,8 +2008,8 @@ void doMenu() {
         break;
       }
    case MENU_ITEM_THROW_POINT: {  // throw point
-        if (menuCommand.length()>1) {
-          String turnout = turnoutPrefix + menuCommand.substring(1, menuCommand.length());
+        if (menuCommand.length()>startAt) {
+          String turnout = turnoutPrefix + menuCommand.substring(startAt, menuCommand.length());
           // if (!turnout.equals("")) { // a turnout is specified
             debug_print("throw point: "); debug_println(turnout);
             wiThrottleProtocol.setTurnout(turnout, TurnoutThrow);
@@ -1922,8 +2022,8 @@ void doMenu() {
         break;
       }
     case MENU_ITEM_CLOSE_POINT: {  // close point
-        if (menuCommand.length()>1) {
-          String turnout = turnoutPrefix + menuCommand.substring(1, menuCommand.length());
+        if (menuCommand.length()>startAt) {
+          String turnout = turnoutPrefix + menuCommand.substring(startAt, menuCommand.length());
           // if (!turnout.equals("")) { // a turnout is specified
             debug_print("close point: "); debug_println(turnout);
             wiThrottleProtocol.setTurnout(turnout, TurnoutClose);
@@ -1936,8 +2036,8 @@ void doMenu() {
         break;
       }
     case MENU_ITEM_ROUTE: {  // route
-        if (menuCommand.length()>1) {
-          String route = routePrefix + menuCommand.substring(1, menuCommand.length());
+        if (menuCommand.length()>startAt) {
+          String route = routePrefix + menuCommand.substring(startAt, menuCommand.length());
           // if (!route.equals("")) { // a loco is specified
             debug_print("route: "); debug_println(route);
             wiThrottleProtocol.setRoute(route);
@@ -1953,55 +2053,55 @@ void doMenu() {
         powerToggle();
         break;
       }
-    case MENU_ITEM_EXTRAS: { // Extra menu - e.g. disconnect/reconnect/sleep
-        char subCommand = menuCommand.charAt(1);
-        if (menuCommand.length() > 1) {
-          switch (subCommand) {
-            case EXTRA_MENU_CHAR_FUNCTION_KEY_TOGGLE: { // toggle showing Def Keys vs Function labels
-                hashShowsFunctionsInsteadOfKeyDefs = !hashShowsFunctionsInsteadOfKeyDefs;
-                writeOledSpeed();
-                break;
-              } 
-            case EXTRA_MENU_CHAR_EDIT_CONSIST: { // edit consist - loco facings
-                writeOledEditConsist();
-                break;
-              } 
-            case EXTRA_MENU_CHAR_HEARTBEAT_TOGGLE: { // disable/enable the heartbeat Check
-                toggleHeartbeatCheck();
-                writeOledSpeed();
-                break;
-              }
-            case EXTRA_MENU_CHAR_INCREASE_MAX_THROTTLES: { //increase number of Throttles
-                changeNumberOfThrottles(true);
-                break;
-              }
-            case EXTRA_MENU_CHAR_DECREASE_MAX_THROTTLES: { // decrease numbe rof throttles
-                changeNumberOfThrottles(false);
-                break;
-              }
-            case EXTRA_MENU_CHAR_DISCONNECT: { // disconnect   
-                if (witConnectionState == CONNECTION_STATE_CONNECTED) {
-                  witConnectionState = CONNECTION_STATE_DISCONNECTED;
-                  disconnectWitServer();
-                } else {
-                  connectWitServer();
-                }
-                break;
-              }
-            case EXTRA_MENU_CHAR_OFF_SLEEP:
-            case EXTRA_MENU_CHAR_OFF_SLEEP_HIDDEN: { // sleep/off
-                deepSleepStart();
-                break;
-              }
+    case MENU_ITEM_FUNCTION_KEY_TOGGLE: { // toggle showing Def Keys vs Function labels
+        hashShowsFunctionsInsteadOfKeyDefs = !hashShowsFunctionsInsteadOfKeyDefs;
+        writeOledSpeed();
+        break;
+      } 
+    case MENU_ITEM_EDIT_CONSIST: { // edit consist - loco facings
+        // writeOledEditConsist();
+        // break;
+        char key = menuCommand.charAt(startAt);
+        if (menuCommand.length()>startAt) {
+          if ( ((key-'0') > 0) // can't change lead
+          && ((key-'0') <= wiThrottleProtocol.getNumberOfLocomotives(currentThrottleIndexChar)) ) {
+            selectEditConsistList(key - '0');
           }
-        } else {
           writeOledSpeed();
+        } else {
+          writeOledEditConsist();
+        }
+        break;
+      } 
+    case MENU_ITEM_HEARTBEAT_TOGGLE: { // disable/enable the heartbeat Check
+        toggleHeartbeatCheck();
+        writeOledSpeed();
+        break;
+      }
+    case MENU_ITEM_INCREASE_MAX_THROTTLES: { //increase number of Throttles
+        changeNumberOfThrottles(true);
+        break;
+      }
+    case MENU_ITEM_DECREASE_MAX_THROTTLES: { // decrease numbe rof throttles
+        changeNumberOfThrottles(false);
+        break;
+      }
+    case MENU_ITEM_DISCONNECT: { // disconnect   
+        if (witConnectionState == CONNECTION_STATE_CONNECTED) {
+          witConnectionState = CONNECTION_STATE_DISCONNECTED;
+          disconnectWitServer();
+        } else {
+          connectWitServer();
         }
         break;
       }
+    case MENU_ITEM_OFF_SLEEP: { // sleep/off
+        deepSleepStart();
+        break;
+      }
     case MENU_ITEM_FUNCTION: { // function button
-        if (menuCommand.length()>1) {
-          function = menuCommand.substring(1, menuCommand.length());
+        if (menuCommand.length()>startAt) {
+          function = menuCommand.substring(startAt, menuCommand.length());
           int functionNumber = function.toInt();
           if (function != "") { // a function is specified
             doFunction(currentThrottleIndex, functionNumber, true);  // always act like latching i.e. pressed
@@ -2014,7 +2114,6 @@ void doMenu() {
         break;
       }
   }
-  menuCommandStarted = result; 
 }
 
 // *********************************************************************************
@@ -2033,6 +2132,7 @@ void resetMenu() {
 }
 
 void resetFunctionStates(int multiThrottleIndex) {
+  debug_println("resetFunctionStates()");
   for (int i=0; i<MAX_FUNCTIONS; i++) {
     functionStates[multiThrottleIndex][i] = false;
   }
@@ -2159,14 +2259,17 @@ void stealLoco(int multiThrottleIndex, String loco) {
 }
 
 void toggleLocoFacing(int multiThrottleIndex, String loco) {
+  debug_println("toggleLocoFacing()");
   char multiThrottleIndexChar = getMultiThrottleChar(multiThrottleIndex);
   debug_print("toggleLocoFacing(): "); debug_println(loco); 
   for(int i=0;i<wiThrottleProtocol.getNumberOfLocomotives(multiThrottleIndexChar);i++) {
     if (wiThrottleProtocol.getLocomotiveAtPosition(multiThrottleIndexChar, i).equals(loco)) {
+      Direction currentDirection = wiThrottleProtocol.getDirection(multiThrottleIndexChar, loco);
+      debug_print("toggleLocoFacing(): loco: ");  debug_print(loco);  debug_print(" current direction: "); debug_println(currentDirection);
       if (wiThrottleProtocol.getDirection(multiThrottleIndexChar, loco) == Forward) {
-        wiThrottleProtocol.setDirection(multiThrottleIndexChar, loco, Reverse);
+        wiThrottleProtocol.setDirection(multiThrottleIndexChar, loco, Reverse, true);
       } else {
-        wiThrottleProtocol.setDirection(multiThrottleIndexChar, loco, Forward);
+        wiThrottleProtocol.setDirection(multiThrottleIndexChar, loco, Forward, true);
       }
       break;
     }
@@ -2278,23 +2381,24 @@ void changeDirection(int multiThrottleIndex, Direction direction) {
 
   if (locoCount > 0) {
     currentDirection[multiThrottleIndex] = direction;
-    debug_print("Change direction(): "); debug_println( (direction==Forward) ? "Forward" : "Reverse");
+    debug_print("changeDirection(): "); debug_println( (direction==Forward) ? "Forward" : "Reverse");
 
     if (locoCount == 1) {
-      // debug_println("Change direction(): one loco");
+      debug_println("changeDirection(): one loco");
       wiThrottleProtocol.setDirection(multiThrottleChar, direction);  // change all
 
     } else {
-      // debug_println("Change direction(): multiple locos");
+      debug_println("changeDirection(): multiple locos");
       leadLoco = wiThrottleProtocol.getLeadLocomotive(multiThrottleChar);
       leadLocoCurrentDirection = wiThrottleProtocol.getDirection(multiThrottleChar, leadLoco);
 
       for (int i=1; i<locoCount; i++) {
         loco = wiThrottleProtocol.getLocomotiveAtPosition(multiThrottleChar, i);
-        if (wiThrottleProtocol.getDirection(multiThrottleChar, loco) == leadLocoCurrentDirection) {
+        Direction currentDirection = wiThrottleProtocol.getDirection(multiThrottleChar, loco);
+        if (currentDirection == leadLocoCurrentDirection) {
           wiThrottleProtocol.setDirection(multiThrottleChar, loco, direction);
         } else {
-          if (wiThrottleProtocol.getDirection(multiThrottleChar, loco) == Reverse) {
+          if (direction == Reverse) {
             wiThrottleProtocol.setDirection(multiThrottleChar, loco, Forward);
           } else {
             wiThrottleProtocol.setDirection(multiThrottleChar, loco, Reverse);
@@ -2305,34 +2409,37 @@ void changeDirection(int multiThrottleIndex, Direction direction) {
     } 
   }
   writeOledSpeed();
-  // debug_println("Change direction(): end "); 
+  // debug_println("changeDirection(): end "); 
 }
 
-void doDirectFunction(int multiThrottleIndex, int functionNumber, boolean pressed) {
+void doDirectFunction(int multiThrottleIndex, int functionNumber, bool pressed) {
+  doDirectFunction(multiThrottleIndex, functionNumber, pressed, false);
+}
+void doDirectFunction(int multiThrottleIndex, int functionNumber, bool pressed, bool force) {
   char multiThrottleIndexChar = getMultiThrottleChar(multiThrottleIndex);
   debug_println("doDirectFunction(): "); 
   if (wiThrottleProtocol.getNumberOfLocomotives(multiThrottleIndexChar) > 0) {
     debug_print("direct fn: "); debug_print(functionNumber); debug_println( pressed ? " Pressed" : " Released");
-    // wiThrottleProtocol.setFunction(multiThrottleIndexChar, functionNumber, pressed);
-    doFunctionWhichLocosInConsist(multiThrottleIndex, functionNumber, pressed);
+    doFunctionWhichLocosInConsist(multiThrottleIndex, functionNumber, pressed, force);
     writeOledSpeed(); 
   }
   // debug_print("doDirectFunction(): end"); 
 }
 
-void doFunction(int multiThrottleIndex, int functionNumber, boolean pressed) {   // currently ignoring the pressed value
+void doFunction(int multiThrottleIndex, int functionNumber, bool pressed) {
+  doFunction(multiThrottleIndex, functionNumber, pressed, false);
+}
+void doFunction(int multiThrottleIndex, int functionNumber, bool pressed, bool force) {
   char multiThrottleIndexChar = getMultiThrottleChar(multiThrottleIndex);
   debug_print("doFunction(): multiThrottleIndex "); debug_println(multiThrottleIndex);
   if (wiThrottleProtocol.getNumberOfLocomotives(multiThrottleIndexChar)>0) {
-    // wiThrottleProtocol.setFunction(multiThrottleIndexChar, functionNumber, true);
-    doFunctionWhichLocosInConsist(multiThrottleIndex, functionNumber, true);
+    doFunctionWhichLocosInConsist(multiThrottleIndex, functionNumber, true, force);
     if (!functionStates[multiThrottleIndex][functionNumber]) {
       debug_print("fn: "); debug_print(functionNumber); debug_println(" Pressed");
       // functionStates[functionNumber] = true;
     } else {
-      delay(20);
-      // wiThrottleProtocol.setFunction(multiThrottleIndexChar,functionNumber, false);
-      doFunctionWhichLocosInConsist(multiThrottleIndex, functionNumber, false);
+      // delay(20);
+      doFunctionWhichLocosInConsist(multiThrottleIndex, functionNumber, false, force);
       debug_print("fn: "); debug_print(functionNumber); debug_println(" Released");
       // functionStates[functionNumber] = false;
     }
@@ -2343,12 +2450,15 @@ void doFunction(int multiThrottleIndex, int functionNumber, boolean pressed) {  
 
 // Work out which locos in a consist should get the function
 //
-void doFunctionWhichLocosInConsist(int multiThrottleIndex, int functionNumber, boolean pressed) {
+void doFunctionWhichLocosInConsist(int multiThrottleIndex, int functionNumber, bool pressed) {
+  doFunctionWhichLocosInConsist(multiThrottleIndex, functionNumber, pressed, false);
+}
+void doFunctionWhichLocosInConsist(int multiThrottleIndex, int functionNumber, bool pressed, bool force) {
   char multiThrottleIndexChar = getMultiThrottleChar(multiThrottleIndex);
   if (functionFollow[multiThrottleIndex][functionNumber]==CONSIST_LEAD_LOCO) {
-    wiThrottleProtocol.setFunction(multiThrottleIndexChar,functionNumber, pressed);
+    wiThrottleProtocol.setFunction(multiThrottleIndexChar, "", functionNumber, pressed, force);
   } else {  // at the momemnt the only other option in CONSIST_ALL_LOCOS
-    wiThrottleProtocol.setFunction(multiThrottleIndexChar, "*", functionNumber, pressed);
+    wiThrottleProtocol.setFunction(multiThrottleIndexChar, "*", functionNumber, pressed, force);
   }
   debug_print("doFunctionWhichLocosInConsist(): fn: "); debug_print(functionNumber); debug_println(" Released");
 }
@@ -2439,7 +2549,7 @@ void reconnect() {
   disconnectWitServer();
 }
 
-void setLastServerResponseTime(boolean force) {
+void setLastServerResponseTime(bool force) {
   // debug_print("setLastServerResponseTime "); debug_println((force) ? "True": "False");
   lastServerResponseTime = wiThrottleProtocol.getLastServerResponseTime();
   if ( (lastServerResponseTime==0) || (force) ) lastServerResponseTime = millis() /1000;
@@ -2521,9 +2631,9 @@ void selectEditConsistList(int selection) {
   if (wiThrottleProtocol.getNumberOfLocomotives(currentThrottleIndexChar) > 1 ) {
     String loco = wiThrottleProtocol.getLocomotiveAtPosition(currentThrottleIndexChar, selection);
     toggleLocoFacing(currentThrottleIndex, loco);
-
     writeOledSpeed();
     keypadUseType = KEYPAD_USE_OPERATION;
+    menuCommandStarted = false;
   }
 }
 
@@ -2563,13 +2673,13 @@ void refreshOled() {
       writeOledFunctionList(lastOledStringParameter);
       break;
     case last_oled_screen_menu:
-      writeOledMenu(lastOledStringParameter);
+      writeOledMenu(lastOledStringParameter, true);
       break;
     case last_oled_screen_extra_submenu:
-      writeOledExtraSubMenu();
+      writeOledMenu(lastOledStringParameter, false);
       break;
     case last_oled_screen_all_locos:
-      writeOledAllLocos(lastOledBooleanParameter);
+      writeOledAllLocos(lastOledBoolParameter);
       break;
     case last_oled_screen_edit_consist:
       writeOledEditConsist();
@@ -2682,7 +2792,6 @@ void writeOledFunctionList(String soFar) {
         k = (functionPage*10) + i;
         if (k < MAX_FUNCTIONS) {
           j = (i<5) ? i : i+1;
-          // if (functionLabels[currentThrottleIndex][k].length()>0) {
             oledText[j] = String(i) + ": " 
             + ((k<10) ? functionLabels[currentThrottleIndex][k].substring(0,10) : String(k) 
             + "-" + functionLabels[currentThrottleIndex][k].substring(0,7)) ;
@@ -2690,11 +2799,9 @@ void writeOledFunctionList(String soFar) {
             if (functionStates[currentThrottleIndex][k]) {
               oledTextInvert[j] = true;
             }
-          // }
         }
       }
       oledText[5] = "(" + String(functionPage) +  ") " + menu_text[menu_function_list];
-      // setMenuTextForOled("(" + String(functionPage) +  ") " + menu_function_list);
     } else {
       oledText[0] = MSG_NO_FUNCTIONS;
       oledText[2] = MSG_THROTTLE_NUMBER + String(currentThrottleIndex+1);
@@ -2726,21 +2833,28 @@ void writeOledEnterPassword() {
   writeOledArray(false, true);
 }
 
-void writeOledMenu(String soFar) {
-  lastOledScreen = last_oled_screen_menu;
+void writeOledMenu(String soFar, bool primeMenu) {
+  debug_print("writeOledMenu() : "); debug_print(primeMenu); debug_print(" : "); debug_println(soFar);
   lastOledStringParameter = soFar;
 
-  debug_print("writeOledMenu() : "); debug_println(soFar);
+  int offset = 0;
+  lastOledScreen = last_oled_screen_menu;
+  if (!primeMenu) {  //Extra Menu
+    offset = 10;
+    lastOledScreen = last_oled_screen_extra_submenu;
+  }
+
   menuIsShowing = true;
   bool drawTopLine = false;
-  if (soFar == "") { // nothing entered yet
+  if ( (soFar == "")
+  || ((!primeMenu) && (soFar.length()==1))) { // nothing entered yet
     clearOledArray();
     int j = 0;
-    for (int i=1; i<10; i++) {
-      j = (i<6) ? i : i+1;
-      oledText[j-1] = String(i) + ": " + menuText[i][0];
+    for (int i=1+offset; i<10+offset; i++) {
+      j = (i<6+offset) ? i-offset : i+1-offset;
+      oledText[j-1] = String(i-offset) + ": " + menuText[i][0];
     }
-    oledText[10] = "0: " + menuText[0][0];
+    oledText[10] = "0: " + menuText[0+offset][0];
     // oledText[5] = menu_cancel;
     setMenuTextForOled(menu_cancel);
     writeOledArray(false, false);
@@ -2750,7 +2864,7 @@ void writeOledMenu(String soFar) {
     clearOledArray();
 
     oledText[0] = ">> " + menuText[cmd][0] +":"; oledText[6] =  menuCommand.substring(1, menuCommand.length());
-    oledText[5] = menuText[cmd][1];
+    oledText[5] = menuText[cmd+offset][1];
 
     switch (soFar.charAt(0)) {
       case MENU_ITEM_DROP_LOCO: {
@@ -2769,30 +2883,15 @@ void writeOledMenu(String soFar) {
           } 
           break;
         }
-      case MENU_ITEM_EXTRAS: { // extra menu
-          writeOledExtraSubMenu();
-          drawTopLine = true;
-          break;
-        }
     }
 
     writeOledArray(false, false, true, drawTopLine);
   }
 }
 
-void writeOledExtraSubMenu() {
-  lastOledScreen = last_oled_screen_extra_submenu;
-
-  int j = 0;
-  for (int i=0; i<8; i++) {
-    j = (i<4) ? i : i+2;
-    oledText[j+1] = (extraSubMenuText[i].length()==0) ? "" : String(i) + ": " + extraSubMenuText[i];
-  }
-}
-
 void writeOledAllLocos(bool hideLeadLoco) {
   lastOledScreen = last_oled_screen_all_locos;
-  lastOledBooleanParameter = hideLeadLoco;
+  lastOledBoolParameter = hideLeadLoco;
 
   int startAt = (hideLeadLoco) ? 1 :0;  // for the loco heading menu, we don't want to show the loco 0 (lead) as an option.
   debug_println("writeOledAllLocos(): ");
@@ -2821,21 +2920,21 @@ void writeOledEditConsist() {
   debug_println("writeOledEditConsist(): ");
   keypadUseType = KEYPAD_USE_EDIT_CONSIST;
   writeOledAllLocos(true);
-  oledText[0] = menuText[11][0];
-  oledText[5] = menuText[11][1];
+  oledText[0] = MENU_ITEM_TEXT_TITLE_EDIT_CONSIST;
+  oledText[5] = MENU_ITEM_TEXT_MENU_EDIT_CONSIST;
   writeOledArray(false, false);
 }
 
 void writeHeartbeatCheck() {
   menuIsShowing = false;
   clearOledArray();
-  oledText[0] = menuText[10][0];
+  oledText[0] = MENU_ITEM_TEXT_TITLE_HEARTBEAT;
   if (heartbeatCheckEnabled) {
     oledText[1] = MSG_HEARTBEAT_CHECK_ENABLED; 
   } else {
     oledText[1] = MSG_HEARTBEAT_CHECK_DISABLED; 
   }
-  oledText[5] = menuText[10][1];
+  oledText[5] = MENU_ITEM_TEXT_MENU_HEARTBEAT;
   writeOledArray(false, false);
 }
 
@@ -2855,7 +2954,7 @@ void writeOledSpeed() {
 
   clearOledArray();
   
-  boolean drawTopLine = false;
+  bool drawTopLine = false;
 
   if (wiThrottleProtocol.getNumberOfLocomotives(currentThrottleIndexChar) > 0 ) {
     // oledText[0] = label_locos; oledText[2] = label_speed;
@@ -3071,15 +3170,15 @@ void writeOledFunctions() {
   debug_println("writeOledFunctions(): end");
 }
 
-void writeOledArray(boolean isThreeColums, boolean isPassword) {
+void writeOledArray(bool isThreeColums, bool isPassword) {
   writeOledArray(isThreeColums, isPassword, true, false);
 }
 
-void writeOledArray(boolean isThreeColums, boolean isPassword, boolean sendBuffer) {
+void writeOledArray(bool isThreeColums, bool isPassword, bool sendBuffer) {
   writeOledArray(isThreeColums, isPassword, sendBuffer, false);
 }
 
-void writeOledArray(boolean isThreeColums, boolean isPassword, boolean sendBuffer, boolean drawTopLine) {
+void writeOledArray(bool isThreeColums, bool isPassword, bool sendBuffer, bool drawTopLine) {
   // debug_println("Start writeOledArray()");
   u8g2.clearBuffer();					// clear the internal memory
 

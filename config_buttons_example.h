@@ -115,6 +115,19 @@
 #define CHOSEN_ADDITIONAL_BUTTON_5_FUNCTION     FUNCTION_NULL   // GPIO 32
 #define CHOSEN_ADDITIONAL_BUTTON_6_FUNCTION     FUNCTION_NULL   // GPIO 33
 
+// The following are either 'true' = LATCHING or 'false' = NOT LATCHING
+// Only relevant for the buttons that are set to FUNCTION_00 to FUNCTION_32
+//
+// #define ADDITIONAL_BUTTON_OVERRIDE_DEFAULT_LATCHING true
+//
+// #define ADDITIONAL_BUTTON_0_LATCHING true
+// #define ADDITIONAL_BUTTON_1_LATCHING true
+// #define ADDITIONAL_BUTTON_2_LATCHING true
+// #define ADDITIONAL_BUTTON_3_LATCHING true
+// #define ADDITIONAL_BUTTON_4_LATCHING true
+// #define ADDITIONAL_BUTTON_5_LATCHING true
+// #define ADDITIONAL_BUTTON_6_LATCHING true
+
 // *******************************************************************************************************************
 // additional / optional commands
 // these can be any legitimate WiThrottle protocol command encosed in quotes or double quotes
@@ -155,15 +168,6 @@
 // WiThrottle Protocol console debug messages are DISABLED by default
 // to enable to console messages, uncomment and set the following to  0    (i.e. 0 = on  1 = off)
 // #define WITHROTTLE_PROTOCOL_DEBUG    1
-
-// *******************************************************************************************************************
-// Default latching/momentary functions - Direct mapping only 
-
-// uncomment any of these lines if you wish to change.  latching = true or momentary = false
-// F1 & F1 default to momentary
-//#define F0_LATCHING false
-//#define F1_LATCHING true
-//#define F2_LATCHING true
 
 // *******************************************************************************************************************
 // Default function labels

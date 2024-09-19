@@ -99,9 +99,9 @@ Notes:
 
 ## Loading the code
 
-  **WARNING!**
+The instructions below are for using the Arduino IDE and GitHub Desktop. Visual Studio Code (VSC) can be used instead of the Arduino IDE but no instructions are included here.
 
-1. Download the Arduino IDE.  
+ 1. Download the Arduino IDE.  
     * Available from  https://support.arduino.cc/hc/en-us/articles/360019833020-Download-and-install-Arduino-IDE
 2. Download the **esp32** boards in the Arduino IDE.
     * Add the esp322 support with the following instructions:  (See here for detailed instructions:  https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/)
@@ -160,6 +160,8 @@ Notes:
     * Click ``Upload`` **-->**
 
 Notes: 
+   * WiTcontroller version 1.66 or later requires WiThrottleProtocol version 1.1.24
+   * WiTcontroller version 1.65 or later requires WiThrottleProtocol version 1.1.23
    * WiTcontroller version 1.57 or later requires WiThrottleProtocol version 1.1.20 or later for the E_STOP and E_STOP_CURRENT_LOCO to work correctly.
    * WiTcontroller version 1.45 or later requires WiThrottleProtocol version 1.1.14 or later.
    * WiTcontroller version 1.41 or later requires WiThrottleProtocol version 1.1.12 or later.
@@ -458,6 +460,19 @@ Bei Interesse kontaktieren Sie mich bitte direkt für eine Anleitung.
 ---
 
 ## Change Log
+
+### V1.66
+- Add support for setting the additional button as latching or non-latching, overriding the WiThrottle defaults. Requires WiThrottleProtocol version 1.1.24.
+
+### V1.65
+- Fix for individual loco direction (facing) changes in a consist. Requires WiThrottleProtocol version 1.1.23 or later
+
+### V1.63 - v1.64
+- bug fix for the user defined menus
+
+### V1.62
+- rewrite of the menu code to support user defined menus
+- bug fix for the Edit Consist not working
 
 ### V1.61
 - Bug fix - Speed step multiplier not being displayed
