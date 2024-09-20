@@ -1494,7 +1494,9 @@ void doKeyPress(char key, bool pressed) {
                     &&  ( (menuCharsRequired[index1] == MENU_ITEM_TYPE_SUB_MENU)
                        || (menuCharsRequired[index1] == MENU_ITEM_TYPE_DIRECT_COMMAND) ))
               || ((menuCommand.length() == 2) 
-                    &&  ( (menuCharsRequired[index2] == MENU_ITEM_TYPE_DIRECT_COMMAND) )) ) { 
+                    &&  (menuCharsRequired[index1] != MENU_ITEM_TYPE_ONE_OR_MORE_CHARS)
+                    &&  (menuCharsRequired[index2] == MENU_ITEM_TYPE_DIRECT_COMMAND)) 
+              ) { 
                 debug_println("doKeyPress(): MENU_ITEM_TYPE_DIRECT_COMMAND : ");
                 menuCommand += key;
                 doMenu();
@@ -1510,7 +1512,7 @@ void doKeyPress(char key, bool pressed) {
                 //   menuCommand += key;
                 //   writeOledMenu(menuCommand, false);
                 } else {  //menu type allows/requires more than one char
-                  debug_println("doKeyPress(): MENU_ITEM_TYPE_ONE_OR_MORE");
+                  debug_println("doKeyPress(): MENU_ITEM_TYPE_ONE_OR_MORE_CHARS");
                   menuCommand += key;
                   writeOledMenu(menuCommand, true);
                 }

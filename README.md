@@ -462,6 +462,9 @@ Bei Interesse kontaktieren Sie mich bitte direkt für eine Anleitung.
 ## Change Log
 
 ### V1.66
+- bug fix for adding locos greater than 300 and less than 499
+
+### V1.66
 - Add support for setting the additional button as latching or non-latching, overriding the WiThrottle defaults. Requires WiThrottleProtocol version 1.1.24.
 
 ### V1.65
