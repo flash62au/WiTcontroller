@@ -77,6 +77,8 @@ int throttlePotNotchSpeeds[] = THROTTLE_POT_NOTCH_SPEEDS;
 int throttlePotNotch = 0;
 int throttlePotTargetSpeed = 0;
 int lastThrottlePotValue = 0;
+int lastThrottlePotHighValue = 0;  // highest of the most recent
+int lastThrottlePotValues[] = {0, 0, 0, 0, 0};
 int lastThrottlePotReadTime = -1;
 
 // battery test values
@@ -1183,24 +1185,56 @@ void encoderSpeedChange(bool rotationIsClockwise, int speedChange) {
 // *********************************************************************************
 
 void throttlePot_loop() {
-  if (millis() < lastThrottlePotReadTime + 100) { // only ready it one every x seconds
+  throttlePot_loop(false);
+}
+void throttlePot_loop(bool forceRead) {
+  // debug_println("throttlePot_loop() start: ");
+
+  if ( (millis() < lastThrottlePotReadTime + 100) 
+    && (!forceRead) ) { // only ready it one every x seconds
     return;
   }
   lastThrottlePotReadTime = millis();
 
   // Read the throttle pot to see what notch it is on.
   int currentThrottlePotNotch = throttlePotNotch;
+  int potValue = analogRead(throttlePotPin);  //Reads the analog value on the throttle pin.
+  // potValue = analogRead(throttlePotPin);
+  debug_println("Pot Value: "); debug_println(potValue);
 
-  int potValue = ( analogRead(throttlePotPin) );  //Reads the analog value on the throttle pin.
+  // average out the last x values from the pot
+  int noElements = sizeof(lastThrottlePotValues) / sizeof(lastThrottlePotValues[0]);
+  int avgPotValue = 0;
+  for (int i=1; i<noElements; i++) {
+    lastThrottlePotValues[i-1] = lastThrottlePotValues[i];
+    avgPotValue = avgPotValue + lastThrottlePotValues[i-1];
+  }
+  lastThrottlePotValues[noElements-1] = potValue;
+  avgPotValue = (avgPotValue + potValue) / noElements;
 
-  if (potValue!=lastThrottlePotValue) { 
-    lastThrottlePotValue = potValue;
-    // debug_print("Pot Value: "); debug_println(potValue);
+  // get the highest recent value
+  lastThrottlePotHighValue = -1;
+  for (int i=0; i<noElements; i++) {
+    if (lastThrottlePotValues[i] > lastThrottlePotHighValue) 
+    lastThrottlePotHighValue = lastThrottlePotValues[i];
+  }
+
+  // // save the lowest and highest pot values seen
+  // if (avgPotValue<lowestThrottlePotValue) lowestThrottlePotValue = avgPotValue;
+  // if (avgPotValue>highestThrottlePotValue) highestThrottlePotValue = avgPotValue;
+
+  // only do something if the pot value is sufficiently different
+  // or deliberate read 
+  if ( (avgPotValue<lastThrottlePotValue-5) || (avgPotValue>lastThrottlePotValue+5)
+  || (forceRead) )  { 
+   
+    lastThrottlePotValue = avgPotValue;
+    debug_print("Avg Pot Value: "); debug_println(avgPotValue);
 
     if (throttlePotUseNotches) { // use notches
       throttlePotNotch = 0;
       for (int i=0; i<8; i++) {
-        if (potValue < throttlePotNotchValues[i]) {    /// Check to see if it is in notch i
+        if (avgPotValue < throttlePotNotchValues[i]) {    /// Check to see if it is in notch i
           throttlePotTargetSpeed = throttlePotNotchSpeeds[i];
           throttlePotNotch = i;
           break;
@@ -2228,7 +2262,10 @@ void speedSet(int multiThrottleIndex, int amt) {
     // lastDirectionSent = -1;
     lastSpeedThrottleIndex = multiThrottleIndex;
 
-    writeOledSpeed();
+    if ( (keypadUseType == KEYPAD_USE_OPERATION) && (!menuIsShowing) 
+    && (multiThrottleIndex==currentThrottleIndex) ) {
+      writeOledSpeed();
+    }
   }
 }
 
