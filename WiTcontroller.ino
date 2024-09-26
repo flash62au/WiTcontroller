@@ -2596,7 +2596,7 @@ void setLastServerResponseTime(bool force) {
 }
 
 void checkForShutdownOnNoResponse() {
-  if (millis()-startWaitForSelection > 240000) {  // 4 minutes
+  if (millis()-startWaitForSelection > MAX_HEARTBEAT_PERIOD) {  // default is 4 minutes
       debug_println("Waited too long for a selection. Shutting down");
       deepSleepStart();
   }

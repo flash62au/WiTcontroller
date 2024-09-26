@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "v1.68";
+const String appVersion = "v1.69";
 
 #ifndef DEVICE_NAME
    #define DEVICE_NAME "WiTcontroller"
@@ -827,4 +827,11 @@ const char ssidPasswordBlankChar = 164;
   #define ESPMDNS_IP_ATTRIBUTE_NAME MDNS.IP(i)
 #else
   #define ESPMDNS_IP_ATTRIBUTE_NAME MDNS.address(i)
+#endif
+
+// ***************************************************
+// Heartbeat maximum
+
+#ifndef MAX_HEARTBEAT_PERIOD
+   #define MAX_HEARTBEAT_PERIOD 240000
 #endif

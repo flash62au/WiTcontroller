@@ -276,5 +276,11 @@
 // #define USE_BATTERY_PERCENT_AS_WELL_AS_ICON false
 // #define USE_BATTERY_SLEEP_AT_PERCENT 3   // will put the device to sleep if the battery falls below this level
 
+// ********************************************************************************************
+// Heartbeat maximum
+// if no response is received from the server in the specified period (milliseconds), shut down.
+// default is 4 minutes = 240000
+
+// #define MAX_HEARTBEAT_PERIOD 240000
+
 // *******************************************************************************************************************
-//

@@ -174,10 +174,10 @@ Notes:
    * WiTcontroller version 1.01 or later requires WiThrottleProtocol version 1.1.0 or later.
    * WiTcontroller version 0.10 or later requires WiThrottleProtocol version 1.0.3 or later.
    * The *WiFi.h* and *ESPmDNS.h* libraries were automatically installed for me when I installed the esp32 boards, however you may need to install them manually.
-   * Later versions of the esp board support are available and do appear to work, but if you have difficulties version 1.0.6 appears to be stable.
+   * Later versions of the ESP board support are available and do appear to work, but if you have difficulties version 1.0.6 appears to be stable.
    * Later versions of the libraries generally should work, but if you have difficulties use the versions listed above.
    * To get the WiTcontroller sketch I recommend using either the git command line, or the far more friendly 'GitHub Desktop' app.  See instructions above.
-   * If you receive and error related to Python, and you are on MacOs 12 and above please edit the platform file, change from python to python3 as follows; preferences->user/path/arduino/packages/hardware/esp32/version/platform.txt and edit the line that looks as follows:tools.gen_esp32part.cmd=python3 "{runtime.platform.path}/tools/gen_esp32part.py"
+   * If you receive and error related to Python, and you are on MacOS 12 and above please edit the platform file, change from python to python3 as follows; preferences->user/path/arduino/packages/hardware/esp32/version/platform.txt and edit the line that looks as follows:tools.gen_esp32part.cmd=python3 "{runtime.platform.path}/tools/gen_esp32part.py"
 
 ---
 
@@ -460,6 +460,9 @@ Bei Interesse kontaktieren Sie mich bitte direkt für eine Anleitung.
 ---
 
 ## Change Log
+
+### V1.69
+- New define added for if no response is received from the server in the specified period (milliseconds), shut down. MAX_HEARTBEAT_PERIOD   default is 4 minutes = 240000 
 
 ### V1.68
 - improve bouncing on the pot values
