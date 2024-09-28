@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "v1.69";
+const String appVersion = "v1.71";
 
 #ifndef DEVICE_NAME
    #define DEVICE_NAME "WiTcontroller"
@@ -580,9 +580,95 @@ const char ssidPasswordBlankChar = 164;
 #ifndef CONSIST_FUNCTION_FOLLOW_F2
     #define CONSIST_FUNCTION_FOLLOW_F2                  CONSIST_LEAD_LOCO            // horn
 #endif
-#ifndef CONSIST_FUNCTION_FOLLOW_OTHER_FUNCTIONS
-    #define CONSIST_FUNCTION_FOLLOW_OTHER_FUNCTIONS     CONSIST_LEAD_LOCO
+#ifndef CONSIST_FUNCTION_FOLLOW_F3
+    #define CONSIST_FUNCTION_FOLLOW_F3                  CONSIST_LEAD_LOCO
 #endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F4
+    #define CONSIST_FUNCTION_FOLLOW_F4                  CONSIST_LEAD_LOCO
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F5
+    #define CONSIST_FUNCTION_FOLLOW_F5                  CONSIST_LEAD_LOCO
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F6
+    #define CONSIST_FUNCTION_FOLLOW_F6                  CONSIST_LEAD_LOCO
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F7
+    #define CONSIST_FUNCTION_FOLLOW_F7                  CONSIST_LEAD_LOCO
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F8
+    #define CONSIST_FUNCTION_FOLLOW_F8                  CONSIST_LEAD_LOCO
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F9
+    #define CONSIST_FUNCTION_FOLLOW_F9                  CONSIST_LEAD_LOCO
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F10
+    #define CONSIST_FUNCTION_FOLLOW_F10                  CONSIST_LEAD_LOCO
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F11
+    #define CONSIST_FUNCTION_FOLLOW_F11                  CONSIST_LEAD_LOCO
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F12
+    #define CONSIST_FUNCTION_FOLLOW_F12                  CONSIST_LEAD_LOCO
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F13
+    #define CONSIST_FUNCTION_FOLLOW_F13                  CONSIST_LEAD_LOCO
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F14
+    #define CONSIST_FUNCTION_FOLLOW_F14                  CONSIST_LEAD_LOCO
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F15
+    #define CONSIST_FUNCTION_FOLLOW_F15                  CONSIST_LEAD_LOCO
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F16
+    #define CONSIST_FUNCTION_FOLLOW_F16                  CONSIST_LEAD_LOCO
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F17
+    #define CONSIST_FUNCTION_FOLLOW_F17                  CONSIST_LEAD_LOCO
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F18
+    #define CONSIST_FUNCTION_FOLLOW_F18                  CONSIST_LEAD_LOCO
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F19
+    #define CONSIST_FUNCTION_FOLLOW_F19                  CONSIST_LEAD_LOCO
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F20
+    #define CONSIST_FUNCTION_FOLLOW_F20                  CONSIST_LEAD_LOCO
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F21
+    #define CONSIST_FUNCTION_FOLLOW_F21                  CONSIST_LEAD_LOCO
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F22
+    #define CONSIST_FUNCTION_FOLLOW_F22                  CONSIST_LEAD_LOCO
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F23
+    #define CONSIST_FUNCTION_FOLLOW_F23                  CONSIST_LEAD_LOCO
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F24
+    #define CONSIST_FUNCTION_FOLLOW_F24                  CONSIST_LEAD_LOCO
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F25
+    #define CONSIST_FUNCTION_FOLLOW_F25                  CONSIST_LEAD_LOCO
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F26
+    #define CONSIST_FUNCTION_FOLLOW_F26                  CONSIST_LEAD_LOCO
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F27
+    #define CONSIST_FUNCTION_FOLLOW_F27                  CONSIST_LEAD_LOCO
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F28
+    #define CONSIST_FUNCTION_FOLLOW_F28                  CONSIST_LEAD_LOCO
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F29
+    #define CONSIST_FUNCTION_FOLLOW_F29                  CONSIST_LEAD_LOCO
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F30
+    #define CONSIST_FUNCTION_FOLLOW_F30                  CONSIST_LEAD_LOCO
+#endif
+#ifndef CONSIST_FUNCTION_FOLLOW_F31
+    #define CONSIST_FUNCTION_FOLLOW_F31                  CONSIST_LEAD_LOCO
+#endif
+
+
 
 // *******************************************************************************************************************
 // other options
@@ -830,8 +916,13 @@ const char ssidPasswordBlankChar = 164;
 #endif
 
 // ***************************************************
-// Heartbeat maximum
+// Heartbeat 
 
+// max period 
 #ifndef MAX_HEARTBEAT_PERIOD
    #define MAX_HEARTBEAT_PERIOD 240000
+#endif
+
+#ifndef HEARTBEAT_ENABLED
+   #define HEARTBEAT_ENABLED true
 #endif

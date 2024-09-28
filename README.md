@@ -461,6 +461,12 @@ Bei Interesse kontaktieren Sie mich bitte direkt für eine Anleitung.
 
 ## Change Log
 
+### V1.71
+- add the ability to define the consist follow function options for all 32 functions ``CONSIST_FUNCTION_FOLLOW_F3`` to ``CONSIST_FUNCTION_FOLLOW_F31``
+
+### V1.70
+- add define to enable or disable the heartbeat by default    ``#define HEARTBEAT_ENABLED true``
+
 ### V1.69
 - New define added for if no response is received from the server in the specified period (milliseconds), shut down. MAX_HEARTBEAT_PERIOD   default is 4 minutes = 240000 
 

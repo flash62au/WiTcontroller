@@ -194,7 +194,7 @@ int maxThrottles = MAX_THROTTLES;
 
 int heartBeatPeriod = 10; // default to 10 seconds
 long lastServerResponseTime;  // seconds since start of Arduino
-bool heartbeatCheckEnabled = true;
+bool heartbeatCheckEnabled = HEARTBEAT_ENABLED;
 
 // used to stop speed bounces
 long lastSpeedSentTime = 0;
@@ -2193,9 +2193,35 @@ void resetAllFunctionFollow() {
     functionFollow[i][0] = CONSIST_FUNCTION_FOLLOW_F0;
     functionFollow[i][1] = CONSIST_FUNCTION_FOLLOW_F1;
     functionFollow[i][2] = CONSIST_FUNCTION_FOLLOW_F2;
-    for (int j=3; j<MAX_FUNCTIONS; j++) {
-      functionFollow[i][j] = CONSIST_FUNCTION_FOLLOW_OTHER_FUNCTIONS;
-    }
+    functionFollow[i][3] = CONSIST_FUNCTION_FOLLOW_F3;
+    functionFollow[i][4] = CONSIST_FUNCTION_FOLLOW_F4;
+    functionFollow[i][5] = CONSIST_FUNCTION_FOLLOW_F5;
+    functionFollow[i][6] = CONSIST_FUNCTION_FOLLOW_F6;
+    functionFollow[i][7] = CONSIST_FUNCTION_FOLLOW_F7;
+    functionFollow[i][8] = CONSIST_FUNCTION_FOLLOW_F8;
+    functionFollow[i][9] = CONSIST_FUNCTION_FOLLOW_F9;
+    functionFollow[i][10] = CONSIST_FUNCTION_FOLLOW_F10;
+    functionFollow[i][11] = CONSIST_FUNCTION_FOLLOW_F11;
+    functionFollow[i][12] = CONSIST_FUNCTION_FOLLOW_F12;
+    functionFollow[i][13] = CONSIST_FUNCTION_FOLLOW_F13;
+    functionFollow[i][14] = CONSIST_FUNCTION_FOLLOW_F14;
+    functionFollow[i][15] = CONSIST_FUNCTION_FOLLOW_F15;
+    functionFollow[i][16] = CONSIST_FUNCTION_FOLLOW_F16;
+    functionFollow[i][17] = CONSIST_FUNCTION_FOLLOW_F17;
+    functionFollow[i][18] = CONSIST_FUNCTION_FOLLOW_F18;
+    functionFollow[i][19] = CONSIST_FUNCTION_FOLLOW_F19;
+    functionFollow[i][20] = CONSIST_FUNCTION_FOLLOW_F20;
+    functionFollow[i][21] = CONSIST_FUNCTION_FOLLOW_F21;
+    functionFollow[i][22] = CONSIST_FUNCTION_FOLLOW_F22;
+    functionFollow[i][23] = CONSIST_FUNCTION_FOLLOW_F23;
+    functionFollow[i][24] = CONSIST_FUNCTION_FOLLOW_F24;
+    functionFollow[i][25] = CONSIST_FUNCTION_FOLLOW_F25;
+    functionFollow[i][26] = CONSIST_FUNCTION_FOLLOW_F26;
+    functionFollow[i][27] = CONSIST_FUNCTION_FOLLOW_F27;
+    functionFollow[i][28] = CONSIST_FUNCTION_FOLLOW_F28;
+    functionFollow[i][29] = CONSIST_FUNCTION_FOLLOW_F29;
+    functionFollow[i][30] = CONSIST_FUNCTION_FOLLOW_F30;
+    functionFollow[i][31] = CONSIST_FUNCTION_FOLLOW_F31;
   }
 }
 
