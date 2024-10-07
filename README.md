@@ -58,6 +58,9 @@ A WiTcontroller is a simple DIY, handheld controller that talks to a WiThrottle 
 *Pinouts for Optional 4x4 keypad and Additional Buttons*
 ![Assembly diagram - 4x4 keypad and Optional Additional Buttons](WiTcontroller%20-%204x4%20keypad,%20Optional%20Buttons%20-%20pinouts%20v0.1.png)
 
+*Pinouts for Optional Battery Monitor and Additional Buttons*
+![Assembly diagram - Optional Battery Monitor and Additional Buttons](WiTcontroller%20-%20Optional%20battery%20monitor.png)
+
 *Default Pins for the keypads*
 
 3x4 Keypad - Left to Right
@@ -462,7 +465,7 @@ Bei Interesse kontaktieren Sie mich bitte direkt für eine Anleitung.
 ## Change Log
 
 ### V1.71
-- add the ability to define the consist follow function options for all 32 functions ``CONSIST_FUNCTION_FOLLOW_F3`` to ``CONSIST_FUNCTION_FOLLOW_F31``
+- add the ability to define the consist follow function options for all 32 functions ``CONSIST_FUNCTION_FOLLOW_F0`` to ``CONSIST_FUNCTION_FOLLOW_F31``
 
 ### V1.70
 - add define to enable or disable the heartbeat by default    ``#define HEARTBEAT_ENABLED true``
