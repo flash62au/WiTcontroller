@@ -419,13 +419,17 @@ config_buttons.h can include the following optional defines:
 
 ### Instructions for optional use of a voltage divider to show the battery charge level
 
+See diagram above for how to wire in the volage divider.  47k resistors are used, but this can be varied as long as the output to the pin is limited to below 3.3v. 
+
+The diagram has the voltage divider spliced into battery leads, but you can solder the positive in to the back of the battery connector (on the ESP32) if you prefer. The ground can be taken from any ground pin.
+
 *To enable the battery monitor*, set the following to ``true``. The default is ``false``.
 
 ``#define USE_BATTERY_TEST true``
 
-*To set which pin to use.* The default is ``36``.
+*To set which pin to use.* The default is ``34``.  34, 35, 36, and 39 should be able to be used, but only 34 and 36 have been tested.
 
-``#define BATTERY_TEST_PIN 36``
+``#define BATTERY_TEST_PIN 34``
 
 If the battery does not show 100% when plugged into the charger, you may need to adjust this value. The default is ``1.7``.
 
