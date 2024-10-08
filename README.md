@@ -291,9 +291,6 @@ Pressing the Encoder button while the ESP32 is in Deep Sleep will revive it.
 *Trying to to connect to SSID*<br />
 ![Trying to to connect to SSID](images/screenshots/trying_to_connect.jpg)
 
-*Connecting to SSID*<br />
-![Connecting to SSID](images/screenshots/trying_to_connect.jpg)
-
 ## WiThrottle Server Connection Screens
 
 *WiThrottle Server List*<br />
