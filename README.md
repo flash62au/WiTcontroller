@@ -419,7 +419,7 @@ config_buttons.h can include the following optional defines:
 
 ### Instructions for optional use of a voltage divider to show the battery charge level
 
-See diagram above for how to wire in the volage divider.  47k resistors are used, but this can be varied as long as the output to the pin is limited to below 3.3v. 
+See diagram above for how to wire in the volage divider.  47k resistors are used, but this can be varied as long as the output to the pin is limited to below 3.3v. See additional information related to the Pangodream Library that WiTcontroller uses here... https://www.pangodream.es/tag/18650-ion-li
 
 The diagram has the voltage divider spliced into battery leads, but you can solder the positive in to the back of the battery connector (on the ESP32) if you prefer. The ground can be taken from any ground pin.
 
@@ -427,7 +427,7 @@ The diagram has the voltage divider spliced into battery leads, but you can sold
 
 ``#define USE_BATTERY_TEST true``
 
-*To set which pin to use.* The default is ``34``.  34, 35, 36, and 39 should be able to be used, but only 34 and 36 have been tested.
+*To set which pin to use.* The default is ``34``.  In theory 34, 35, 36, or 39 should be able to be used, but only 34 and 36 have been tested.   (36 is marked 'VP' on the board.  39 is marked 'VN' on the board.)
 
 ``#define BATTERY_TEST_PIN 34``
 
