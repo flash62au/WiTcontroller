@@ -146,6 +146,9 @@ int rosterIndex[maxRoster];
 String rosterName[maxRoster]; 
 int rosterAddress[maxRoster];
 char rosterLength[maxRoster];
+char rosterSortStrings[maxRoster][14]; 
+char* rosterSortPointers[maxRoster]; 
+int rosterSortedIndex[maxRoster]; 
 
 int page = 0;
 int functionPage = 0;
@@ -398,15 +401,34 @@ class MyDelegate : public WiThrottleProtocolDelegate {
     }
     void receivedRosterEntries(int size) {
       debug_print("Received Roster Entries. Size: "); debug_println(size);
-      rosterSize = size;
+      rosterSize = (size<maxRoster) ? size : maxRoster;
     }
     void receivedRosterEntry(int index, String name, int address, char length) {
       debug_print("Received Roster Entry, index: "); debug_print(index); debug_println(" - " + name);
       if (index < maxRoster) {
         rosterIndex[index] = index; 
+        rosterSortedIndex[index] = index; // default to unsorted
         rosterName[index] = name; 
         rosterAddress[index] = address;
         rosterLength[index] = length;
+
+        if (ROSTER_SORT_SEQUENCE == 1) {
+          strncpy(rosterSortStrings[index], ((name+"          ").substring(0,10) + ":" + (index < 10 ? "0" : "") + String(index)).c_str(), 13);
+          rosterSortPointers[index] = rosterSortStrings[index];
+        } else if (ROSTER_SORT_SEQUENCE == 2) { 
+          char buf[11];
+          sprintf(buf, "%10d", rosterAddress[index]);
+          strncpy(rosterSortStrings[index], (String(buf) + ":" + (index < 10 ? "0" : "") + String(index)).c_str(), 13);
+          rosterSortPointers[index] = rosterSortStrings[index];
+        } 
+
+        if ( (index==(maxRoster-1)) && (ROSTER_SORT_SEQUENCE>0)) { // got them all now.  and we need to sort them
+          qsort(rosterSortPointers, maxRoster, sizeof rosterSortPointers[0], compareStrings);
+          for (int i=0; i<maxRoster; i++) {
+            rosterSortedIndex[i] = (rosterSortPointers[i][11]-'0')*10 + (rosterSortPointers[i][12]-'0');
+            debug_print("Roster sorted: "); debug_print(rosterSortPointers[i]); debug_print(" : "); debug_println(rosterName[rosterSortedIndex[i]]);
+          }
+        }
       }
     }
     void receivedTurnoutEntries(int size) {
@@ -2635,6 +2657,14 @@ String getDots(int howMany) {
   return dots.substring(0,howMany);
 }
 
+int compareStrings( const void *str1, const void *str2 ) {
+    const char *rec1 = *(char**)str1;
+    const char *rec2 = *(char**)str2;
+    int val = strcmp(rec1, rec2);
+
+    return val;
+}
+
 // *********************************************************************************
 //  Select functions
 // *********************************************************************************
@@ -2643,7 +2673,10 @@ void selectRoster(int selection) {
   debug_print("selectRoster() "); debug_println(selection);
 
   if ((selection>=0) && (selection < rosterSize)) {
-    String loco = String(rosterLength[selection]) + rosterAddress[selection];
+    int index = rosterSortedIndex[selection];
+    String loco = String(rosterLength[index]) + rosterAddress[index];
+    
+    // String loco = String(rosterLength[selection]) + rosterAddress[selection];
     debug_print("add Loco: "); debug_println(loco);
     wiThrottleProtocol.addLocomotive(currentThrottleIndexChar, loco);
     wiThrottleProtocol.getDirection(currentThrottleIndexChar, loco);
@@ -2782,8 +2815,9 @@ void writeOledRoster(String soFar) {
   if (soFar == "") { // nothing entered yet
     clearOledArray();
     for (int i=0; i<5 && i<rosterSize; i++) {
-      if (rosterAddress[(page*5)+i] != 0) {
-        oledText[i] = String(rosterIndex[i]) + ": " + rosterName[(page*5)+i] + " (" + rosterAddress[(page*5)+i] + ")" ;
+      int index = rosterSortedIndex[(page*5)+i];
+      if (rosterAddress[index] != 0) {
+        oledText[i] = String(i) + ": " + rosterName[index] + " (" + rosterAddress[index] + ")" ;
       }
     }
     oledText[5] = "(" + String(page+1) +  ") " + menu_text[menu_roster];

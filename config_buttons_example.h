@@ -295,3 +295,10 @@
 // #define HEARTBEAT_ENABLED true 
 
 // *******************************************************************************************************************
+// Roster sorting
+//
+// 0 = no sorting.  As it comes from the server
+// 1 = sort by name (first 10 chars only)  - Default
+// 2 = sort by DCC Address
+
+// #define ROSTER_SORT_SEQUENCE 1

@@ -465,6 +465,12 @@ Bei Interesse kontaktieren Sie mich bitte direkt für eine Anleitung.
 
 ## Change Log
 
+### V1.72
+- add the ability to sort the roster with the new define ``ROSTER_SORT_SEQUENCE``
+   - 0 = no sorting.  As it comes from the server
+   - 1 = sort by name (first 10 chars only)  - Default
+   - 2 = sort by DCC Address
+
 ### V1.71
 - add the ability to define the consist follow function options for all 32 functions ``CONSIST_FUNCTION_FOLLOW_F0`` to ``CONSIST_FUNCTION_FOLLOW_F31``
 
