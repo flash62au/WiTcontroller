@@ -163,6 +163,7 @@ The instructions below are for using the Arduino IDE and GitHub Desktop. Visual 
     * Click ``Upload`` **-->**
 
 Notes: 
+   * WiTcontroller version 1.73 or later is recommended to use WiThrottleProtocol version 1.1.25 or later to address a bug in heartbeat send  but only seen with JMRI WiThrottle 
    * WiTcontroller version 1.66 or later requires WiThrottleProtocol version 1.1.24
    * WiTcontroller version 1.65 or later requires WiThrottleProtocol version 1.1.23
    * WiTcontroller version 1.57 or later requires WiThrottleProtocol version 1.1.20 or later for the E_STOP and E_STOP_CURRENT_LOCO to work correctly.
@@ -432,6 +433,30 @@ If the battery does not show 100% when plugged into the charger, you may need to
 
 ``#define BATTERY_CONVERSION_FACTOR 1.7``
 
+    To help work out the correct BATTERY_CONVERSION_FACTOR, you can enable so serial monitor message that will assist.
+
+    In your ``config_buttons.h`` add (or uncomment) these defines:
+    
+      #define WITCONTROLLER_DEBUG    0
+      #define DEBUG_LEVEL   2
+
+    DEBUG_LEVEL must be 2 or greater
+
+    a) Make sure your battery is fully charged.
+    b) Upload the code and open the serial monitor. 
+    c) Wait. Don't connect.
+    You will see lines like...
+
+      BATTERY TestValue: 100 (10003)
+      BATTERY lastAnalogReadValue: 2491 (10003)
+      BATTERY If Battery full, BATTERY_CONVERSION_FACTOR should be: 1.69 (10014)
+
+    Let it run for a while.
+    d) Note one of the recommend values (it will vary a bit) and enter it into the define in your config_buttons.h
+    e) Re-upload code and connect to a server
+    f) Confirm that the battery reads 100% (repeat if not)
+    g) Run the HandCab on battery for few hours and confirm the battery level is droping at an expected rate. (adjust the conversion factor if not.)
+
 *To show the calculated percentage*, set the following to ``true`` The default is ``false``.
 
 ``#define USE_BATTERY_PERCENT_AS_WELL_AS_ICON true``
@@ -464,6 +489,11 @@ Bei Interesse kontaktieren Sie mich bitte direkt für eine Anleitung.
 ---
 
 ## Change Log
+
+### V1.73
+- Add debug level option ``#define DEBUG_LEVEL``
+- A bug in the heartbeat send in the protocol library was fixed at the same time as this release.
+- if heartbeat is enabled, deliberately send the command to server to start it. (I had previously assumed that this was not required.)
 
 ### V1.72
 - add the ability to sort the roster with the new define ``ROSTER_SORT_SEQUENCE``

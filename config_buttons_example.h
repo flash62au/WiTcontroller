@@ -177,6 +177,11 @@
 // to enable to console messages, uncomment and set the following to  0    (i.e. 0 = on  1 = off)
 // #define WITHROTTLE_PROTOCOL_DEBUG    1
 
+// console debug messages are enabled with the defines above
+// the default level is 1
+// 0 = errors only 1 = default level 2 = verbose 3 = extreme
+// #define DEBUG_LEVEL    1
+
 // *******************************************************************************************************************
 // Default function labels
 

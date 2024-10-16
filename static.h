@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "v1.72";
+const String appVersion = "v1.73";
 
 #ifndef DEVICE_NAME
    #define DEVICE_NAME "WiTcontroller"
@@ -513,6 +513,10 @@ const char ssidPasswordBlankChar = 164;
 
 #ifndef WITHROTTLE_PROTOCOL_DEBUG
   #define WITHROTTLE_PROTOCOL_DEBUG   1
+#endif
+
+#ifndef DEBUG_LEVEL
+  #define DEBUG_LEVEL   1
 #endif
 
 // *******************************************************************************************************************

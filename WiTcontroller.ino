@@ -42,6 +42,7 @@
  #define debug_println(...)
  #define debug_printf(...)
 #endif
+int debugLevel = DEBUG_LEVEL;
 
 // *********************************************************************************
 
@@ -928,6 +929,7 @@ void connectWitServer() {
   wiThrottleProtocol.setDelegate(&myDelegate);
 #if WITHROTTLE_PROTOCOL_DEBUG == 0
   wiThrottleProtocol.setLogStream(&Serial);
+  wiThrottleProtocol.setLogLevel(DEBUG_LEVEL);
 #endif
 
   debug_println("Connecting to the server...");
@@ -958,6 +960,9 @@ void connectWitServer() {
     wiThrottleProtocol.setDeviceName(deviceName);  
     wiThrottleProtocol.setDeviceID(String(deviceId));  
     wiThrottleProtocol.setCommandsNeedLeadingCrLf(commandsNeedLeadingCrLf);
+    if (HEARTBEAT_ENABLED) {
+      wiThrottleProtocol.requireHeartbeat(true);
+    }
 
     witConnectionState = CONNECTION_STATE_CONNECTED;
     setLastServerResponseTime(true);
@@ -1074,7 +1079,7 @@ void buildWitEntry() {
 // *********************************************************************************
 
 AiEsp32RotaryEncoder rotaryEncoder = AiEsp32RotaryEncoder(ROTARY_ENCODER_A_PIN, ROTARY_ENCODER_B_PIN, ROTARY_ENCODER_BUTTON_PIN, ROTARY_ENCODER_VCC_PIN, ROTARY_ENCODER_STEPS);
-void IRAM_ATTR readEncoderISR() {
+void IRAM_ATTR readEncoderISR(void) {
   rotaryEncoder.readEncoder_ISR();
 }
 
@@ -2449,8 +2454,10 @@ void toggleHeartbeatCheck() {
   debug_print("Heartbeat Check: "); 
   if (heartbeatCheckEnabled) {
     debug_println("Enabled");
+    wiThrottleProtocol.requireHeartbeat(true);
   } else {
     debug_println("Disabled");
+    wiThrottleProtocol.requireHeartbeat(false);
   }
   writeHeartbeatCheck();
 }
