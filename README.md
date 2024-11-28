@@ -477,11 +477,11 @@ The display of the battery can be temporarily toggled by setting a key or button
 
 The file ``language_deutsch.h`` contains German translations (by Bastian Zechendorf).  Uncomment (or add) the ``#include "language_deutsch.h"`` line in ``config_buttons.h`` to see menus and messages in German.
 
-You can override any of these translations individually by adding an appropriate ``#define`` statement in the ``config_buttons.h``, but in *must* be *before* theh ``#include...`` statement.
+You can override any of these translations individually by adding an appropriate ``#define`` statement in the ``config_buttons.h``, but it *must* be *before* the ``#include...`` statement.
 
 Die Datei ``language_deutsch.h`` enthält deutsche Übersetzungen (von Bastian Zechendorf).  Kommentieren Sie die Zeile ``#include "language_deutsch.h"`` in ``config_buttons.h`` aus (oder fügen Sie sie hinzu), um Menüs und Meldungen auf Deutsch anzuzeigen.
 
-Sie können jede dieser Übersetzungen einzeln überschreiben, indem Sie eine entsprechende ``#define``-Anweisung in der ``config_buttons.h`` hinzufügen, aber in *muss* *vor* der ``#include...``-Anweisung stehen.
+Sie können jede dieser Übersetzungen einzeln überschreiben, indem Sie eine entsprechende ``#define`` -Anweisung in ``config_buttons.h`` hinzufügen, diese muss jedoch *vor* der ``#include...`` -anweisung stehen.
 
 I would appreciate any assistance to improve these translations.
 If you are interested, please contact me directly for instructions.
