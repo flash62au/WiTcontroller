@@ -245,7 +245,7 @@ const String directCommandText[4][3] = {
     {CHOSEN_KEYPAD_1_DISPLAY_NAME, CHOSEN_KEYPAD_2_DISPLAY_NAME, CHOSEN_KEYPAD_3_DISPLAY_NAME},
     {CHOSEN_KEYPAD_4_DISPLAY_NAME, CHOSEN_KEYPAD_5_DISPLAY_NAME, CHOSEN_KEYPAD_6_DISPLAY_NAME},
     {CHOSEN_KEYPAD_7_DISPLAY_NAME, CHOSEN_KEYPAD_8_DISPLAY_NAME, CHOSEN_KEYPAD_9_DISPLAY_NAME},
-    {"* Menu", CHOSEN_KEYPAD_0_DISPLAY_NAME, "# This"}
+    {CHOSEN_KEYPAD_DISPLAY_PREFIX, CHOSEN_KEYPAD_0_DISPLAY_NAME, CHOSEN_KEYPAD_DISPLAY_SUFIX}
 };
 
 bool oledDirectCommandsAreBeingDisplayed = false;
@@ -408,7 +408,7 @@ class MyDelegate : public WiThrottleProtocolDelegate {
     }
     void receivedRosterEntry(int index, String name, int address, char length) {
       debug_print("Received Roster Entry, index: "); debug_print(index); debug_println(" - " + name);
-      if (index < maxRoster) {
+      if (index < rosterSize) {
         rosterIndex[index] = index; 
         rosterSortedIndex[index] = index; // default to unsorted
         rosterName[index] = name; 
@@ -425,11 +425,11 @@ class MyDelegate : public WiThrottleProtocolDelegate {
           rosterSortPointers[index] = rosterSortStrings[index];
         } 
 
-        if ( (index==(maxRoster-1)) && (ROSTER_SORT_SEQUENCE>0)) { // got them all now.  and we need to sort them
-          qsort(rosterSortPointers, maxRoster, sizeof rosterSortPointers[0], compareStrings);
-          for (int i=0; i<maxRoster; i++) {
+        if ( (index==(rosterSize-1)) && (ROSTER_SORT_SEQUENCE>0)) { // got them all now.  and we need to sort them
+          qsort(rosterSortPointers, rosterSize, sizeof rosterSortPointers[0], compareStrings);
+          for (int i=0; i<rosterSize; i++) {
             rosterSortedIndex[i] = (rosterSortPointers[i][11]-'0')*10 + (rosterSortPointers[i][12]-'0');
-            debug_print("Roster sorted: "); debug_print(rosterSortPointers[i]); debug_print(" : "); debug_println(rosterName[rosterSortedIndex[i]]);
+            debug_print("Roster sorted: "); debug_print(rosterSortPointers[i]); debug_print(" | "); debug_println(rosterName[rosterSortedIndex[i]]);
           }
         }
       }
@@ -723,7 +723,8 @@ void connectSsid() {
       oledText[1] = selectedSsid; oledText[2] =  String(MSG_TRYING_TO_CONNECT) + " (" + String(i) + ")";
       writeOledArray(false, false, true, true);
 
-      nowTime = startTime;      
+      nowTime = startTime;
+      debug_print("hostname ");debug_println(WiFi.getHostname());
       WiFi.begin(cSsid, cPassword); 
 
       int j = 0;
@@ -1452,7 +1453,8 @@ void setup() {
     currentDirection[i] = Forward;
     currentSpeedStep[i] = speedStep;
   }
-
+  
+  WiFi.setHostname(DEVICE_NAME);
 }
 
 void loop() {
@@ -2823,7 +2825,7 @@ void writeOledRoster(String soFar) {
   keypadUseType = KEYPAD_USE_SELECT_ROSTER;
   if (soFar == "") { // nothing entered yet
     clearOledArray();
-    for (int i=0; i<5 && i<rosterSize; i++) {
+    for (int i=0; i<5 && ((page*5)+i<rosterSize); i++) {
       int index = rosterSortedIndex[(page*5)+i];
       if (rosterAddress[index] != 0) {
         oledText[i] = String(i) + ": " + rosterName[index] + " (" + rosterAddress[index] + ")" ;
@@ -3267,7 +3269,7 @@ void writeOledFunctions() {
       u8g2.drawRBox(i*4+12,12+1,5,7,2);
       u8g2.setDrawColor(0);
       u8g2.setFont(FONT_FUNCTION_INDICATORS);   
-      u8g2.drawStr( i*4+1+12, 18+1, String( (i<10) ? i : ((i<20) ? i-10 : i-20)).c_str());
+      u8g2.drawUTF8( i*4+1+12, 18+1, String( (i<10) ? i : ((i<20) ? i-10 : i-20)).c_str());
       u8g2.setDrawColor(1);
      }
     //  if (anyFunctionsActive) {
@@ -3309,7 +3311,7 @@ void writeOledArray(bool isThreeColums, bool isPassword, bool sendBuffer, bool d
       u8g2.drawBox(x,y-8,62,10);
       u8g2.setDrawColor(0);
     }
-    u8g2.drawStr(x,y, cLine1);
+    u8g2.drawUTF8(x,y, cLine1);
     u8g2.setDrawColor(1);
 
     if ((isPassword) && (i==2)) u8g2.setFont(FONT_DEFAULT); 

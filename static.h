@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "v1.73";
+const String appVersion = "v1.74";
 
 #ifndef DEVICE_NAME
    #define DEVICE_NAME "WiTcontroller"
@@ -486,12 +486,11 @@ const char ssidPasswordBlankChar = 164;
 
 // *******************************************************************************************************************
 
-#define FONT_DEFAULT u8g2_font_NokiaSmallPlain_tf
+#define FONT_DEFAULT u8g2_font_NokiaSmallPlain_te
 #define FONT_FUNCTION_INDICATORS u8g2_font_tiny_simon_tr
 #define FONT_THROTTLE_NUMBER u8g2_font_neuecraft_tr
 #define FONT_PASSWORD u8g2_font_9x15_tf
 #define FONT_SPEED u8g2_font_profont29_mr
-// #define FONT_DIRECTION u8g2_font_profont17_tr
 #define FONT_DIRECTION u8g2_font_neuecraft_tr
 // #define FONT_TRACK_POWER u8g2_font_profont10_tf
 #define FONT_NEXT_THROTTLE u8g2_font_6x12_m_symbols
@@ -739,6 +738,13 @@ const char ssidPasswordBlankChar = 164;
 // Labels that will appear in the UI
 // These should match the actual  command below
 
+#ifndef CHOSEN_KEYPAD_DISPLAY_PREFIX
+   #define CHOSEN_KEYPAD_DISPLAY_PREFIX "* Menu"
+#endif
+#ifndef CHOSEN_KEYPAD_DISPLAY_SUFIX
+   #define CHOSEN_KEYPAD_DISPLAY_SUFIX "# This"
+#endif
+
 #ifndef CHOSEN_KEYPAD_0_DISPLAY_NAME
    #define CHOSEN_KEYPAD_0_DISPLAY_NAME "0 Lights"
 #endif
@@ -840,7 +846,7 @@ const char ssidPasswordBlankChar = 164;
 #endif
 
 #ifndef ADDITIONAL_BUTTON_OVERRIDE_DEFAULT_LATCHING
-   #define ADDITIONAL_BUTTON_OVERRIDE_DEFAULT_LATCHING true
+   #define ADDITIONAL_BUTTON_OVERRIDE_DEFAULT_LATCHING false
 #endif
 #ifndef ADDITIONAL_BUTTON_0_LATCHING
    #define ADDITIONAL_BUTTON_0_LATCHING true
@@ -849,7 +855,7 @@ const char ssidPasswordBlankChar = 164;
    #define ADDITIONAL_BUTTON_1_LATCHING true
 #endif
 #ifndef ADDITIONAL_BUTTON_2_LATCHING
-   #define ADDITIONAL_BUTTON_2_LATCHING true
+   #define ADDITIONAL_BUTTON_2_LATCHING false
 #endif
 #ifndef ADDITIONAL_BUTTON_3_LATCHING
    #define ADDITIONAL_BUTTON_3_LATCHING true

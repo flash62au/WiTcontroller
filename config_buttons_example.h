@@ -307,3 +307,14 @@
 // 2 = sort by DCC Address
 
 // #define ROSTER_SORT_SEQUENCE 1
+
+// *******************************************************************************************************************
+// Translations
+
+// uncomment the appropriate line to change the language displayed
+// If you wish to override any of the translations you can do so individually here
+// But, the define(s) must done before the #include of the base langauge file
+//
+//
+// German - Deutsche
+// #include "language_deutsch.h"

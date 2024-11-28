@@ -13,7 +13,7 @@ A WiTcontroller is a simple DIY, handheld controller that talks to a WiThrottle 
 
 ## Prerequisites
 
-1. Some basic soldering skills.  
+1. Some basic soldering skills.
 
     The components will work if just plugged together using jumpers, but they take a lot of space that way, so soldering them together is advised to make it more hand held.
 
@@ -104,7 +104,7 @@ Notes:
 
 The instructions below are for using the Arduino IDE and GitHub Desktop. Visual Studio Code (VSC) can be used instead of the Arduino IDE but no instructions are included here.
 
- 1. Download the Arduino IDE.  
+ 1. Download the Arduino IDE.
     * Available from  https://support.arduino.cc/hc/en-us/articles/360019833020-Download-and-install-Arduino-IDE
 2. Download the **esp32** boards in the Arduino IDE.
     * Add the esp322 support with the following instructions:  (See here for detailed instructions:  https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/)
@@ -475,9 +475,13 @@ The display of the battery can be temporarily toggled by setting a key or button
 
 ### Instructions for German Translations     Anleitung für deutsche Übersetzungen
 
-The file ``Deutsche Übersetzungen.txt`` contains German translations (by Google Translate).  Add the contents of this file (cut and paste) into your ``config_buttons.h`` to see menus and messages in German.
+The file ``language_deutsch.h`` contains German translations (by Bastian Zechendorf).  Uncomment (or add) the ``#include "language_deutsch.h"`` line in ``config_buttons.h`` to see menus and messages in German.
 
-Die Datei ``Deutsche Übersetzungen.txt`` enthält deutsche Übersetzungen (von Google Translate).  Fügen Sie den Inhalt dieser Datei (Ausschneiden und Einfügen) in Ihre ``config_buttons.h`` ein, um Menüs und Meldungen auf Deutsch anzuzeigen.
+You can override any of these translations individually by adding an appropriate ``#define`` statement in the ``config_buttons.h``, but in *must* be *before* theh ``#include...`` statement.
+
+Die Datei ``language_deutsch.h`` enthält deutsche Übersetzungen (von Bastian Zechendorf).  Kommentieren Sie die Zeile ``#include "language_deutsch.h"`` in ``config_buttons.h`` aus (oder fügen Sie sie hinzu), um Menüs und Meldungen auf Deutsch anzuzeigen.
+
+Sie können jede dieser Übersetzungen einzeln überschreiben, indem Sie eine entsprechende ``#define``-Anweisung in der ``config_buttons.h`` hinzufügen, aber in *muss* *vor* der ``#include...``-Anweisung stehen.
 
 I would appreciate any assistance to improve these translations.
 If you are interested, please contact me directly for instructions.
@@ -485,10 +489,22 @@ If you are interested, please contact me directly for instructions.
 Ich würde mich über jede Hilfe zur Verbesserung dieser Übersetzungen freuen.
 Bei Interesse kontaktieren Sie mich bitte direkt für eine Anleitung.
 
+### Instructions for Other Translations
+
+If you create a copy of the file ``language_deutsch.h`` (with a new name) and change the German text it contains to any language you wish (using the English text on the right as a guide to what is needed) you can add that file as an include in ``config_buttons.h``.
+
+I would welcome it if you then sent me the file you created for inclusion in this repository.
+
 ---
 ---
 
 ## Change Log
+
+### V1.74
+- German translations by Bastian Zechendorf
+- Made it simpler to change the language
+- Improvements for non-English language display
+- Bug fix. Removed duplicated first entry in the Roster (at the end)
 
 ### V1.73
 - Add debug level option ``#define DEBUG_LEVEL``

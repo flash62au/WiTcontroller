@@ -4,7 +4,7 @@
 
 #define maxFoundWitServers 5     // must be 5 for the moment
 #define maxFoundSsids 60     // must be a multiple of 5
-#define maxRoster 60     // must be a multiple of 10
+#define maxRoster 70     // must be a multiple of 10
 #define maxTurnoutList 60     // must be a multiple of 10
 #define maxRouteList 60     // must be a multiple of 10
 
