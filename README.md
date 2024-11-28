@@ -500,6 +500,9 @@ I would welcome it if you then sent me the file you created for inclusion in thi
 
 ## Change Log
 
+### V1.75
+- Option for up to four start-up commands
+
 ### V1.74
 - German translations by Bastian Zechendorf
 - Made it simpler to change the language

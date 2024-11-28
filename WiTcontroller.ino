@@ -54,6 +54,8 @@ bool menuCommandStarted = false;
 String menuCommand = "";
 bool menuIsShowing = false;
 
+String startupCommands[4] = {STARTUP_COMMAND_1, STARTUP_COMMAND_2, STARTUP_COMMAND_3, STARTUP_COMMAND_4};
+
 String oledText[18] = {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""};
 bool oledTextInvert[18] = {false, false, false, false, false, false, false, false, false, 
                            false, false, false, false, false, false, false, false, false};
@@ -981,6 +983,8 @@ void connectWitServer() {
     u8g2.sendBuffer();
 
     keypadUseType = KEYPAD_USE_OPERATION;
+
+    doStartupCommands();
   }
 }
 
@@ -2674,6 +2678,24 @@ int compareStrings( const void *str1, const void *str2 ) {
     int val = strcmp(rec1, rec2);
 
     return val;
+}
+
+void doStartupCommands() {
+  for(int i=0; i<4; i++) {
+    if (startupCommands[i].length()>0) {
+      char lastKey = startupCommands[i].charAt(startupCommands[i].length()-1);
+      if (startupCommands[i].length()>1) {
+        menuCommandStarted = true;
+        if (startupCommands[i].charAt(0) != '*') {
+          menuCommand = startupCommands[i].substring(0,startupCommands[i].length()-1);
+        } else { // remove the 
+          menuCommand = startupCommands[i].substring(1,startupCommands[i].length()-1);
+        }
+      }
+      doKeyPress(lastKey, PRESSED);
+      doKeyPress(lastKey, RELEASED);
+    }
+  }
 }
 
 // *********************************************************************************

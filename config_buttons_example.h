@@ -318,3 +318,19 @@
 //
 // German - Deutsche
 // #include "language_deutsch.h"
+
+// ***************************************************
+// startup commands
+// The following commands will be executed, in order, after connection to the WiThtottle Server
+// Each must be ONLY ONE single valid command
+//
+// Note: Selecting from the roster/turnouts etc. is not possible as the commands 
+// will execute before the roster loads.
+
+// e.g. this command will automatically acquire loco with a DCC Address of 222  
+// then set the speed multplier to *3
+// #define STARTUP_COMMAND_1 "*1222#"
+// #define STARTUP_COMMAND_2 "6"
+// #define STARTUP_COMMAND_3 ""
+// #define STARTUP_COMMAND_4 ""
+

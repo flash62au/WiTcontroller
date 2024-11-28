@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "v1.74";
+const String appVersion = "v1.75";
 
 #ifndef DEVICE_NAME
    #define DEVICE_NAME "WiTcontroller"
@@ -942,4 +942,20 @@ const char ssidPasswordBlankChar = 164;
 
 #ifndef ROSTER_SORT_SEQUENCE
    #define ROSTER_SORT_SEQUENCE 1
+#endif
+
+// ***************************************************
+// startup commands
+
+#ifndef STARTUP_COMMAND_1
+   #define STARTUP_COMMAND_1 ""
+#endif
+#ifndef STARTUP_COMMAND_2
+   #define STARTUP_COMMAND_2 ""
+#endif
+#ifndef STARTUP_COMMAND_3
+   #define STARTUP_COMMAND_3 ""
+#endif
+#ifndef STARTUP_COMMAND_4
+   #define STARTUP_COMMAND_4 ""
 #endif
