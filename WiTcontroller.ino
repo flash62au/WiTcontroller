@@ -435,6 +435,11 @@ class MyDelegate : public WiThrottleProtocolDelegate {
           }
         }
       }
+      #if ACQUIRE_ROSTER_ENTRY_IF_ONLY_ONE
+        if ( (rosterSize == 1) && (index == 0) ) {
+          doOneStartupCommand("*1#0");
+        }
+      #endif
     }
     void receivedTurnoutEntries(int size) {
       debug_print("Received Turnout Entries. Size: "); debug_println(size);
@@ -2682,18 +2687,21 @@ int compareStrings( const void *str1, const void *str2 ) {
 
 void doStartupCommands() {
   for(int i=0; i<4; i++) {
-    if (startupCommands[i].length()>0) {
-      char lastKey = startupCommands[i].charAt(startupCommands[i].length()-1);
-      if (startupCommands[i].length()>1) {
-        menuCommandStarted = true;
-        if (startupCommands[i].charAt(0) != '*') {
-          menuCommand = startupCommands[i].substring(0,startupCommands[i].length()-1);
-        } else { // remove the 
-          menuCommand = startupCommands[i].substring(1,startupCommands[i].length()-1);
-        }
+    doOneStartupCommand(startupCommands[i]);
+  }
+}
+
+void doOneStartupCommand(String cmd) {
+  if (cmd.length()>0) {
+    menuCommandStarted = false;
+    menuCommand = "";
+    char firstKey = cmd.charAt(0);
+    for(int j=0; j<cmd.length(); j++) {
+      char jKey = cmd.charAt(j);
+      doKeyPress(jKey, PRESSED);
+      if (firstKey != '*') { 
+        doKeyPress(jKey, RELEASED);
       }
-      doKeyPress(lastKey, PRESSED);
-      doKeyPress(lastKey, RELEASED);
     }
   }
 }

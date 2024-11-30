@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "v1.75";
+const String appVersion = "v1.76";
 
 #ifndef DEVICE_NAME
    #define DEVICE_NAME "WiTcontroller"
@@ -958,4 +958,8 @@ const char ssidPasswordBlankChar = 164;
 #endif
 #ifndef STARTUP_COMMAND_4
    #define STARTUP_COMMAND_4 ""
+#endif
+
+#ifndef ACQUIRE_ROSTER_ENTRY_IF_ONLY_ONE
+   #define ACQUIRE_ROSTER_ENTRY_IF_ONLY_ONE false
 #endif

@@ -470,8 +470,18 @@ The display of the battery can be temporarily toggled by setting a key or button
     Note: 
     I recommend adding a physical power switch to disconnect the battery as this feature will, slowly, continually drain the battery, even when not being used.
 
----
+``#define STARTUP_COMMAND_1 ""`` .. ``#define STARTUP_COMMAND_4 ""``
 
+Optional. If defined, the up to four commands will be executed, in order, after connection to the WiThrottle Server.
+Each must be ONLY ONE single valid command.  Either a direct action or a menu action.  Any can be blank or not defined, the others will still be executed.
+
+Note: Selecting from the roster/turnouts etc. is not possible as the commands will execute before the roster loads.
+
+``#define ACQUIRE_ROSTER_ENTRY_IF_ONLY_ONE true``
+
+Enabling this option will automatically acquire the only roster entry after connection to the WiThrottle Server, but only if there is ***only one*** roster entry. 
+
+---
 
 ### Instructions for German Translations     Anleitung für deutsche Übersetzungen
 
@@ -500,14 +510,17 @@ I would welcome it if you then sent me the file you created for inclusion in thi
 
 ## Change Log
 
+### V1.76
+- Option to automatically acquire the only roster entry on connection to the WiThrottle server, but only if there is ***only one*** roster entry.  ``#define ACQUIRE_ROSTER_ENTRY_IF_ONLY_ONE true``
+
 ### V1.75
-- Option for up to four start-up commands
+- Option for up to four start-up commands ``#define STARTUP_COMMAND_1 ""`` .. ``#define STARTUP_COMMAND_4 ""``
 
 ### V1.74
-- German translations by Bastian Zechendorf
-- Made it simpler to change the language
-- Improvements for non-English language display
-- Bug fix. Removed duplicated first entry in the Roster (at the end)
+- German translations by Bastian Zechendorf.
+- Made it simpler to change the language.
+- Improvements for non-English language display.
+- Bug fix. Removed duplicated first entry in the Roster (at the end).
 
 ### V1.73
 - Add debug level option ``#define DEBUG_LEVEL``

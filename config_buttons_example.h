@@ -319,10 +319,10 @@
 // German - Deutsche
 // #include "language_deutsch.h"
 
-// ***************************************************
+// *******************************************************************************************************************
 // startup commands
-// The following commands will be executed, in order, after connection to the WiThtottle Server
-// Each must be ONLY ONE single valid command
+// The following commands will be executed, in order, after connection to the WiThrottle Server.
+// Each must be ONLY ONE single valid command.  Either a direct action or a menu action.
 //
 // Note: Selecting from the roster/turnouts etc. is not possible as the commands 
 // will execute before the roster loads.
@@ -334,3 +334,6 @@
 // #define STARTUP_COMMAND_3 ""
 // #define STARTUP_COMMAND_4 ""
 
+// Enabling this option will automatically acquire the only roster entry after connection to the 
+// WiThrottle Server, but only if there is only one roster entry 
+// #define ACQUIRE_ROSTER_ENTRY_IF_ONLY_ONE true
