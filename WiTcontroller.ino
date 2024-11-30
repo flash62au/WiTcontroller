@@ -2698,9 +2698,9 @@ void doOneStartupCommand(String cmd) {
     char firstKey = cmd.charAt(0);
     for(int j=0; j<cmd.length(); j++) {
       char jKey = cmd.charAt(j);
-      doKeyPress(jKey, PRESSED);
+      doKeyPress(jKey, true);
       if (firstKey != '*') { 
-        doKeyPress(jKey, RELEASED);
+        doKeyPress(jKey, false);
       }
     }
   }
