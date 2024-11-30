@@ -1,7 +1,12 @@
 // ********************************************************************************************
+// Encoder Direction and Actions
 
-// false = Counter clockwise  true = clockwise
-#define ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED                     false
+// Define the rotation diection for the rotary encoder to increase speed.
+//   false = Counter clockwise
+//   true = clockwise
+// The default value is false (counter clockwise)
+
+// #define ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED                     false
 
 // Define what the rotary encoder button does.   (Pushing down on the knob)
 // By default it will stop the loco if moving, then a second push will change the direction.
@@ -10,26 +15,32 @@
 
 // #define ENCODER_BUTTON_ACTION SPEED_STOP_THEN_TOGGLE_DIRECTION 
 
-// true = if the locos(s) are stationary, clicking the encoder button will toggle the direction
+// Define what the rotary encoder button does when the loco is stationary.   (Pushing down on the knob)
+//   true = if the locos(s) are stationary, clicking the encoder button will toggle the direction
+//   false = does nothing
 // this only takes effect if the ENCODER_BUTTON_ACTION (above) is set to SPEED_STOP_THEN_TOGGLE_DIRECTION
+// The default value is true
 
-#define TOGGLE_DIRECTION_ON_ENCODER_BUTTON_PRESSED_WHEN_STATIONAY         true
+// #define TOGGLE_DIRECTION_ON_ENCODER_BUTTON_PRESSED_WHEN_STATIONAY         true
 
-// rotary encode debounce time
+// Rotary Encoder Debounce Time
 // increase if you find the encoder buttons bounce (activate twice) or you get speed changes when you press the encoder button
-// #define ROTARY_ENCODER_DEBOUNCE_TIME 200
+// #define ROTARY_ENCODER_DEBOUNCE_TIME     200
 
-//Internal GPIO pullups required if the hardware build utilises a bare EC11 rotary encoder in place of a
-//KY040 encoder module. (The encoder module has physical pullups fitted)
-//true = bare EC11 used for hardware build WITHOUT any physical pullups, GPIO pullups will ne enabled in main
-//false = KY040 module used in hardware build OR bare EC11 used but with physical pullup resistors (default false)
+// If using a bare Rotary Encoder instead of a KY040 encoder module
+// Internal GPIO pullups required if the hardware build utilises a bare EC11 rotary encoder in place of a
+// KY040 encoder module. (The encoder module has physical pullups fitted)
+//   true = bare EC11 used for hardware build WITHOUT any physical pullups, GPIO pullups will ne enabled in main
+//   false = KY040 module used in hardware build OR bare EC11 used but with physical pullup resistors 
+// The default is false
 
-#define EC11_PULLUPS_REQUIRED         false
+// #define EC11_PULLUPS_REQUIRED         true
 
-// ********************************************************************************************
+// *******************************************************************************************************************
+// Keypad Definitions / Actions
 
-// define what each button will do as direct press (not in a menu)   * and # cannot be remapped
-// see actions.h or README.md for details on the allowed functions
+// Define what each button will do as direct press (not in a menu)   * and # cannot be remapped
+// See actions.h or README.md for details on the allowed functions
 
 // #define CHOSEN_KEYPAD_0_FUNCTION     FUNCTION_0
 // #define CHOSEN_KEYPAD_1_FUNCTION     FUNCTION_1
@@ -60,29 +71,38 @@
 // #define CHOSEN_KEYPAD_8_DISPLAY_NAME     "8 Estop"
 // #define CHOSEN_KEYPAD_9_DISPLAY_NAME     "9 Fwd"
 
-// by default, # will show the list above. 
-// if you change the following line to true, it will take you to the Loco Function Labels screen directly
+// '#" button action
+// By default, # will show the list above. 
+//   true = will take you to the Loco Function Labels screen directly
+//   false = will take you to the Key Definitions
+// The Defualt is false
 
-#define HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS         true
+// #define HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS         false
 
-// ********************************************************************************************
+// *******************************************************************************************************************
+// Maximum number of thtottles
 
-// define the number of throttles that you want.
-// to use multiple throttles, one of the keys or buttons will need to be defined as NEXT_THROTTLE.  (keypad 5 is by default)
+// Define the number of throttles that you want.
+// To use multiple throttles, one of the keys or buttons will need to be defined as 
+// NEXT_THROTTLE.  (keypad 5 is by default)
 // Maximum supported by the WiTcontroller is 6
 
-// #define MAX_THROTTLES                 2          // uncomment and increase the number if you always need more that two throttles
+// uncomment and increase the number if you always need more that two throttles
+// #define MAX_THROTTLES                 2 
 
-// ********************************************************************************************
-
+// *******************************************************************************************************************
 // speed increase for each click of the encoder 
 
-#define SPEED_STEP                       4
-#define SPEED_STEP_MULTIPLIER            3          // for 'fast' speed steps
+// The default is 4
+//#define SPEED_STEP                       4
+
+// The default is 3
+// #define SPEED_STEP_MULTIPLIER            3          // for 'fast' speed steps
 
 // Additional multiplier.  If the multiplier is enabled from the menu, each rotation of the encoder becomes the speedStep * the AdditionalMultiplier
 
-#define SPEED_STEP_ADDITIONAL_MULTIPLIER 2
+// The default is 2
+// #define SPEED_STEP_ADDITIONAL_MULTIPLIER 2
 
 // by default, the speed will be displayed as the the DCC speed (0-126)
 // IMPORTANT: only one should be enabled.  If DISPLAY_SPEED_AS_PERCENT is enabled it will take presidence over DISPLAY_SPEED_AS_0_TO_28
@@ -93,7 +113,7 @@
 // uncomment this line to display the speeds as 0-28.
 // #define DISPLAY_SPEED_AS_0_TO_28         true
 
-// ********************************************************************************************
+// *******************************************************************************************************************
 // DCC functions in consists
 //
 // If specified, must be either   CONSIST_ALL_LOCOS  or  CONSIST_LEAD_LOCO
@@ -108,20 +128,21 @@
 // If they are not individually specified the CONSIST_FUNCTION_FOLLOW_OTHER_FUNCTIONS option 
 // will be used for them.
 
-// ********************************************************************************************
+// *******************************************************************************************************************
+// Additional buttons
 
-// define what each of the optional additional buttons will do
-// see static.h or README.md for details on the allowed functions
-// all must be included, just set the ones you don't need to FUNCTION_NULL
-// the button numbers relate to the GPIO pins 5,15,25,26,27,32,33
+// Define what each of the optional additional buttons will do.
+// See static.h or README.md for details on the allowed functions.
+// Set the ones you don't need to FUNCTION_NULL. (They will default to FUNCTION_NULL in any case.)
+// The button numbers relate to the GPIO pins 5,15,25,26,27,32,33
 
-#define CHOSEN_ADDITIONAL_BUTTON_0_FUNCTION     FUNCTION_NULL   // GPIO 5
-#define CHOSEN_ADDITIONAL_BUTTON_1_FUNCTION     FUNCTION_NULL   // GPIO 15
-#define CHOSEN_ADDITIONAL_BUTTON_2_FUNCTION     FUNCTION_NULL   // GPIO 25
-#define CHOSEN_ADDITIONAL_BUTTON_3_FUNCTION     FUNCTION_NULL   // GPIO 26
-#define CHOSEN_ADDITIONAL_BUTTON_4_FUNCTION     FUNCTION_NULL   // GPIO 27
-#define CHOSEN_ADDITIONAL_BUTTON_5_FUNCTION     FUNCTION_NULL   // GPIO 32
-#define CHOSEN_ADDITIONAL_BUTTON_6_FUNCTION     FUNCTION_NULL   // GPIO 33
+// #define CHOSEN_ADDITIONAL_BUTTON_0_FUNCTION     FUNCTION_NULL   // GPIO 5
+// #define CHOSEN_ADDITIONAL_BUTTON_1_FUNCTION     FUNCTION_NULL   // GPIO 15
+// #define CHOSEN_ADDITIONAL_BUTTON_2_FUNCTION     FUNCTION_NULL   // GPIO 25
+// #define CHOSEN_ADDITIONAL_BUTTON_3_FUNCTION     FUNCTION_NULL   // GPIO 26
+// #define CHOSEN_ADDITIONAL_BUTTON_4_FUNCTION     FUNCTION_NULL   // GPIO 27
+// #define CHOSEN_ADDITIONAL_BUTTON_5_FUNCTION     FUNCTION_NULL   // GPIO 32
+// #define CHOSEN_ADDITIONAL_BUTTON_6_FUNCTION     FUNCTION_NULL   // GPIO 33
 
 // The following are either 'true' = LATCHING or 'false' = NOT LATCHING
 // Only relevant for the buttons that are set to FUNCTION_00 to FUNCTION_32
@@ -137,8 +158,9 @@
 // #define ADDITIONAL_BUTTON_6_LATCHING true
 
 // *******************************************************************************************************************
-// additional / optional commands
-// these can be any legitimate WiThrottle protocol command encosed in quotes or double quotes
+// Additional/Optional User Defined Commands
+
+// These can be any legitimate WiThrottle protocol command encosed in quotes or double quotes
 // refer to https://www.jmri.org/help/en/package/jmri/jmrit/withrottle/Protocol.shtml
 
 // alert message
@@ -152,18 +174,21 @@
 // #define CUSTOM_COMMAND_7 ""
 
 // ********************************************************************************************
+// oLED definition
 
-// uncomment and/or correct one (only) of the #define lines below if you need to override the default .9 inch oLED display settings 
+// Uncomment and/or correct one (only) of the #define lines below if you need to override.
+// The default .9 inch oLED display settings 
 //
 // Please select a constructor line for below depending on your display
+
 // U8g2 Constructor List (Frame Buffer)
 // The complete list is available here: https://github.com/olikraus/u8g2/wiki/u8g2setupcpp
 // Please update the pin numbers according to your setup. Use U8X8_PIN_NONE if the reset pin is not connected
 
-// this is one of the common .9 inch OLED displays and is included by default
+// This is one of the common .9 inch OLED displays and is included by default
 // #define OLED_TYPE U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);
 
-// this is one of the common 1.3 inch OLED displays
+// This is one of the common 1.3 inch OLED displays
 // #define OLED_TYPE U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);
 
 // *******************************************************************************************************************
@@ -191,12 +216,12 @@
 //#define F2_LABEL "Horn"
 
 // *******************************************************************************************************************
-// encoder hardware
+// Encoder Hardware
 // 
-// uncomment and change as needed
+// Uncomment and change as needed
 // defaults are for the Small ESP32
 
-// large EPS32
+// Large EPS32
 // #define ROTARY_ENCODER_A_PIN 33
 // #define ROTARY_ENCODER_B_PIN 32
 // #define ROTARY_ENCODER_BUTTON_PIN 27
@@ -210,10 +235,10 @@
 // #define ROTARY_ENCODER_STEPS 2 //depending on your encoder - try 1,2 or 4 to get expected behaviour
 
 // *******************************************************************************************************************
-// keypad hardware
+// Keypad Hardware
 //
-// uncomment and change as needed
-// defaults are for the Small 4x3 keypad
+// Uncomment and change as needed
+// Defaults are for the Small 4x3 keypad
 
 // 4x3 keypad - default
 // #define ROW_NUM     4
@@ -229,14 +254,16 @@
 // #define KEYPAD_ROW_PINS    {19, 18, 17, 16}
 // #define KEYPAD_COLUMN_PINS {4, 0, 2, 33}
 
-
-// in miliseconds
+// Keypad configuration
+// Play with these values if you see the keys bounce (activate twice)
+// Times are in miliseconds
 
 // #define KEYPAD_DEBOUNCE_TIME 10
 // #define KEYPAD_HOLD_TIME 200
 
 // *******************************************************************************************************************
 // Additional / optional buttons
+
 // For the 4x3 Keypad 7 buttons can be used
 // For the 4x4 keypad, only 6 buttons can be used with the 'normal' pins and the last pin MUST be set to -1, 
 //                     or one of pins 34,35,36,39 can be used with additional hardware (see below)
@@ -254,15 +281,14 @@
 // Note: pins 34,35,36,39 can be used but don't have an internal pullup, 
 //       so need additional hardware (resister) if you wish to use one of them
 
-
 // default = 50
 // increase if you find the buttons bounce. i.e. activate twice on a single press
 // #define ADDITIONAL_BUTTON_DEBOUNCE_DELAY        50    
 
-
 // *******************************************************************************************************************
 // Throttle Pot
-// To use a pot instead of the rotary encoder, uncomment the follow lines
+
+// To use a pot instead of the rotary encoder, uncomment the following lines
 //
 // Set the number of notches and the values of the pot at each notch.  must be 8 values
 
@@ -272,14 +298,15 @@
 // #define THROTTLE_POT_NOTCH_VALUES {1,585,1170,1755,2340,2925,3510,4094}
 // #define THROTTLE_POT_NOTCH_SPEEDS {0,18,36,54,72,90,108,127}  // 0-127 These numbers will be the speed step for each of the 8 throttle notches.
 
-// note: The example values above for THROTTLE_POT_NOTCH_VALUES 
-// are useble for a 10k ohm pot but any value pot can be used. 
-// Just adjust the numbers.
+// note: The example values above for THROTTLE_POT_NOTCH_VALUES are useble for a 10k ohm pot 
+// but any value pot can be used by altering that values. Just adjust the numbers.
 // Numbers can generated by Generate_Throttle__Brake__Reverser__Numbers program by Sumner Patterson
 
 // *******************************************************************************************************************
 // Battery Test
-// To use a battery test
+
+// To use a battery test you must add additional hardware. (see the README.)
+
 //  USE_BATTERY_SLEEP_AT_PERCENT - will put the device to sleep if the battery falls below this level
 //                               - set to 0 (zero) to disable
 //
@@ -289,38 +316,41 @@
 // #define USE_BATTERY_PERCENT_AS_WELL_AS_ICON false
 // #define USE_BATTERY_SLEEP_AT_PERCENT 3   // will put the device to sleep if the battery falls below this level
 
-// ********************************************************************************************
+// *******************************************************************************************************************
 // Heartbeat 
 
-// if no response is received from the server in the specified period (milliseconds), shut down.
+// If no response is received from the server in the specified period (milliseconds), shut down.
 // default is 4 minutes = 240000
+
 // #define MAX_HEARTBEAT_PERIOD 240000
 
 // enable heartbeat by default.  Can be turned on or off in the menus
 // #define HEARTBEAT_ENABLED true 
 
 // *******************************************************************************************************************
-// Roster sorting
-//
-// 0 = no sorting.  As it comes from the server
-// 1 = sort by name (first 10 chars only)  - Default
-// 2 = sort by DCC Address
+// Roster Sorting
+
+//   0 = no sorting.  As it comes from the server
+//   1 = sort by name (first 10 chars only)
+//   2 = sort by DCC Address
+// The default is 'sort by name'
 
 // #define ROSTER_SORT_SEQUENCE 1
 
 // *******************************************************************************************************************
 // Translations
 
-// uncomment the appropriate line to change the language displayed
-// If you wish to override any of the translations you can do so individually here
-// But, the define(s) must done before the #include of the base langauge file
+// Uncomment the appropriate line to change the language displayed.
+// If you wish to override any of the translations you can do so individually here,
+// but, the define(s) must done before the #include of the base langauge file
 //
 //
 // German - Deutsche
 // #include "language_deutsch.h"
 
 // *******************************************************************************************************************
-// startup commands
+// Startup Commands
+
 // The following commands will be executed, in order, after connection to the WiThrottle Server.
 // Each must be ONLY ONE single valid command.  Either a direct action or a menu action.
 //
