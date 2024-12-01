@@ -137,7 +137,9 @@
 #ifndef MSG_HEARTBEAT_CHECK_DISABLED
   #define MSG_HEARTBEAT_CHECK_DISABLED                  "Heartbeat-Prüfung deaktiviert"                 // "Heartbeat Check Disabled"
 #endif
-
+#ifndef MSG_RECEIVING_SERVER_DETAILS
+   #define MSG_RECEIVING_SERVER_DETAILS                 "Details zum Empfangsserver"                    // "Receiving server details"
+#endif
 
 #ifndef MENU_ITEM_TEXT_TITLE_FUNCTION
   #define MENU_ITEM_TEXT_TITLE_FUNCTION                 "Funktion"                                      // "Function"

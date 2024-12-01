@@ -29,8 +29,8 @@ const String routePrefixes[maxSsids] = {"IO:AUTO:", "IO:AUTO:", "IO:AUTO:", "IO:
 // Autoconnect to first SSID in the list above (default, if not specified is false)
 // #define AUTO_CONNECT_TO_FIRST_DEFINED_SERVER true
 
-// Autoconnect to first found server (defaul, if not specified is true)
-#define AUTO_CONNECT_TO_FIRST_WITHROTTLE_SERVER true
+// Autoconnect to first found server (default, if not specified is true)
+// #define AUTO_CONNECT_TO_FIRST_WITHROTTLE_SERVER true
 
 // ********************************************************************************************
 
@@ -44,7 +44,10 @@ const String routePrefixes[maxSsids] = {"IO:AUTO:", "IO:AUTO:", "IO:AUTO:", "IO:
 // ********************************************************************************************
 
 // For some reason WifiTrax WFD-30 system don't respond unless the commands are preceeded with CR+LF
-// These will be sent if the SSID name contains "wftrx_"
-// uncomment and change then name in the following line if you need to do it for a different SSID name
+// Originally these would be sent if the SSID name contains "wftrx_" or you could override the name
+// From version v1.77 the extra CR+LF are sent by default.  This is a new define that allows you to
+// override this behaviour if needed.
+// 
+// Uncomment the following line and set to false to disable this feature
 
-// #define SSID_NAME_FOR_COMMANDS_NEED_LEADING_CR_LF "wftrx_"
+// #define SEND_LEADING_CR_LF_FOR_COMMANDS false

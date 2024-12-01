@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "v1.76";
+const String appVersion = "v1.77";
 
 #ifndef DEVICE_NAME
    #define DEVICE_NAME "WiTcontroller"
@@ -199,6 +199,9 @@ typedef enum ShowBattery {
 #endif
 #ifndef MSG_HEARTBEAT_CHECK_DISABLED
    #define MSG_HEARTBEAT_CHECK_DISABLED "Heartbeat Check Disabled"
+#endif
+#ifndef MSG_RECEIVING_SERVER_DETAILS
+   #define MSG_RECEIVING_SERVER_DETAILS  "Receiving server details"
 #endif
 
 const String label_track_power = "TRK";
@@ -541,8 +544,8 @@ const char ssidPasswordBlankChar = 164;
   #define OUTBOUND_COMMANDS_MINIMUM_DELAY 50
 #endif
 
-#ifndef SSID_NAME_FOR_COMMANDS_NEED_LEADING_CR_LF
-  #define SSID_NAME_FOR_COMMANDS_NEED_LEADING_CR_LF "wftrx_"
+#ifndef SEND_LEADING_CR_LF_FOR_COMMANDS
+  #define SEND_LEADING_CR_LF_FOR_COMMANDS true
 #endif
 
 #ifndef ROTARY_ENCODER_DEBOUNCE_TIME

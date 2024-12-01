@@ -130,7 +130,7 @@ int foundWitServersCount = 0;
 bool autoConnectToFirstDefinedServer = AUTO_CONNECT_TO_FIRST_DEFINED_SERVER;
 bool autoConnectToFirstWiThrottleServer = AUTO_CONNECT_TO_FIRST_WITHROTTLE_SERVER;
 int outboundCmdsMininumDelay = OUTBOUND_COMMANDS_MINIMUM_DELAY;
-bool commandsNeedLeadingCrLf = false;
+bool commandsNeedLeadingCrLf = SEND_LEADING_CR_LF_FOR_COMMANDS;
 
 //found ssids
 String foundSsids[maxFoundSsids];
@@ -435,6 +435,8 @@ class MyDelegate : public WiThrottleProtocolDelegate {
           }
         }
       }
+      receivingServerInfoOled(index, rosterSize);
+
       #if ACQUIRE_ROSTER_ENTRY_IF_ONLY_ONE
         if ( (rosterSize == 1) && (index == 0) ) {
           doOneStartupCommand("*1#0");
@@ -443,7 +445,7 @@ class MyDelegate : public WiThrottleProtocolDelegate {
     }
     void receivedTurnoutEntries(int size) {
       debug_print("Received Turnout Entries. Size: "); debug_println(size);
-      turnoutListSize = size;
+      turnoutListSize = (size<maxTurnoutList) ? size : maxTurnoutList;
     }
     void receivedTurnoutEntry(int index, String sysName, String userName, int state) {
       if (index < maxTurnoutList) {
@@ -452,10 +454,12 @@ class MyDelegate : public WiThrottleProtocolDelegate {
         turnoutListUserName[index] = userName;
         turnoutListState[index] = state;
       }
+      receivingServerInfoOled(index, turnoutListSize);
     }
+
     void receivedRouteEntries(int size) {
       debug_print("Received Route Entries. Size: "); debug_println(size);
-      routeListSize = size;
+      routeListSize = (size<maxRouteList) ? size : maxRouteList;
     }
     void receivedRouteEntry(int index, String sysName, String userName, int state) {
       if (index < maxRouteList) {
@@ -464,6 +468,7 @@ class MyDelegate : public WiThrottleProtocolDelegate {
         routeListUserName[index] = userName;
         routeListState[index] = state;
       }
+      receivingServerInfoOled(index, routeListSize);
     }
 
     void addressStealNeeded(String address, String entry) { // MTSaddr<;>addr
@@ -750,11 +755,7 @@ void connectSsid() {
       }
 
       if (WiFi.status() == WL_CONNECTED) {
-        if (selectedSsid.indexOf(SSID_NAME_FOR_COMMANDS_NEED_LEADING_CR_LF)>=0) {  // default is "wftrx_"
-          commandsNeedLeadingCrLf = true;
-          debug_print(SSID_NAME_FOR_COMMANDS_NEED_LEADING_CR_LF); debug_println(" - Commands need to be sent twice");
-        }
-
+        if (!commandsNeedLeadingCrLf) { debug_println("Leading CRLF will not be sent for commands"); }
         break; 
       } else { // if not loop back and try again
         debug_println("");
@@ -2784,7 +2785,20 @@ void setAppnameForOled() {
   oledText[0] = appName; oledText[6] = appVersion; 
 }
 
+void receivingServerInfoOled(int index, int maxExpected) {
+  if (index < (maxExpected-1) ) {
+    broadcastMessageText = MSG_RECEIVING_SERVER_DETAILS;
+  } else {
+    broadcastMessageText = "";
+  }
+  broadcastMessageTime = millis();
+  setMenuTextForOled(menu_menu);
+  refreshOled();
+}
+
 void setMenuTextForOled(int menuTextIndex) {
+  debug_print("setMenuTextForOled(): ");
+  debug_println(menuTextIndex);
   oledText[5] = menu_text[menuTextIndex];
   if (broadcastMessageText!="") {
     if (millis()-broadcastMessageTime < 10000) {
