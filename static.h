@@ -201,7 +201,7 @@ typedef enum ShowBattery {
    #define MSG_HEARTBEAT_CHECK_DISABLED "Heartbeat Check Disabled"
 #endif
 #ifndef MSG_RECEIVING_SERVER_DETAILS
-   #define MSG_RECEIVING_SERVER_DETAILS  "Receiving server details"
+   #define MSG_RECEIVING_SERVER_DETAILS  "Getting data from server"
 #endif
 
 const String label_track_power = "TRK";
