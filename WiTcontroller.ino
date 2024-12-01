@@ -161,6 +161,7 @@ int functionPage = 0;
 // Broadcast msessage
 String broadcastMessageText = "";
 long broadcastMessageTime = 0;
+long lastReceivingServerDetailsTime = 0;
 
 // remember oLED state
 int lastOledScreen = 0;
@@ -2786,25 +2787,34 @@ void setAppnameForOled() {
 }
 
 void receivingServerInfoOled(int index, int maxExpected) {
+  debug_print("receivingServerInfoOled(): LastSent: ");
+  debug_println(lastReceivingServerDetailsTime);
   if (index < (maxExpected-1) ) {
-    broadcastMessageText = MSG_RECEIVING_SERVER_DETAILS;
+    if (millis()-lastReceivingServerDetailsTime >= 2000) {  // refresh it every X seconds if needed
+      if (broadcastMessageText == "") broadcastMessageText = MSG_RECEIVING_SERVER_DETAILS;
+      lastReceivingServerDetailsTime = millis();
+      broadcastMessageTime = millis();
+      setMenuTextForOled(menu_menu);
+      refreshOled();
+    } // else do nothing
   } else {
+    lastReceivingServerDetailsTime = 0;
+    broadcastMessageTime = 0;
     broadcastMessageText = "";
+    refreshOled();
   }
-  broadcastMessageTime = millis();
-  setMenuTextForOled(menu_menu);
-  refreshOled();
 }
 
 void setMenuTextForOled(int menuTextIndex) {
   debug_print("setMenuTextForOled(): ");
   debug_println(menuTextIndex);
   oledText[5] = menu_text[menuTextIndex];
-  if (broadcastMessageText!="") {
+  if (broadcastMessageText != "") {
     if (millis()-broadcastMessageTime < 10000) {
       oledText[5] = broadcastMessageText;
     } else {
       broadcastMessageText = "";
+      broadcastMessageTime = 0;
     }
   }
 }
