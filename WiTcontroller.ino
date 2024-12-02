@@ -832,6 +832,8 @@ void browseWitService() {
   oledText[0] = appName; oledText[6] = appVersion; 
   oledText[1] = selectedSsid;   oledText[2] = MSG_BROWSING_FOR_SERVICE;
   writeOledArray(false, false, true, true);
+  
+  startWaitForSelection = millis();
 
   noOfWitServices = 0;
   if ( (selectedSsid.substring(0,6) == "DCCEX_") && (selectedSsid.length()==12) ) {
@@ -948,6 +950,8 @@ void connectWitServer() {
   oledText[1] = "        " + selectedWitServerIP.toString() + " : " + String(selectedWitServerPort); 
   oledText[2] = "        " + selectedWitServerName; oledText[3] + MSG_CONNECTING;
   writeOledArray(false, false, true, true);
+  
+  startWaitForSelection = millis();
 
   if (!client.connect(selectedWitServerIP, selectedWitServerPort)) {
     debug_println(MSG_CONNECTION_FAILED);
@@ -1477,6 +1481,7 @@ void loop() {
   } else {  
     if (witConnectionState != CONNECTION_STATE_CONNECTED) {
       witServiceLoop();
+      checkForShutdownOnNoResponse();
     } else {
       wiThrottleProtocol.check();    // parse incoming messages
 
