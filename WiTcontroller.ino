@@ -1433,6 +1433,7 @@ void setup() {
 
   delay(1000);
   debug_println("Start"); 
+  debug_print("WiTcontroller - Version: "); debug_println(appVersion);
 
   rotaryEncoder.begin();  //initialize rotary encoder
   rotaryEncoder.setup(readEncoderISR);
