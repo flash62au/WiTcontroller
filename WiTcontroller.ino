@@ -2405,6 +2405,20 @@ String getDisplayLocoString(int multiThrottleIndex, int index) {
   char multiThrottleIndexChar = getMultiThrottleChar(multiThrottleIndex);
   String loco = wiThrottleProtocol.getLocomotiveAtPosition(multiThrottleIndexChar, index);
   String locoNumber = loco.substring(1);
+  
+  #ifdef DISPLAY_LOCO_NAME
+    int i = maxRoster;
+    while (i > 0) {
+      i--;
+      if (String(rosterAddress[i]) == locoNumber) {
+        if (rosterName[i] != "") {
+          locoNumber = rosterName[i] + "  ";
+        }
+        i = -1;
+      }
+    }
+  #endif
+  
   if (!wiThrottleProtocol.getLocomotiveAtPosition(multiThrottleIndexChar, 0).equals(loco)) { // not the lead loco
     Direction leadLocoDirection 
         = wiThrottleProtocol.getDirection(multiThrottleIndexChar, 

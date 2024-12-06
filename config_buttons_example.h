@@ -367,3 +367,9 @@
 // Enabling this option will automatically acquire the only roster entry after connection to the 
 // WiThrottle Server, but only if there is only one roster entry 
 // #define ACQUIRE_ROSTER_ENTRY_IF_ONLY_ONE true
+
+// *******************************************************************************************************************
+// Display Loco name
+
+// Uncomment if you want to display the loco name instead of DCC address
+#define DISPLAY_LOCO_NAME
