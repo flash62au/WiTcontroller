@@ -372,4 +372,7 @@
 // Display Loco name
 
 // Uncomment if you want to display the loco name instead of DCC address
-#define DISPLAY_LOCO_NAME
+// #define DISPLAY_LOCO_NAME
+
+// if you want to change the space between two loco names/ dcc addresses
+// #define CONSIST_SPACE_BETWEEN_LOCOS " "

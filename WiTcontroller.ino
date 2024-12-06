@@ -2407,14 +2407,12 @@ String getDisplayLocoString(int multiThrottleIndex, int index) {
   String locoNumber = loco.substring(1);
   
   #ifdef DISPLAY_LOCO_NAME
-    int i = maxRoster;
-    while (i > 0) {
-      i--;
+    for (int i = 0; i < maxRoster; i++) {
       if (String(rosterAddress[i]) == locoNumber) {
         if (rosterName[i] != "") {
-          locoNumber = rosterName[i] + "  ";
+          locoNumber = rosterName[i];
         }
-        i = -1;
+        break;
       }
     }
   #endif
@@ -3131,6 +3129,7 @@ void writeOledSpeed() {
   String sLocos = "";
   String sSpeed = "";
   String sDirection = "";
+  String sSpaceBetweenLocos = " ";
 
   bool foundNextThrottle = false;
   String sNextThrottleNo = "";
@@ -3144,8 +3143,9 @@ void writeOledSpeed() {
     // oledText[0] = label_locos; oledText[2] = label_speed;
   
     for (int i=0; i < wiThrottleProtocol.getNumberOfLocomotives(currentThrottleIndexChar); i++) {
-      // sLocos = sLocos + " " + wiThrottleProtocol.getLocomotiveAtPosition(currentThrottleIndexChar, i);
-      sLocos = sLocos + " " + getDisplayLocoString(currentThrottleIndex, i);
+      // sLocos = sLocos + sSpaceBetweenLocos + wiThrottleProtocol.getLocomotiveAtPosition(currentThrottleIndexChar, i);
+      sLocos = sLocos + sSpaceBetweenLocos + getDisplayLocoString(currentThrottleIndex, i);
+      sSpaceBetweenLocos = CONSIST_SPACE_BETWEEN_LOCOS;
     }
     // sSpeed = String(currentSpeed[currentThrottleIndex]);
     sSpeed = String(getDisplaySpeed(currentThrottleIndex));
