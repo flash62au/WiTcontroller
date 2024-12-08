@@ -975,3 +975,10 @@ const char ssidPasswordBlankChar = 164;
 #ifndef ACQUIRE_ROSTER_ENTRY_IF_ONLY_ONE
    #define ACQUIRE_ROSTER_ENTRY_IF_ONLY_ONE false
 #endif
+
+// ***************************************************
+// other text
+
+#ifndef CONSIST_SPACE_BETWEEN_LOCOS
+   #define CONSIST_SPACE_BETWEEN_LOCOS " "
+#endif
