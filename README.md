@@ -511,6 +511,9 @@ I would welcome it if you then sent me the file you created for inclusion in thi
 ## Change Log
 
 ### V1.77
+- Bug fix for when a DCC-EX EX-CommandStation has the password chnaged from the default.
+
+### V1.77
 - The additional CR+LF are now sent ahead of all commands to all command stations by default. This was originally only sent for WiFiTrax, but other commercial CSs seem to have the same issue that this resolved. This can be disabled if needed with ``#define SEND_LEADING_CR_LF_FOR_COMMANDS false`` in ``confing_network.h``.
 - Added a message when the server has just connected and is caught up receiving the roster etc. and is unable to process commands yet.
 

@@ -619,24 +619,32 @@ void selectSsidFromFound(int selection) {
 }
 
 void getSsidPasswordAndWitIpForFound() {
-    selectedSsidPassword = "";
-    turnoutPrefix = "";
-    routePrefix = "";
+  bool found = false;
+
+  selectedSsidPassword = "";
+  turnoutPrefix = "";
+  routePrefix = "";
+
+  for (int i = 0; i < maxSsids; ++i) {
+    if (selectedSsid == ssids[i]) {
+      selectedSsidPassword = passwords[i];
+      turnoutPrefix = turnoutPrefixes[i];
+      routePrefix = routePrefixes[i];
+      found = true;
+      debug_println("getSsidPasswordAndWitIpForFound() Using configured password");
+      break;
+    }
+  }
+
+  if (!found) {
     if ( (selectedSsid.substring(0,6) == "DCCEX_") && (selectedSsid.length()==12) ) {
       selectedSsidPassword = "PASS_" + selectedSsid.substring(6);
       witServerIpAndPortEntered = "19216800400102560";
       turnoutPrefix = DCC_EX_TURNOUT_PREFIX;
       routePrefix = DCC_EX_ROUTE_PREFIX;
-    } else {
-      for (int i = 0; i < maxSsids; ++i) {
-        if (selectedSsid == ssids[i]) {
-          selectedSsidPassword = passwords[i];
-          turnoutPrefix = turnoutPrefixes[i];
-          routePrefix = routePrefixes[i];
-          break;
-        }
-      }
-    }
+      debug_println("getSsidPasswordAndWitIpForFound() Using guessed DCC-EX password");
+    } 
+  }
 }
 
 void enterSsidPassword() {
