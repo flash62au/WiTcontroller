@@ -384,3 +384,14 @@
 // This can be altered on the fly in the Extras menu
 
 // #define DROP_BEFORE_ACQUIRE true
+
+// ***************************************************
+// Restore previously acquired locos on connection
+//
+// If this option is enabled, and you have deliberately disconnected or slept the device 
+// (extra menu # -> 9 -> 6 or # -> 9 -> 7), then the next time you connect the device it 
+// will try to load the previously acquired locos.
+//
+// disabled by default
+
+// #define RESTORE_ACQUIRED_LOCOS true

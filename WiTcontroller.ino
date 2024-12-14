@@ -14,6 +14,10 @@
 #include <WiFi.h>                 // https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi     GPL 2.1
 #include <ESPmDNS.h>              // https://github.com/espressif/arduino-esp32/blob/master/libraries/ESPmDNS  GPL 2.1
 
+// ----------------------
+
+#include <Preferences.h>
+
 // use the Arduino IDE 'Library' Manager to get these libraries
 #include <Keypad.h>               // https://www.arduinolibraries.info/libraries/keypad                        GPL 3.0
 #include <U8g2lib.h>              // https://github.com/olikraus/u8g2  (Just get "U8g2" via the Arduino IDE Library Manager)   new-bsd
@@ -43,6 +47,15 @@
  #define debug_printf(...)
 #endif
 int debugLevel = DEBUG_LEVEL;
+
+
+// *********************************************************************************
+// non-volatile storage
+
+Preferences nvsPrefs;
+bool nvsInit = false;
+bool nvsPrefsSaved = false;
+bool preferencesRead = false;
 
 // *********************************************************************************
 
@@ -410,6 +423,10 @@ class MyDelegate : public WiThrottleProtocolDelegate {
     void receivedRosterEntries(int size) {
       debug_print("Received Roster Entries. Size: "); debug_println(size);
       rosterSize = (size<maxRoster) ? size : maxRoster;
+
+      if (rosterSize==0) {
+        setupPreferences(false);  // if not roster read the prefeences immediately otherwise wait till we get them all
+      }
     }
     void receivedRosterEntry(int index, String name, int address, char length) {
       debug_print("Received Roster Entry, index: "); debug_print(index); debug_println(" - " + name);
@@ -436,6 +453,8 @@ class MyDelegate : public WiThrottleProtocolDelegate {
             rosterSortedIndex[i] = (rosterSortPointers[i][11]-'0')*10 + (rosterSortPointers[i][12]-'0');
             debug_print("Roster sorted: "); debug_print(rosterSortPointers[i]); debug_print(" | "); debug_println(rosterName[rosterSortedIndex[i]]);
           }
+
+          setupPreferences(false);  // if there is a roster, we will have waited 
         }
       }
       receivingServerInfoOled(index, rosterSize);
@@ -445,6 +464,7 @@ class MyDelegate : public WiThrottleProtocolDelegate {
           doOneStartupCommand("*1#0");
         }
       #endif
+
     }
     void receivedTurnoutEntries(int size) {
       debug_print("Received Turnout Entries. Size: "); debug_println(size);
@@ -1099,6 +1119,116 @@ void buildWitEntry() {
      selectedWitServerPort = witServerIpAndPortConstructed.substring(16).toInt();
   }
 }
+
+void setupPreferences(bool forceClear) {
+  if (preferencesRead) return;
+  debug_println("setupPreferences():");
+
+  nvsPrefs.begin("WitController", true);
+  nvsInit = nvsPrefs.isKey("nvsInit");
+  if ( (nvsInit == false) || (forceClear) ) {
+    debug_println("setupPreferences(): Initialising non-volitile storage ");
+
+    nvsPrefs.end();
+
+    nvsPrefs.begin("WitController", false); // write mode
+    nvsPrefs.putBool("nvsInit", true);
+    nvsInit = true;
+    nvsPrefs.end();
+
+  } else {
+    nvsInit = true;
+    debug_println("setupPreferences(): Non-volitile storage already initialised");
+    readPreferences();
+  }
+}
+
+void readPreferences() {
+  if (preferencesRead) return;
+  debug_println("readPreferences()");
+
+  if (!RESTORE_ACQUIRED_LOCOS) return;
+
+  debug_println("readPreferences(): Reading preferences from non-volitile storage ");
+  nvsPrefs.begin("WitController", true); // read mode
+  nvsInit = nvsPrefs.isKey("nvsInit");
+  if (nvsInit) {
+    debug_println("readPreferences(): Non-volitile storage is initialised");
+    int count = 0;  
+    char key[4];
+    key[3] = 0;
+
+    int currentThrottle = 0;
+    key[0] = 'L';
+    for (int i=0; i<MAX_THROTTLES; i++) {
+      key[1] = '0' + i;
+      for (int j=0; j<10; j++) { // assume a maximum of 10 locos per throttle
+        key[2] = '0' + j;
+        if (nvsPrefs.isKey(key)) {
+          if ( (currentThrottle != i) && (count>0) ) {
+            doOneStartupCommand("5"); //nextThrottle
+            currentThrottle = i;
+          }
+          String loco = nvsPrefs.getString(key);
+          doOneStartupCommand("*1" + loco + "#");
+          count++;
+        } else {
+          debug_print("readPreferences(): Not Found - Key: "); debug_println(key);
+        }
+      }
+    }
+    if (currentThrottle!=0) { // go to the first throttle
+      for (int i=0; i<(MAX_THROTTLES-currentThrottle); i++) {
+        doOneStartupCommand("5"); //nextThrottle
+      }
+    }
+  } else {
+    debug_println("readPreferences(): Non-volitile storage not initialised");
+  }
+  preferencesRead = true;
+  nvsPrefs.end();
+}
+
+void writePreferences() {
+  debug_println("writePreferences(): Writing preferences to non-volitile storage ");
+  nvsPrefs.begin("WitController", false); // write mode
+
+  if (nvsInit) {
+    nvsPrefs.putBool("nvsInit", true);
+
+    int count = 0;  
+    char key[4];
+    key[3] = 0;
+
+    key[0] = 'L';
+    for (int i=0; i<maxThrottles; i++) {
+      key[1] = '0' + i;
+      for (int j=0; j<10; j++) {
+        key[2] = '0' + j;
+        if (j<wiThrottleProtocol.getNumberOfLocomotives(getMultiThrottleChar(i))) {
+          String loco = wiThrottleProtocol.getLocomotiveAtPosition(getMultiThrottleChar(i), j);
+          String locoNumber = loco.substring(1);
+          nvsPrefs.putString(key, locoNumber);
+          debug_print("writePreferences(): Key: "); debug_print(key); debug_print(" - "); debug_println(locoNumber);
+          count++;
+        } else {
+          if (nvsPrefs.isKey(key)) {
+            nvsPrefs.remove(key);
+            debug_print("writePreferences(): Removed Key: "); debug_println(key);
+          }
+        }
+      }
+    }
+  } else {
+    debug_println("writePreferences(): Non-volitile storage not initialised");
+  }
+  nvsPrefs.end();
+}
+
+void clearPreferences() {
+  setupPreferences(true);
+}
+
 
 // *********************************************************************************
 //   Rotary Encoder
@@ -2191,6 +2321,9 @@ void doMenuCommand(char menuItem) {
     case MENU_ITEM_DISCONNECT: { // disconnect   
         if (witConnectionState == CONNECTION_STATE_CONNECTED) {
           witConnectionState = CONNECTION_STATE_DISCONNECTED;
+          clearPreferences();
+          writePreferences();
+          preferencesRead = false;
           disconnectWitServer();
         } else {
           connectWitServer();
@@ -2198,6 +2331,8 @@ void doMenuCommand(char menuItem) {
         break;
       }
     case MENU_ITEM_OFF_SLEEP: { // sleep/off
+        clearPreferences();
+        writePreferences();
         deepSleepStart();
         break;
       }
@@ -2730,6 +2865,7 @@ int compareStrings( const void *str1, const void *str2 ) {
 }
 
 void doStartupCommands() {
+      debug_println("doStartupCommands()");
   for(int i=0; i<4; i++) {
     doOneStartupCommand(startupCommands[i]);
   }

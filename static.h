@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "v1.79";
+const String appVersion = "v1.80";
 
 #ifndef DEVICE_NAME
    #define DEVICE_NAME "WiTcontroller"
@@ -991,4 +991,8 @@ const char ssidPasswordBlankChar = 164;
 
 #ifndef DROP_BEFORE_ACQUIRE
    #define DROP_BEFORE_ACQUIRE false
+#endif
+
+#ifndef RESTORE_ACQUIRED_LOCOS
+   #define RESTORE_ACQUIRED_LOCOS false
 #endif
