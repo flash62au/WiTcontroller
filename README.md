@@ -514,6 +514,9 @@ I would welcome it if you then sent me the file you created for inclusion in thi
 
 ## Change Log
 
+### V1.81
+- Show the battery status on the Start, SSID browse, Wit browse and Shutdown screens.
+
 ### V1.80
 - Added ``RESTORE_ACQUIRED_LOCOS`` option. If this option is enabled, and you have deliberately disconnected or slept the device (extra menu ``#96`` or ``#97``), then the next time you connect the device it will try to load the previously acquired locos.
 

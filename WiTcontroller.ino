@@ -111,8 +111,8 @@ bool useBatteryTest = USE_BATTERY_TEST;
   ShowBattery showBatteryTest = NONE;
 #endif
 bool useBatteryPercentAsWellAsIcon = USE_BATTERY_PERCENT_AS_WELL_AS_ICON;
-int lastBatteryTestValue = 0; 
-double lastBatteryCheckTime = 0;
+int lastBatteryTestValue = 100; 
+double lastBatteryCheckTime = -10000;
 #if USE_BATTERY_TEST
   Pangodream_18650_CL BL(BATTERY_TEST_PIN,BATTERY_CONVERSION_FACTOR);
 #endif
@@ -564,6 +564,7 @@ void browseSsids() { // show the found SSIDs
   clearOledArray(); 
   setAppnameForOled();
   oledText[2] = MSG_BROWSING_FOR_SSIDS;
+  writeOledBattery();
   writeOledArray(false, false, true, true);
 
   WiFi.setScanMethod(WIFI_ALL_CHANNEL_SCAN);
@@ -606,7 +607,7 @@ void browseSsids() { // show the found SSIDs
 
     clearOledArray(); oledText[10] = MSG_SSIDS_FOUND;
 
-     writeOledFoundSSids("");
+    writeOledFoundSSids("");
 
     // oledText[5] = menu_select_ssids_from_found;
     setMenuTextForOled(menu_select_ssids_from_found);
@@ -684,10 +685,12 @@ void showListOfSsids() {  // show the list from the specified values in config_n
 
   clearOledArray(); 
   setAppnameForOled(); 
+  writeOledBattery();
   writeOledArray(false, false);
 
   if (maxSsids == 0) {
     oledText[1] = MSG_NO_SSIDS_FOUND;
+    writeOledBattery();
     writeOledArray(false, false, true, true);
     debug_println(oledText[1]);
   
@@ -750,6 +753,7 @@ void connectSsid() {
   clearOledArray(); 
   setAppnameForOled();
   oledText[1] = selectedSsid; oledText[2] + "connecting...";
+  writeOledBattery();
   writeOledArray(false, false, true, true);
 
   double startTime = millis();
@@ -764,6 +768,7 @@ void connectSsid() {
     setAppnameForOled(); 
     for (int i = 0; i < 3; ++i) {  // Try three times
       oledText[1] = selectedSsid; oledText[2] =  String(MSG_TRYING_TO_CONNECT) + " (" + String(i) + ")";
+      writeOledBattery();
       writeOledArray(false, false, true, true);
 
       nowTime = startTime;
@@ -777,6 +782,7 @@ void connectSsid() {
             && ((nowTime-startTime) <= SSID_CONNECTION_TIMEOUT) ) { // wait for X seconds to see if the connection worked
         if (millis() > tempTimer + 250) {
           oledText[3] = getDots(j);
+          writeOledBattery();
           writeOledArray(false, false, true, true);
           j++;
           debug_print(".");
@@ -798,6 +804,7 @@ void connectSsid() {
       debug_print("Connected. IP address: "); debug_println(WiFi.localIP());
       oledText[2] = MSG_CONNECTED; 
       oledText[3] = MSG_ADDRESS_LABEL + String(WiFi.localIP());
+      writeOledBattery();
       writeOledArray(false, false, true, true);
       // ssidConnected = true;
       ssidConnectionState = CONNECTION_STATE_CONNECTED;
@@ -807,6 +814,7 @@ void connectSsid() {
       if (!MDNS.begin("WiTcontroller")) {
         debug_println("Error setting up MDNS responder!");
         oledText[2] = MSG_BOUNJOUR_SETUP_FAILED;
+        writeOledBattery();
         writeOledArray(false, false, true, true);
         delay(2000);
         ssidConnectionState = CONNECTION_STATE_DISCONNECTED;
@@ -817,6 +825,7 @@ void connectSsid() {
     } else {
       debug_println(MSG_CONNECTION_FAILED);
       oledText[2] = MSG_CONNECTION_FAILED;
+      writeOledBattery();
       writeOledArray(false, false, true, true);
       delay(2000);
       
@@ -861,6 +870,7 @@ void browseWitService() {
   clearOledArray(); 
   oledText[0] = appName; oledText[6] = appVersion; 
   oledText[1] = selectedSsid;   oledText[2] = MSG_BROWSING_FOR_SERVICE;
+  writeOledBattery();
   writeOledArray(false, false, true, true);
   
   startWaitForSelection = millis();
@@ -869,6 +879,7 @@ void browseWitService() {
   if ( (selectedSsid.substring(0,6) == "DCCEX_") && (selectedSsid.length()==12) ) {
     debug_println(MSG_BYPASS_WIT_SERVER_SEARCH);
     oledText[1] = MSG_BYPASS_WIT_SERVER_SEARCH;
+    writeOledBattery();
     writeOledArray(false, false, true, true);
     delay(500);
   } else {
@@ -877,6 +888,7 @@ void browseWitService() {
     && ((nowTime-startTime) <= 10000)) { // try for 10 seconds 
       noOfWitServices = MDNS.queryService(service, proto);
       oledText[3] = getDots(j);
+      writeOledBattery();
       writeOledArray(false, false, true, true);
       j++;
       debug_print(".");
@@ -915,6 +927,7 @@ void browseWitService() {
 
   if (foundWitServersCount == 0) {
     oledText[1] = MSG_NO_SERVICES_FOUND;
+    writeOledBattery();
     writeOledArray(false, false, true, true);
     debug_println(oledText[1]);
     delay(1000);
@@ -979,6 +992,7 @@ void connectWitServer() {
   setAppnameForOled(); 
   oledText[1] = "        " + selectedWitServerIP.toString() + " : " + String(selectedWitServerPort); 
   oledText[2] = "        " + selectedWitServerName; oledText[3] + MSG_CONNECTING;
+  writeOledBattery();
   writeOledArray(false, false, true, true);
   
   startWaitForSelection = millis();
@@ -1119,6 +1133,9 @@ void buildWitEntry() {
      selectedWitServerPort = witServerIpAndPortConstructed.substring(16).toInt();
   }
 }
+
+// *********************************************************************************
+//   Non-Volitile storage functions
 
 void setupPreferences(bool forceClear) {
   if (preferencesRead) return;
@@ -1576,7 +1593,10 @@ void setup() {
   u8g2.begin();
   // i2cSetClock(0,400000);
 
+  batteryTest_loop();  // do the battery check once to start
+
   clearOledArray(); oledText[0] = appName; oledText[6] = appVersion; oledText[2] = MSG_START;
+  writeOledBattery();
   writeOledArray(false, false, true, true);
 
   delay(1000);
@@ -3451,7 +3471,9 @@ void writeOledSpeedStepMultiplier() {
 }
 
 void writeOledBattery() {
+  debug_print("writeOledBattery(): time: "); debug_println(lastBatteryCheckTime);
   if ( (useBatteryTest) && (showBatteryTest!=NONE) && (lastBatteryCheckTime>0)) {
+    debug_println("writeOledBattery(): do it"); 
     //int lastBatteryTestValue = random(0,100);
     u8g2.setFont(FONT_GLYPHS);
     u8g2.setDrawColor(1);
@@ -3625,6 +3647,7 @@ void deepSleepStart(int shutdownReason) {
     delayPeriod = 10000;
   }
   oledText[3] = MSG_START_SLEEP;
+  writeOledBattery();
   writeOledArray(false, false, true, true);
   delay(delayPeriod);
 

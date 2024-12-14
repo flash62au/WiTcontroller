@@ -179,24 +179,32 @@ void selectRouteList(int);
 void selectFunctionList(int);
 void selectEditConsistList(int);
 
+// *********************************************************************************
+//  oLED functions
+// *********************************************************************************
+
 void setAppnameForOled(void);
+void receivingServerInfoOled(int, int);
+void setMenuTextForOled(int);
+void refreshOled();
 void writeOledFoundSSids(String);
 void writeOledRoster(String);
 void writeOledTurnoutList(String, TurnoutAction);
 void writeOledRouteList(String);
+void writeOledFunctionList(String);
 void writeOledEnterPassword(void);
 void writeOledMenu(String, bool);
-// void writeOledExtraSubMenu();
+void writeOledAllLocos(bool);
+void writeOledEditConsist();
 void writeHeartbeatCheck(void);
 void writeOledSpeed(void);
+void writeOledSpeedStepMultiplier();
+void writeOledBattery();
 void writeOledFunctions(void);
-void writeOledFunctionList(String);
-void writeOledAllLocos(void);
-void writeOledEditConsist();
 void writeOledArray(bool, bool);
 void writeOledArray(bool, bool, bool);
 void writeOledArray(bool, bool, bool, bool);
-void clearOledArray(void);
+void clearOledArray();
 void writeOledDirectCommands(void);
 
 void deepSleepStart();
