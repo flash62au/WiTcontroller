@@ -1154,34 +1154,42 @@ void readPreferences() {
   nvsInit = nvsPrefs.isKey("nvsInit");
   if (nvsInit) {
     debug_println("readPreferences(): Non-volitile storage is initialised");
+    currentThrottleIndex = 0;
+    currentThrottleIndexChar = '0';
+
     int count = 0;  
     char key[4];
     key[3] = 0;
 
-    int currentThrottle = 0;
+    // int currentThrottle = 0;
     key[0] = 'L';
     for (int i=0; i<MAX_THROTTLES; i++) {
       key[1] = '0' + i;
       for (int j=0; j<10; j++) { // assume a maximum of 10 locos per throttle
         key[2] = '0' + j;
         if (nvsPrefs.isKey(key)) {
-          if ( (currentThrottle != i) && (count>0) ) {
-            doOneStartupCommand("5"); //nextThrottle
-            currentThrottle = i;
-          }
+          // if ( (currentThrottle != i) && (count>0) ) {
+          //   doOneStartupCommand("5"); //nextThrottle
+          //   currentThrottle = i;
+          // }
           String loco = nvsPrefs.getString(key);
-          doOneStartupCommand("*1" + loco + "#");
+          // doOneStartupCommand("*1" + loco + "#");
+
+          loco = getLocoWithLength(loco);
+          debug_print("add Loco: "); debug_println(loco);
+          wiThrottleProtocol.addLocomotive(key[1], loco);
+          wiThrottleProtocol.getDirection(key[1], loco);
+          wiThrottleProtocol.getSpeed(key[1]);
           count++;
         } else {
           debug_print("readPreferences(): Not Found - Key: "); debug_println(key);
         }
       }
     }
-    if (currentThrottle!=0) { // go to the first throttle
-      for (int i=0; i<(MAX_THROTTLES-currentThrottle); i++) {
-        doOneStartupCommand("5"); //nextThrottle
-      }
-    }
+    currentThrottleIndex = 0;
+    currentThrottleIndexChar = '0';
+    resetFunctionStates(currentThrottleIndex);
+    writeOledSpeed();
   } else {
     debug_println("readPreferences(): Non-volitile storage not initialised");
   }
