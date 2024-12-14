@@ -211,6 +211,8 @@ int lastSpeedSent = 0;
 // int lastDirectionSent = -1;
 int lastSpeedThrottleIndex = 0;
 
+bool dropBeforeAcquire = DROP_BEFORE_ACQUIRE;
+
 // don't alter the assignments here
 // alter them in config_buttons.h
 
@@ -2066,6 +2068,9 @@ void doMenuCommand(char menuItem) {
     switch (menuItem) {
     case MENU_ITEM_ADD_LOCO: { // select loco
         if (menuCommand.length()>startAt) {
+          if ( (dropBeforeAcquire) && (wiThrottleProtocol.getNumberOfLocomotives(currentThrottleIndexChar)>0) ) {
+            wiThrottleProtocol.releaseLocomotive(currentThrottleIndexChar, "*");
+          }
           loco = menuCommand.substring(startAt, menuCommand.length());
           loco = getLocoWithLength(loco);
           debug_print("add Loco: "); debug_println(loco);
@@ -2167,6 +2172,11 @@ void doMenuCommand(char menuItem) {
       } 
     case MENU_ITEM_HEARTBEAT_TOGGLE: { // disable/enable the heartbeat Check
         toggleHeartbeatCheck();
+        writeOledSpeed();
+        break;
+      }
+    case MENU_ITEM_DROP_BEFORE_ACQUIRE_TOGGLE: { // disable/enable the heartbeat Check
+        toggleDropBeforeAquire();
         writeOledSpeed();
         break;
       }
@@ -2501,6 +2511,12 @@ void toggleHeartbeatCheck() {
   writeHeartbeatCheck();
 }
 
+void toggleDropBeforeAquire() {
+  dropBeforeAcquire = !dropBeforeAcquire;
+  debug_print("Drop Before Acquire: "); 
+  debug_println(dropBeforeAcquire ? "Enabled" : "Disabled"); 
+}
+
 void toggleDirection(int multiThrottleIndex) {
   if (wiThrottleProtocol.getNumberOfLocomotives(getMultiThrottleChar(multiThrottleIndex)) > 0) {
     changeDirection(multiThrottleIndex, (currentDirection[multiThrottleIndex] == Forward) ? Reverse : Forward );
@@ -2742,6 +2758,9 @@ void selectRoster(int selection) {
   debug_print("selectRoster() "); debug_println(selection);
 
   if ((selection>=0) && (selection < rosterSize)) {
+    if ( (dropBeforeAcquire) && (wiThrottleProtocol.getNumberOfLocomotives(currentThrottleIndexChar)>0) ) {
+      wiThrottleProtocol.releaseLocomotive(currentThrottleIndexChar, "*");
+    }
     int index = rosterSortedIndex[selection];
     String loco = String(rosterLength[index]) + rosterAddress[index];
     

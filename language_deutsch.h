@@ -227,6 +227,9 @@
 #ifndef EXTRA_MENU_TEXT_CHAR_HEARTBEAT_TOGGLE
   #define EXTRA_MENU_TEXT_CHAR_HEARTBEAT_TOGGLE         "Heartbt E/A"                                   // "Heartbt Tgl"
 #endif
+#ifndef EXTRA_MENU_TEXT_CHAR_DROP_BEFORE_ACQUIRE_TOGGLE
+  #define EXTRA_MENU_TEXT_CHAR_DROP_BEFORE_ACQUIRE_TOGGLE "1 Lok E/A"                                   // "1 loco Tgl"
+#endif
 #ifndef EXTRA_MENU_TEXT_CHAR_INCREASE_MAX_THROTTLES
   #define EXTRA_MENU_TEXT_CHAR_INCREASE_MAX_THROTTLES   "#Regler +"                                     // "#Throttles +"
 #endif

@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "v1.78";
+const String appVersion = "v1.79";
 
 #ifndef DEVICE_NAME
    #define DEVICE_NAME "WiTcontroller"
@@ -339,6 +339,9 @@ const int glyph_speed_step = 0x00d6;
 #ifndef EXTRA_MENU_TEXT_CHAR_HEARTBEAT_TOGGLE
    #define EXTRA_MENU_TEXT_CHAR_HEARTBEAT_TOGGLE       "Heartbt Tgl"
 #endif
+#ifndef EXTRA_MENU_TEXT_CHAR_DROP_BEFORE_ACQUIRE_TOGGLE
+   #define EXTRA_MENU_TEXT_CHAR_DROP_BEFORE_ACQUIRE_TOGGLE "1 Loco Tgl"
+#endif
 #ifndef EXTRA_MENU_TEXT_CHAR_INCREASE_MAX_THROTTLES
    #define EXTRA_MENU_TEXT_CHAR_INCREASE_MAX_THROTTLES "#Throttles +"
 #endif
@@ -379,7 +382,7 @@ const int glyph_speed_step = 0x00d6;
    #define MENU_ITEM_DECREASE_MAX_THROTTLES 'F'
    #define MENU_ITEM_DISCONNECT             'G'
    #define MENU_ITEM_OFF_SLEEP              'H'
-   //#define MENU_ITEM_TBA                    'I'
+   #define MENU_ITEM_DROP_BEFORE_ACQUIRE_TOGGLE 'I'
    //#define MENU_ITEM_TBA                    'J'
 #endif
 
@@ -404,7 +407,7 @@ const int glyph_speed_step = 0x00d6;
       {EXTRA_MENU_TEXT_CHAR_DECREASE_MAX_THROTTLES,MENU_ITEM_TEXT_MENU_NA},            // 15 F
       {EXTRA_MENU_TEXT_CHAR_DISCONNECT,            MENU_ITEM_TEXT_MENU_NA},            // 16 G
       {EXTRA_MENU_TEXT_CHAR_OFF_SLEEP,             MENU_ITEM_TEXT_MENU_NA},            // 17 H
-      {EXTRA_MENU_TEXT_CHAR_TBA,                   MENU_ITEM_TEXT_MENU_NA},            // 18 I
+      {EXTRA_MENU_TEXT_CHAR_DROP_BEFORE_ACQUIRE_TOGGLE, MENU_ITEM_TEXT_MENU_NA},       // 18 I
       {EXTRA_MENU_TEXT_CHAR_TBA,                   MENU_ITEM_TEXT_MENU_NA}             // 19 J
    };
 #else 
@@ -981,4 +984,11 @@ const char ssidPasswordBlankChar = 164;
 
 #ifndef CONSIST_SPACE_BETWEEN_LOCOS
    #define CONSIST_SPACE_BETWEEN_LOCOS " "
+#endif
+
+// ***************************************************
+// loco Acquire
+
+#ifndef DROP_BEFORE_ACQUIRE
+   #define DROP_BEFORE_ACQUIRE false
 #endif

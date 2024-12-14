@@ -467,8 +467,10 @@ If the battery does not show 100% when plugged into the charger, you may need to
 
 The display of the battery can be temporarily toggled by setting a key or button to ``SHOW_HIDE_BATTERY``.  The display will cycle between none, icon only and icon plus percent value. Note that ``USE_BATTERY_TEST`` must be set to `true` for this to have any effect.
 
-    Note: 
-    I recommend adding a physical power switch to disconnect the battery as this feature will, slowly, continually drain the battery, even when not being used.
+Note: 
+I recommend adding a physical power switch to disconnect the battery as this feature will, slowly, continually drain the battery, even when not being used.
+
+---
 
 ``#define STARTUP_COMMAND_1 ""`` .. ``#define STARTUP_COMMAND_4 ""``
 
@@ -476,6 +478,8 @@ Optional. If defined, the up to four commands will be executed, in order, after 
 Each must be ONLY ONE single valid command.  Either a direct action or a menu action.  Any can be blank or not defined, the others will still be executed.
 
 Note: Selecting from the roster/turnouts etc. is not possible as the commands will execute before the roster loads.
+
+---
 
 ``#define ACQUIRE_ROSTER_ENTRY_IF_ONLY_ONE true``
 
@@ -510,8 +514,11 @@ I would welcome it if you then sent me the file you created for inclusion in thi
 
 ## Change Log
 
+### V1.78
+- Added ``DROP_BEFORE_ACQUIRE`` option and also toggle for this in the Extras menu
+
 ### V1.77
-- Bug fix for when a DCC-EX EX-CommandStation has the password chnaged from the default.
+- Bug fix for when a DCC-EX EX-CommandStation has the password changed from the default.
 
 ### V1.77
 - The additional CR+LF are now sent ahead of all commands to all command stations by default. This was originally only sent for WiFiTrax, but other commercial CSs seem to have the same issue that this resolved. This can be disabled if needed with ``#define SEND_LEADING_CR_LF_FOR_COMMANDS false`` in ``confing_network.h``.

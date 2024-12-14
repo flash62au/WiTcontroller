@@ -165,7 +165,7 @@
 
 // alert message
 // #define CUSTOM_COMMAND_1 "HMHello World"
-// set route R500  (DCCEX system route perfix is 'R')
+// set route R500  (DCCEX system route prefix is 'R')
 // #define CUSTOM_COMMAND_2 "PRA2R500"
 // #define CUSTOM_COMMAND_3 ""
 // #define CUSTOM_COMMAND_4 ""
@@ -376,3 +376,11 @@
 
 // if you want to change the space between two loco names/ dcc addresses
 // #define CONSIST_SPACE_BETWEEN_LOCOS " "
+
+// ***************************************************
+// loco Acquire
+//
+// if you never want on-the-fly consists/MUs then uncomment this line
+// This can be altered on the fly in the Extras menu
+
+// #define DROP_BEFORE_ACQUIRE true
