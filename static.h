@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "v1.81";
+const String appVersion = "v1.82";
 
 #ifndef DEVICE_NAME
    #define DEVICE_NAME "WiTcontroller"
@@ -342,6 +342,9 @@ const int glyph_speed_step = 0x00d6;
 #ifndef EXTRA_MENU_TEXT_CHAR_DROP_BEFORE_ACQUIRE_TOGGLE
    #define EXTRA_MENU_TEXT_CHAR_DROP_BEFORE_ACQUIRE_TOGGLE "1 Loco Tgl"
 #endif
+#ifndef EXTRA_MENU_TEXT_SAVE_CURRENT_LOCOS
+   #define EXTRA_MENU_TEXT_SAVE_CURRENT_LOCOS          "Save Locos"
+#endif
 #ifndef EXTRA_MENU_TEXT_CHAR_INCREASE_MAX_THROTTLES
    #define EXTRA_MENU_TEXT_CHAR_INCREASE_MAX_THROTTLES "#Throttles +"
 #endif
@@ -363,27 +366,27 @@ const int glyph_speed_step = 0x00d6;
 // menu items
 
 #ifndef USER_DEFINED_MENUS
-   #define MENU_ITEM_FUNCTION               '0'
-   #define MENU_ITEM_ADD_LOCO               '1'
-   #define MENU_ITEM_DROP_LOCO              '2'
-   #define MENU_ITEM_TOGGLE_DIRECTION       '3'
-   #define MENU_ITEM_SPEED_STEP_MULTIPLIER  '4'
-   #define MENU_ITEM_THROW_POINT            '5'
-   #define MENU_ITEM_CLOSE_POINT            '6'
-   #define MENU_ITEM_ROUTE                  '7'
-   #define MENU_ITEM_TRACK_POWER            '8'
-   #define MENU_ITEM_EXTRAS                 '9'
+   #define MENU_ITEM_FUNCTION                   '0'
+   #define MENU_ITEM_ADD_LOCO                   '1'
+   #define MENU_ITEM_DROP_LOCO                  '2'
+   #define MENU_ITEM_TOGGLE_DIRECTION           '3'
+   #define MENU_ITEM_SPEED_STEP_MULTIPLIER      '4'
+   #define MENU_ITEM_THROW_POINT                '5'
+   #define MENU_ITEM_CLOSE_POINT                '6'
+   #define MENU_ITEM_ROUTE                      '7'
+   #define MENU_ITEM_TRACK_POWER                '8'
+   #define MENU_ITEM_EXTRAS                     '9'
 
-   #define MENU_ITEM_FUNCTION_KEY_TOGGLE    'A'
-   #define MENU_ITEM_EDIT_CONSIST           'B'
-   #define MENU_ITEM_TBA                    'C'
-   #define MENU_ITEM_HEARTBEAT_TOGGLE       'D'
-   #define MENU_ITEM_INCREASE_MAX_THROTTLES 'E'
-   #define MENU_ITEM_DECREASE_MAX_THROTTLES 'F'
-   #define MENU_ITEM_DISCONNECT             'G'
-   #define MENU_ITEM_OFF_SLEEP              'H'
+   #define MENU_ITEM_FUNCTION_KEY_TOGGLE        'A'
+   #define MENU_ITEM_EDIT_CONSIST               'B'
+   #define MENU_ITEM_TBA                        'C'
+   #define MENU_ITEM_HEARTBEAT_TOGGLE           'D'
+   #define MENU_ITEM_INCREASE_MAX_THROTTLES     'E'
+   #define MENU_ITEM_DECREASE_MAX_THROTTLES     'F'
+   #define MENU_ITEM_DISCONNECT                 'G'
+   #define MENU_ITEM_OFF_SLEEP                  'H'
    #define MENU_ITEM_DROP_BEFORE_ACQUIRE_TOGGLE 'I'
-   //#define MENU_ITEM_TBA                    'J'
+   #define MENU_ITEM_SAVE_CURRENT_LOCOS         'J'
 #endif
 
 #ifndef USER_DEFINED_MENUS
@@ -408,7 +411,7 @@ const int glyph_speed_step = 0x00d6;
       {EXTRA_MENU_TEXT_CHAR_DISCONNECT,            MENU_ITEM_TEXT_MENU_NA},            // 16 G
       {EXTRA_MENU_TEXT_CHAR_OFF_SLEEP,             MENU_ITEM_TEXT_MENU_NA},            // 17 H
       {EXTRA_MENU_TEXT_CHAR_DROP_BEFORE_ACQUIRE_TOGGLE, MENU_ITEM_TEXT_MENU_NA},       // 18 I
-      {EXTRA_MENU_TEXT_CHAR_TBA,                   MENU_ITEM_TEXT_MENU_NA}             // 19 J
+      {EXTRA_MENU_TEXT_SAVE_CURRENT_LOCOS,         MENU_ITEM_TEXT_MENU_NA}             // 19 J
    };
 #else 
    const String menuText[20][2] = MENU_STRUCTURE;
@@ -994,5 +997,5 @@ const char ssidPasswordBlankChar = 164;
 #endif
 
 #ifndef RESTORE_ACQUIRED_LOCOS
-   #define RESTORE_ACQUIRED_LOCOS false
+   #define RESTORE_ACQUIRED_LOCOS true
 #endif

@@ -514,6 +514,11 @@ I would welcome it if you then sent me the file you created for inclusion in thi
 
 ## Change Log
 
+### V1.82
+- Made ``RESTORE_ACQUIRED_LOCOS`` default to true.
+  - Added an Extra Menu option to save the current locos
+  - Removed the save when deliberately disconnected or slept the device (extra menu ``#96`` or ``#97``)
+
 ### V1.81
 - Show the battery status on the Start, SSID browse, Wit browse and Shutdown screens.
 

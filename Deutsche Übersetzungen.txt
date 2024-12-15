@@ -76,7 +76,8 @@
 #define EXTRA_MENU_TEXT_CHAR_EDIT_CONSIST             "Edt besteht"                                   // "Edt Consist"
 
 #define EXTRA_MENU_TEXT_CHAR_HEARTBEAT_TOGGLE         "Heartbt Tgl"                                   // "Heartbt Tgl"
-#define EXTRA_MENU_TEXT_CHAR_DROP_BEFORE_ACQUIRE_TOGGLE "1 Lok Tgl"                                   // "1 Loc Tgl"
+#define EXTRA_MENU_TEXT_CHAR_DROP_BEFORE_ACQUIRE_TOGGLE "1 Lok Tgl"                                   // "1 Loco Tgl"
+#define EXTRA_MENU_TEXT_SAVE_CURRENT_LOCOS            "Loks Speichern"                                // "Save Locos"
 #define EXTRA_MENU_TEXT_CHAR_INCREASE_MAX_THROTTLES   "#Drosseln +"                                   // "#Throttles +"
 #define EXTRA_MENU_TEXT_CHAR_DECREASE_MAX_THROTTLES   "#Drosseln -"                                   // "#Throttles -"
 #define EXTRA_MENU_TEXT_CHAR_DISCONNECT               "Trennen"                                       // "Disconnect"

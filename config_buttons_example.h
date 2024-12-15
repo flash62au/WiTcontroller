@@ -388,10 +388,10 @@
 // ***************************************************
 // Restore previously acquired locos on connection
 //
-// If this option is enabled, and you have deliberately disconnected or slept the device 
-// (extra menu # -> 9 -> 6 or # -> 9 -> 7), then the next time you connect the device it 
+// If this option is enabled, and you have deliberately saved the current 
+// locos ( # -> 9 -> 9), then the next time you connect the device it 
 // will try to load the previously acquired locos.
 //
-// disabled by default
+// enabled by default
 
-// #define RESTORE_ACQUIRED_LOCOS true
+// #define RESTORE_ACQUIRED_LOCOS false
