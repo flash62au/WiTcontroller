@@ -226,6 +226,10 @@ Notes:
   - Power Track On/Off
   - Disconnect / Reconnect
   - Put ESP32 in deep sleep and restart it
+  - Option to switch between Single Loc and Consist/MU (Drop before Acquire)
+  - Option to save the currently select locos (on multiple throttles) and have them automatically re-acquired on next connection.
+- Option to have up to 6 command sequences executed on connection
+- Option to automatically acquire a loco if there is only one loco in the roster
 - Have up to 6 throttles, each with an unlimited number of locos in consist. Default is 2 throttles, which can be increased or decreased temporarily via the Extras menu (or permanently enabled in config_button.h)
 - Limited dealing with unexpected disconnects.  It will throw you back to the WiThrottle Server selection screen.
 - Boundary between short and long DCC addresses can be configured in config_buttons.h
@@ -237,7 +241,6 @@ Notes:
 - Deal with unexpected disconnects better
   - automatic attempt to reconnect
 - Keep a list of ip addresses and ports if mDNS doesn't provide any
-- Remember (for the current session only) recently selected locos
 
 ### Command menu:
 - 0-9 keys = pressing these directly will do whatever you has been preset in the sketch for them to do  (see \# below)
@@ -269,8 +272,10 @@ Notes:
       - 3 to toggle the heartbeat check.
       - 4 to increase the number of available throttle (up to 6)
       - 5 to decrease the number of available throttle (down to 1)
-      - 6 then \# to Disconnect/Reconnect.  
-      - 7 (or 9) then \# to put into deep sleep
+      - 6 to Disconnect/Reconnect.  
+      - 7 to put into deep sleep
+      - 8 Toggle between Single loco and Consist/MU (Drop before Acquire)
+      - 9 Save the Currently selected locos so they will be automatically acquired on reconnection
 Pressing '\*' again before the '\#' will terminate the current command (but not start a new command)
  - \# = Pressing # alone will show the function the the numbered keys (0-9) perform, outside the menu.
        Optionally, you can configure it so that the the Function labels from the roster show 
