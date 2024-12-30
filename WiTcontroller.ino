@@ -512,6 +512,9 @@ class MyDelegate : public WiThrottleProtocolDelegate {
       // wiThrottleProtocol.stealLocomotive(multiThrottle, address);
       stealLoco(multiThrottle, address);
     }
+    void receivedUnknownCommand(String unknownCommand) {
+      debug_print("Received unknown command: "); debug_println(unknownCommand);
+    }
 };
 
 int getMultiThrottleIndex(char multiThrottle) {

@@ -163,6 +163,7 @@ The instructions below are for using the Arduino IDE and GitHub Desktop. Visual 
     * Click ``Upload`` **-->**
 
 Notes: 
+   * WiTcontroller version 1.82 or later requires WiThrottleProtocol version 1.1.25
    * WiTcontroller version 1.73 or later is recommended to use WiThrottleProtocol version 1.1.25 or later to address a bug in heartbeat send  but only seen with JMRI WiThrottle 
    * WiTcontroller version 1.66 or later requires WiThrottleProtocol version 1.1.24
    * WiTcontroller version 1.65 or later requires WiThrottleProtocol version 1.1.23
@@ -518,6 +519,9 @@ I would welcome it if you then sent me the file you created for inclusion in thi
 ---
 
 ## Change Log
+
+### V1.83
+- log any unknown commands from the server.  Requires WiThrottleProtocol version 1.1.25 or later
 
 ### V1.82
 - Made ``RESTORE_ACQUIRED_LOCOS`` default to true.
