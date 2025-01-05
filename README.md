@@ -35,8 +35,8 @@ A WiTcontroller is a simple DIY, handheld controller that talks to a WiThrottle 
 * WeMos Lite LOLIN32  (ESP32 Arduino with LiPo charger) ([Example](https://www.ebay.com.au/itm/284800618644?hash=item424f709094:g:-soAAOSwHslfC9ce&frcectupt=true))
 * 3x4 Keypad  ([Example](https://www.jaycar.com.au/12-key-numeric-keypad/p/SP0770?pos=2&queryId=20aedf107668ad42c6fe1f8b7f7a9ca7))
 * Polymer Lithium Ion Battery LiPo 400mAh 3.7V 502535 JST Connector (or larger capacity) ([500mAh Example](https://www.ebay.com.au/itm/133708965793?hash=item1f21ace7a1:g:tlwAAOSwfORgYqYK))
-* KY-040 Rotary Encoder Module ([Example](https://www.aliexpress.com/item/1005003946689694.html?albagn=888888&&src=google&albch=search&acnt=479-062-3723&isdl=y&aff_short_key=UneMJZVf&albcp=21520181724&albag=168529973707&slnk=&trgt=dsa-1464330247393&plac=&crea=707854323770&netw=g&device=c&mtctp=&memo1=&albbt=Google_7_search&aff_platform=google&gad_source=1&gclid=Cj0KCQjwiOy1BhDCARIsADGvQnBPdlEVLYbYnLoOnN1p2bdjte0jYmInrgFD0WG16aF3GZtvrWTb6o0aAo8VEALw_wcB&gclsrc=aw.ds))
-* OLED Display 0.96" 128x64 I2C IIC SSD1306 ([Example](https://www.ebay.com.au/itm/273746192621?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2060353.m2749.l2649))
+* KY-040 Rotary Encoder Module ([Example](https://www.aliexpress.com/item/1005003946689694.html?albagn=888888&&src=google&albch=search&acnt=479-062-3723&isdl=y&aff_short_key=UneMJZVf&albcp=21520181724&albag=168529973707&slnk=&trgt=dsa-1464330247393&plac=&crea=707854323770&netw=g&device=c&mtctp=&memo1=&albbt=Google_7_search&aff_platform=google&gad_source=1&gclid=Cj0KCQjwiOy1BhDCARIsADGvQnBPdlEVLYbYnLoOnN1p2bdjte0jYmInrgFD0WG16aF3GZtvrWTb6o0aAo8VEALw_wcB&gclsrc=aw.ds))  Note: The EC11 rotary encoder will also work, but requires a small change configuration in ``config_buttons.h`` (see below) 
+* OLED Display 0.96" 128x64 I2C IIC SSD1306 ([Example](https://www.ebay.com.au/itm/273746192621?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2060353.m2749.l2649))  Note: Some OLED displays up to 2.4 inch will also work (see below)
 * Case - my one was 3d printed (see below)
 * Knob ([Example](https://www.jaycar.com.au/35mm-knob-matching-equipment-style/p/HK7766?pos=7&queryId=cbd19e2486968bca41273cc2dbce54a4&sort=relevance))
 * Wire - If you plan to solder the connections,which is the recommended approach, then stranded, coloured wire is advisable.  ([Example](https://www.jaycar.com.au/rainbow-cable-16-core-sold-per-metre/p/WM4516))
@@ -99,6 +99,7 @@ Notes:
 * The case requires about a dozen M2x4mm screws
 
 * For a different take on what is possible by extending the design, have a look at: https://1fatgmc.com/RailRoad/DCC/page-5-B.html
+
 
 ## Loading the code
 
@@ -188,6 +189,16 @@ Notes:
 
 ## Using WiTController
 
+## Be aware
+
+ ### WiFi limitations
+ 
+  The ESP32 *cannot use the 5gHz* frequencies.  It is limited to the 2.4gHz  frequencies. 
+ 
+ It also seems to be *unable to use channels beyond 10* (and I have seen it struggle with channel 10 itself.)
+
+## Features
+
 **Currently functioning:**
 - Provides a list of discovered SSIDs with the ability to choose one. When you select one:
   - if it is one in your specified list (in the sketch), it will use that specified password 
@@ -241,7 +252,7 @@ Notes:
 - Speed button repeat (i.e. hold the button down)
 - Deal with unexpected disconnects better
   - automatic attempt to reconnect
-- Keep a list of ip addresses and ports if mDNS doesn't provide any
+- Keep a list of IP addresses and ports if mDNS doesn't provide any
 
 ### Command menu:
 - 0-9 keys = pressing these directly will do whatever you has been preset in the sketch for them to do  (see \# below)
@@ -388,6 +399,37 @@ Note: you need to edit config_buttons.h to alter these assignments   (copy confi
 - MAX_THROTTLE_DECREASE    - change the number of available throttles on-the-fly
 
 ---
+
+### instructions for optional use of a EC11 rotary encoder (with no physical resistor pullups) in place of the KY040 encoder module 
+
+Internal GPIO pullups required if the hardware build utilises a bare EC11 rotary encoder in place of a KY040 encoder module. (The encoder module has physical pullups fitted)
+
+``#define EC11_PULLUPS_REQUIRED         true``
+
+If the ``EC11_PULLUPS_REQUIRED`` is set to ``false`` a KY040 module used in hardware build OR bare EC11 used but with physical pullup resistors 
+
+If the ``EC11_PULLUPS_REQUIRED`` is set to ``true`` an EC11 used for hardware build WITHOUT any physical pullups, GPIO pullups will ne enabled in main
+
+The default is ``false``.
+
+### instructions for optional use of different OLED displays
+
+WitController will support any OLED display with a resolution of 128x64 that is supported by the U8g2 library.  This include displays up to 2.4 inch.
+
+The complete list is available here: https://github.com/olikraus/u8g2/wiki/u8g2setupcpp
+
+The ``OLED_TYPE`` define will need to be updated to whatever display you have
+
+ This is one of the common .9 inch OLED displays (and also for a common 2.4 inch) and is included by default
+
+``#define OLED_TYPE U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);``
+
+This is one of the common 1.3 inch OLED displays
+
+``#define OLED_TYPE U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);``
+
+See ``config_buttons_example.h`` for more information.
+
 
 ### instructions for optional use of a potentiometer (pot) instead of the encoder for the throttle
 
