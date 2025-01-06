@@ -132,7 +132,7 @@ The instructions below are for using the Arduino IDE and GitHub Desktop. Visual 
     * *U8g2lib.h* -  Search for "U8g2".   Install version 2.34.22
     * *AiEsp32RotaryEncoder.h* - search for "Ai Esp32 Rotary Encoder".  Install Version 1.6
     * *Keypad.h* - Search for "Keypad" by Mark Stanley.   Install version 3.1.1
-    * *WiThrottleProtocol.h* - Search for "WiThrottleProtocol" (not "WiThrottle").  Install version 1.1.14 or later if available.
+    * *WiThrottleProtocol.h* - Search for "WiThrottleProtocol" (not "WiThrottle").  Install the latest version available.
     
       Note: <br/> **DO NOT** download these libraries *directly*. Use the *Library Manager*. <br/> **DO NOT** put them in the WiTcontroller folder.
 5. These should have been automatically installed when you downloaded the esp32 boards.  *YOU SHOULD NOT NEED TO DO ANYTHING SPECIFIC TO GET THESE*
