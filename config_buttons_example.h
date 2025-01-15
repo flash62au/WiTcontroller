@@ -129,35 +129,6 @@
 // will be used for them.
 
 // *******************************************************************************************************************
-// Additional buttons
-
-// Define what each of the optional additional buttons will do.
-// See static.h or README.md for details on the allowed functions.
-// Set the ones you don't need to FUNCTION_NULL. (They will default to FUNCTION_NULL in any case.)
-// The button numbers relate to the GPIO pins 5,15,25,26,27,32,33
-
-// #define CHOSEN_ADDITIONAL_BUTTON_0_FUNCTION     FUNCTION_NULL   // GPIO 5
-// #define CHOSEN_ADDITIONAL_BUTTON_1_FUNCTION     FUNCTION_NULL   // GPIO 15
-// #define CHOSEN_ADDITIONAL_BUTTON_2_FUNCTION     FUNCTION_NULL   // GPIO 25
-// #define CHOSEN_ADDITIONAL_BUTTON_3_FUNCTION     FUNCTION_NULL   // GPIO 26
-// #define CHOSEN_ADDITIONAL_BUTTON_4_FUNCTION     FUNCTION_NULL   // GPIO 27
-// #define CHOSEN_ADDITIONAL_BUTTON_5_FUNCTION     FUNCTION_NULL   // GPIO 32
-// #define CHOSEN_ADDITIONAL_BUTTON_6_FUNCTION     FUNCTION_NULL   // GPIO 33
-
-// The following are either 'true' = LATCHING or 'false' = NOT LATCHING
-// Only relevant for the buttons that are set to FUNCTION_00 to FUNCTION_32
-//
-// #define ADDITIONAL_BUTTON_OVERRIDE_DEFAULT_LATCHING true
-//
-// #define ADDITIONAL_BUTTON_0_LATCHING true
-// #define ADDITIONAL_BUTTON_1_LATCHING true
-// #define ADDITIONAL_BUTTON_2_LATCHING true
-// #define ADDITIONAL_BUTTON_3_LATCHING true
-// #define ADDITIONAL_BUTTON_4_LATCHING true
-// #define ADDITIONAL_BUTTON_5_LATCHING true
-// #define ADDITIONAL_BUTTON_6_LATCHING true
-
-// *******************************************************************************************************************
 // Additional/Optional User Defined Commands
 
 // These can be any legitimate WiThrottle protocol command encosed in quotes or double quotes
@@ -255,7 +226,7 @@
 // #define KEYPAD_COLUMN_PINS {4, 0, 2, 33}
 
 // Keypad configuration
-// Play with these values if you see the keys bounce (activate twice)
+// Play with these values if you see the keys bounce (activate twice on a single press)
 // Times are in miliseconds
 
 // #define KEYPAD_DEBOUNCE_TIME 10
@@ -263,27 +234,147 @@
 
 // *******************************************************************************************************************
 // Additional / optional buttons
+//
+// This format for the additional buttons is now depriated
+// Use the *New Additional / optional buttons* section instead
 
 // For the 4x3 Keypad 7 buttons can be used
 // For the 4x4 keypad, only 6 buttons can be used with the 'normal' pins and the last pin MUST be set to -1, 
 //                     or one of pins 34,35,36,39 can be used with additional hardware (see below)
 
-// for the 4x3 keypad - default
+// if you are using the 4x3 keypad - default
 // To use the additional buttons, adjust the functions assigned to them in config_buttons.h
 // #define ADDITIONAL_BUTTONS_PINS      {5,15,25,26,27,32,33}
 // #define ADDITIONAL_BUTTONS_TYPE      {INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP}
 
-// for the 4x4 keypad
+// if you are using the 4x4 keypad, pin 33 is not available
 // To use the additional buttons, adjust the functions assigned to them in config_buttons.h
 // #define ADDITIONAL_BUTTONS_PINS      {5,15,25,26,27,32,-1}  // last pin must be set to -1
 // #define ADDITIONAL_BUTTONS_TYPE      {INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP}
 
+// set TYPE to either INPUT_PULLUP or INPUT.  If INPUT, the pin will need an external pullup resister (e.g. 10k)
 // Note: pins 34,35,36,39 can be used but don't have an internal pullup, 
 //       so need additional hardware (resister) if you wish to use one of them
 
+// Additional / optional buttons - Debounce 
+// Uncomment and increase this value if you find the buttons bounce. i.e. activate twice on a single press
+// Times are in miliseconds
 // default = 50
-// increase if you find the buttons bounce. i.e. activate twice on a single press
 // #define ADDITIONAL_BUTTON_DEBOUNCE_DELAY        50    
+
+// *******************************************************************************************************************
+// Additional buttons
+
+// This format for the additional buttons IS NOW DEPRECATED
+// Use the *New Additional / optional buttons* section instead
+
+// Define what each of the optional additional buttons will do.
+// See static.h or README.md for details on the allowed functions.
+// Set the ones you don't need to FUNCTION_NULL. (They will default to FUNCTION_NULL in any case.)
+// The button numbers relate to the GPIO pins 5,15,25,26,27,32,33
+
+// #define CHOSEN_ADDITIONAL_BUTTON_0_FUNCTION     FUNCTION_NULL   // GPIO 5
+// #define CHOSEN_ADDITIONAL_BUTTON_1_FUNCTION     FUNCTION_NULL   // GPIO 15
+// #define CHOSEN_ADDITIONAL_BUTTON_2_FUNCTION     FUNCTION_NULL   // GPIO 25
+// #define CHOSEN_ADDITIONAL_BUTTON_3_FUNCTION     FUNCTION_NULL   // GPIO 26
+// #define CHOSEN_ADDITIONAL_BUTTON_4_FUNCTION     FUNCTION_NULL   // GPIO 27
+// #define CHOSEN_ADDITIONAL_BUTTON_5_FUNCTION     FUNCTION_NULL   // GPIO 32
+// #define CHOSEN_ADDITIONAL_BUTTON_6_FUNCTION     FUNCTION_NULL   // GPIO 33
+
+// The following are either 'true' = LATCHING or 'false' = NOT LATCHING
+// Only relevant for the buttons that are set to FUNCTION_00 to FUNCTION_32
+//
+// #define ADDITIONAL_BUTTON_OVERRIDE_DEFAULT_LATCHING true
+//
+// #define ADDITIONAL_BUTTON_0_LATCHING true
+// #define ADDITIONAL_BUTTON_1_LATCHING true
+// #define ADDITIONAL_BUTTON_2_LATCHING true
+// #define ADDITIONAL_BUTTON_3_LATCHING true
+// #define ADDITIONAL_BUTTON_4_LATCHING true
+// #define ADDITIONAL_BUTTON_5_LATCHING true
+// #define ADDITIONAL_BUTTON_6_LATCHING true
+
+// *******************************************************************************************************************
+// New Additional / optional buttons
+//
+// This new format allows for up to 11 additional buttons
+//
+// To use the new format USE_NEW_ADDITIONAL_BUTTONS_FORMAT must be set to 'true'
+// And NEW_MAX_ADDITIONAL_BUTTONS must be set to the number you want to use. 
+// Then the following list MUST have the same number of elements
+// Make sure the last entry in each list does NOT have the comma (,)
+
+//   #define USE_NEW_ADDITIONAL_BUTTONS_FORMAT true
+
+// Only relevant for the buttons that are set to FUNCTION_00 to FUNCTION_32
+// Either 'true' = LATCHING or 'false' = NOT LATCHING
+//   #define ADDITIONAL_BUTTON_OVERRIDE_DEFAULT_LATCHING true
+
+// must be 1 or greater
+//    #define NEW_MAX_ADDITIONAL_BUTTONS 11
+
+//    #define NEW_ADDITIONAL_BUTTON_ACTIONS {\
+//                            FUNCTION_NULL,\
+//                            FUNCTION_NULL,\
+//                            FUNCTION_NULL,\
+//                            FUNCTION_NULL,\
+//                            FUNCTION_NULL,\
+//                            FUNCTION_NULL,\
+//                            FUNCTION_NULL,\
+//                            FUNCTION_NULL,\
+//                            FUNCTION_NULL,\
+//                            FUNCTION_NULL,\
+//                            FUNCTION_NULL\
+//                            }
+
+//    #define NEW_ADDITIONAL_BUTTON_LATCHING {\
+//                            true,\
+//                            true,\
+//                            true,\
+//                            true,\
+//                            true,\
+//                            true,\
+//                            true,\
+//                            true,\
+//                            true,\
+//                            true,\
+//                            true\
+//                            }
+
+// Set the pin value to -1 to skip that value.
+// For pins on the ESP32 use the number shown on the board/diagram
+// If you are using pins on a I2C GPIO Expansion board, they will be numbered: 0-15
+//
+//    #define NEW_ADDITIONAL_BUTTON_PIN {\
+//                            5,\
+//                            15,\
+//                            25,\
+//                            26,\
+//                            27,\
+//                            32,\
+//                            33,\
+//                            34,\
+//                            35,\
+//                            36,\
+//                            39\
+//                            }
+
+// Set to either INPUT_PULLUP or INPUT.  If INPUT, the pin will need an external pullup resister (e.g. 10k)
+// Pins 34,35,36,39 can be used but don't have an internal pullup, so use INPUT for these
+//
+//    #define NEW_ADDITIONAL_BUTTON_TYPE {\
+//                            INPUT_PULLUP,\
+//                            INPUT_PULLUP,\
+//                            INPUT_PULLUP,\
+//                            INPUT_PULLUP,\
+//                            INPUT_PULLUP,\
+//                            INPUT_PULLUP,\
+//                            INPUT_PULLUP,\
+//                            INPUT,\
+//                            INPUT,\
+//                            INPUT,\
+//                            INPUT\
+//                            }
 
 // *******************************************************************************************************************
 // Throttle Pot

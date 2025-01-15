@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "v1.82";
+const String appVersion = "v1.84";
 
 #ifndef DEVICE_NAME
    #define DEVICE_NAME "WiTcontroller"
@@ -839,7 +839,33 @@ const char ssidPasswordBlankChar = 164;
    #define CHOSEN_KEYPAD_D_FUNCTION     CUSTOM_4
 #endif
 
+
 // *******************************************************************************************************************
+// additional / optional buttons hardware
+
+// This format for the additional buttons is now depriated
+// Use the *New Additional / optional buttons* section instead
+
+// To use the additional buttons, adjust the functions assigned to them in config_buttons.h
+#ifndef MAX_ADDITIONAL_BUTTONS
+    #define MAX_ADDITIONAL_BUTTONS 7  
+#endif
+#ifndef ADDITIONAL_BUTTONS_PINS
+    #define ADDITIONAL_BUTTONS_PINS      {5,15,25,26,27,32,33}
+#endif
+#ifndef ADDITIONAL_BUTTONS_TYPE
+    #define ADDITIONAL_BUTTONS_TYPE      {INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP}
+   // 34,35,36,39 don't have an internal pullup
+#endif
+
+#ifndef ADDITIONAL_BUTTON_DEBOUNCE_DELAY
+    #define ADDITIONAL_BUTTON_DEBOUNCE_DELAY 50   // default if not defined in config_buttons.h
+#endif
+
+// *******************************************************************************************************************
+
+// This format for the additional buttons is now depriated
+// Use the *New Additional / optional buttons* section instead
 
 #ifndef CHOSEN_ADDITIONAL_BUTTON_0_FUNCTION
   #define CHOSEN_ADDITIONAL_BUTTON_0_FUNCTION FUNCTION_NULL
@@ -866,6 +892,7 @@ const char ssidPasswordBlankChar = 164;
 #ifndef ADDITIONAL_BUTTON_OVERRIDE_DEFAULT_LATCHING
    #define ADDITIONAL_BUTTON_OVERRIDE_DEFAULT_LATCHING false
 #endif
+
 #ifndef ADDITIONAL_BUTTON_0_LATCHING
    #define ADDITIONAL_BUTTON_0_LATCHING true
 #endif
@@ -886,6 +913,39 @@ const char ssidPasswordBlankChar = 164;
 #endif
 #ifndef ADDITIONAL_BUTTON_6_LATCHING
    #define ADDITIONAL_BUTTON_6_LATCHING true
+#endif
+
+// *******************************************************************************************************************
+// New Additional / optional buttons
+
+#ifndef USE_NEW_ADDITIONAL_BUTTONS_FORMAT
+   #define USE_NEW_ADDITIONAL_BUTTONS_FORMAT false
+#endif
+
+#if USE_NEW_ADDITIONAL_BUTTONS_FORMAT
+   #ifndef NEW_MAX_ADDITIONAL_BUTTONS
+
+      #define USE_NEW_ADDITIONAL_BUTTONS_FORMAT true
+
+      #define NEW_MAX_ADDITIONAL_BUTTONS 0
+
+      #define NEW_ADDITIONAL_BUTTON_ACTIONS {\
+                              FUNCTION_NULL\
+                              }
+
+      #define NEW_ADDITIONAL_BUTTON_LATCHING {\
+                              true\
+                              }
+
+      #define NEW_ADDITIONAL_BUTTON_PIN {\
+                              -1\
+                              }
+
+      #define NEW_ADDITIONAL_BUTTON_TYPE {\
+                              INPUT_PULLUP\
+                              }
+
+   #endif
 #endif
 
 // *******************************************************************************************************************

@@ -170,6 +170,7 @@ int rosterSortedIndex[maxRoster];
 
 int page = 0;
 int functionPage = 0;
+bool functionHasBeenSelected = false;
 
 // Broadcast msessage
 String broadcastMessageText = "";
@@ -274,29 +275,59 @@ bool oledDirectCommandsAreBeingDisplayed = false;
 #endif
 
 //optional additional buttons
-int additionalButtonActions[MAX_ADDITIONAL_BUTTONS] = {
-                          CHOSEN_ADDITIONAL_BUTTON_0_FUNCTION,
-                          CHOSEN_ADDITIONAL_BUTTON_1_FUNCTION,
-                          CHOSEN_ADDITIONAL_BUTTON_2_FUNCTION,
-                          CHOSEN_ADDITIONAL_BUTTON_3_FUNCTION,
-                          CHOSEN_ADDITIONAL_BUTTON_4_FUNCTION,
-                          CHOSEN_ADDITIONAL_BUTTON_5_FUNCTION,
-                          CHOSEN_ADDITIONAL_BUTTON_6_FUNCTION
-};
+#if !USE_NEW_ADDITIONAL_BUTTONS_FORMAT
+  int maxAdditionalButtons = MAX_ADDITIONAL_BUTTONS;
+  int additionalButtonPin[MAX_ADDITIONAL_BUTTONS] =          ADDITIONAL_BUTTONS_PINS;
+  int additionalButtonType[MAX_ADDITIONAL_BUTTONS] =         ADDITIONAL_BUTTONS_TYPE;
+  int additionalButtonActions[MAX_ADDITIONAL_BUTTONS] = {
+                            CHOSEN_ADDITIONAL_BUTTON_0_FUNCTION,
+                            CHOSEN_ADDITIONAL_BUTTON_1_FUNCTION,
+                            CHOSEN_ADDITIONAL_BUTTON_2_FUNCTION,
+                            CHOSEN_ADDITIONAL_BUTTON_3_FUNCTION,
+                            CHOSEN_ADDITIONAL_BUTTON_4_FUNCTION,
+                            CHOSEN_ADDITIONAL_BUTTON_5_FUNCTION,
+                            CHOSEN_ADDITIONAL_BUTTON_6_FUNCTION
+  };
+  int additionalButtonLatching[MAX_ADDITIONAL_BUTTONS] = {
+                            ADDITIONAL_BUTTON_0_LATCHING,
+                            ADDITIONAL_BUTTON_1_LATCHING,
+                            ADDITIONAL_BUTTON_2_LATCHING,
+                            ADDITIONAL_BUTTON_3_LATCHING,
+                            ADDITIONAL_BUTTON_4_LATCHING,
+                            ADDITIONAL_BUTTON_5_LATCHING,
+                            ADDITIONAL_BUTTON_6_LATCHING
+  };
+
+  unsigned long lastAdditionalButtonDebounceTime[MAX_ADDITIONAL_BUTTONS];  // the last time the output pin was toggled
+  bool additionalButtonRead[MAX_ADDITIONAL_BUTTONS];
+  bool additionalButtonLastRead[MAX_ADDITIONAL_BUTTONS];
+
+#else
+  #if NEW_MAX_ADDITIONAL_BUTTONS>0
+    int maxAdditionalButtons = NEW_MAX_ADDITIONAL_BUTTONS;
+    int additionalButtonPin[NEW_MAX_ADDITIONAL_BUTTONS] = NEW_ADDITIONAL_BUTTON_PIN;
+    int additionalButtonType[NEW_MAX_ADDITIONAL_BUTTONS] = NEW_ADDITIONAL_BUTTON_TYPE;
+    int additionalButtonActions[NEW_MAX_ADDITIONAL_BUTTONS] = NEW_ADDITIONAL_BUTTON_ACTIONS;
+    int additionalButtonLatching[NEW_MAX_ADDITIONAL_BUTTONS] = NEW_ADDITIONAL_BUTTON_LATCHING;
+
+    unsigned long lastAdditionalButtonDebounceTime[NEW_MAX_ADDITIONAL_BUTTONS];  // the last time the output pin was toggled
+    bool additionalButtonRead[NEW_MAX_ADDITIONAL_BUTTONS];
+    bool additionalButtonLastRead[NEW_MAX_ADDITIONAL_BUTTONS];
+  #else
+    int maxAdditionalButtons = 0;
+    int additionalButtonPin[1] = {-1};
+    int additionalButtonType[1] = {INPUT_PULLUP};
+    int additionalButtonActions[1] = {FUNCTION_NULL};
+    int additionalButtonLatching[1] = {false};
+
+    unsigned long lastAdditionalButtonDebounceTime[1];  // the last time the output pin was toggled
+    bool additionalButtonRead[1];
+    bool additionalButtonLastRead[1];
+  #endif
+#endif
+
 bool additionalButtonOverrideDefaultLatching = ADDITIONAL_BUTTON_OVERRIDE_DEFAULT_LATCHING;
-int additionalButtonLatching[MAX_ADDITIONAL_BUTTONS] = {
-                          ADDITIONAL_BUTTON_0_LATCHING,
-                          ADDITIONAL_BUTTON_1_LATCHING,
-                          ADDITIONAL_BUTTON_2_LATCHING,
-                          ADDITIONAL_BUTTON_3_LATCHING,
-                          ADDITIONAL_BUTTON_4_LATCHING,
-                          ADDITIONAL_BUTTON_5_LATCHING,
-                          ADDITIONAL_BUTTON_6_LATCHING
-};
-unsigned long lastAdditionalButtonDebounceTime[MAX_ADDITIONAL_BUTTONS] = {0,0,0,0,0,0,0};  // the last time the output pin was toggled
 unsigned long additionalButtonDebounceDelay = ADDITIONAL_BUTTON_DEBOUNCE_DELAY;    // the debounce time
-bool additionalButtonRead[MAX_ADDITIONAL_BUTTONS];
-bool additionalButtonLastRead[MAX_ADDITIONAL_BUTTONS];
 
 // *********************************************************************************
 
@@ -1529,16 +1560,14 @@ void keypadEvent(KeypadEvent key) {
 // *********************************************************************************
 
 void initialiseAdditionalButtons() {
-  for (int i = 0; i < MAX_ADDITIONAL_BUTTONS; i++) { 
+
+  for (int i = 0; i < maxAdditionalButtons; i++) { 
     if (additionalButtonActions[i] != FUNCTION_NULL) { 
       debug_print("Additional Button: "); debug_print(i); debug_print(" pin:"); debug_println(additionalButtonPin[i]);
+
       if (additionalButtonPin[i]>=0) {
         pinMode(additionalButtonPin[i], additionalButtonType[i]);
-        if (additionalButtonType[i] == INPUT_PULLUP) {
-          additionalButtonLastRead[i] = HIGH;
-        } else {
-          additionalButtonLastRead[i] = LOW;
-        }
+        additionalButtonLastRead[i] = LOW;
       }
       lastAdditionalButtonDebounceTime[i] = 0;
     }
@@ -1546,12 +1575,15 @@ void initialiseAdditionalButtons() {
 }
 
 void additionalButtonLoop() {
-  int buttonRead;
-  for (int i = 0; i < MAX_ADDITIONAL_BUTTONS; i++) {   
-    if ( (additionalButtonActions[i] != FUNCTION_NULL) && (additionalButtonPin[i]>=0) ) {
-        buttonRead = digitalRead(additionalButtonPin[i]);
+  if (witConnectionState != CONNECTION_STATE_CONNECTED) return;
 
-      if (additionalButtonLastRead[i] != buttonRead) { // on procces on a change
+  int buttonRead;
+  for (int i = 0; i < maxAdditionalButtons; i++) {   
+    if ( (additionalButtonActions[i] != FUNCTION_NULL) && (additionalButtonPin[i]>=0) ) {
+
+      buttonRead = digitalRead(additionalButtonPin[i]);
+
+      if (additionalButtonLastRead[i] != buttonRead) { // on process on a change
         if ((millis() - lastAdditionalButtonDebounceTime[i]) > additionalButtonDebounceDelay) {   // only process if there is sufficent delay since the last read
           lastAdditionalButtonDebounceTime[i] = millis();
           additionalButtonRead[i] = buttonRead;
@@ -1593,18 +1625,20 @@ void additionalButtonLoop() {
 
 void setup() {
   Serial.begin(115200);
+  // u8g2.setI2CAddress(0x3C * 2);
+  // u8g2.setBusClock(100000);
   u8g2.begin();
-  // i2cSetClock(0,400000);
+  u8g2.firstPage();
+
+  delay(1000);
+  debug_println("Start"); 
+  debug_print("WiTcontroller - Version: "); debug_println(appVersion);
 
   batteryTest_loop();  // do the battery check once to start
 
   clearOledArray(); oledText[0] = appName; oledText[6] = appVersion; oledText[2] = MSG_START;
   writeOledBattery();
   writeOledArray(false, false, true, true);
-
-  delay(1000);
-  debug_println("Start"); 
-  debug_print("WiTcontroller - Version: "); debug_println(appVersion);
 
   rotaryEncoder.begin();  //initialize rotary encoder
   rotaryEncoder.setup(readEncoderISR);
@@ -2013,13 +2047,24 @@ void doKeyPress(char key, bool pressed) {
 
   } else {  // released
     debug_println("doKeyPress(): released"); 
-    if (keypadUseType == KEYPAD_USE_OPERATION) {
-      if ( (!menuCommandStarted) && (key>='0') && (key<='D')) { // only process releases for the numeric keys + A,B,C,D and only if a menu command has not be started
-        debug_println("doKeyPress(): Operation - Process key release");
-        doDirectCommand(key, false);
-      } else {
-        debug_println("doKeyPress(): Non-Operation - Don't process key release");
-      }
+    switch (keypadUseType) {
+      case KEYPAD_USE_OPERATION:
+        if ( (!menuCommandStarted) && (key>='0') && (key<='D')) { // only process releases for the numeric keys + A,B,C,D and only if a menu command has not be started
+          debug_println("doKeyPress(): Operation - Process key release KEYPAD_USE_OPERATION");
+          doDirectCommand(key, false);
+        } else {
+          debug_println("doKeyPress(): Non-Operation - Don't process key release");
+        }
+        break;
+    
+      case KEYPAD_USE_SELECT_FUNCTION:
+        if (functionHasBeenSelected) {
+          debug_println("doKeyPress(): Operation - Process key release KEYPAD_USE_SELECT_FUNCTION");
+          doFunction(currentThrottleIndex, (key - '0')+(functionPage*10), false);
+          keypadUseType = KEYPAD_USE_OPERATION;
+          functionHasBeenSelected = false;
+        }
+        break;
     }
   }
 
@@ -2377,7 +2422,7 @@ void doMenuCommand(char menuItem) {
           function = menuCommand.substring(startAt, menuCommand.length());
           int functionNumber = function.toInt();
           if (function != "") { // a function is specified
-            doFunction(currentThrottleIndex, functionNumber, true);  // always act like latching i.e. pressed
+            doFunction(currentThrottleIndex, functionNumber, true, true);  // always act like latching i.e. pressed
           }
           writeOledSpeed();
         } else {
@@ -2755,15 +2800,19 @@ void doFunction(int multiThrottleIndex, int functionNumber, bool pressed, bool f
   char multiThrottleIndexChar = getMultiThrottleChar(multiThrottleIndex);
   debug_print("doFunction(): multiThrottleIndex "); debug_println(multiThrottleIndex);
   if (wiThrottleProtocol.getNumberOfLocomotives(multiThrottleIndexChar)>0) {
-    doFunctionWhichLocosInConsist(multiThrottleIndex, functionNumber, true, force);
-    if (!functionStates[multiThrottleIndex][functionNumber]) {
-      debug_print("fn: "); debug_print(functionNumber); debug_println(" Pressed");
-      // functionStates[functionNumber] = true;
+    if (force) {
+      doFunctionWhichLocosInConsist(multiThrottleIndex, functionNumber, true, force);
+      if (!functionStates[multiThrottleIndex][functionNumber]) {
+        debug_print("fn: "); debug_print(functionNumber); debug_println(" Pressed FORCED");
+        // functionStates[functionNumber] = true;
+      } else {
+        doFunctionWhichLocosInConsist(multiThrottleIndex, functionNumber, false, force);
+        debug_print("fn: "); debug_print(functionNumber); debug_println(" Released FORCED");
+        // functionStates[functionNumber] = false;
+      }
     } else {
-      // delay(20);
-      doFunctionWhichLocosInConsist(multiThrottleIndex, functionNumber, false, force);
-      debug_print("fn: "); debug_print(functionNumber); debug_println(" Released");
-      // functionStates[functionNumber] = false;
+      doFunctionWhichLocosInConsist(multiThrottleIndex, functionNumber, pressed, false);
+      debug_print("fn: "); debug_print(functionNumber); debug_println(" NOT FORCED");
     }
     writeOledSpeed(); 
   }
@@ -2977,9 +3026,10 @@ void selectFunctionList(int selection) {
   if ((selection>=0) && (selection < MAX_FUNCTIONS)) {
     String function = functionLabels[currentThrottleIndex][selection];
     debug_print("Function Selected: "); debug_println(function);
-    doFunction(currentThrottleIndex, selection, true);
+    doFunction(currentThrottleIndex, selection, true,false);
+    functionHasBeenSelected = true;    
     writeOledSpeed();
-    keypadUseType = KEYPAD_USE_OPERATION;
+    // keypadUseType = KEYPAD_USE_OPERATION;   // don't reset it now.  Do so on the release.
   }
 }
 
@@ -3164,6 +3214,7 @@ void writeOledFunctionList(String soFar) {
 
   menuIsShowing = true;
   keypadUseType = KEYPAD_USE_SELECT_FUNCTION;
+  functionHasBeenSelected = false;
   
   if (soFar == "") { // nothing entered yet
     clearOledArray();
@@ -3479,9 +3530,9 @@ void writeOledSpeedStepMultiplier() {
 }
 
 void writeOledBattery() {
-  debug_print("writeOledBattery(): time: "); debug_println(lastBatteryCheckTime);
+  // debug_print("writeOledBattery(): time: "); debug_println(lastBatteryCheckTime);
   if ( (useBatteryTest) && (showBatteryTest!=NONE) && (lastBatteryCheckTime>0)) {
-    debug_println("writeOledBattery(): do it"); 
+    // debug_println("writeOledBattery(): do it"); 
     //int lastBatteryTestValue = random(0,100);
     u8g2.setFont(FONT_GLYPHS);
     u8g2.setDrawColor(1);

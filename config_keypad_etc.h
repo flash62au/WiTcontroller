@@ -11,13 +11,13 @@
 
 // default Small ESP32
 #ifndef ROTARY_ENCODER_A_PIN
-    #define ROTARY_ENCODER_A_PIN 12
+    #define ROTARY_ENCODER_A_PIN 12  // to DT
 #endif
 #ifndef ROTARY_ENCODER_B_PIN
-    #define ROTARY_ENCODER_B_PIN 14
+    #define ROTARY_ENCODER_B_PIN 14  // to CLK
 #endif
 #ifndef ROTARY_ENCODER_BUTTON_PIN
-    #define ROTARY_ENCODER_BUTTON_PIN 13
+    #define ROTARY_ENCODER_BUTTON_PIN 13  // to SW
 #endif
 
 #ifndef ROTARY_ENCODER_VCC_PIN
@@ -59,28 +59,5 @@ Keypad keypad = Keypad( makeKeymap(keys), pin_rows, pin_column, ROW_NUM, COLUMN_
 #endif
 #ifndef KEYPAD_HOLD_TIME
     #define KEYPAD_HOLD_TIME 200
-#endif
-
-// *******************************************************************************************************************
-// additional / optional buttons hardware
-
-// To use the additional buttons, adjust the functions assigned to them in config_buttons.h
-#ifndef MAX_ADDITIONAL_BUTTONS
-    #define MAX_ADDITIONAL_BUTTONS 7  
-#endif
-#ifndef ADDITIONAL_BUTTONS_PINS
-    #define ADDITIONAL_BUTTONS_PINS      {5,15,25,26,27,32,33}
-#endif
-#ifndef ADDITIONAL_BUTTONS_TYPE
-    #define ADDITIONAL_BUTTONS_TYPE      {INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP}
-   // 34,35,36,39 don't have an internal pullup
-#endif
-
-int additionalButtonPin[MAX_ADDITIONAL_BUTTONS] =          ADDITIONAL_BUTTONS_PINS;
-int additionalButtonType[MAX_ADDITIONAL_BUTTONS] =         ADDITIONAL_BUTTONS_TYPE;
-
-
-#ifndef ADDITIONAL_BUTTON_DEBOUNCE_DELAY
-    #define ADDITIONAL_BUTTON_DEBOUNCE_DELAY 50   // default if not defined in config_buttons.h
 #endif
 
