@@ -1,6 +1,7 @@
 # WiTcontroller
 
 A WiTcontroller is a simple DIY, handheld controller that talks to a WiThrottle Server (JMRI, DCC-EX EX-CommandStation, Digitrax LnWi and many others) using the WiThrottle protocol to control DCC model trains. 
+
 ---
 
 **Why WiTcontroller?**
@@ -20,6 +21,16 @@ While the basic from is simple, the design is flexible and you can add several a
 <iframe width="560" height="315" src="https://www.youtube.com/embed/RKnhfBCP_SQ?si=Z_nlVT7RNRzxInaN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
+**The name**
+
+*WiTcontroller* is a contraction of 'WiThrottle Controller' as it uses the WiThrottle Protocol for communications with the server.  I pronounce it as 'Wit Controller', but you can pronounce it however you like.
+
+**Note:**
+
+  'WiThrottle' is a trademark owned by Brett Hoffman. It is also an iOS app  developed by Brett Hoffman.
+  
+  The 'WiThrottle protocol' is a communications protocol developed by Brett Hoffman.  It is used by WitController, JMRI, Engine Driver, the WiThrottle app and a number of other apps and DCC Command Stations. References in this document to a 'WiThrottle Server', refer to any server that can communicate using the 'WiThrottle protocol'.
+ 
 ---
 
 ## Prerequisites
