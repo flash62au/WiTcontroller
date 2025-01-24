@@ -25,11 +25,11 @@ While the basic from is simple, the design is flexible and you can add several a
 
 *WiTcontroller* is a contraction of 'WiThrottle Controller' as it uses the WiThrottle Protocol for communications with the server.  I pronounce it as 'Wit Controller', but you can pronounce it however you like.
 
-**Note:**
+**Notes:**
 
-  'WiThrottle' is a trademark owned by Brett Hoffman. It is also an iOS app  developed by Brett Hoffman.
+* 'WiThrottle' is a trademark owned by Brett Hoffman. It is also an iOS app  developed by Brett Hoffman.
   
-  The 'WiThrottle protocol' is a communications protocol developed by Brett Hoffman.  It is used by WitController, JMRI, Engine Driver, the WiThrottle app and a number of other apps and DCC Command Stations. References in this document to a 'WiThrottle Server', refer to any server that can communicate using the 'WiThrottle protocol'.
+* The 'WiThrottle protocol' is a communications protocol developed by Brett Hoffman.  It is used by **WiTcontroller**, JMRI, Engine Driver, the WiThrottle app and a number of other apps and DCC Command Stations. References in this document to a 'WiThrottle Server', refer to any server that can communicate using the 'WiThrottle protocol'.
  
 ---
 
