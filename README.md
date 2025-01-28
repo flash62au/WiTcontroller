@@ -304,6 +304,14 @@ The ESP32 *cannot use the 5gHz* frequencies.  It is limited to the 2.4gHz  frequ
  
 It also seems to be *unable to use channels beyond 10* (and I have seen it struggle with channel 10 itself.)
 
+## Definitions and Explanations
+
+*WiTcontroller* is deliberately described as a "controller" not a "throttle".  
+
+A "Throttle" can control only one train, which may be one loco, or more than one loco in consist/MU.
+
+*WiTcontroller*, as a "controller", **contains up to six (6) "throttles"**. Each which can control any number of locos in consist/MU. You can swap between throttles at will (``keypad 5``) to select which locos/consists/MUs you one you are manipulating at a given time. While you can only manipulate one loco/consist/MU at at time, the other continue running at the setting you gave it.
+
 ## Features
 
 **Currently functioning:**
@@ -732,6 +740,9 @@ I would welcome it if you then sent me the file you created for inclusion in thi
 ---
 
 ## Change Log
+
+### V1.85
+- bug fix for when using the Arduino IDE
 
 ### V1.84
 - New set of defines to allow for an indefinite number of additional buttons. This requires the use of new set of defines that override the old style ones. <br/> At the moment you can only have up to 11 buttons.

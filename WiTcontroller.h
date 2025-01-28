@@ -98,7 +98,7 @@ extern int lastSpeedSent;
 // extern int lastDirectionSent;
 extern int lastSpeedThrottleIndex;
 
-extern AiEsp32RotaryEncoder rotaryEncoder;
+// extern AiEsp32RotaryEncoder rotaryEncoder;
 
 extern int currentThrottleIndex;
 
