@@ -18,9 +18,6 @@ While the basic from is simple, the design is flexible and you can add several a
 
 [See a video of it in use here.](https://youtu.be/RKnhfBCP_SQ)
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/RKnhfBCP_SQ?si=Z_nlVT7RNRzxInaN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
-
 **The name**
 
 *WiTcontroller* is a contraction of 'WiThrottle Controller' as it uses the WiThrottle Protocol for communications with the server.  I pronounce it as 'Wit Controller', but you can pronounce it however you like.
