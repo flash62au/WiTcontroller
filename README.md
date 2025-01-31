@@ -69,14 +69,14 @@ While the basic from is simple, the design is flexible and you can add several a
 
 * Knob ([Example](https://www.jaycar.com.au/35mm-knob-matching-equipment-style/p/HK7766?pos=7&queryId=cbd19e2486968bca41273cc2dbce54a4&sort=relevance))
 
-* Wire - If you plan to solder the connections,which is the recommended approach, then stranded, coloured wire is advisable.  ([Example](https://www.jaycar.com.au/rainbow-cable-16-core-sold-per-metre/p/WM4516))
+* Wire - If you plan to solder the connections, which is the recommended approach, then stranded, coloured wire is advisable.  ([Example](https://www.jaycar.com.au/rainbow-cable-16-core-sold-per-metre/p/WM4516))
 
 ### Optional Components
 
 * *Optional:* A power switch. Push button or toggle. <br/> The battery in WiTcontroller will last a week or two in deep sleep, but you may wish to add a power switch on the positive feed of the battery if you expect to leave it unused for long periods.
 * *Optional:* You can use a 4x4 keypad instead of the 3x4 keypad. <br/> Note: You will need to make a small configuration change in ``config_buttons.h`` for this to work correctly.
-* *Optional:* Up to Eleven (11) additional push buttons can be added directly to the ESP32, each with their own independent commands. by([Example](https://www.jaycar.com.au/red-miniature-pushbutton-spst-momentary-action-125v-1a-rating/p/SP0710))
-* *Optional:* A 1.3" OLED Display 128x64 can be used instead of the 0.96" OLED Display 128x64 ([Example](https://www.aliexpress.com/item/32683094040.html?spm=a2g0o.order_list.order_list_main.110.25621802jRBB7y)) Note: You will need to make a small configuration change for this to work correctly.
+* *Optional:* Up to Eleven (11) additional push buttons can be added directly to the ESP32, each with their own independent commands. ([Example](https://www.jaycar.com.au/red-miniature-pushbutton-spst-momentary-action-125v-1a-rating/p/SP0710))
+* *Optional:* A 1.3" OLED Display 128x64 can be used instead of the 0.96" OLED Display 128x64 ([Example](https://www.aliexpress.com/item/32683094040.html?spm=a2g0o.order_list.order_list_main.110.25621802jRBB7y)) Note: You will need to make a minor change in the config file for this to work correctly.
 
 ### Pinouts
 
