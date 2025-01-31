@@ -159,6 +159,7 @@ VN  39                                  AB10*
  C2 PIN 2                      R0 PIN 19
  R2 PIN 17                     R1 PIN 18
  R1 PIN 18                     R2 PIN 17
+                               R3 PIN 16
 
 Note: 
 Different keypads often arrange the pins on the base of the keypad differently.  So it is important make sure the pins on the keypad are correctly identified and adjusted as needed.
