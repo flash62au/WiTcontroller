@@ -21,6 +21,14 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 */
+
+/* 
+ *  18650 Ion-Li battery charge
+ *
+ * Modified from the code at https://github.com/pangodream/18650CL
+ * Addition of the ability to query the last analogRead value.
+ */
+
 #include "Arduino.h"
 #include "Pangodream_18650_CL.h"
 
@@ -29,6 +37,7 @@ Pangodream_18650_CL::Pangodream_18650_CL(int addressPin, double convFactor, int 
     _reads = reads;
     _convFactor = convFactor;
     _addressPin = addressPin;
+    _lastAnalogReadValue = 0;
     _initVoltsArray();
 }
 
@@ -37,6 +46,7 @@ Pangodream_18650_CL::Pangodream_18650_CL(int addressPin, double convFactor)
     _reads = DEF_READS;
     _convFactor = convFactor;
     _addressPin = addressPin;
+    _lastAnalogReadValue = 0;
     _initVoltsArray();
 }
 
@@ -45,6 +55,7 @@ Pangodream_18650_CL::Pangodream_18650_CL(int addressPin)
     _reads = DEF_READS;
     _convFactor = DEF_CONV_FACTOR;
     _addressPin = addressPin;
+    _lastAnalogReadValue = 0;
     _initVoltsArray();
 }
 
@@ -53,6 +64,7 @@ Pangodream_18650_CL::Pangodream_18650_CL()
     _reads = DEF_READS;
     _convFactor = DEF_CONV_FACTOR;
     _addressPin = DEF_PIN;
+    _lastAnalogReadValue = 0;
     _initVoltsArray();
 }
 
@@ -104,6 +116,10 @@ int Pangodream_18650_CL::getBatteryChargeLevel()
     return chargeLevel;
 }
 
+int Pangodream_18650_CL::getLastAnalogReadValue() {
+  return _lastAnalogReadValue;
+}
+
 int Pangodream_18650_CL::pinRead(){
     return _analogRead(_addressPin); 
 }
@@ -115,6 +131,7 @@ int Pangodream_18650_CL::_analogRead(int pinNumber){
        totalValue += analogRead(pinNumber);
     }
     averageValue = totalValue / _reads;
+    _lastAnalogReadValue = averageValue;
     return averageValue; 
 }
 /**

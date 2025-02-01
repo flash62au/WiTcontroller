@@ -24,6 +24,9 @@
 
 /* 
  *  18650 Ion-Li battery charge
+ *
+ * Modified from the code at https://github.com/pangodream/18650CL
+ * Addition of the ability to query the last analogRead value.
  */
   
 #ifndef Pangodream_18650_CL_h
@@ -31,7 +34,7 @@
 
 #include "Arduino.h"
 
-#define DEF_PIN 34
+#define DEF_PIN 36
 #define DEF_CONV_FACTOR 1.7
 #define DEF_READS 20
 
@@ -76,13 +79,15 @@ class Pangodream_18650_CL {
     int getAnalogPin();
     int pinRead();
     double getConvFactor();
+    int getLastAnalogReadValue();
        
   private:
 
     int    _addressPin;               //!< ADC pin used, default is GPIO34 - ADC1_6
     int    _reads;                    //Number of reads of ADC pin to calculate an average value
     double _convFactor;               //!< Convertion factor to translate analog units to volts
-    double _vs[101];                 //Array with voltage - charge definitions
+    double _vs[101];                  //Array with voltage - charge definitions
+    int    _lastAnalogReadValue;      // remeber the last value read
     
     void   _initVoltsArray();
     int    _getChargeLevel(double volts);

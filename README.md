@@ -661,9 +661,6 @@ If the battery does not show 100% when plugged into the charger, you may need to
     In your ``config_buttons.h`` add (or uncomment) these defines:
     
       #define WITCONTROLLER_DEBUG    0
-      #define DEBUG_LEVEL   2
-
-    DEBUG_LEVEL must be 2 or greater
 
     a) Make sure your battery is fully charged.
     b) Upload the code and open the serial monitor. 
@@ -678,7 +675,7 @@ If the battery does not show 100% when plugged into the charger, you may need to
     d) Note one of the recommend values (it will vary a bit) and enter it into the define in your config_buttons.h
     e) Re-upload code and connect to a server
     f) Confirm that the battery reads 100% (repeat if not)
-    g) Run the HandCab on battery for few hours and confirm the battery level is droping at an expected rate. (adjust the conversion factor if not.)
+    g) Run the WiTcontroller on battery for few hours and confirm the battery level is droping at an expected rate. (adjust the conversion factor if not.)
 
 *To show the calculated percentage*, set the following to ``true`` The default is ``false``.
 
@@ -738,6 +735,9 @@ I would welcome it if you then sent me the file you created for inclusion in thi
 ---
 
 ## Change Log
+
+### V1.86
+- added missing debug messages for the battery
 
 ### V1.85
 - bug fix for when using the Arduino IDE

@@ -112,6 +112,7 @@ bool useBatteryTest = USE_BATTERY_TEST;
 #endif
 bool useBatteryPercentAsWellAsIcon = USE_BATTERY_PERCENT_AS_WELL_AS_ICON;
 int lastBatteryTestValue = 100; 
+int lastBatteryAnalogReadValue = 0;
 double lastBatteryCheckTime = -10000;
 #if USE_BATTERY_TEST
   Pangodream_18650_CL BL(BATTERY_TEST_PIN,BATTERY_CONVERSION_FACTOR);
@@ -1510,10 +1511,14 @@ void batteryTest_loop() {
 #if USE_BATTERY_TEST
   if(millis()-lastBatteryCheckTime>10000) {
     lastBatteryCheckTime = millis();
-    // debug_print("battery pin Value: "); debug_println(analogRead(batteryTestPin));  //Reads the analog value on the throttle pin.
     int batteryTestValue = BL.getBatteryChargeLevel();
+    lastBatteryAnalogReadValue = BL.getLastAnalogReadValue();
     
-    // debug_print("batteryTestValue: "); debug_println(batteryTestValue); 
+    debug_print("BATTERY TestValue: "); debug_println(batteryTestValue); 
+    debug_print("BATTERY lastAnalogReadValue: "); debug_println(lastBatteryAnalogReadValue); 
+    double analogValue = lastBatteryAnalogReadValue;
+    analogValue = 4.2 / analogValue * 1000;
+    debug_print("BATTERY If Battery full, BATTERY_CONVERSION_FACTOR should be: "); debug_println(analogValue); 
 
     if (batteryTestValue!=lastBatteryTestValue) { 
       lastBatteryTestValue = BL.getBatteryChargeLevel();
