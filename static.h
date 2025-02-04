@@ -1,6 +1,9 @@
-const String appName = "WiTcontroller";
-const String appVersion = "v1.86";
-
+const String appVersion = "v1.87";
+#ifndef CUSTOM_APPNAME
+   const String appName = "WiTcontroller";
+#else
+   const String appName = CUSTOM_APPNAME;
+#endif
 #ifndef DEVICE_NAME
    #define DEVICE_NAME "WiTcontroller"
 #endif
@@ -504,7 +507,9 @@ const char ssidPasswordBlankChar = 164;
 
 // *******************************************************************************************************************
 
-#define FONT_DEFAULT u8g2_font_NokiaSmallPlain_te
+#ifndef FONT_DEFAULT
+   #define FONT_DEFAULT u8g2_font_NokiaSmallPlain_te
+#endif
 #define FONT_FUNCTION_INDICATORS u8g2_font_tiny_simon_tr
 #define FONT_THROTTLE_NUMBER u8g2_font_neuecraft_tr
 #define FONT_PASSWORD u8g2_font_9x15_tf

@@ -723,6 +723,15 @@ If you are interested, please contact me directly for instructions.
 Ich würde mich über jede Hilfe zur Verbesserung dieser Übersetzungen freuen.
 Bei Interesse kontaktieren Sie mich bitte direkt für eine Anleitung.
 
+### Istruzioni per la traduzione in Italiano
+
+Il file "language_italiano.h" contiene la traduzione italiana (by Roberto B). Rimuovere il commento o aggiungere la linea "#include language_italiano.h" (senza le " ") nel file "config_buttons.h" per avere menù e messaggi in Italiano.
+
+Si può sovrascrivere una qualunque di queste traduzioni individualmente aggiungendo la relativa "#define" nel file "config_buttons.h" ma deve essere fatto assolutamente prima dell' "#include" della traduzione.
+
+Qualunque contributo è gradito.
+Per ogni questione, il contatto ufficiale è il canale Discord di DCC-EX nella sezione wifi-throttles.
+
 ### Instructions for Other Translations
 
 If you create a copy of the file ``language_deutsch.h`` (with a new name) and change the German text it contains to any language you wish (using the English text on the right as a guide to what is needed) you can add that file as an include in ``config_buttons.h``.
@@ -735,6 +744,12 @@ I would welcome it if you then sent me the file you created for inclusion in thi
 ---
 
 ## Change Log
+
+### V1.87
+- support UTF8 fonts better
+- Italian Translations by Roberto B
+- able to override the default font (not recommended)
+- add define for ``CUSTOM_APPNAME``
 
 ### V1.86
 - added missing debug messages for the battery
