@@ -743,6 +743,15 @@ I would welcome it if you then sent me the file you created for inclusion in thi
 ---
 ---
 
+## Modifying the code
+
+If you plan to modify the code it is recommended that you create your own GiTHub fork of my repository and post your mods there.
+
+[Instructions on how to do so are here](forking.md).
+
+---
+---
+
 ## Change Log
 
 ### V1.87
