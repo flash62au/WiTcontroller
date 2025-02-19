@@ -82,19 +82,19 @@ Please note: I am no longer contactable via the DCC-EX Discord server.
 ### Pinouts
 
 *Standard Configuration Pinouts*  This is the simplest form of the WiTcontroller
-![Assembly diagram](WiTcontroller%20pinouts%20v0.1.png)
+![Assembly diagram](images/WiTcontroller%20-%20Basic.png)
 
 *Pinouts for Optional Additional Buttons*
-![Assembly diagram - Optional Additional Buttons](WiTcontroller%20-%20Optional%20Buttons%20-%20pinouts%20v0.1.png)
+![Assembly diagram - Optional Additional Buttons](images/WiTcontroller%20-%20Optional%20Buttons%20-%20no%20pullups.png)
+
+*Pinouts for Optional Additional Buttons - With Pullups*
+![Assembly diagram - Optional Additional Buttons - With Pullups](images/WiTcontroller%20-%203x4%20keypad,%20Optional%20Buttons%20-%20pullups.png)
 
 *Pinouts for Optional 4x4 keypad and Additional Buttons - without pullup resistors*
-![Assembly diagram - 4x4 keypad and Optional Additional Buttons](WiTcontroller%20-%204x4%20keypad,%20Optional%20Buttons%20-%20pinouts%20v0.1.png)
-
-*Pinouts for Optional 4x4 keypad and Additional Buttons - with and without pullup resistors*
-![Assembly diagram - 4x4 keypad and Optional Additional Buttons](WiTcontroller%20-%204x4%20keypad,%20Optional%20Buttons%20-%20no%20pullups.png)
+![Assembly diagram - 4x4 keypad and Optional Additional Buttons](images/WiTcontroller%20-%204x4%20keypad,%20Optional%20Buttons%20-%20no%20pullups.png)
 
 *Pinouts for Optional Battery Monitor and Additional Buttons*
-![Assembly diagram - Optional Battery Monitor and Additional Buttons](WiTcontroller%20-%20Optional%20battery%20monitor.png)
+![Assembly diagram - Optional Battery Monitor and Additional Buttons](images/WiTcontroller%20-%20Optional%20battery%20monitor.png)
 
 ---
 
