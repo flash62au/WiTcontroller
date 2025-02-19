@@ -196,6 +196,9 @@ My case was 3D Printed for me by peteGSX (See the [Thingiverse.](https://www.thi
 
 ### Variations
 
+![sumner version ](images/sumner_version.png)
+See [*sumner* version](https://1fatgmc.com/RailRoad/DCC/WiTcontroller-Index.html).
+
 ![syurev version](images/syurev_case.png)
 See [Thingiverse](https://www.thingiverse.com/thing:6541187).
 
@@ -208,22 +211,16 @@ See [printables](https://www.printables.com/model/907658-dccexcontroller-witcont
 ![Unknown author](images/case_uknown.png)
 See [Thingiverse](https://makerworld.com/en/models/819825).
 
+![gingerangles version with 2.4 inch screen](images/gingerangles_version.png)
+*gingerangles* version with 2.4 inch screen...
 
-* *sumner* version... https://1fatgmc.com/RailRoad/DCC/WiTcontroller-Index.html
-
-  ![sumner version ](images/sumner_version.png)
-
-* *gingerangles* version with 2.4 inch screen...
-
-  ![gingerangles version with 2.4 inch screen](images/gingerangles_version.png)
 
 * For a very different take on what is possible by extending the design, have a look at: https://1fatgmc.com/RailRoad/DCC/HandCab-Index.html
 
-Also see:
 
-* https://www.rmweb.co.uk/forums/topic/186297-project-a-witcontroller-wireless-throttle-to-control-my-dcc-ex-commandstation/
-* https://www.printables.com/model/907658-dccexcontroller-witcontroller
-* https://makerworld.com/en/models/819825
+<br/>
+
+---
 
 <br/>
 
@@ -329,6 +326,10 @@ The instructions below are for using the **Arduino IDE** and **GitHub Desktop**.
    * If you receive and error related to Python, and you are on MacOS 12 and above please edit the platform file, change from python to python3 as follows; preferences->user/path/arduino/packages/hardware/esp32/version/platform.txt and edit the line that looks as follows:tools.gen_esp32part.cmd=python3 "{runtime.platform.path}/tools/gen_esp32part.py"
 
 </details>
+
+<br/>
+
+---
 
 <br/>
 
