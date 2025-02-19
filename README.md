@@ -187,22 +187,27 @@ Different keypad manufacturers often arrange the pins on the base of the keypad 
 ![3D printer case 1](images/witcontroller1.jpg)
 
 ![3D printed case 2](images/witcontroller1.jpg)
-
 My case was 3D Printed for me by peteGSX (See the [Thingiverse.](https://www.thingiverse.com/thing:5440351) )
 
 * The 3x4 keypad petGSX designed the case for came from Jaycar and is slightly narrower than the one you see in the 'deconstructed' view in the video above.
 * The case requires about a dozen M2x4mm screws
 
-Other Alternates cases
-
-* https://www.thingiverse.com/thing:6541187
-* https://www.rmweb.co.uk/forums/topic/186297-project-a-witcontroller-wireless-throttle-to-control-my-dcc-ex-commandstation/
-* https://www.printables.com/model/907658-dccexcontroller-witcontroller
-* https://makerworld.com/en/models/819825
-
 ---
 
 ### Variations
+
+![syurev version](images/syurev_case.png)
+See [Thingiverse](https://www.thingiverse.com/thing:6541187).
+
+![Railsnail version](images/railsnail_case.png)
+See [RMweb](https://www.rmweb.co.uk/forums/topic/186297-project-a-witcontroller-wireless-throttle-to-control-my-dcc-ex-commandstation/).
+
+![kees version](images/kees_case.png)
+See [printables](https://www.printables.com/model/907658-dccexcontroller-witcontroller).
+
+![Unknown author](images/case_uknown.png)
+See [Thingiverse](https://makerworld.com/en/models/819825).
+
 
 * *sumner* version... https://1fatgmc.com/RailRoad/DCC/WiTcontroller-Index.html
 
