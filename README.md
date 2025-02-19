@@ -16,7 +16,7 @@ While the basic from is simple, the design is flexible and you can add several a
 
 [See a video of it in use here.](https://youtu.be/RKnhfBCP_SQ)
 
-Please note: I no longer contactable via the DCC-EX Discord server.
+Please note: I am no longer contactable via the DCC-EX Discord server.
 
 **The name**
 
@@ -77,6 +77,7 @@ Please note: I no longer contactable via the DCC-EX Discord server.
 * *Optional:* You can use a 4x4 keypad instead of the 3x4 keypad. <br/> Note: You will need to make a small configuration change in ``config_buttons.h`` for this to work correctly.
 * *Optional:* Up to eleven (11) additional push buttons can be added directly to the ESP32, each with their own independent commands. ([Example](https://www.jaycar.com.au/red-miniature-pushbutton-spst-momentary-action-125v-1a-rating/p/SP0710))
 * *Optional:* A 1.3" or 2.4" OLED Display (128x64) can be used instead of the 0.96" OLED Display 128x64 ([Example](https://www.aliexpress.com/item/32683094040.html?spm=a2g0o.order_list.order_list_main.110.25621802jRBB7y)) Note: You will need to make a minor change in the config file for this to work correctly.
+* *Optional:* It is possible to use a Potentiometer instead of the Rotary Encoder.  The code supports it if you make the appropriate configuration changes in ``config_buttons.h``.   However this has had only limited testing. <br/> This is documented to some degree in ``config_buttons_example.h`` if you wish to try it.
 
 ### Pinouts
 
