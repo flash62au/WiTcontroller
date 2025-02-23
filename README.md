@@ -14,7 +14,9 @@ While the basic from is simple, the design is flexible and you can add several a
 
 ![Original/Basic Version ](images/petegsx_version.png)
 
-[See a video of it in use here.](https://youtu.be/RKnhfBCP_SQ)
+[See a video of it in use here.](https://youtu.be/RKnhfBCP_SQ)  
+[and another...](https://www.youtube.com/watch?v=1w7H2OvP8Jg) (from GingeAngles)
+[and another...](https://youtu.be/69rTwZ4NM7E?si=bjXsFOhbpBvZsjaS) (from Sumner)
 
 Please note: I am no longer contactable via the DCC-EX Discord server.
 
@@ -214,8 +216,10 @@ See [Thingiverse](https://makerworld.com/en/models/819825).
 ![gingerangles version with 2.4 inch screen](images/gingerangles_version.png)
 *gingerangles* version with 2.4 inch screen...
 
+![rdbnogueira version](images/rdbnogueira_version.png)
+See [Thingiverse](https://www.thingiverse.com/thing:6956982)
 
-* For a very different take on what is possible by extending the design, have a look at: https://1fatgmc.com/RailRoad/DCC/HandCab-Index.html
+For a very different take on what is possible by extending the design, have a look at: https://1fatgmc.com/RailRoad/DCC/HandCab-Index.html
 
 
 <br/>
