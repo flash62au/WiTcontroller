@@ -371,7 +371,7 @@ It also seems to be *unable to use channels beyond 10* (and I have seen it strug
 
 A "Throttle" can control only one train, which may be one loco, or more than one loco in consist/MU.
 
-*WiTcontroller*, as a "controller", **contains up to six (6) "throttles"**. Each which can control any number of locos in consist/MU. You can swap between throttles at will (``keypad 5``) to select which locos/consists/MUs you one you are manipulating at a given time. While you can only manipulate one loco/consist/MU at at time, the other continue running at the setting you gave it.
+*WiTcontroller*, as a "controller", **contains up to six (6) "throttles"**. Each which can control any number of locos in consist/MU. You can swap between throttles at will (``keypad 5``) to select which locos/consists/MUs you one you are manipulating at a given time. While you can only manipulate one loco/consist/MU at at time, the others continue running at the setting you last gave it.
 
 ## Features
 
@@ -804,15 +804,21 @@ I would welcome it if you then sent me the file you created for inclusion in thi
 <br/>
 
 ---
+
+<br/>
+
 ---
 
 ## Modifying the code
 
-If you plan to modify the code it is recommended that you create your own GitHub fork of my repository and post your mods there.
+If you plan to modify the code to make you own version, it is recommended that you create your own GitHub fork of my repository and post your mods there.
 
 [Instructions on how to do so are here](forking.md).
 
 ---
+
+<br/>
+
 ---
 
 ## Change Log
