@@ -40,6 +40,7 @@ Please note: I am no longer contactable via the DCC-EX Discord server.
 * [Building](#building)
 * [Loading the Code](#loading-the-code)
 * [Using WiTController](#using-witcontroller)
+* [Options and Extras](#options-and-extras) <br/> <br/>
 * [Modifying the code](#modifying-the-code)
 * [Change Log](#change-log)
 
