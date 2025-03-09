@@ -17,15 +17,15 @@ That way:
 
 ### Procedure Overview
 
-Ideally the documentation cycle would look like this..
+Ideally the cycle would look like this..
 
-Changes to the original would be pulled down from the original repository directly to your local (PC) repository.  You would push your changes to your GitHub website repository. Then create a *Pull request* to send them to the original for review.
+Changes to the original would be pulled down from the origin repository directly to your local (PC) repository.  You would push your changes to your GitHub website repository. Then create a *Pull request* to send them to the origin for review.
 
 While this is possible, both **GitHub Desktop** and **VSCode** make it extremely cumbersome to do so.
 
 *So instead a slightly longer approach is described below...*
 
-Changes to the original would be pulled down from the original repository to your GitHub website repository with a *Pull Request*.  You will then pull those changes to you local (PC) repository. You will push your changes to your GitHub website repository. Then create a *Pull Request* to send them to the original for review.
+Changes to the original would be pulled down from the origin repository to your GitHub website repository with a *Pull Request*.  You will then pull those changes to you local (PC) repository. You will push your changes to your GitHub website repository. Then create a *Pull Request* to send them to the origin for review.
 
 There are a number of possible ways to do this but the instructions below are reasonably simple and work:
 
@@ -38,7 +38,7 @@ Ongoing:
 
 3. Opening the repository in the **Arduino IDE** or **VSCode**
 4. Making your changes
-5. Previewing your changes on your PC
+5. Preview/run your changes on your PC
 6. Using **GitHub Desktop** to *push* your changes back to your clone of the Repository on GitHub
 7. Creating a *pull request* to send your changes for review
 
@@ -53,7 +53,7 @@ One time only
 #### 1. Cloning the repository on GitHub website
 
 1. First you will need to create an account on Github if you don't already have one.
-2. Go to the original repository ``https://github.com/flash62au/WiTcontroller``
+2. Go to the origin repository ``https://github.com/flash62au/WiTcontroller``
 3. Click on the `Fork` button and create a new fork.
 
 You will now have a new fork located at ``https://github.com/<your_account_name>/WiTcontroller`` (or whatever you called it).  Take note of this for the next step.
@@ -87,6 +87,8 @@ You can subsequently open the repository in VSCode from **GitHub Desktop**.
 
 You can use the navigation tree on the left to find the file you want to change. Clicking on a file will open it in the edit window.
 
+Test your changes!
+
 ### 5. Push your changes to your GitHub repository
 
 You will need to
@@ -111,15 +113,15 @@ In **GitHub Desktop**:
 On the 'code' page you should see "This branch is *x* commit(s) ahead of DCC-EX/dcc-ex.github.io:sphinx."
 
 3. Click on the `x commit(s) ahead of` hyperlink
-5. Confirm or add to the title and documentation fields
+5. Confirm or add to the `title` and `documentation` fields
 6. Click on the `Create pull request` button
 
-This creates a pull request to be reviewed by the documentation team
+This creates a Pull Pequest to be reviewed by the developer (flash62au).
 
 Periodic
 ---------
 
-To see the changes that other people have made to the original repository you need to periodically refresh your repository on both GitHub website and locally 
+To see the changes that other people have made to the origin repository you need to periodically refresh your repository on both GitHub website and locally 
 
 #### a. Get any changes to your repository on GitHub website
 

@@ -520,7 +520,7 @@ mmmmmmmmm
 * LLLL = Currently acquire loco(s) on this throttle
 * SSSS = Speed of current throttle (0-126)
 * DDDD = Direction of current throttle (Fwd,Rev)
-* f    = state of each function of 30 functions (number displays if the function is active)<br /><br />
+* f    = State of each of the 32 functions (number displays if the function is active)<br /><br />
 * llll = First Loco on *next* available throttle
 * d    = Direction of next next available throttle (<,>)
 * sss  = Speed of next available throttle (0-126)<br /><br />
@@ -720,7 +720,8 @@ If the battery does not show 100% when plugged into the charger, you may need to
 
 ``#define BATTERY_CONVERSION_FACTOR 1.7``
 
-    To help work out the correct BATTERY_CONVERSION_FACTOR, you can enable so serial monitor message that will assist.
+    To help work out the correct BATTERY_CONVERSION_FACTOR, 
+    you can enable so serial monitor message that will assist.
 
     In your ``config_buttons.h`` add (or uncomment) these defines:
     
@@ -736,16 +737,19 @@ If the battery does not show 100% when plugged into the charger, you may need to
       BATTERY If Battery full, BATTERY_CONVERSION_FACTOR should be: 1.69 (10014)
 
     Let it run for a while.
-    d) Note one of the recommend values (it will vary a bit) and enter it into the define in your config_buttons.h
+    d) Note one of the recommend values (it will vary a bit) and enter 
+       it into the define in your config_buttons.h
     e) Re-upload code and connect to a server
     f) Confirm that the battery reads 100% (repeat if not)
-    g) Run the WiTcontroller on battery for few hours and confirm the battery level is droping at an expected rate. (adjust the conversion factor if not.)
+    g) Run the WiTcontroller on battery for few hours and confirm the 
+       battery level is droping at an expected rate. (adjust the 
+       conversion factor if not.)
 
 *To show the calculated percentage*, set the following to ``true`` The default is ``false``.
 
 ``#define USE_BATTERY_PERCENT_AS_WELL_AS_ICON true``
 
-*To force the HandCab to go to sleep at a specific level*, set this value. (e.g. to 3 or 5.) A value of less than zero (e.g. -1) will disable the feature. By default it is disabled (-1).
+*To force the WiThrottle to go to sleep at a specific level*, set this value. (e.g. to 3 or 5.) A value of less than zero (e.g. -1) will disable the feature. By default it is disabled (-1).
 
 ``#define USE_BATTERY_SLEEP_AT_PERCENT 3``
 
