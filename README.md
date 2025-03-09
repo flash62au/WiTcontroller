@@ -376,30 +376,31 @@ A "Throttle" can control only one train, which may be one loco, or more than one
 ## Features
 
 **Currently functioning:**
+WiTcontroller:
 - Provides a list of discovered SSIDs with the ability to choose one. When you select one:
   - If it is one in your specified list (in the sketch), it will use that specified password 
-  - If it is a DCC++EX WiFi Command Station in access Point mode, it will guess the password
+  - If it is a DCC-EX EX-CommandStation in Access Point (AP) mode, it will guess the password
   - Otherwise it will ask to enter the password (Use the rotary encoder to choose each character and the encoder button to select it.  * = backspace.  # = enter the password.) 
 - Optionally provides a list of SSIDs with the specified passwords (in the sketch) to choose from
 - Auto-connects to the first found WiThrottle Protocol Server if only one found, otherwise 
   - Asks which to connect to
   - If none found will ask to enter the IP Address and Port
-  - Guesses the WiThrottle IP address and Port for DCC++EX WiFi Access Point mode Command Stations
-  - Optionally can add a #define (a preference) to disable this auto connect feature
-- Rudimentary on-the-fly consists
-- Assign commands directly to the 1-9 buttons (in the sketch) (see list below)
+  - Guesses the WiThrottle IP address and Port for DCC-EX EX-CommandStations in Access Point (AP) mode
+  - Optionally you can add a #define (a preference) to disable this auto connect feature
+- Allows On-the-fly consists/MUs
+  Allos assigning commands directly to the 1-9 buttons (in the sketch) (see list below)
   - This is done in config_button.h
   - Latching / non-latching for the function is provided by the roster entry of WiThrottle server
-- Optionally use a potentiometer (pot) instead of the rotary encoder
+- Optionally uses a potentiometer (pot) instead of the rotary encoder
 - Optional ability to assign commands directly to the 1-11 additional buttons (in the sketch) (see list below)
   - These are defined config_button.h
-- Command menu (see below for full list) including:
+- Provides a command **Menu** (see below for full list) including:
   - Able to select and deselect locos:
     - by their DCC address, via the keypad
       - On NCE systems, a leading zero (0) will force a long address
-    - from the first 50 locos in the roster
+    - from the first 50 locos in the roster (can be increased)
   - Able to select multiple locos to create a consist
-    - Able to change the facing of the additional locos in the consists (via the 'extra' menu after selection)
+    - Able to change the facing of the additional locos in the consists/MUs (via the 'extra' menu after selection)
   - Able to activate any function (0-31)
     - Showing of the roster function labels (from the WiThrottle server if provided)
     - Quick access to the functions by pressing #. Temporarily enabled via the Extras menu (or permanently enabled in config_button.h)
