@@ -2196,6 +2196,30 @@ void doDirectAction(int buttonAction) {
         nextThrottle();
         break; 
       }
+      case THROTTLE_1: {
+        throttle(0);
+        break; 
+      }
+      case THROTTLE_2: {
+        throttle(1);
+        break; 
+      }
+      case THROTTLE_3: {
+        throttle(2);
+        break; 
+      }
+      case THROTTLE_4: {
+        throttle(3);
+        break; 
+      }
+      case THROTTLE_5: {
+        throttle(4);
+        break; 
+      }
+      case THROTTLE_6: {
+        throttle(5);
+        break; 
+      }
       case SPEED_STOP_THEN_TOGGLE_DIRECTION: {
         stopThenToggleDirection();
         break; 
@@ -2862,6 +2886,17 @@ void nextThrottle() {
   if (currentThrottleIndex >= maxThrottles) {
     currentThrottleIndex = 0;
   }
+  currentThrottleIndexChar = getMultiThrottleChar(currentThrottleIndex);
+
+  if (currentThrottleIndex!=wasThrottle) {
+    writeOledSpeed();
+  }
+}
+
+void throttle(int throttleIndex) {
+  debug_print("throttle(): "); 
+  int wasThrottle = currentThrottleIndex;
+  currentThrottleIndex = throttleIndex;
   currentThrottleIndexChar = getMultiThrottleChar(currentThrottleIndex);
 
   if (currentThrottleIndex!=wasThrottle) {

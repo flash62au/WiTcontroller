@@ -65,6 +65,12 @@
 #define SHOW_HIDE_BATTERY 504   // the battery test must be enabled for this to have any effect
 
 #define NEXT_THROTTLE 510
+#define THROTTLE_1 511
+#define THROTTLE_2 512
+#define THROTTLE_3 513
+#define THROTTLE_4 514
+#define THROTTLE_5 515
+#define THROTTLE_6 516
 
 #define CUSTOM_1 521
 #define CUSTOM_2 522

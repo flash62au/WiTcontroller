@@ -1,5 +1,8 @@
 # Change Log
 
+### V1.88
+- Additional actions to change to specific throttle  THROTTLE_1 THROTTLE_2 THROTTLE_3 THROTTLE_4 THROTTLE_5 THROTTLE_6
+
 ### V1.87
 - support UTF8 fonts better
 - Italian Translations by Roberto B

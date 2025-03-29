@@ -578,6 +578,12 @@ Note: you need to edit config_buttons.h to alter these assignments   (copy confi
 - SPEED_STOP_THEN_TOGGLE_DIRECTION   - stops the loco if moving.  Toggles the direction if stationary.
 - MAX_THROTTLE_INCREASE    - change the number of available throttles on-the-fly
 - MAX_THROTTLE_DECREASE    - change the number of available throttles on-the-fly
+- THROTTLE_1   - change to a specific throttle
+- THROTTLE_2   - change to a specific throttle
+- THROTTLE_3   - change to a specific throttle
+- THROTTLE_4   - change to a specific throttle
+- THROTTLE_5   - change to a specific throttle
+- THROTTLE_6   - change to a specific throttle
 
 <br/>
 
@@ -738,13 +744,13 @@ If the battery does not show 100% when plugged into the charger, you may need to
       BATTERY If Battery full, BATTERY_CONVERSION_FACTOR should be: 1.69 (10014)
 
     Let it run for a while.
-    d) Note one of the recommend values (it will vary a bit) and enter 
+    d) Note one of the recommended values (it will vary a bit) and enter 
        it into the define in your config_buttons.h
     e) Re-upload code and connect to a server
     f) Confirm that the battery reads 100% (repeat if not)
     g) Run the WiTcontroller on battery for few hours and confirm the 
-       battery level is droping at an expected rate. (adjust the 
-       conversion factor if not.)
+       battery level is droping at an expected rate. 
+       (adjust the conversion factor if not.)
 
 *To show the calculated percentage*, set the following to ``true`` The default is ``false``.
 
