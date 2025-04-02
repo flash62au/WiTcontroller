@@ -1,5 +1,8 @@
 # Change Log
 
+### V1.89
+- Bug fix for SPEED_STOP SPEED_UP SPEED_DOWN SPEED_UP_FAST SPEED_DOWN_FAST E_STOP SPEED_MULTIPLIER
+
 ### V1.88
 - Additional actions to change to specific throttle  THROTTLE_1 THROTTLE_2 THROTTLE_3 THROTTLE_4 THROTTLE_5 THROTTLE_6
 

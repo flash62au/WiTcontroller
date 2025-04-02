@@ -37,13 +37,13 @@
 #define FUNCTION_30 30
 #define FUNCTION_31 31
 
-#define SPEED_STOP 30
-#define SPEED_UP 31
-#define SPEED_DOWN 32
-#define SPEED_UP_FAST 33
-#define SPEED_DOWN_FAST 34
-#define E_STOP 35
-#define SPEED_MULTIPLIER 36
+#define SPEED_STOP 40
+#define SPEED_UP 41
+#define SPEED_DOWN 42
+#define SPEED_UP_FAST 43
+#define SPEED_DOWN_FAST 44
+#define E_STOP 45
+#define SPEED_MULTIPLIER 46
 
 #define DIRECTION_TOGGLE 50
 #define DIRECTION_FORWARD 51

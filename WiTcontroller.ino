@@ -2161,7 +2161,7 @@ void doDirectAction(int buttonAction) {
         break; 
       }
       case SPEED_DOWN_FAST: {
-        speedUp(currentThrottleIndex, currentSpeedStep[currentThrottleIndex]*speedStepMultiplier);
+        speedDown(currentThrottleIndex, currentSpeedStep[currentThrottleIndex]*speedStepMultiplier);
         break; 
       }
       case SPEED_MULTIPLIER: {
