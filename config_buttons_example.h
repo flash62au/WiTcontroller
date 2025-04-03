@@ -93,29 +93,31 @@
 // *******************************************************************************************************************
 // speed increase for each click of the encoder 
 
+// How much each click of the encoder increases or decreases the speed
 // The default is 4
 //#define SPEED_STEP                       4
 
 // The default is 3
 // #define SPEED_STEP_MULTIPLIER            3          // for 'fast' speed steps
 
-// Additional multiplier.  If the multiplier is enabled from the menu, each rotation of the encoder becomes the speedStep * the AdditionalMultiplier
-
+// Additional multiplier.  If the multiplier is enabled from the menu, each rotation of 
+// the encoder becomes the speedStep * the AdditionalMultiplier
 // The default is 2
 // #define SPEED_STEP_ADDITIONAL_MULTIPLIER 2
 
 // by default, the speed will be displayed as the the DCC speed (0-126)
-// IMPORTANT: only one should be enabled.  If DISPLAY_SPEED_AS_PERCENT is enabled it will take presidence over DISPLAY_SPEED_AS_0_TO_28
+// IMPORTANT: only one should be enabled.  If DISPLAY_SPEED_AS_PERCENT is enabled it 
+// will take presidence over DISPLAY_SPEED_AS_0_TO_28
 // Note: there will be rounding errors!
 
-// uncomment this line to display the speeds a percentage.
+// Uncomment this line to display the speeds a percentage.
 // #define DISPLAY_SPEED_AS_PERCENT         true
-// uncomment this line to display the speeds as 0-28.
+// Uncomment this line to display the speeds as 0-28.
 // #define DISPLAY_SPEED_AS_0_TO_28         true
 
 // *******************************************************************************************************************
 // DCC functions in consists
-//
+
 // If specified, must be either   CONSIST_ALL_LOCOS  or  CONSIST_LEAD_LOCO
 // Default for functions above F2 is CONSIST_LEAD_LOCO
 
@@ -188,7 +190,7 @@
 
 // *******************************************************************************************************************
 // Encoder Hardware
-// 
+
 // Uncomment and change as needed
 // defaults are for the Small ESP32
 
@@ -202,12 +204,13 @@
 // #define ROTARY_ENCODER_B_PIN 14
 // #define ROTARY_ENCODER_BUTTON_PIN 13
 
-// #define ROTARY_ENCODER_VCC_PIN -1 /* 27 put -1 of Rotary encoder Vcc is connected directly to 3,3V; else you can use declared output pin for powering rotary encoder */
+// #define ROTARY_ENCODER_VCC_PIN -1 /* 27 put -1 of Rotary encoder Vcc is connected 
+// directly to 3,3V; else you can use declared output pin for powering rotary encoder */
 // #define ROTARY_ENCODER_STEPS 2 //depending on your encoder - try 1,2 or 4 to get expected behaviour
 
 // *******************************************************************************************************************
 // Keypad Hardware
-//
+
 // Uncomment and change as needed
 // Defaults are for the Small 4x3 keypad
 
@@ -234,7 +237,7 @@
 
 // *******************************************************************************************************************
 // Additional / optional buttons
-//
+
 // This format for the additional buttons is now depriated
 // Use the *New Additional / optional buttons* section instead
 
@@ -296,7 +299,7 @@
 
 // *******************************************************************************************************************
 // New Additional / optional buttons
-//
+
 // This new format allows for up to 11 additional buttons
 //
 // To use the new format USE_NEW_ADDITIONAL_BUTTONS_FORMAT must be set to 'true'
@@ -380,8 +383,8 @@
 // Throttle Pot
 
 // To use a pot instead of the rotary encoder, uncomment the following lines
-//
-// Set the number of notches and the values of the pot at each notch.  must be 8 values
+// Set the number of notches and the values of the pot at each notch.  
+// Warning: Must be 8 values
 
 // #define USE_ROTARY_ENCODER_FOR_THROTTLE false
 // #define THROTTLE_POT_PIN 39
@@ -396,7 +399,7 @@
 // *******************************************************************************************************************
 // Battery Test
 
-// To use a battery test you must add additional hardware. (see the README.)
+// To use a battery test you must add additional hardware. (see the README.md file)
 
 //  USE_BATTERY_SLEEP_AT_PERCENT - will put the device to sleep if the battery falls below this level
 //                               - set to 0 (zero) to disable
@@ -427,6 +430,14 @@
 // The default is 'sort by name'
 
 // #define ROSTER_SORT_SEQUENCE 1
+
+// *******************************************************************************************************************
+// Release Loco from Consist Options
+
+// By default, to release a single loco from a consist/mu, you must enter the address of the loco
+// Uncomment this line if you wish to release locos by just entering the index number (1-8) of 
+// the loco in the consist
+// #define DROP_LOCO_BY_INDEX true
 
 // *******************************************************************************************************************
 // Translations
@@ -469,16 +480,16 @@
 // #define CONSIST_SPACE_BETWEEN_LOCOS " "
 
 // ***************************************************
-// loco Acquire
-//
-// if you never want on-the-fly consists/MUs then uncomment this line
+// Loco Acquire
+
+// If you never want on-the-fly consists/MUs then uncomment this line
 // This can be altered on the fly in the Extras menu
 
 // #define DROP_BEFORE_ACQUIRE true
 
 // ***************************************************
 // Restore previously acquired locos on connection
-//
+
 // If this option is enabled, and you have deliberately saved the current 
 // locos ( # -> 9 -> 9), then the next time you connect the device it 
 // will try to load the previously acquired locos.
@@ -489,15 +500,14 @@
 
 // *******************************************************************************************************************
 // Primary Font override (not recommended)
-// any 8 pixel high fonts from here can be used https://github.com/olikraus/u8g2/wiki/fntlist8#8-pixel-height
-//
-// uncomment if and change to the appropriate font if required
-//
+
+// Any 8 pixel high fonts from here can be used https://github.com/olikraus/u8g2/wiki/fntlist8#8-pixel-height
+// Uncomment if and change to the appropriate font if required
 //  #define FONT_DEFAULT u8g2_font_5x8_tf
 
 // *******************************************************************************************************************
 // Custom App Name
-//
-// uncomment and change if required
+
+// Uncomment and change if required
 //
 // #define CUSTOM_APPNAME "myname"

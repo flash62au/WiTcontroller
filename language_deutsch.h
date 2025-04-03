@@ -188,6 +188,9 @@
 #ifndef MENU_ITEM_TEXT_MENU_DROP_LOCO
   #define MENU_ITEM_TEXT_MENU_DROP_LOCO                 "Adr+# Entf   * Abbr   # Alle"                  // "addr+# One * Cancel # All"
 #endif
+#ifndef MENU_ITEM_TEXT_MENU_DROP_LOCO_BYINDEX
+  #define MENU_ITEM_TEXT_MENU_DROP_LOCO_BY_INDEX        "Nr+# Entf   * Abbr   # Alle"                   // "no+# One * Cancel # All"
+#endif
 #ifndef MENU_ITEM_TEXT_MENU_TOGGLE_DIRECTION
   #define MENU_ITEM_TEXT_MENU_TOGGLE_DIRECTION          "# Umschalten"                                  // "# Toggle"
 #endif

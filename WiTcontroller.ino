@@ -2323,8 +2323,12 @@ void doMenuCommand(char menuItem) {
     case MENU_ITEM_DROP_LOCO: { // de-select loco
         loco = menuCommand.substring(startAt, menuCommand.length());
         if (loco!="") { // a loco is specified
-          loco = getLocoWithLength(loco);
-          releaseOneLoco(currentThrottleIndex, loco);
+          if (!CONSIST_RELEASE_BY_INDEX) {
+            loco = getLocoWithLength(loco);
+            releaseOneLoco(currentThrottleIndex, loco);
+          } else {
+            releaseOneLocoByIndex(currentThrottleIndex, loco.toInt());
+          }
         } else { //not loco specified so release all
           releaseAllLocos(currentThrottleIndex);
         }
@@ -2717,6 +2721,17 @@ void releaseOneLoco(int multiThrottleIndex, String loco) {
   wiThrottleProtocol.releaseLocomotive(multiThrottleIndexChar, loco);
   resetFunctionLabels(multiThrottleIndex);
   debug_println("releaseOneLoco(): end"); 
+}
+
+void releaseOneLocoByIndex(int multiThrottleIndex, int index) {
+  debug_print("releaseOneLocoByIndex(): "); debug_print(multiThrottleIndex); debug_print(": "); debug_println(index);
+  char multiThrottleIndexChar = getMultiThrottleChar(multiThrottleIndex);
+  if (index <= wiThrottleProtocol.getNumberOfLocomotives(multiThrottleIndexChar)) {
+    String loco = wiThrottleProtocol.getLocomotiveAtPosition(multiThrottleIndexChar, index);
+    wiThrottleProtocol.releaseLocomotive(multiThrottleIndexChar, loco);
+    resetFunctionLabels(multiThrottleIndex);
+  }
+  debug_println("releaseOneLocoByIndex(): end");
 }
 
 void toggleAdditionalMultiplier() {

@@ -1,4 +1,4 @@
-const String appVersion = "v1.89";
+const String appVersion = "v1.90";
 #ifndef CUSTOM_APPNAME
    const String appName = "WiTcontroller";
 #else
@@ -300,6 +300,14 @@ const int glyph_speed_step = 0x00d6;
 #ifndef MENU_ITEM_TEXT_MENU_DROP_LOCO
    #define MENU_ITEM_TEXT_MENU_DROP_LOCO              "addr+# One   * Cancel    # All"
 #endif
+#ifndef MENU_ITEM_TEXT_MENU_DROP_LOCO_BY_INDEX
+   #define MENU_ITEM_TEXT_MENU_DROP_LOCO_BY_INDEX     "no+# One     * Cancel    # All"
+#endif
+#if DROP_LOCO_BY_INDEX
+   #define MENU_ITEM_TEXT_MENU_DROP_LOCO_REAL MENU_ITEM_TEXT_MENU_DROP_LOCO_BY_INDEX
+#else
+   #define MENU_ITEM_TEXT_MENU_DROP_LOCO_REAL MENU_ITEM_TEXT_MENU_DROP_LOCO
+#endif
 #ifndef MENU_ITEM_TEXT_MENU_TOGGLE_DIRECTION
    #define MENU_ITEM_TEXT_MENU_TOGGLE_DIRECTION       "# Toggle                      "
 #endif
@@ -397,7 +405,7 @@ const int glyph_speed_step = 0x00d6;
    const String menuText[20][2] = {
       {MENU_ITEM_TEXT_TITLE_FUNCTION,              MENU_ITEM_TEXT_MENU_FUNCTION},      //0
       {MENU_ITEM_TEXT_TITLE_ADD_LOCO,              MENU_ITEM_TEXT_MENU_ADD_LOCO},      //1
-      {MENU_ITEM_TEXT_TITLE_DROP_LOCO,             MENU_ITEM_TEXT_MENU_DROP_LOCO},     //2
+      {MENU_ITEM_TEXT_TITLE_DROP_LOCO,             MENU_ITEM_TEXT_MENU_DROP_LOCO_REAL},//2
       {MENU_ITEM_TEXT_TITLE_TOGGLE_DIRECTION,      MENU_ITEM_TEXT_MENU_NA},            //3
       {MENU_ITEM_TEXT_TITLE_SPEED_STEP_MULTIPLIER, MENU_ITEM_TEXT_MENU_NA},            //4
       {MENU_ITEM_TEXT_TITLE_THROW_POINT,           MENU_ITEM_TEXT_MENU_THROW_POINT},   //5
@@ -1063,4 +1071,8 @@ const char ssidPasswordBlankChar = 164;
 
 #ifndef RESTORE_ACQUIRED_LOCOS
    #define RESTORE_ACQUIRED_LOCOS true
+#endif
+
+#ifndef CONSIST_RELEASE_BY_INDEX
+   #define CONSIST_RELEASE_BY_INDEX true
 #endif

@@ -1,5 +1,8 @@
 # Change Log
 
+### V1.90
+- Option to release locos in consist/mu by the index rather than the Address. New optional ``#define DROP_LOCO_BY_INDEX true``
+
 ### V1.89
 - Bug fix for SPEED_STOP SPEED_UP SPEED_DOWN SPEED_UP_FAST SPEED_DOWN_FAST E_STOP SPEED_MULTIPLIER
 

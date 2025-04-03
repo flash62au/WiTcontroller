@@ -62,6 +62,7 @@
 #define MENU_ITEM_TEXT_MENU_FUNCTION                  "nein+# Wählen Sie * Abbrechen # Liste"         // "no+# Select * Cancel # List"
 #define MENU_ITEM_TEXT_MENU_ADD_LOCO                  "addr+# Hinzufügen * Abbrechen # Dienstplan"    // "addr+# Add * Cancel # Roster"
 #define MENU_ITEM_TEXT_MENU_DROP_LOCO                 "addr+# Eins * Abbrechen # Alle"                // "addr+# One * Cancel # All"
+#define MENU_ITEM_TEXT_MENU_DROP_LOCO_BY_INDEX        "no+# Eins * Abbrechen # Alle"                  // "no+# One * Cancel # All"
 #define MENU_ITEM_TEXT_MENU_TOGGLE_DIRECTION          "# Umschalten"                                  // "# Toggle"
 #define MENU_ITEM_TEXT_MENU_SPEED_STEP_MULTIPLIER     "* Abbrechen # Umschalten"                      // "* Cancel # Toggle"
 #define MENU_ITEM_TEXT_MENU_THROW_POINT               "no+# Throw * Cancel # List"                    // "no+# Throw * Cancel # List"
