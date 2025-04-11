@@ -13,6 +13,7 @@
 // DO NOT DOWNLOAD THEM DIRECTLY!!!
 #include <WiFi.h>                 // https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi     GPL 2.1
 #include <ESPmDNS.h>              // https://github.com/espressif/arduino-esp32/blob/master/libraries/ESPmDNS  GPL 2.1
+#include <esp_wifi.h>             // https://git.liberatedsystems.co.uk/jacob.eva/arduino-esp32/src/branch/master/tools/sdk/esp32s2/include/esp_wif  GPL 2.0
 
 // ----------------------
 
@@ -25,7 +26,7 @@
 #include <AiEsp32RotaryEncoder.h> // https://github.com/igorantolic/ai-esp32-rotary-encoder                    GPL 2.0
 
 // this library is included with the WiTController code
-#include "Pangodream_18650_CL.h"  // https://github.com/pangodream/18650CL  
+#include "Pangodream_18650_CL.h"  // https://github.com/pangodream/18650CL                                     Copyright (c) 2019 Pangodream
 
 // create these files by copying the example files and editing them as needed
 #include "config_network.h"      // LAN networks (SSIDs and passwords)
@@ -1681,6 +1682,9 @@ void setup() {
   }
   
   WiFi.setHostname(DEVICE_NAME);
+  #if USE_COUNTRY_CODE
+    esp_wifi_set_country_code("01", false);
+  #endif
 }
 
 void loop() {

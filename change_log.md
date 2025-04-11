@@ -1,5 +1,8 @@
 # Change Log
 
+### V1.91
+- Optional use of the WiFi Country Code. See ``config_network_example.h`` for more information
+
 ### V1.90
 - Option to release locos in consist/mu by the index rather than the Address. New optional ``#define DROP_LOCO_BY_INDEX true``
 

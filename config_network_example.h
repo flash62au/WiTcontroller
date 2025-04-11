@@ -19,6 +19,26 @@ const String routePrefixes[maxSsids] = {"IO:AUTO:", "IO:AUTO:", "IO:AUTO:", "IO:
 // #define DEFAULT_IP_AND_PORT      "19216800400102560"
 
 // ********************************************************************************************
+// WiFi Country Code for the country you are in.  This is used to set the WiFi channel and power level
+// for the ESP32.  The default is 01 (World) and should work in most countries.  If you are having 
+// problems try change to another code.
+// Supported country codes are "01"(world safe mode) "AT","AU","BE","BG","BR",
+//               "CA","CH","CN","CY","CZ","DE","DK","EE","ES","FI","FR","GB","GR","HK","HR","HU",
+//               "IE","IN","IS","IT","JP","KR","LI","LT","LU","LV","MT","MX","NL","NO","NZ","PL","PT",
+//               "RO","SE","SI","SK","TW","US"
+
+// #define USE_WIFI_COUNTRY_CODE true
+// #define COUNTRY_CODE "01"
+
+// By default the countrty code of the device you are connecting to can override the country code selected here
+// Uncommenting the following line will enforce the country code selected above.
+// This is useful if you are using a device that does not have a country code set or is set to a different country code.
+// This will also set the power level to the maximum allowed for that country code.
+// This is not recommended unless you are sure of the country code of the device you are connecting to.
+
+// #define ENFORCED_COUNRTY_CODE true
+
+// ********************************************************************************************
 
 // The period that the controller waits for a connection in milliseconds. Default is 10 seconds (10000ms)
 // If you are having problems connection to you network, try uncommenting the line increasing this
