@@ -16,7 +16,7 @@ const String appVersion = "v1.91";
    #define COUNTRY_CODE "01"
 #endif
 #ifndef ENFORCED_COUNTRY_CODE
-   #define ENFORCED_COUNRTY_CODE false
+   #define ENFORCED_COUNTRY_CODE false
 #endif
 
 #ifndef MENU_TEXT_MENU

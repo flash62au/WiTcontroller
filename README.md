@@ -20,8 +20,6 @@ While the basic from is simple, the design is flexible and you can add several a
 [and another...](https://www.youtube.com/watch?v=1w7H2OvP8Jg) (from GingeAngles)
 [and another...](https://youtu.be/69rTwZ4NM7E?si=bjXsFOhbpBvZsjaS) (from Sumner)
 
-Please note: I am no longer contactable via the DCC-EX Discord server.
-
 **The name**
 
 *WiTcontroller* is a contraction of 'WiThrottle Controller' as it uses the WiThrottle Protocol for communications with the server.  I pronounce it as 'Wit Controller', but you can pronounce it however you like.😊
@@ -262,7 +260,7 @@ The instructions below are for using the **Arduino IDE** and **GitHub Desktop**.
         * Enter the following into the 'Additional Board Manager URLs' field:  https://dl.espressif.com/dl/package_esp32_index.json
     * Then Use the *Boards Manager* in the *Arduino IDE* to install the esp32 board support
         * *Tools* > *Board* > *Boards Manager*
-        * Search for "esp32" by Expressive Systems.  Install version 2.0.11 or later. (later versions should work, but go back to this 2.0.11 if you have problems.)
+        * Search for "esp32" by Expressive Systems.  Install version 2.0.11 or later. (Later versions work, but go back to this 2.0.11 if you have problems.) Version 3.2.0 is recommended, and required if you need to use 2.4gHz WiFi channels greater than 10. See notes below.
 
 3. Download or clone *this* repository. <br/> (Note: if you 'clone' initially, it is easier to receive updates to the code by doing a 'fetch' subsequently.  See Notes below.)
     * Option - Clone - **First Time**  ***Recommended***
@@ -358,13 +356,13 @@ The instructions below are for using the **Arduino IDE** and **GitHub Desktop**.
 
 ## Using WiTController
 
-## Be aware
+## Be aware of...
 
 ### WiFi limitations
  
 The ESP32 *cannot use the 5gHz* frequencies.  It is limited to the 2.4gHz  frequencies. 
  
-It also seems to be *unable to use channels beyond 10* (and I have seen it struggle with channel 10 itself.)
+Using 2.4gHz Wifi channels beyond 10 (11-13) is problematic. I have added an experimental set of definitions in ``config_network_example.h`` that allow you to set the country code.  In theory this will allow the use of the additional channels, but requires the use the version 3.2.0 (or later) of the ESP32 board library.  This has had only minimal testing.
 
 ## Definitions and Explanations
 

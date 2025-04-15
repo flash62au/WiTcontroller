@@ -36,7 +36,7 @@ const String routePrefixes[maxSsids] = {"IO:AUTO:", "IO:AUTO:", "IO:AUTO:", "IO:
 // This will also set the power level to the maximum allowed for that country code.
 // This is not recommended unless you are sure of the country code of the device you are connecting to.
 
-// #define ENFORCED_COUNRTY_CODE true
+// #define ENFORCED_COUNTRY_CODE true
 
 // ********************************************************************************************
 
