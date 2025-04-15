@@ -834,3 +834,15 @@ If you plan to modify the code to make you own version, it is recommended that y
 ## Change Log
 
 [See full change log/ version history](change_log.md)
+
+---
+
+## Contact Me
+
+I can be contacted by:
+
+a) Via email  ``akersp62 @ gmail.com``   *(remove the spaces)*
+
+b) On the 'WiThrottle' Channel on the **DCC-EX Discord** server https://discord.gg/8ghsjsBup8.  My handle is ``flash62au (Peter A)``
+
+c) By creating an 'Issue' here on GitHub.
