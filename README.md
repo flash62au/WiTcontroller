@@ -38,7 +38,8 @@ While the basic from is simple, the design is flexible and you can add several a
 * [Building](#building)
 * [Loading the Code](#loading-the-code)
 * [Using WiTController](#using-witcontroller)
-* [Options and Extras](#options-and-extras) <br/> <br/>
+* [Options and Extras](#options-and-extras)
+* [Contact Me](#contact-me) <br/> <br/>
 * [Modifying the code](#modifying-the-code)
 * [Change Log](#change-log)
 
@@ -834,6 +835,10 @@ If you plan to modify the code to make you own version, it is recommended that y
 ## Change Log
 
 [See full change log/ version history](change_log.md)
+
+---
+
+<br/>
 
 ---
 
