@@ -80,7 +80,7 @@
 // #define HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS         false
 
 // *******************************************************************************************************************
-// Maximum number of thtottles
+// Maximum number of throttles
 
 // Define the number of throttles that you want.
 // To use multiple throttles, one of the keys or buttons will need to be defined as 

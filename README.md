@@ -72,13 +72,13 @@ While the basic from is simple, the design is flexible and you can add several a
 
 * WeMos Lite LOLIN32  (ESP32 Arduino with LiPo charger) ([Example](https://www.ebay.com.au/itm/284800618644?hash=item424f709094:g:-soAAOSwHslfC9ce&frcectupt=true)) <br/> *Note: any ESP32 will work but the pinouts may need to be adjusted, and a separate LiPo charger may be required*
 
-* 3x4 Keypad  ([Example](https://www.jaycar.com.au/12-key-numeric-keypad/p/SP0770?pos=2&queryId=20aedf107668ad42c6fe1f8b7f7a9ca7)) <br/> *Note: Alternately a 4x4 kaypad can also be used (see optional components below)* 
+* 3x4 Keypad  ([Example](https://www.jaycar.com.au/12-key-numeric-keypad/p/SP0770?pos=2&queryId=20aedf107668ad42c6fe1f8b7f7a9ca7)) <br/> *Note: Alternately a 4x4 keypad can also be used (see optional components below)* 
 
-* Polymer Lithium Ion Battery LiPo 400mAh (or greater) 3.7V 502535 JST Connector (or larger capacity) ([500mAh Example](https://www.ebay.com.au/itm/133708965793?hash=item1f21ace7a1:g:tlwAAOSwfORgYqYK))
+* Polymer Lithium Ion Battery LiPo 400mAh (or larger) 3.7V 502535 JST Connector. ([500mAh Example](https://www.ebay.com.au/itm/133708965793?hash=item1f21ace7a1:g:tlwAAOSwfORgYqYK)) <br/> *Note: Any capacity will work, but 400mAh will give about 6 hours of run time.* 
 
 * KY-040 Rotary Encoder Module ([Example](https://www.aliexpress.com/item/1005003946689694.html?albagn=888888&&src=google&albch=search&acnt=479-062-3723&isdl=y&aff_short_key=UneMJZVf&albcp=21520181724&albag=168529973707&slnk=&trgt=dsa-1464330247393&plac=&crea=707854323770&netw=g&device=c&mtctp=&memo1=&albbt=Google_7_search&aff_platform=google&gad_source=1&gclid=Cj0KCQjwiOy1BhDCARIsADGvQnBPdlEVLYbYnLoOnN1p2bdjte0jYmInrgFD0WG16aF3GZtvrWTb6o0aAo8VEALw_wcB&gclsrc=aw.ds)) <br/> *Note: The EC11 rotary encoder will also work, but requires a small configuration change in ``config_buttons.h`` (see below)*
 
-* OLED Display 0.96" 128x64 I2C IIC SSD1306 ([Example](https://www.ebay.com.au/itm/273746192621?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2060353.m2749.l2649)) <br/> *Note: Some OLED displays up to 2.4 inch will also work (see below)*
+* OLED Display 0.96" 128x64 I2C IIC SSD1306 ([Example](https://www.ebay.com.au/itm/273746192621?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2060353.m2749.l2649)) <br/> *Note: The code for the one of the common 1.3" displays is also included (see below).* <br/> *Note: Some OLED displays up to 2.4 inch will also work (see below)*
 
 * Case - my one was 3d printed for me (see below) 
 
@@ -583,6 +583,7 @@ Note: you need to edit config_buttons.h to alter these assignments   (copy confi
 - THROTTLE_4   - change to a specific throttle
 - THROTTLE_5   - change to a specific throttle
 - THROTTLE_6   - change to a specific throttle
+- SLEEP   - put device to sleep
 
 <br/>
 

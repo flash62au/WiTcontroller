@@ -1,5 +1,8 @@
 # Change Log
 
+### V1.92
+- Additional button option SLEEP.  Will put the ESP32 to sleep. (i.e. turn off)
+
 ### V1.91
 - Optional use of the WiFi Country Code. See ``config_network_example.h`` for more information
 

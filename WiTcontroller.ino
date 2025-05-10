@@ -2196,6 +2196,10 @@ void doDirectAction(int buttonAction) {
         batteryShowToggle();
         break; 
       }
+      case SLEEP: {
+        deepSleepStart();
+        break; 
+      }
       case NEXT_THROTTLE: {
         nextThrottle();
         break; 
