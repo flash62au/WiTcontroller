@@ -93,11 +93,11 @@ While the basic from is simple, the design is flexible and you can add several a
 * *Optional:* You can use a 4x4 keypad instead of the 3x4 keypad. <br/> Note: You will need to make a small configuration change in ``config_buttons.h`` for this to work correctly.
 * *Optional:* Up to eleven (11) additional push buttons can be added directly to the ESP32, each with their own independent commands. ([Example](https://www.jaycar.com.au/red-miniature-pushbutton-spst-momentary-action-125v-1a-rating/p/SP0710))
 * *Optional:* A 1.3" or 2.4" OLED Display (128x64) can be used instead of the 0.96" OLED Display 128x64 ([Example](https://www.aliexpress.com/item/32683094040.html?spm=a2g0o.order_list.order_list_main.110.25621802jRBB7y)) Note: You will need to make a minor change in the config file for this to work correctly.
-* *Optional:* It is possible to use a Potentiometer instead of the Rotary Encoder.  The code supports it if you make the appropriate configuration changes in ``config_buttons.h``.   However this has had only limited testing. <br/> This is documented to some degree in ``config_buttons_example.h`` if you wish to try it.
+* *Optional:* It is possible to use a Potentiometer instead of the Rotary Encoder for throttle control.  The code supports it if you make the appropriate configuration changes in ``config_buttons.h``.   However this has had only limited testing. <br/> This is documented to some degree in ``config_buttons_example.h`` if you wish to try it.
 
 ### Pinouts
 
-*Standard Configuration Pinouts*  This is the simplest form of the WiTcontroller
+*Standard Configuration Pinouts*  <br/> This is the simplest form of the WiTcontroller
 ![Assembly diagram](images/WiTcontroller%20-%20Basic.png)
 
 *Pinouts for Optional Additional Buttons*
@@ -425,6 +425,8 @@ WiTcontroller:
 - Boundary between short and long DCC addresses can be configured in config_buttons.h
 - The default speed step (per encoder click) can be configured in config_buttons.h
 - The controller will automatically shut down if no SSID is selected or entered in 4 minutes (to conserve the battery)
+- Relatively easy to add/use translation files.
+- Translations files for German and Italian included.
 
 **ToDo:**
 - Speed button repeat (i.e. hold the button down)
@@ -434,7 +436,7 @@ WiTcontroller:
 - Remember SSIDs and manually entered passwords 
 
 ### Command menu:
-- 0-9 keys = pressing these directly will do whatever you has been preset in the sketch for them to do  (see \# below)
+- 0-9 keys = pressing these directly will do whatever has been configured in your ``config_buttons.h`` for them to do, or whatever is the default for that key  (see \# below)
 - \* = Menu:  The button press following the \* is the actual command:
   - 1 = Add loco.  
      - Followed by the loco number, followed by \# to complete.  e.g. to select loco 99 you would press '\*199\#'
@@ -585,6 +587,13 @@ Note: you need to edit config_buttons.h to alter these assignments   (copy confi
 - THROTTLE_5   - change to a specific throttle
 - THROTTLE_6   - change to a specific throttle
 - SLEEP   - put device to sleep
+- CUSTOM_1   - There must be already be a command defined as ``#CUSTOM_COMMAND_1 ...``
+- CUSTOM_2   - There must be already be a command defined as ``#CUSTOM_COMMAND_2 ...``
+- CUSTOM_3   - There must be already be a command defined as ``#CUSTOM_COMMAND_3 ...``
+- CUSTOM_4   - There must be already be a command defined as ``#CUSTOM_COMMAND_4 ...``
+- CUSTOM_5   - There must be already be a command defined as ``#CUSTOM_COMMAND_5 ...``
+- CUSTOM_6   - There must be already be a command defined as ``#CUSTOM_COMMAND_6 ...``
+- CUSTOM_7   - There must be already be a command defined as ``#CUSTOM_COMMAND_7 ...``
 
 <br/>
 

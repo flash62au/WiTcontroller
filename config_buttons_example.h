@@ -1,4 +1,13 @@
 // ********************************************************************************************
+//
+// Any line in this file that starts with a // is a comment
+// Comments are ignored
+//
+// To enable any of the #define lines below,
+// first remove the // at the start of the line,
+// then, if needed, change the value to suit your needs.
+//
+// ********************************************************************************************
 // Encoder Direction and Actions
 
 // Define the rotation diection for the rotary encoder to increase speed.
