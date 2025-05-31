@@ -60,7 +60,7 @@ While the basic from is simple, the design is flexible and you can add several a
     * **MRC WiFi**
     * **Digitrax LnWi**
     * **NCE WiFiTrax**
-    * and probably others
+    * and others
 
     Note that there seems to be an issue with the **YaMoRC Command Station** that I am still working on.
 
@@ -70,34 +70,49 @@ While the basic from is simple, the design is flexible and you can add several a
 
 ### Required Components
 
-* WeMos Lite LOLIN32  (ESP32 Arduino with LiPo charger) ([Example](https://www.ebay.com.au/itm/284800618644?hash=item424f709094:g:-soAAOSwHslfC9ce&frcectupt=true)) <br/> *Note: any ESP32 will work but the pinouts may need to be adjusted, and a separate LiPo charger may be required*
+1. WeMos Lite LOLIN32  (ESP32 Arduino with LiPo charger) ([Example](https://www.ebay.com.au/itm/284800618644?hash=item424f709094:g:-soAAOSwHslfC9ce&frcectupt=true)) 
 
-* 3x4 Keypad  ([Example](https://www.jaycar.com.au/12-key-numeric-keypad/p/SP0770?pos=2&queryId=20aedf107668ad42c6fe1f8b7f7a9ca7)) <br/> *Note: Alternately a 4x4 keypad can also be used (see optional components below)* <br/> ***Warning: Different keypad manufacturers may arrange the pins on the base of the keypad differently.*** See notes in the [Default Pins for the keypads](#default-pins-for-the-keypads) section below.
+    *Note: any ESP32 will work but the pinouts may need to be adjusted, and a separate LiPo charger may be required*
 
-* Polymer Lithium Ion Battery LiPo 400mAh (or larger) 3.7V 502535 JST Connector. ([500mAh Example](https://www.ebay.com.au/itm/133708965793?hash=item1f21ace7a1:g:tlwAAOSwfORgYqYK)) <br/> *Note: Any capacity will work, but 400mAh will give about 6 hours of run time.* <br/> <br/>
-***WARNING: I have found that some batteries come with the positive and negative leads the other way around to the terminals on the ESP32. <br/> Check they are correct before plugging it in.*** <br/> (The polarity of the battery is easy to swap, by getting a knife blade under the small tabs on the connector and pulling each male socket out. <br/> Take extreme care. ***DO NOT SHORT THE TERMINALS.*** )
+2. 3x4 Keypad  ([Example](https://www.jaycar.com.au/12-key-numeric-keypad/p/SP0770?pos=2&queryId=20aedf107668ad42c6fe1f8b7f7a9ca7)) 
 
-* KY-040 Rotary Encoder Module ([Example](https://www.aliexpress.com/item/1005003946689694.html?albagn=888888&&src=google&albch=search&acnt=479-062-3723&isdl=y&aff_short_key=UneMJZVf&albcp=21520181724&albag=168529973707&slnk=&trgt=dsa-1464330247393&plac=&crea=707854323770&netw=g&device=c&mtctp=&memo1=&albbt=Google_7_search&aff_platform=google&gad_source=1&gclid=Cj0KCQjwiOy1BhDCARIsADGvQnBPdlEVLYbYnLoOnN1p2bdjte0jYmInrgFD0WG16aF3GZtvrWTb6o0aAo8VEALw_wcB&gclsrc=aw.ds)) <br/> *Note: The EC11 rotary encoder will also work, but requires a small configuration change in ``config_buttons.h`` (see below)*
+    *Note: Alternately a 4x4 keypad can also be used (see optional components below)* 
+      
+    ***Note: Different keypad manufacturers may arrange the pins on the base of the keypad differently.*** See notes in the [Default Pins for the keypads](#default-pins-for-the-keypads) section below.
 
-* OLED Display 0.96" 128x64 I2C IIC SSD1306 ([Example](https://www.ebay.com.au/itm/273746192621?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2060353.m2749.l2649)) <br/> *Note: The code for the one of the common 1.3" displays is also included (see below).* <br/> *Note: Some OLED displays up to 2.4 inch will also work (see below)*
+3. KY-040 Rotary Encoder Module ([Example](https://www.aliexpress.com/item/1005003946689694.html?albagn=888888&&src=google&albch=search&acnt=479-062-3723&isdl=y&aff_short_key=UneMJZVf&albcp=21520181724&albag=168529973707&slnk=&trgt=dsa-1464330247393&plac=&crea=707854323770&netw=g&device=c&mtctp=&memo1=&albbt=Google_7_search&aff_platform=google&gad_source=1&gclid=Cj0KCQjwiOy1BhDCARIsADGvQnBPdlEVLYbYnLoOnN1p2bdjte0jYmInrgFD0WG16aF3GZtvrWTb6o0aAo8VEALw_wcB&gclsrc=aw.ds)) 
 
-* Case - my one was 3d printed for me (see below) 
+    *Note: The EC11 rotary encoder will also work, but requires a small configuration change in ``config_buttons.h`` (see below)*
 
-* Knob ([Example](https://www.jaycar.com.au/35mm-knob-matching-equipment-style/p/HK7766?pos=7&queryId=cbd19e2486968bca41273cc2dbce54a4&sort=relevance))
+4. OLED Display 0.96" 128x64 I2C IIC SSD1306 ([Example](https://www.ebay.com.au/itm/273746192621?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2060353.m2749.l2649))
 
-* Wire - If you plan to solder the connections, which is the recommended approach, then stranded, coloured wire is advisable.  ([Example](https://www.jaycar.com.au/rainbow-cable-16-core-sold-per-metre/p/WM4516))
+    *Note: The code for the one of the common 1.3" displays is also included (see below).* 
+    
+    *Note: Some OLED displays up to 2.4 inch will also work (see below)*
+
+5. Polymer Lithium Ion Battery LiPo 400mAh (or larger) 3.7V 502535 JST Connector. ([500mAh Example](https://www.ebay.com.au/itm/133708965793?hash=item1f21ace7a1:g:tlwAAOSwfORgYqYK)) 
+
+    *Note: Any capacity will work, but 400mAh will give about 6 hours of run time.*
+    
+    ***WARNING: I have found that some batteries come with the positive and negative leads the other way around to the terminals on the ESP32.*** <br/> **Check they are correct before plugging it in.** <br/> The polarity of the battery is easy to swap, by getting a knife blade under the small tabs on the plastic connector and pulling each male socket out. <br/> Take extreme care. ***DO NOT SHORT THE TERMINALS.*** 
+
+6. A Case to put it in. Links to a few different designs are below, but any box will do. My case was 3d printed for me (see below).
+
+7. A Knob ([Example](https://www.jaycar.com.au/35mm-knob-matching-equipment-style/p/HK7766?pos=7&queryId=cbd19e2486968bca41273cc2dbce54a4&sort=relevance))
+
+8. Wire - If you plan to solder the connections, which is the recommended approach, then stranded, coloured wire is advisable.  ([Example](https://www.jaycar.com.au/rainbow-cable-16-core-sold-per-metre/p/WM4516))
 
 ### Optional Components
 
-* *Optional:* A power switch. Push button or toggle. <br/> The battery in WiTcontroller will last a week or two in deep sleep, but you may wish to add a power switch on the positive feed of the battery if you expect to leave it unused for long periods.
+9. *Optional:* A power switch. Push button or toggle. <br/> The battery in WiTcontroller will last a week or two in deep sleep, but you may wish to add a power switch on the positive feed of the battery if you expect to leave it unused for long periods.
 
-* *Optional:* You can use a 4x4 keypad instead of the 3x4 keypad. <br/> Note: You will need to make a small configuration change in ``config_buttons.h`` for this to work correctly.
+10. *Optional:* You can use a 4x4 keypad instead of the 3x4 keypad. <br/> Note: You will need to make a small configuration change in ``config_buttons.h`` for this to work correctly.
 
-* *Optional:* Up to eleven (11) additional push buttons can be added directly to the ESP32, each with their own independent commands. ([Example](https://www.jaycar.com.au/red-miniature-pushbutton-spst-momentary-action-125v-1a-rating/p/SP0710))
+11. *Optional:* Up to eleven (11) additional push buttons can be added directly to the ESP32, each with their own independent commands. ([Example](https://www.jaycar.com.au/red-miniature-pushbutton-spst-momentary-action-125v-1a-rating/p/SP0710))
 
-* *Optional:* A 1.3" or 2.4" OLED Display (128x64) can be used instead of the 0.96" OLED Display 128x64 ([Example](https://www.aliexpress.com/item/32683094040.html?spm=a2g0o.order_list.order_list_main.110.25621802jRBB7y)) Note: You will need to make a minor change in the config file for this to work correctly.
+12. *Optional:* A 1.3" or 2.4" OLED Display (128x64) can be used instead of the 0.96" OLED Display 128x64 ([Example](https://www.aliexpress.com/item/32683094040.html?spm=a2g0o.order_list.order_list_main.110.25621802jRBB7y)) Note: You will need to make a minor change in the config file for this to work correctly.
 
-* *Optional:* It is possible to use a Potentiometer instead of the Rotary Encoder for throttle control.  The code supports it if you make the appropriate configuration changes in ``config_buttons.h``.   However this has had only limited testing. <br/> This is documented to some degree in ``config_buttons_example.h`` if you wish to try it.
+13. *Optional:* It is possible to use a Potentiometer instead of the Rotary Encoder for throttle control.  The code supports it if you make the appropriate configuration changes in ``config_buttons.h``.   However this has had only limited testing. <br/> This is documented to some degree in ``config_buttons_example.h`` if you wish to try it.
 
 ### Pinouts
 
@@ -388,7 +403,7 @@ Using 2.4gHz Wifi channels beyond 10 (11-13) is problematic. I have added an exp
 
 A "Throttle" can control only one train, which may be one loco, or more than one loco in consist/MU.
 
-*WiTcontroller*, as a "controller", **contains up to six (6) "throttles"**. Each which can control any number of locos in consist/MU. You can swap between throttles at will (``keypad 5``) to select which locos/consists/MUs you one you are manipulating at a given time. While you can only manipulate one loco/consist/MU at at time, the others continue running at the setting you last gave it.
+*WiTcontroller*, as a "controller", **contains up to six (6) "throttles"**. Each of which can control any number of locos in consist/MU. You can swap between throttles at will (``keypad 5``) to select which locos/consists/MUs you one you are manipulating at a given time. While you can only manipulate one loco/consist/MU at at time, the others continue running at the setting you last gave it.
 
 ## Features
 
@@ -405,9 +420,9 @@ WiTcontroller:
   - Guesses the WiThrottle IP address and Port for DCC-EX EX-CommandStations in Access Point (AP) mode
   - Optionally you can add a #define (a preference) to disable this auto connect feature
 - Allows On-the-fly consists/MUs
-  Allos assigning commands directly to the 1-9 buttons (in the sketch) (see list below)
+  Allows assigning commands directly to the 1-9 buttons (in the sketch) (see list below)
   - This is done in config_button.h
-  - Latching / non-latching for the function is provided by the roster entry of WiThrottle server
+  - Latching / non-latching for the function is provided by the roster entry of the WiThrottle server
 - Optionally uses a potentiometer (pot) instead of the rotary encoder
 - Optional ability to assign commands directly to the 1-11 additional buttons (in the sketch) (see list below)
   - These are defined config_button.h
@@ -434,11 +449,12 @@ WiTcontroller:
   - Put ESP32 in deep sleep and restart it
   - Option to switch between Single Loco and Consist/MU (Drop before Acquire)
   - Option to save the currently select locos (on multiple throttles) and have them automatically re-acquired on next connection.
+  - Option to disable the heartbeat check
 - Option to have up to 6 command sequences executed on connection
 - Option to automatically acquire a loco if there is only one loco in the roster
-- Have up to 6 throttles, each with an unlimited number of locos in consist. Default is 2 throttles, which can be increased or decreased temporarily via the Extras menu (or permanently enabled in config_button.h)
+- Have up to 6 throttles, each with an unlimited number of locos in consist. <br/> The default is 2 throttles, which can be increased or decreased temporarily via the Extras menu (or permanently enabled in config_button.h)
 - Limited dealing with unexpected disconnects.  It will throw you back to the WiThrottle Server selection screen.
-- Boundary between short and long DCC addresses can be configured in config_buttons.h
+- The boundary between short and long DCC addresses can be configured in config_buttons.h. <br/> The default is that 127 and below are Short Addresses.
 - The default speed step (per encoder click) can be configured in config_buttons.h
 - The controller will automatically shut down if no SSID is selected or entered in 4 minutes (to conserve the battery)
 - Relatively easy to add/use translation files.
@@ -731,7 +747,7 @@ If you want a linear speed instead of notches:
 
 a) You must define the values the pot will send at at zero throw and full throw in the first and last of the 8 values in ``THROTTLE_POT_NOTCH_VALUES``.  The other values will be ignored but you still need to include 8 values.  (They can be zero.)  Note that you should avoid the value zero (0) for notch zero.  Use at least 1 instead.
 
-Sumner Patterson is developing an app to help find the appropriate pot values for the ``THROTTLE_POT_NOTCH_VALUES``.
+Sumner Patterson has developed an app to help find the appropriate pot values for the ``THROTTLE_POT_NOTCH_VALUES``.
 
 ---
 
@@ -795,7 +811,7 @@ I recommend adding a physical power switch to disconnect the battery as this fea
 
 ``#define STARTUP_COMMAND_1 ""`` .. ``#define STARTUP_COMMAND_4 ""``
 
-Optional. If defined, the up to four commands will be executed, in order, after connection to the WiThrottle Server.
+Optional. If defined, up to four commands will be executed, in order, after connection to the WiThrottle Server.
 Each must be ONLY ONE single valid command.  Either a direct action or a menu action.  Any can be blank or not defined, the others will still be executed.
 
 Note: Selecting from the roster/turnouts etc. is not possible as the commands will execute before the roster loads.
@@ -875,6 +891,6 @@ I can be contacted by:
 
 a) Via email  ``akersp62 @ gmail.com``   *(remove the spaces)*
 
-b) On the 'WiThrottle' Channel on the **DCC-EX Discord** server https://discord.gg/8ghsjsBup8.  My handle is ``flash62au (Peter A)``
+b) On the 'wifi-throttle' Channel on the **DCC-EX Discord** server https://discord.gg/8ghsjsBup8.  My handle is ``flash62au (Peter A)``
 
-c) By creating an 'Issue' here on GitHub.
+c) By creating an 'Issue' here on GitHub.  (Not recommended, but I will respond.)
