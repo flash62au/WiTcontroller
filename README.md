@@ -72,7 +72,7 @@ While the basic from is simple, the design is flexible and you can add several a
 
 * WeMos Lite LOLIN32  (ESP32 Arduino with LiPo charger) ([Example](https://www.ebay.com.au/itm/284800618644?hash=item424f709094:g:-soAAOSwHslfC9ce&frcectupt=true)) <br/> *Note: any ESP32 will work but the pinouts may need to be adjusted, and a separate LiPo charger may be required*
 
-* 3x4 Keypad  ([Example](https://www.jaycar.com.au/12-key-numeric-keypad/p/SP0770?pos=2&queryId=20aedf107668ad42c6fe1f8b7f7a9ca7)) <br/> *Note: Alternately a 4x4 keypad can also be used (see optional components below)* 
+* 3x4 Keypad  ([Example](https://www.jaycar.com.au/12-key-numeric-keypad/p/SP0770?pos=2&queryId=20aedf107668ad42c6fe1f8b7f7a9ca7)) <br/> *Note: Alternately a 4x4 keypad can also be used (see optional components below)* <br/> ***Warning: Different keypad manufacturers may arrange the pins on the base of the keypad differently.*** See notes in the [Default Pins for the keypads](#default-pins-for-the-keypads) section below.
 
 * Polymer Lithium Ion Battery LiPo 400mAh (or larger) 3.7V 502535 JST Connector. ([500mAh Example](https://www.ebay.com.au/itm/133708965793?hash=item1f21ace7a1:g:tlwAAOSwfORgYqYK)) <br/> *Note: Any capacity will work, but 400mAh will give about 6 hours of run time.* <br/> <br/>
 ***WARNING: I have found that some batteries come with the positive and negative leads the other way around to the terminals on the ESP32. <br/> Check they are correct before plugging it in.*** <br/> (The polarity of the battery is easy to swap, by getting a knife blade under the small tabs on the connector and pulling each male socket out. <br/> Take extreme care. ***DO NOT SHORT THE TERMINALS.*** )
@@ -90,9 +90,13 @@ While the basic from is simple, the design is flexible and you can add several a
 ### Optional Components
 
 * *Optional:* A power switch. Push button or toggle. <br/> The battery in WiTcontroller will last a week or two in deep sleep, but you may wish to add a power switch on the positive feed of the battery if you expect to leave it unused for long periods.
+
 * *Optional:* You can use a 4x4 keypad instead of the 3x4 keypad. <br/> Note: You will need to make a small configuration change in ``config_buttons.h`` for this to work correctly.
+
 * *Optional:* Up to eleven (11) additional push buttons can be added directly to the ESP32, each with their own independent commands. ([Example](https://www.jaycar.com.au/red-miniature-pushbutton-spst-momentary-action-125v-1a-rating/p/SP0710))
+
 * *Optional:* A 1.3" or 2.4" OLED Display (128x64) can be used instead of the 0.96" OLED Display 128x64 ([Example](https://www.aliexpress.com/item/32683094040.html?spm=a2g0o.order_list.order_list_main.110.25621802jRBB7y)) Note: You will need to make a minor change in the config file for this to work correctly.
+
 * *Optional:* It is possible to use a Potentiometer instead of the Rotary Encoder for throttle control.  The code supports it if you make the appropriate configuration changes in ``config_buttons.h``.   However this has had only limited testing. <br/> This is documented to some degree in ``config_buttons_example.h`` if you wish to try it.
 
 ### Pinouts
@@ -112,11 +116,14 @@ While the basic from is simple, the design is flexible and you can add several a
 *Pinouts for Optional Battery Monitor and Additional Buttons*
 ![Assembly diagram - Optional Battery Monitor and Additional Buttons](images/WiTcontroller%20-%20Optional%20battery%20monitor.png)
 
+***Warning: Different keypad manufacturers may arrange the pins on the 
+base of the keypad differently.*** See notes in the [Default Pins for the keypads](#default-pins-for-the-keypads)  section below.
+
 ---
 
 ### Default Pins
 
-*Default ESP32 and WiTcontroller pins*
+#### Default ESP32 and WiTcontroller pins
 
 <details>
 
@@ -172,7 +179,7 @@ VN  39                                  AB10*
 
 <br />
 
-*Default Pins for the keypads*
+#### Default Pins for the keypads
 
 <details>
 
@@ -190,8 +197,8 @@ VN  39                                  AB10*
                                R3 PIN 16
 
 Note:
-Different keypad manufacturers often arrange the pins on the 
-base of the keypad differently.  
+Different keypad manufacturers may arrange the pins on the 
+base of the keypad differently to those listed above.  
 So it is important to make sure the pins on the keypad are 
 correctly identified and adjusted as needed.
 
@@ -236,7 +243,16 @@ See [Thingiverse](https://makerworld.com/en/models/819825).
 ![rdbnogueira version](images/rdbnogueira_version.png)
 See [Thingiverse](https://www.thingiverse.com/thing:6956982)
 
-For a very different take on what is possible by extending the design, have a look at: https://1fatgmc.com/RailRoad/DCC/HandCab-Index.html
+---
+
+Some videos:
+
+* https://youtu.be/RKnhfBCP_SQ
+* https://www.youtube.com/shorts/1w7H2OvP8Jg
+
+---
+
+And for a very different take on what is possible by extending the design, have a look at: https://1fatgmc.com/RailRoad/DCC/HandCab-Index.html
 
 
 <br/>
