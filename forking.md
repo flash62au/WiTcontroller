@@ -148,6 +148,6 @@ In **GitHub Desktop**:
 
 1. Click on the `Fetch origin` button`
 
-Any changes are now also in your repository on PC.
+Any changes are now also in your repository on your PC.
 
 ----
