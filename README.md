@@ -633,6 +633,14 @@ Note: you need to edit config_buttons.h to alter these assignments   (copy confi
 
 ## Options and Extras
 
+### Direction of rotation of the encoder
+
+The default configuration is to rotate the encoder counter-clockwise to increase speed.  This make sense for the original simple case, but is not for many of the new cases that people have designed.
+
+To change the configuration so that rotating the encoder clockwise increases speed, uncomment (remove the ``//``) following line in your ``config_buttons.h`` and change the value to true.
+
+``#define ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED                     true``
+
 ### Instructions for Optional Additional Buttons 
 
 The way to add additional buttons changed in version 1.83.  The old way will continue to work but only the new way is described here.
@@ -772,7 +780,7 @@ If the battery does not show 100% when plugged into the charger, you may need to
     To help work out the correct BATTERY_CONVERSION_FACTOR, 
     you can enable so serial monitor message that will assist.
 
-    In your ``config_buttons.h`` add (or uncomment) these defines:
+    In your ``config_buttons.h`` add (or uncomment -remove the ``//``) these defines:
     
       #define WITCONTROLLER_DEBUG    0
 

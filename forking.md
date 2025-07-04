@@ -135,9 +135,9 @@ If does not say you are 'behind' there is nothing to do.  Stop here.
 If you are behind...
 
 3. Click on the `x commit(s) behind` hyperlink
+4. Click on the `Create pull request` button
 5. Add to the title and/or documentation fields.  This does not matter so entering just ``Catchup`` is fine.
-6. Click on the `Create pull request` button
-7. Click on the `Merge pull request` button
+6. Click on the `Merge pull request` button
 7. Click on the `Confirm merge` button
 
 Any changes are now also in your repository on the GitHub website.
