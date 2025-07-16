@@ -569,7 +569,7 @@ mmmmmmmmm
 
 ![Menu](images/screenshots/menu.jpg)
 
-#### Direct Commands List
+#### # Direct Commands List
 
 ![Direct Commands List](images/screenshots/direct_commands_list.jpg)
 
@@ -612,6 +612,9 @@ Note: you need to edit config_buttons.h to alter these assignments   (copy confi
 - SPEED_STOP_THEN_TOGGLE_DIRECTION   - stops the loco if moving.  Toggles the direction if stationary.
 - MAX_THROTTLE_INCREASE    - change the number of available throttles on-the-fly
 - MAX_THROTTLE_DECREASE    - change the number of available throttles on-the-fly
+- POWER_TOGGLE - track power toggle
+- POWER_ON - track power on
+- POWER_OFF - track power off
 - THROTTLE_1   - change to a specific throttle
 - THROTTLE_2   - change to a specific throttle
 - THROTTLE_3   - change to a specific throttle
