@@ -334,7 +334,7 @@ The instructions below are for using the **Arduino IDE** and **GitHub Desktop**.
 
       Note: <br/> *If you open the file **from** the IDE*, rather then opening it from a File Manager, will automatically open *all the files in the WiTcontroller folder* in the IDE. 
       
-      Whereas, *if you open it from a File manger app* (by double clicking on it) only open the file you selected will open.
+      Whereas, *if you open it from a File manger app* (by double clicking on it) only the file you selected will open.
 
 8. Edit your personal ``config_network.h`` file. 
     * Edit it to include the network SSIDs you want to use.  (Not essential, but entering passwords via the encoder is tedious.)
@@ -389,7 +389,7 @@ The instructions below are for using the **Arduino IDE** and **GitHub Desktop**.
 
 ## Using WiTController
 
-## Be aware of...
+### Be aware of...
 
 ### WiFi limitations
  
@@ -403,9 +403,9 @@ Using 2.4gHz Wifi channels beyond 10 (11-13) is problematic. I have added an exp
 
 A "Throttle" can control only one train, which may be one loco, or more than one loco in consist/MU.
 
-*WiTcontroller*, as a "controller", **contains up to six (6) "throttles"**. Each of which can control any number of locos in consist/MU. You can swap between throttles at will (``keypad 5``) to select which locos/consists/MUs you one you are manipulating at a given time. While you can only manipulate one loco/consist/MU at at time, the others continue running at the setting you last gave it.
+*WiTcontroller*, as a "controller", **contains up to six (6) "throttles"**. Each of which can control any number of locos in consist/MU. You can swap between throttles at will (``keypad 5``) to select which locos/consists/MUs you you are manipulating at a given time. While you can only manipulate one loco/consist/MU at at time, the others continue running at the setting you last gave it.
 
-## Features
+### Features
 
 **Currently functioning:**
 WiTcontroller:
@@ -467,7 +467,7 @@ WiTcontroller:
 - Keep a list of IP addresses and ports if mDNS doesn't provide any
 - Remember SSIDs and manually entered passwords 
 
-### Command menu:
+#### Command menu:
 - 0-9 keys = pressing these directly will do whatever has been configured in your ``config_buttons.h`` for them to do, or whatever is the default for that key  (see \# below)
 - \* = Menu:  The button press following the \* is the actual command:
   - 1 = Add loco.  
@@ -513,7 +513,7 @@ Pressing the Encoder button while the ESP32 is in Deep Sleep will revive it.
 
 ### Screens
 
-## WiFI/SSID Connection Screens
+#### WiFI/SSID Connection Screens
 
 *Start-up - browsing for SSIDs*<br />
 ![Start-up - browsing for SSIDs](images/screenshots/browsing_for_ssids.jpg)
@@ -524,7 +524,7 @@ Pressing the Encoder button while the ESP32 is in Deep Sleep will revive it.
 *Trying to to connect to SSID*<br />
 ![Trying to to connect to SSID](images/screenshots/trying_to_connect.jpg)
 
-## WiThrottle Server Connection Screens
+#### WiThrottle Server Connection Screens
 
 *WiThrottle Server List*<br />
 ![WiThrottle Server List](images/screenshots/wit_server_list.jpg)
@@ -569,7 +569,7 @@ mmmmmmmmm
 
 ![Menu](images/screenshots/menu.jpg)
 
-#### # Direct Commands List
+#### Direct Commands List
 
 ![Direct Commands List](images/screenshots/direct_commands_list.jpg)
 
