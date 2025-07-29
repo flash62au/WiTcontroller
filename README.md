@@ -38,6 +38,7 @@ While the basic from is simple, the design is flexible and you can add several a
 * [Building](#building)
 * [Loading the Code](#loading-the-code)
 * [Using WiTController](#using-witcontroller)
+* [Allowed Actions](#allowed-assignments-for-the-0-9-keys-andor-additional-buttons)
 * [Options and Extras](#options-and-extras)
 * [Contact Me](#contact-me) <br/> <br/>
 * [Modifying the code](#modifying-the-code)
