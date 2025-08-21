@@ -33,7 +33,7 @@
 // #define TOGGLE_DIRECTION_ON_ENCODER_BUTTON_PRESSED_WHEN_STATIONAY         true
 
 // Encoder debounce (Not the encoder button)
-// If you find the moving the encoder a single click sends more than one speed command, try adjusting this value
+// If you find that moving the encoder a single click sends more than one speed command, try adjusting this value
 
 // #define ROTARY_ENCODER_STEPS 2 //depending on your encoder - try 1,2,3 or 4 to get expected behaviour  Default is 2
 

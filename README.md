@@ -283,7 +283,7 @@ And for a very different take on what is possible by extending the design, have 
 
 The instructions below are for using the **Arduino IDE** and **GitHub Desktop**. 
 
-**Visual Studio Code (VSC)** can be used instead of the Arduino IDE, and is actually my preferred IDE, but no instructions are included here.
+**Visual Studio Code (VSC)** can be used instead of the Arduino IDE, and is actually my preferred IDE, but no instructions are included here.  Contact me if you need assistance with VSC.
 
 1. Download the Arduino IDE.
     * Available from  https://support.arduino.cc/hc/en-us/articles/360019833020-Download-and-install-Arduino-IDE
@@ -636,6 +636,14 @@ Note: you need to edit config_buttons.h to alter these assignments   (copy confi
 ---
 
 ## Options and Extras
+
+### Rotary Encoder 'bounce'
+
+If you find that moving the encoder a single click sends more than one speed command, try adjusting this define by uncommenting (removing the ``//``) following line in your ``config_buttons.h`` and changing the value. (Usually you need to increase the value.)
+
+``#define ROTARY_ENCODER_STEPS 2`` 
+
+Depending on your encoder - try 1,2,3 or 4 to get expected behaviour.  The default is 2
 
 ### Direction of rotation of the encoder
 
