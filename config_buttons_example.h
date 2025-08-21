@@ -32,8 +32,14 @@
 
 // #define TOGGLE_DIRECTION_ON_ENCODER_BUTTON_PRESSED_WHEN_STATIONAY         true
 
+// Encoder debounce (Not the encoder button)
+// If you find the moving the encoder a single click sends more than one speed command, try adjusting this value
+
+// #define ROTARY_ENCODER_STEPS 2 //depending on your encoder - try 1,2,3 or 4 to get expected behaviour  Default is 2
+
 // Rotary Encoder Debounce Time
-// increase if you find the encoder buttons bounce (activate twice) or you get speed changes when you press the encoder button
+// increase if you find the encoder button bounces (activate twice) or you get speed changes when you press the encoder button
+
 // #define ROTARY_ENCODER_DEBOUNCE_TIME     200
 
 // If using a bare Rotary Encoder instead of a KY040 encoder module
@@ -215,7 +221,6 @@
 
 // #define ROTARY_ENCODER_VCC_PIN -1 /* 27 put -1 of Rotary encoder Vcc is connected 
 // directly to 3,3V; else you can use declared output pin for powering rotary encoder */
-// #define ROTARY_ENCODER_STEPS 2 //depending on your encoder - try 1,2 or 4 to get expected behaviour
 
 // *******************************************************************************************************************
 // Keypad Hardware
