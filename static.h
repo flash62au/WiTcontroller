@@ -1039,8 +1039,8 @@ const char ssidPasswordBlankChar = 164;
    #define HEARTBEAT_ENABLED true
 #endif
 
-#ifndef HEARTBEAT_DEFAULT_PERIOD
-   #define HEARTBEAT_DEFAULT_PERIOD 10
+#ifndef DEFAULT_HEARTBEAT_PERIOD
+   #define DEFAULT_HEARTBEAT_PERIOD 10
 #endif
 
 // ***************************************************
