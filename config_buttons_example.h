@@ -432,8 +432,9 @@
 
 // #define MAX_HEARTBEAT_PERIOD 240000
 
-// enable heartbeat by default.  Can be turned on or off in the menus
+// Heartbeat is enabled by default.  Can be turned on or off in the menus
 // #define HEARTBEAT_ENABLED true 
+// #define DEFAULT_HEARTBEAT_PERIOD 10  // in seconds default period if HEARTBEAT_ENABLED is true
 
 // *******************************************************************************************************************
 // Roster Sorting

@@ -217,7 +217,7 @@ int currentThrottleIndex = 0;
 char currentThrottleIndexChar = '0';
 int maxThrottles = MAX_THROTTLES;
 
-int heartBeatPeriod = 10; // default to 10 seconds
+int heartbeatPeriod = DEFAULT_HEARTBEAT_PERIOD; // default to 10 seconds
 long lastServerResponseTime;  // seconds since start of Arduino
 bool heartbeatCheckEnabled = HEARTBEAT_ENABLED;
 
@@ -349,9 +349,9 @@ class MyDelegate : public WiThrottleProtocolDelegate {
   
   public:
     void heartbeatConfig(int seconds) { 
-      debug_print("Received heartbeat. From: "); debug_print(heartBeatPeriod); 
+      debug_print("Received heartbeat. From: "); debug_print(heartbeatPeriod); 
       debug_print(" To: "); debug_println(seconds); 
-      heartBeatPeriod = seconds;
+      heartbeatPeriod = seconds;
     }
     void receivedVersion(String version) {    
       debug_printf("Received Version: %s\n",version.c_str()); 
@@ -1702,7 +1702,7 @@ void loop() {
 
       setLastServerResponseTime(false);
 
-      if ( (lastServerResponseTime+(heartBeatPeriod*4) < millis()/1000) 
+      if ( (lastServerResponseTime+(heartbeatPeriod*4) < millis()/1000) 
       && (heartbeatCheckEnabled) ) {
         debug_print("Disconnected - Last:");  debug_print(lastServerResponseTime); debug_print(" Current:");  debug_println(millis()/1000);
         reconnect();

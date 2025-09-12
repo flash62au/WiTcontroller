@@ -1,4 +1,4 @@
-const String appVersion = "v1.92";
+const String appVersion = "v1.93";
 #ifndef CUSTOM_APPNAME
    const String appName = "WiTcontroller";
 #else
@@ -1037,6 +1037,10 @@ const char ssidPasswordBlankChar = 164;
 
 #ifndef HEARTBEAT_ENABLED
    #define HEARTBEAT_ENABLED true
+#endif
+
+#ifndef HEARTBEAT_DEFAULT_PERIOD
+   #define HEARTBEAT_DEFAULT_PERIOD 10
 #endif
 
 // ***************************************************

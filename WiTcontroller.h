@@ -83,7 +83,7 @@ extern bool functionStates[][MAX_FUNCTIONS];
 extern String functionLabels[][MAX_FUNCTIONS];
 extern int functionFollow[][MAX_FUNCTIONS];
 extern int currentSpeedStep[];
-extern int heartBeatPeriod;
+extern int heartbeatPeriod;
 extern long lastServerResponseTime;
 extern bool heartbeatCheckEnabled;
 extern const char* deviceName;

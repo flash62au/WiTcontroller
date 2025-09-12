@@ -63,7 +63,7 @@ While the basic from is simple, the design is flexible and you can add several a
     * **NCE WiFiTrax**
     * and others
 
-    Note that there seems to be an issue with the **YaMoRC Command Station** that I am still working on.
+    Note that there seems to be an issue with the **YaMoRC Command Station** that I am still working on.  See the notes for the DEFAULT_HEARTBEAT_PERIOD define below.
 
 ---
 
@@ -643,11 +643,11 @@ If you find that moving the encoder a single click sends more than one speed com
 
 ``#define ROTARY_ENCODER_STEPS 2`` 
 
-Depending on your encoder - try 1,2,3 or 4 to get expected behaviour.  The default is 2
+Depending on your encoder - try 1,2,3 or 4 till you get expected behaviour.  The default is 2
 
 ### Direction of rotation of the encoder
 
-The default configuration is to rotate the encoder counter-clockwise to increase speed.  This make sense for the original simple case, but is not for many of the new cases that people have designed.
+The default configuration is to rotate the encoder counter-clockwise to increase speed.  This made sense for the original simple case, but is not for many of the new cases that people have designed.
 
 To change the configuration so that rotating the encoder clockwise increases speed, uncomment (remove the ``//``) following line in your ``config_buttons.h`` and change the value to true.
 
@@ -826,6 +826,12 @@ The display of the battery can be temporarily toggled by setting a key or button
 
 Note: 
 I recommend adding a physical power switch to disconnect the battery as this feature will, slowly, continually drain the battery, even when not being used.
+
+``#define DEFAULT_HEARTBEAT_PERIOD 10``
+
+The default heartbeat period defauls to 10 seconds.  The server should send the period that it is expecting on connection and overide the default, so generally you should never need to adjust this. 
+
+It is believed that the YaMoRC Command Stations are not sending this as the should (according to the WiThrottle specification).  For those, and any other WiThrottle taht do not send then, adjust the number of seconds to match the setting on the server.
 
 ---
 

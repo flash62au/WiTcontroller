@@ -1,5 +1,8 @@
 # Change Log
 
+### V1.93
+- Added define for DEFAULT_HEARTBEAT_PERIOD. Defaults to 10 seconds.  Only needed if the server does not send the period as it should.
+
 ### V1.92
 - Additional button option SLEEP.  Will put the ESP32 to sleep. (i.e. turn off)
 
