@@ -259,7 +259,7 @@ See [Thingiverse](https://makerworld.com/en/models/819825).
 ![rdbnogueira version](images/rdbnogueira_version.png)
 See [Thingiverse](https://www.thingiverse.com/thing:6956982)
 
-David Virgo's version using the encoder from a mouse 
+David Virgo's version using the EC11 encoder 
 ![David Virgo's version](https://github.com/dvirgo62/Printed-case-for-witcontroller/blob/main/PXL_20250910_022436424.jpg?raw=true)
 See [GitHub](https://github.com/dvirgo62/Printed-case-for-witcontroller?fbclid=IwY2xjawMyNLNleHRuA2FlbQIxMABicmlkETFTZ3RWbmRYck9MRENISVczAR7I770O70-brr0UWQ1O463MGa91Kf7WoZwbx85NPC72q69bG04gduhkIRDuFg_aem_znuhLVk6PxQxmlZntuLdAA)
 
