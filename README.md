@@ -831,6 +831,10 @@ The display of the battery can be temporarily toggled by setting a key or button
 Note: 
 I recommend adding a physical power switch to disconnect the battery as this feature will, slowly, continually drain the battery, even when not being used.
 
+---
+
+### YaMoRC Command Stations / Heartbeat Period
+
 ``#define DEFAULT_HEARTBEAT_PERIOD 10``
 
 The default heartbeat period defauls to 10 seconds.  The server should send the period that it is expecting on connection and overide the default, so generally you should never need to adjust this. 
@@ -870,6 +874,8 @@ If you are interested, please contact me directly for instructions.
 Ich würde mich über jede Hilfe zur Verbesserung dieser Übersetzungen freuen.
 Bei Interesse kontaktieren Sie mich bitte direkt für eine Anleitung.
 
+---
+
 ### Istruzioni per la traduzione in Italiano
 
 Il file "language_italiano.h" contiene la traduzione italiana (by Roberto B). Rimuovere il commento o aggiungere la linea "#include language_italiano.h" (senza le " ") nel file "config_buttons.h" per avere menù e messaggi in Italiano.
@@ -878,6 +884,8 @@ Si può sovrascrivere una qualunque di queste traduzioni individualmente aggiung
 
 Qualunque contributo è gradito.
 Per ogni questione, il contatto ufficiale è il canale Discord di DCC-EX nella sezione wifi-throttles.
+
+---
 
 ### Instructions for Other Translations
 
