@@ -845,9 +845,9 @@ I recommend adding a physical power switch to disconnect the battery as this fea
 
 ``#define DEFAULT_HEARTBEAT_PERIOD 10``
 
-The default heartbeat period defauls to 10 seconds.  The server should send the period that it is expecting on connection and overide the default, so generally you should never need to adjust this. 
+The heartbeat period defaults to 10 seconds.  The server should send the period that it is expecting on connection and overide the default, so generally you should never need to adjust this. 
 
-It is believed that the YaMoRC Command Stations are not sending this as the should (according to the WiThrottle specification).  For those, and any other WiThrottle taht do not send then, adjust the number of seconds to match the setting on the server.
+It is believed that the YaMoRC Command Stations are not sending this as the should (according to the WiThrottle specification).  For those, and any other WiThrottle that do not send it, uncomment or add the define above and adjust the number of seconds to match the setting on the server.
 
 ---
 
