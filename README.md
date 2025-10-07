@@ -649,6 +649,8 @@ If you find that moving the encoder a single click sends more than one speed com
 
 Depending on your encoder - try 1,2,3 or 4 till you get expected behaviour.  The default is 2
 
+---
+
 ### Direction of rotation of the encoder
 
 The default configuration is to rotate the encoder counter-clockwise to increase speed.  This made sense for the original simple case, but is not for many of the new cases that people have designed.
@@ -656,6 +658,8 @@ The default configuration is to rotate the encoder counter-clockwise to increase
 To change the configuration so that rotating the encoder clockwise increases speed, uncomment (remove the ``//``) following line in your ``config_buttons.h`` and change the value to true.
 
 ``#define ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED                     true``
+
+---
 
 ### Optional Additional Buttons 
 
