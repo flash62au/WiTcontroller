@@ -113,7 +113,7 @@ While the basic from is simple, the design is flexible and you can add several a
 
 12. *Optional:* A 1.3" or 2.4" OLED Display (128x64) can be used instead of the 0.96" OLED Display 128x64 ([Example](https://www.aliexpress.com/item/32683094040.html?spm=a2g0o.order_list.order_list_main.110.25621802jRBB7y)) Note: You will need to make a minor change in the config file for this to work correctly.
 
-13. *Optional:* It is possible to use a Potentiometer instead of the Rotary Encoder for throttle control.  The code supports it if you make the appropriate configuration changes in ``config_buttons.h``.   However this has had only limited testing. <br/> This is documented to some degree in ``config_buttons_example.h`` if you wish to try it.
+13. *Optional:* It is possible to use a Potentiometer instead of the Rotary Encoder for throttle control.  The code supports it if you make the appropriate configuration changes in ``config_buttons.h``.   However this has had only limited testing. <br/> This is documented to some degree in [config_buttons_example.h[(config_buttons_example.h)] if you wish to try it.
 
 ### Pinouts
 
@@ -400,7 +400,7 @@ The instructions below are for using the **Arduino IDE** and **GitHub Desktop**.
  
 The ESP32 *cannot use the 5gHz* frequencies.  It is limited to the 2.4gHz  frequencies. 
  
-Using 2.4gHz Wifi channels beyond 10 (11-13) is problematic. I have added an experimental set of definitions in ``config_network_example.h`` that allow you to set the country code.  In theory this will allow the use of the additional channels, but requires the use the version 3.2.0 (or later) of the ESP32 board library.  This has had only minimal testing.
+Using 2.4gHz Wifi channels beyond 10 (11-13) is problematic. I have added an experimental set of definitions in [config_network_example.h](config_network_example.h) that allow you to set the country code.  In theory this will allow the use of the additional channels, but requires the use the version 3.2.0 (or later) of the ESP32 board library.  This has had only minimal testing.
 
 ## Definitions and Explanations
 
@@ -595,7 +595,7 @@ mmmmmmmmm
 
 ### Allowed assignments for the 0-9 keys and/or Additional Buttons:
 
-Note: you need to edit config_buttons.h to alter these assignments   (copy config_buttons_example.h)
+Note: you need to edit ``config_buttons.h`` to alter these assignments   (copy ``config_buttons_example.h``)
 - FUNCTION_NULL   - don't do anything
 - FUNCTION_0 - FUNCTION_31
 - SPEED_STOP
@@ -684,19 +684,25 @@ Then the following lists MUST have the same number of elements as NEW_MAX_ADDITI
 
 For **NEW_ADDITIONAL_BUTTON_ACTIONS**
 
-  This array lists the functions assigned to the buttons. See the list of 'Allowed assignments' above (or in actions.h).
+  This array lists the *functions or actions* assigned to the buttons. See the list of 'Allowed assignments' above (or in [actions.h](actions.h)).
+
+  This has the general form ``NEW_ADDITIONAL_BUTTON_ACTIONS{val0, val1, .. val10, up-to-val11}``
 
 For **NEW_ADDITIONAL_BUTTON_LATCHING**
 
-  This array lists if the function assigned to the buttons should be latching or not. THis is only relevant if the assigned function is for ``FUNCTION_0`` to ``FUNCTION_31``.
+  This array lists if the functions assigned to the buttons should be *latching* or not. This is only relevant if the assigned function is for ``FUNCTION_0`` to ``FUNCTION_31``.
+
+  This has the general form ``NEW_ADDITIONAL_BUTTON_LATCHING{val0, val1, .. val10, up-to-val11}``
 
 For **NEW_ADDITIONAL_BUTTON_PIN**
 
-  This array lists the pins that the buttons will be attached to.
+  This array lists the *pins* that the buttons will be attached to.
 
   * For pins on the ESP32 use the number shown on the board/diagram
   * If you are using pins on a I2C GPIO Expansion board, they will be numbered: 0-15
   * If don't want to use pin, but retain the entry set it to ``-1``.
+
+  This has the general form ``NEW_ADDITIONAL_BUTTON_PIN{val0, val1, .. val10, up-to-val11}``
 
 For **NEW_ADDITIONAL_BUTTON_TYPE**
 
@@ -705,7 +711,9 @@ For **NEW_ADDITIONAL_BUTTON_TYPE**
   * Set to either INPUT_PULLUP or INPUT.  If INPUT, the pin will need an external pullup resister (e.g. 10k)
   * Pins 34,35,36,39 can be used but don't have an internal pullup, so use INPUT for these
 
-See additional information in ``config_button_example.h``.
+  This has the general form ``NEW_ADDITIONAL_BUTTON_TYPE{val0, val1, .. val10, up-to-val11}``
+
+See additional information in [config_button_example.h](config_buttons_example.h).
 
 ---
 
@@ -739,7 +747,7 @@ This is one of the common 1.3 inch OLED displays
 
 ``#define OLED_TYPE U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);``
 
-See ``config_buttons_example.h`` for more information.
+See [config_buttons_example.h](config_buttons_example.h) for more information.
 
 ---
 

@@ -318,7 +318,11 @@
 //
 // To use the new format USE_NEW_ADDITIONAL_BUTTONS_FORMAT must be set to 'true'
 // And NEW_MAX_ADDITIONAL_BUTTONS must be set to the number you want to use. 
-// Then the following list MUST have the same number of elements
+// Then the following lists MUST have the same number of elements
+// e.g. NEW_ADDITIONAL_BUTTON_ACTIONS{val0, val1, .. val10, up-to-val11}
+// e.g. NEW_ADDITIONAL_BUTTON_LATCHING{val0, val1, .. val10, up-to-val11}
+// e.g. NEW_ADDITIONAL_BUTTON_PIN{val0, val1, .. val10, up-to-val11}
+// e.g. NEW_ADDITIONAL_BUTTON_TYPE{val0, val1, .. val10, up-to-val11}
 // Make sure the last entry in each list does NOT have the comma (,)
 
 //   #define USE_NEW_ADDITIONAL_BUTTONS_FORMAT true
