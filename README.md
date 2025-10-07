@@ -44,7 +44,8 @@ While the basic from is simple, the design is flexible and you can add several a
 * [Modifying the code](#modifying-the-code)
 * [Change Log](#change-log)
 
----
+<br/>
+<hr style="border: none; height: 4px; background-color: #007bff; border-radius: 2px;">
 
 ## Prerequisites
 
@@ -65,7 +66,9 @@ While the basic from is simple, the design is flexible and you can add several a
 
     Note that there seems to be an issue with the **YaMoRC Command Station** that I am still working on.  See the notes for the DEFAULT_HEARTBEAT_PERIOD define below.
 
----
+<br/>
+<hr style="border: none; height: 4px; background-color: #007bff; border-radius: 2px;">
+
 
 ## Building
 
@@ -226,9 +229,8 @@ correctly identified and adjusted as needed.
 
 ### Case
 
-![3D printer case 1](images/witcontroller1.jpg)
+<img src="images/witcontroller1.jpg" width="300;"></img> <img src="images/witcontroller2.jpg" width="300;"></img>
 
-![3D printed case 2](images/witcontroller1.jpg)
 My case was 3D Printed for me by peteGSX (See the [Thingiverse.](https://www.thingiverse.com/thing:5440351) )
 
 * The 3x4 keypad petGSX designed the case for came from Jaycar and is slightly narrower than the one you see in the 'deconstructed' view in the video above.
@@ -238,30 +240,29 @@ My case was 3D Printed for me by peteGSX (See the [Thingiverse.](https://www.thi
 
 ### Variations
 
-![sumner version ](images/sumner_version.png)
+<img src="images/sumner_version.png" width="300;"></img> <br/>
 See [*sumner* version](https://1fatgmc.com/RailRoad/DCC/WiTcontroller-Index.html).
 
-![syurev version](images/syurev_case.png)
-See [Thingiverse](https://www.thingiverse.com/thing:6541187).
+<img src="images/syurev_case.png" width="300;"></img> <br/>
+syurev version. See [Thingiverse](https://www.thingiverse.com/thing:6541187).
 
-![Railsnail version](images/railsnail_case.png)
-See [RMweb](https://www.rmweb.co.uk/forums/topic/186297-project-a-witcontroller-wireless-throttle-to-control-my-dcc-ex-commandstation/).
+<img src="images/railsnail_case.png" width="300;"></img> <br/>
+Railsnail version. See [RMweb](https://www.rmweb.co.uk/forums/topic/186297-project-a-witcontroller-wireless-throttle-to-control-my-dcc-ex-commandstation/).
 
-![kees version](images/kees_case.png)
-See [printables](https://www.printables.com/model/907658-dccexcontroller-witcontroller).
+<img src="images/kees_case.png" width="300;"></img> <br/>
+kees version. See [printables](https://www.printables.com/model/907658-dccexcontroller-witcontroller).
 
-![Unknown author](images/case_uknown.png)
-See [Thingiverse](https://makerworld.com/en/models/819825).
+<img src="images/case_uknown.png" width="300;"></img> <br/>
+Unknown author. See [Thingiverse](https://makerworld.com/en/models/819825).
 
-![gingerangles version with 2.4 inch screen](images/gingerangles_version.png)
+<img src="images/gingerangles_version.png" width="300;"></img> <br/>
 *gingerangles* version with 2.4 inch screen...
 
-![rdbnogueira version](images/rdbnogueira_version.png)
-See [Thingiverse](https://www.thingiverse.com/thing:6956982)
+<img src="images/rdbnogueira_version.png" width="300;"></img> <br/> 
+rdbnogueira version. See [Thingiverse](https://www.thingiverse.com/thing:6956982)
 
-David Virgo's version using the EC11 encoder 
-![David Virgo's version](https://github.com/dvirgo62/Printed-case-for-witcontroller/blob/main/PXL_20250910_022436424.jpg?raw=true)
-See [GitHub](https://github.com/dvirgo62/Printed-case-for-witcontroller?fbclid=IwY2xjawMyNLNleHRuA2FlbQIxMABicmlkETFTZ3RWbmRYck9MRENISVczAR7I770O70-brr0UWQ1O463MGa91Kf7WoZwbx85NPC72q69bG04gduhkIRDuFg_aem_znuhLVk6PxQxmlZntuLdAA)
+<img src="https://github.com/dvirgo62/Printed-case-for-witcontroller/blob/main/PXL_20250910_022436424.jpg?raw=true" width="300;"></img> <br/>
+David Virgo's version using the EC11 encode. See [GitHub](https://github.com/dvirgo62/Printed-case-for-witcontroller?fbclid=IwY2xjawMyNLNleHRuA2FlbQIxMABicmlkETFTZ3RWbmRYck9MRENISVczAR7I770O70-brr0UWQ1O463MGa91Kf7WoZwbx85NPC72q69bG04gduhkIRDuFg_aem_znuhLVk6PxQxmlZntuLdAA)
 
 ---
 
@@ -276,12 +277,7 @@ And for a very different take on what is possible by extending the design, have 
 
 
 <br/>
-
----
-
-<br/>
-
----
+<hr style="border: none; height: 4px; background-color: #007bff; border-radius: 2px;">
 
 ## Loading the code
 
@@ -385,12 +381,7 @@ The instructions below are for using the **Arduino IDE** and **GitHub Desktop**.
 </details>
 
 <br/>
-
----
-
-<br/>
-
----
+<hr style="border: none; height: 4px; background-color: #007bff; border-radius: 2px;">
 
 ## Using WiTController
 
@@ -636,8 +627,7 @@ Note: you need to edit ``config_buttons.h`` to alter these assignments   (copy `
 - CUSTOM_7   - There must be already be a command defined as ``#CUSTOM_COMMAND_7 ...``
 
 <br/>
-
----
+<hr style="border: none; height: 4px; background-color: #007bff; border-radius: 2px;">
 
 ## Options and Extras
 
@@ -649,7 +639,7 @@ If you find that moving the encoder a single click sends more than one speed com
 
 Depending on your encoder - try 1,2,3 or 4 till you get expected behaviour.  The default is 2
 
----
+<hr style="height: 1px;">
 
 ### Direction of rotation of the encoder
 
@@ -659,7 +649,7 @@ To change the configuration so that rotating the encoder clockwise increases spe
 
 ``#define ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED                     true``
 
----
+<hr style="height: 1px;">
 
 ### Optional Additional Buttons 
 
@@ -719,7 +709,7 @@ For **NEW_ADDITIONAL_BUTTON_TYPE**
 
 See additional information in [config_button_example.h](config_buttons_example.h).
 
----
+<hr style="height: 1px;">
 
 ### Optional use of a EC11 rotary encoder (with no physical resistor pullups) in place of the KY040 encoder module 
 
@@ -733,7 +723,7 @@ If the ``EC11_PULLUPS_REQUIRED`` is set to ``true`` an EC11 used for hardware bu
 
 The default is ``false``.
 
----
+<hr style="height: 1px;">
 
 ### Optional use of different OLED displays
 
@@ -753,7 +743,7 @@ This is one of the common 1.3 inch OLED displays
 
 See [config_buttons_example.h](config_buttons_example.h) for more information.
 
----
+<hr style="height: 1px;">
 
 ### Optional use of a potentiometer (pot) instead of the encoder for the throttle
 
@@ -785,9 +775,9 @@ a) You must define the values the pot will send at at zero throw and full throw 
 
 Sumner Patterson has developed an app to help find the appropriate pot values for the ``THROTTLE_POT_NOTCH_VALUES``.
 
----
+<hr style="height: 1px;">
 
-### Instructions for optional use of a voltage divider to show the battery charge level
+### Optional use of a voltage divider to show the battery charge level
 
 See diagram above for how to wire in the volage divider.  47k resistors are used, but this can be varied as long as the output to the pin is limited to below 3.3v. See additional information related to the Pangodream Library that WiTcontroller uses here... https://www.pangodream.es/tag/18650-ion-li
 
@@ -843,7 +833,7 @@ The display of the battery can be temporarily toggled by setting a key or button
 Note: 
 I recommend adding a physical power switch to disconnect the battery as this feature will, slowly, continually drain the battery, even when not being used.
 
----
+<hr style="height: 1px;">
 
 ### YaMoRC Command Stations / Heartbeat Period
 
@@ -853,7 +843,7 @@ The heartbeat period defaults to 10 seconds.  The server should send the period 
 
 It is believed that the YaMoRC Command Stations are not sending this as the should (according to the WiThrottle specification).  For those, and any other WiThrottle that do not send it, uncomment or add the define above and adjust the number of seconds to match the setting on the server.
 
----
+<hr style="height: 1px;">
 
 ### Startup Commands
 
@@ -864,15 +854,15 @@ Each must be ONLY ONE single valid command.  Either a direct action or a menu ac
 
 Note: Selecting from the roster/turnouts etc. is not possible as the commands will execute before the roster loads.
 
----
+<hr style="height: 1px;">
 
-### Automatically acquire the only loco in the roster
+### Optionally automatically acquire the only loco in the roster
 
 ``#define ACQUIRE_ROSTER_ENTRY_IF_ONLY_ONE true``
 
 Enabling this option will automatically acquire the only roster entry after connection to the WiThrottle Server, but only if there is ***only one*** roster entry. 
 
----
+<hr style="height: 1px;">
 
 ### Instructions for German Translations     Anleitung für deutsche Übersetzungen
 
@@ -887,7 +877,7 @@ Sie können jede dieser Übersetzungen einzeln überschreiben, indem Sie eine en
 Ich würde mich über jede Hilfe zur Verbesserung dieser Übersetzungen freuen.
 Bei Interesse kontaktieren Sie mich bitte direkt für eine Anleitung.
 
----
+<hr style="height: 1px;">
 
 ### Istruzioni per la traduzione in Italiano
 
@@ -898,7 +888,7 @@ Si può sovrascrivere una qualunque di queste traduzioni individualmente aggiung
 Qualunque contributo è gradito.
 Per ogni questione, il contatto ufficiale è il canale Discord di DCC-EX nella sezione wifi-throttles.
 
----
+<hr style="height: 1px;">
 
 ### Instructions for Other Translations
 
@@ -911,11 +901,7 @@ If you are interested, please contact me directly for instructions.
 
 <br/>
 
----
-
-<br/>
-
----
+<hr style="border: none; height: 4px; background-color: #007bff; border-radius: 2px;">
 
 ## Modifying the code
 
@@ -923,21 +909,13 @@ If you plan to modify the code to make you own version, it is recommended that y
 
 [Instructions on how to do so are here](forking.md).
 
----
-
-<br/>
-
----
+<hr style="border: none; height: 4px; background-color: #007bff; border-radius: 2px;">
 
 ## Change Log
 
 [See full change log/ version history](change_log.md)
 
----
-
-<br/>
-
----
+<hr style="border: none; height: 4px; background-color: #007bff; border-radius: 2px;">
 
 ## Contact Me
 
