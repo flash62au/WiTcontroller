@@ -10,8 +10,11 @@ That way:
 
 ## Required Software
 
-* GitHub Desktop
-* Arduino IDE or VSCode (VSC)
+* [GitHub Desktop](https://desktop.github.com/download/) (or similar)
+* [Arduino IDE](https://www.arduino.cc/en/software/) or [Visual Studio Code (VSC)](https://code.visualstudio.com/download)
+
+> [!NOTE]
+> **Visual Studio Code** is far superior to the **Ardunio IDE** for this type of coding.
 
 ## Procedure
 
@@ -19,11 +22,15 @@ That way:
 
 Ideally the cycle would look like this..
 
+<img src="images/github_doc_cycle1.png" width="300">
+
 Changes to the original would be pulled down from the origin repository directly to your local (PC) repository.  You would push your changes to your GitHub website repository. Then create a *Pull request* to send them to the origin for review.
 
 While this is possible, both **GitHub Desktop** and **VSCode** make it extremely cumbersome to do so.
 
 *So instead a slightly longer approach is described below...*
+
+<img src="images/github_doc_cycle2.png" width="300">
 
 Changes to the original would be pulled down from the origin repository to your GitHub website repository with a *Pull Request*.  You will then pull those changes to you local (PC) repository. You will push your changes to your GitHub website repository. Then create a *Pull Request* to send them to the origin for review.
 
