@@ -657,7 +657,7 @@ To change the configuration so that rotating the encoder clockwise increases spe
 
 ``#define ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED                     true``
 
-### Instructions for Optional Additional Buttons 
+### Optional Additional Buttons 
 
 The way to add additional buttons changed in version 1.83.  The old way will continue to work but only the new way is described here.
 
@@ -717,7 +717,7 @@ See additional information in [config_button_example.h](config_buttons_example.h
 
 ---
 
-### Instructions for optional use of a EC11 rotary encoder (with no physical resistor pullups) in place of the KY040 encoder module 
+### Optional use of a EC11 rotary encoder (with no physical resistor pullups) in place of the KY040 encoder module 
 
 Internal GPIO pullups required if the hardware build utilises a bare EC11 rotary encoder in place of a KY040 encoder module. (The encoder module has physical pullups fitted)
 
@@ -731,7 +731,7 @@ The default is ``false``.
 
 ---
 
-### Instructions for optional use of different OLED displays
+### Optional use of different OLED displays
 
 WitController will support any OLED display with a resolution of 128x64 that is supported by the U8g2 library.  This include displays up to 2.4 inch.
 
@@ -751,7 +751,7 @@ See [config_buttons_example.h](config_buttons_example.h) for more information.
 
 ---
 
-### Instructions for optional use of a potentiometer (pot) instead of the encoder for the throttle
+### Optional use of a potentiometer (pot) instead of the encoder for the throttle
 
 config_buttons.h can include the following optional defines:
 
@@ -851,6 +851,8 @@ It is believed that the YaMoRC Command Stations are not sending this as the shou
 
 ---
 
+### Startup Commands
+
 ``#define STARTUP_COMMAND_1 ""`` .. ``#define STARTUP_COMMAND_4 ""``
 
 Optional. If defined, up to four commands will be executed, in order, after connection to the WiThrottle Server.
@@ -859,6 +861,8 @@ Each must be ONLY ONE single valid command.  Either a direct action or a menu ac
 Note: Selecting from the roster/turnouts etc. is not possible as the commands will execute before the roster loads.
 
 ---
+
+### Automatically acquire the only loco in the roster
 
 ``#define ACQUIRE_ROSTER_ENTRY_IF_ONLY_ONE true``
 
