@@ -876,16 +876,13 @@ Enabling this option will automatically acquire the only roster entry after conn
 
 ### Instructions for German Translations     Anleitung für deutsche Übersetzungen
 
-The file ``language_deutsch.h`` contains German translations (by Bastian Zechendorf).  Uncomment (or add) the ``#include "language_deutsch.h"`` line in ``config_buttons.h`` to see menus and messages in German.
+The file [language_deutsch.h](language_deutsch.h) contains German translations (by Bastian Zechendorf).  Uncomment (or add) the ``#include "language_deutsch.h"`` line in ``config_buttons.h`` to see menus and messages in German.
 
 You can override any of these translations individually by adding an appropriate ``#define`` statement in the ``config_buttons.h``, but it *must* be *before* the ``#include...`` statement.
 
 Die Datei ``language_deutsch.h`` enthält deutsche Übersetzungen (von Bastian Zechendorf).  Kommentieren Sie die Zeile ``#include "language_deutsch.h"`` in ``config_buttons.h`` aus (oder fügen Sie sie hinzu), um Menüs und Meldungen auf Deutsch anzuzeigen.
 
 Sie können jede dieser Übersetzungen einzeln überschreiben, indem Sie eine entsprechende ``#define`` -Anweisung in ``config_buttons.h`` hinzufügen, diese muss jedoch *vor* der ``#include...`` -anweisung stehen.
-
-I would appreciate any assistance to improve these translations.
-If you are interested, please contact me directly for instructions.
 
 Ich würde mich über jede Hilfe zur Verbesserung dieser Übersetzungen freuen.
 Bei Interesse kontaktieren Sie mich bitte direkt für eine Anleitung.
@@ -894,7 +891,7 @@ Bei Interesse kontaktieren Sie mich bitte direkt für eine Anleitung.
 
 ### Istruzioni per la traduzione in Italiano
 
-Il file "language_italiano.h" contiene la traduzione italiana (by Roberto B). Rimuovere il commento o aggiungere la linea "#include language_italiano.h" (senza le " ") nel file "config_buttons.h" per avere menù e messaggi in Italiano.
+Il file [language_italiano.h](language_italiano.h) contiene la traduzione italiana (by Roberto B). Rimuovere il commento o aggiungere la linea "#include language_italiano.h" (senza le " ") nel file "config_buttons.h" per avere menù e messaggi in Italiano.
 
 Si può sovrascrivere una qualunque di queste traduzioni individualmente aggiungendo la relativa "#define" nel file "config_buttons.h" ma deve essere fatto assolutamente prima dell' "#include" della traduzione.
 
@@ -908,6 +905,9 @@ Per ogni questione, il contatto ufficiale è il canale Discord di DCC-EX nella s
 If you create a copy of the file ``language_deutsch.h`` (with a new name) and change the German text it contains to any language you wish (using the English text on the right as a guide to what is needed) you can add that file as an include in ``config_buttons.h``.
 
 I would welcome it if you then sent me the file you created for inclusion in this repository.
+
+I would appreciate any assistance to improve or add to the translations.
+If you are interested, please contact me directly for instructions.
 
 <br/>
 
