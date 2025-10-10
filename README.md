@@ -215,6 +215,8 @@ VN  39                                  AB10*
  R1 PIN 18                     R2 PIN 17
                                R3 PIN 16
 
+Cx = Column x      Rx = Row x
+
 Note:
 Different keypad manufacturers may arrange the pins on the 
 base of the keypad differently to those listed above.  
