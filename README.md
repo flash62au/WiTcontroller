@@ -14,7 +14,7 @@ In its basic form, the WiTcontroller uses only four components plus a battery.  
 
 While the basic from is simple, the design is flexible and you can add several additional components if you wish.
 
-![Original/Basic Version ](images/petegsx_version.png)
+<img src="images/petegsx_version.png" width="250"></img>
 
 [See a video of it in use here.](https://youtu.be/RKnhfBCP_SQ)  
 [and another...](https://www.youtube.com/watch?v=1w7H2OvP8Jg) (from GingeAngles)
@@ -262,7 +262,11 @@ Unknown author. See [Thingiverse](https://makerworld.com/en/models/819825).
 rdbnogueira version. See [Thingiverse](https://www.thingiverse.com/thing:6956982)
 
 <img src="https://github.com/dvirgo62/Printed-case-for-witcontroller/blob/main/PXL_20250910_022436424.jpg?raw=true" width="300;"></img> <br/>
-David Virgo's version using the EC11 encode. See [GitHub](https://github.com/dvirgo62/Printed-case-for-witcontroller?fbclid=IwY2xjawMyNLNleHRuA2FlbQIxMABicmlkETFTZ3RWbmRYck9MRENISVczAR7I770O70-brr0UWQ1O463MGa91Kf7WoZwbx85NPC72q69bG04gduhkIRDuFg_aem_znuhLVk6PxQxmlZntuLdAA)
+David Virgo's version using the EC11 encoder. See [GitHub](https://github.com/dvirgo62/Printed-case-for-witcontroller?fbclid=IwY2xjawMyNLNleHRuA2FlbQIxMABicmlkETFTZ3RWbmRYck9MRENISVczAR7I770O70-brr0UWQ1O463MGa91Kf7WoZwbx85NPC72q69bG04gduhkIRDuFg_aem_znuhLVk6PxQxmlZntuLdAA)
+
+<img src="images/markwtech_case.jpg" width="300;"></img> <br/> 
+markwtech version. See [Thingiverse](https://www.thingiverse.com/thing:7029069)
+
 
 ---
 
