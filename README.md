@@ -259,6 +259,9 @@ Unknown author. See [Thingiverse](https://makerworld.com/en/models/819825).
 
 <img src="images/gingerangles_version.png" width="300;"></img> <br/>
 *gingerangles* version with 2.4 inch screen...
+gingerangels can be contacted on the DCC-EX Discord server.
+[Discord Invite](https://discord.gg/8ghsjsBup8) - 
+[specific message](https://discord.com/channels/713189617066836079/735156882511102033/1316646832297742380)
 
 <img src="images/rdbnogueira_version.png" width="300;"></img> <br/> 
 rdbnogueira version. See [Thingiverse](https://www.thingiverse.com/thing:6956982)
