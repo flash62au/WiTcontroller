@@ -279,7 +279,7 @@ Some videos:
 
 * https://youtu.be/RKnhfBCP_SQ
 * https://www.youtube.com/shorts/1w7H2OvP8Jg
-* https://www.youtube.com/watch?v=Ga_80A6LwCI (Full assembly by DriverD)
+* https://www.youtube.com/watch?v=Ga_80A6LwCI (Full assembly video by DriverD)
 
 ---
 
