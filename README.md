@@ -8,13 +8,13 @@ A WiTcontroller is a simple DIY, handheld controller that talks to a WiThrottle 
 
 **Why WiTcontroller?**
 
+<img src="images/petegsx_version.png" width="150" style="float:right;"></img>
+
 There are a number of excellent DIY DCC controllers available but most require a lot of components and a lot of soldering.  I wanted to create the simplest possible controller so that it would be as easy (as possible) to make one.
 
 In its basic form, the WiTcontroller uses only four components plus a battery.  You can even put it together without soldering, though I don't recommend that for long term use.
 
-While the basic from is simple, the design is flexible and you can add several additional components if you wish.
-
-<img src="images/petegsx_version.png" width="250"></img>
+While the basic form is simple, the design is flexible and you can add several additional components if you wish.
 
 [See a video of it in use here.](https://youtu.be/RKnhfBCP_SQ)  
 [and another...](https://www.youtube.com/watch?v=1w7H2OvP8Jg) (from GingeAngles)
@@ -246,7 +246,7 @@ My case was 3D Printed for me by peteGSX (See the [Thingiverse.](https://www.thi
 See [*sumner* version](https://1fatgmc.com/RailRoad/DCC/WiTcontroller-Index.html).
 
 <img src="images/syurev_case.png" width="300;"></img> <br/>
-syurev version. See [Thingiverse](https://www.thingiverse.com/thing:6541187).
+syurev version. See [Thingiverse](https://www.thingiverse.com/thing:6541187) or [cults3d](https://cults3d.com/en/3d-model/gadget/case-for-dccexcontroller-witcontroller?srsltid=AfmBOor1vJFxJRlUXj0FpI2E6JM4anwHzLv4IxYo9wwbWouIjegVqiMr)
 
 <img src="images/railsnail_case.png" width="300;"></img> <br/>
 Railsnail version. See [RMweb](https://www.rmweb.co.uk/forums/topic/186297-project-a-witcontroller-wireless-throttle-to-control-my-dcc-ex-commandstation/).
@@ -279,6 +279,7 @@ Some videos:
 
 * https://youtu.be/RKnhfBCP_SQ
 * https://www.youtube.com/shorts/1w7H2OvP8Jg
+* https://www.youtube.com/watch?v=Ga_80A6LwCI (Full assembly by DriverD)
 
 ---
 
