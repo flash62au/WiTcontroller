@@ -1,5 +1,8 @@
 # Change Log
 
+### V1.94
+- EStop bug fix from https://github.com/markwtech
+
 ### V1.93
 - Added define for DEFAULT_HEARTBEAT_PERIOD. Defaults to 10 seconds.  Only needed if the server does not send the period as it should.
 

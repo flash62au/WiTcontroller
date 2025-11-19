@@ -2565,7 +2565,7 @@ void speedEstop() {
   debug_println("Speed EStop"); 
   wiThrottleProtocol.emergencyStop();
   for (int i=0; i<maxThrottles; i++) {
-    speedSet(getMultiThrottleChar(i),0);
+    speedSet(i,0);
     currentSpeed[i] = 0;
   }
   writeOledSpeed();
@@ -2574,7 +2574,7 @@ void speedEstop() {
 void speedEstopCurrentLoco() {
   debug_println("Speed EStop Curent Loco"); 
   wiThrottleProtocol.emergencyStop(currentThrottleIndexChar);
-  speedSet(currentThrottleIndexChar,0);
+  speedSet(currentThrottleIndex,0);
   writeOledSpeed();
 }
 
