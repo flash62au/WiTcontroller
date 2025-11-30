@@ -1,4 +1,4 @@
-const String appVersion = "v1.94";
+const String appVersion = "v1.95";
 #ifndef CUSTOM_APPNAME
    const String appName = "WiTcontroller";
 #else
@@ -1025,6 +1025,13 @@ const char ssidPasswordBlankChar = 164;
   #define ESPMDNS_IP_ATTRIBUTE_NAME MDNS.IP(i)
 #else
   #define ESPMDNS_IP_ATTRIBUTE_NAME MDNS.address(i)
+#endif
+
+// ***************************************************
+// mDNS wait time 
+
+#ifndef MDNS_WAIT_TIME
+   #define MDNS_WAIT_TIME 10000
 #endif
 
 // ***************************************************

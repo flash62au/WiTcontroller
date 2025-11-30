@@ -1,5 +1,8 @@
 # Change Log
 
+### V1.95
+- Added MDNS_WAIT_TIME define
+
 ### V1.94
 - EStop bug fix from https://github.com/markwtech
 

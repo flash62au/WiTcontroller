@@ -921,7 +921,7 @@ void browseWitService() {
   } else {
     int j = 0;
     while ( (noOfWitServices == 0) 
-    && ((nowTime-startTime) <= 10000)) { // try for 10 seconds 
+    && ((nowTime-startTime) <= MDNS_WAIT_TIME)) { // try for 10 seconds (or whatever MDNS_WAIT_TIME is set to) 
       noOfWitServices = MDNS.queryService(service, proto);
       oledText[3] = getDots(j);
       writeOledBattery();

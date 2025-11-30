@@ -71,3 +71,12 @@ const String routePrefixes[maxSsids] = {"IO:AUTO:", "IO:AUTO:", "IO:AUTO:", "IO:
 // Uncomment the following line and set to false to disable this feature
 
 // #define SEND_LEADING_CR_LF_FOR_COMMANDS false
+
+// ********************************************************************************************
+
+// Time in milliseconds to wait for mDNS response
+// default is 10 seconds (10000ms)
+//
+// Uncomment the following line and increase the time if you are having problems with mDNS discovery
+
+// #define MDNS_WAIT_TIME 10000
