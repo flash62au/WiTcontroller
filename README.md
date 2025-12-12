@@ -812,9 +812,10 @@ If the battery does not show 100% when plugged into the charger, you may need to
     
       #define WITCONTROLLER_DEBUG    0
 
-    a) Make sure your battery is fully charged.
-    b) Upload the code and open the serial monitor. 
-    c) Wait. Don't connect.
+    a) **Make sure your battery is fully charged** first.
+    b) Upload the code if you have not already done so. 
+    c) Open the serial monitor. 
+    d) Wait. (Don't connect to a Withrottle server.)
     You will see lines like...
 
       BATTERY TestValue: 100 (10003)
@@ -822,11 +823,11 @@ If the battery does not show 100% when plugged into the charger, you may need to
       BATTERY If Battery full, BATTERY_CONVERSION_FACTOR should be: 1.69 (10014)
 
     Let it run for a while.
-    d) Note one of the recommended values (it will vary a bit) and enter 
+    e) Note one of the recommended values (it will vary a bit) and enter 
        it into the define in your config_buttons.h
-    e) Re-upload code and connect to a server
-    f) Confirm that the battery reads 100% (repeat if not)
-    g) Run the WiTcontroller on battery for few hours and confirm the 
+    f) Re-upload code and connect to a server
+    g) Confirm that the battery reads 100% (repeat if not)
+    h) Run the WiTcontroller on battery for few hours and confirm the 
        battery level is droping at an expected rate. 
        (adjust the conversion factor if not.)
 

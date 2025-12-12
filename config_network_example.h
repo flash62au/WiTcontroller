@@ -1,7 +1,10 @@
-// enter the SSIDs and passwords of as many networks you wish to try to connect to.
+// enter number the SSIDs and passwords of as many networks you wish to try to connect to.
+// This can be any number, but you must then add the same number in each array below.
+//                                 ˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉ
 const int maxSsids = 4;
 
-// There must be the same number of entities (specified above) in each of the following arrays
+// There must be the same number of elements (specified above) in each of the following arrays
+//       ˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉ             
 
 const String ssids[maxSsids] = {"Network1", "Network2", "Network3", "Network4"};
 const String passwords[maxSsids] = {"password1", "password2", "password3", "password4"};
@@ -21,7 +24,7 @@ const String routePrefixes[maxSsids] = {"IO:AUTO:", "IO:AUTO:", "IO:AUTO:", "IO:
 // ********************************************************************************************
 // WiFi Country Code for the country you are in.  This is used to set the WiFi channel and power level
 // for the ESP32.  The default is 01 (World) and should work in most countries.  If you are having 
-// problems try change to another code.
+// problems try changing to another code.
 // Supported country codes are "01"(world safe mode) "AT","AU","BE","BG","BR",
 //               "CA","CH","CN","CY","CZ","DE","DK","EE","ES","FI","FR","GB","GR","HK","HR","HU",
 //               "IE","IN","IS","IT","JP","KR","LI","LT","LU","LV","MT","MX","NL","NO","NZ","PL","PT",
@@ -30,7 +33,7 @@ const String routePrefixes[maxSsids] = {"IO:AUTO:", "IO:AUTO:", "IO:AUTO:", "IO:
 // #define USE_WIFI_COUNTRY_CODE true
 // #define COUNTRY_CODE "01"
 
-// By default the countrty code of the device you are connecting to can override the country code selected here
+// By default the country code of the device you are connecting to can override the country code selected here
 // Uncommenting the following line will enforce the country code selected above.
 // This is useful if you are using a device that does not have a country code set or is set to a different country code.
 // This will also set the power level to the maximum allowed for that country code.
