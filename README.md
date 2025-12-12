@@ -340,7 +340,7 @@ The instructions below are for using the **Arduino IDE** and **GitHub Desktop**.
       Notes: <br/> **DO NOT** download these libraries *directly*. Use the *Boards Manager*. <br/> **DO NOT** put them in the WiTcontroller folder. <br/> These libraries do not appear in your list of libraries, but will be available to use regardless. (The files are actually buried away in a subfolder of the ESP32 Boards library.)
 
 6. Copy the two example config files. <br/> You will need to use a *File Manger* type of app on the PC to do this.
-    * Copy ``config_network_example.h`` to a new file to ``config_network.h``. 
+    * Copy ``config_network_example.h`` to a new file ``config_network.h``. 
     * Copy ``config_buttons_example.h`` to a new file ``config_buttons.h``.
 
       Note: <br/> These new files are not included in the download, so that you can personalise your configuration without fear that those configurations will be overridden if you update (download again) the WiTcontoller code.
@@ -816,23 +816,21 @@ If the battery does not show 100% when plugged into the charger, you may need to
   
     #define WITCONTROLLER_DEBUG    0
 
-  a) **Make sure your battery is fully charged** first!
-  b) Upload the code WiTcontroller code if you have not already done so. 
-  c) Open the serial monitor. 
-  d) Wait. (Don't connect to a WiThrottle server.)
+  a) **Make sure your battery is fully charged** first! <br/>
+  b) Upload the code WiTcontroller code if you have not already done so.  <br/>
+  c) Open the serial monitor.  <br/>
+  d) Wait. (Don't connect to a WiThrottle server.) <br/>
   You will see lines like...
 
     BATTERY TestValue: 100 (10003)
     BATTERY lastAnalogReadValue: 2491 (10003)
     BATTERY If Battery full, BATTERY_CONVERSION_FACTOR should be: 1.69 (10014)
 
-  Let it run for a while.
-  e) Note one of the recommended values (it will vary a bit) and enter 
-      it into the define in your ``config_buttons.h``
-  f) Re-upload code and connect to a server
-  g) Confirm that the battery reads 100% (repeat if not)
-  h) Run the WiTcontroller on battery for few hours and confirm the 
-      battery level is droping at an expected rate. 
+  Let it run for a while. <br/>
+  e) Note one of the recommended values (it will vary a bit) and enter it into the define in your ``config_buttons.h`` <br/>
+  f) Re-upload code and connect to a server <br/>
+  g) Confirm that the battery reads 100% (repeat if not) <br/>
+  h) Run the WiTcontroller on battery for few hours and confirm the battery level is droping at an expected rate.  <br/>
       (adjust the conversion factor if not.)
 
 *To show the calculated percentage*, set the following to ``true`` The default is ``false``.
