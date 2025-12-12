@@ -812,7 +812,7 @@ If the battery does not show 100% when plugged into the charger, you may need to
     
       #define WITCONTROLLER_DEBUG    0
 
-    a) **Make sure your battery is fully charged** first.
+    a) Make sure your battery is fully charged first!
     b) Upload the code if you have not already done so. 
     c) Open the serial monitor. 
     d) Wait. (Don't connect to a Withrottle server.)
