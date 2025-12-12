@@ -98,7 +98,7 @@ While the basic form is simple, the design is flexible and you can add several a
 
     *Note: Any capacity will work, but 400mAh will give about 6 hours of run time.*
     
-    <code style="color:red;"><strong>WARNING:</strong></code> 
+    **WARNING:**
 
     ***I have found that some batteries come with the positive and negative leads the other way around to the terminals on the ESP32.*** <br/> **Check they are correct before plugging it in.** <br/> The polarity of the battery is easy to swap, by getting a knife blade under the small tabs on the plastic connector and pulling each male socket out. <br/> Take extreme care. ***DO NOT SHORT THE TERMINALS.*** 
 
@@ -137,7 +137,7 @@ While the basic form is simple, the design is flexible and you can add several a
 *Pinouts for Optional Battery Monitor and Additional Buttons*
 ![Assembly diagram - Optional Battery Monitor and Additional Buttons](images/WiTcontroller%20-%20Optional%20battery%20monitor.png)
 
-<code style="color:red;"><strong>WARNING:</strong></code> 
+**WARNING:**
     
 ***Different keypad manufacturers may arrange the pins on the 
 base of the keypad differently to the examples above.*** See notes in the [Default Pins for the keypads](#default-pins-for-the-keypads)  section below.
