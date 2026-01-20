@@ -1,4 +1,4 @@
-const String appVersion = "v1.95";
+const String appVersion = "v1.96";
 #ifndef CUSTOM_APPNAME
    const String appName = "WiTcontroller";
 #else
@@ -1007,7 +1007,7 @@ const char ssidPasswordBlankChar = 164;
    #define USE_BATTERY_PERCENT_AS_WELL_AS_ICON false
 #endif
 #ifndef USE_BATTERY_SLEEP_AT_PERCENT
-   #define USE_BATTERY_SLEEP_AT_PERCENT 3
+   #define USE_BATTERY_SLEEP_AT_PERCENT 0
 #endif
 
 // ***************************************************
