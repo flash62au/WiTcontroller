@@ -308,7 +308,7 @@ The instructions below are for using the **Arduino IDE** and **GitHub Desktop**.
         * Enter the following into the 'Additional Board Manager URLs' field:  https://dl.espressif.com/dl/package_esp32_index.json
     * Then Use the *Boards Manager* in the *Arduino IDE* to install the esp32 board support
         * *Tools* > *Board* > *Boards Manager*
-        * Search for "esp32" by Expressive Systems.  Install version 2.0.11 or later. (Later versions work, but go back to this 2.0.11 if you have problems.) Version 3.2.0 is recommended, and required if you need to use 2.4gHz WiFi channels greater than 10. See notes below.
+        * Search for "esp32" by Expressive Systems.  Install version 3.2.0 or later. Version 3.3.0 is recommended.  (Later versions work, but go back to this 3.2.0 if you have problems.) (Eralier versions work, but 3.2.0 or later is required if you want to use 2.4gHz WiFi channels greater than 10. See notes below. )
 
 3. Download or clone *this* repository. <br/> (Note: if you 'clone' initially, it is easier to receive updates to the code by doing a 'fetch' subsequently.  See Notes below.)
     * Option - Clone - **First Time**  ***Recommended***
