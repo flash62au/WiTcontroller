@@ -1,6 +1,9 @@
 # Change Log
+### V1.97
+- Additional logging
+
 ### V1.96
-- changed the default for ``USE_BATTERY_SLEEP_AT_PERCENT`` to ``#define USE_BATTERY_SLEEP_AT_PERCENT 0``.  This turns the automatic sleep on low battery off by default.
+- Changed the default for ``USE_BATTERY_SLEEP_AT_PERCENT`` to ``#define USE_BATTERY_SLEEP_AT_PERCENT 0``.  This turns the automatic sleep on low battery off by default.
 
 ### V1.95
 - Added MDNS_WAIT_TIME define

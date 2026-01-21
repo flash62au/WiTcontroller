@@ -603,10 +603,14 @@ void browseSsids() { // show the found SSIDs
   writeOledBattery();
   writeOledArray(false, false, true, true);
 
+  debug_println("Setting Scan Method");
   WiFi.setScanMethod(WIFI_ALL_CHANNEL_SCAN);
+  debug_println("Setting Sort Method");
   WiFi.setSortMethod(WIFI_CONNECT_AP_BY_SIGNAL);
   
+  debug_println("Stating Scan");
   int numSsids = WiFi.scanNetworks();
+  debug_println("Processing Scan Results");
   while ( (numSsids == -1)
     && ((nowTime-startTime) <= 10000) ) { // try for 10 seconds
     delay(250);
