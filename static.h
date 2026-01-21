@@ -1,4 +1,4 @@
-const String appVersion = "v1.97";
+const String appVersion = "v1.98";
 #ifndef CUSTOM_APPNAME
    const String appName = "WiTcontroller";
 #else
@@ -10,7 +10,7 @@ const String appVersion = "v1.97";
 
 
 #ifndef USE_WIFI_COUNTRY_CODE
-   #define USE_COUNTRY_CODE false
+   #define USE_WIFI_COUNTRY_CODE false
 #endif
 #ifndef COUNTRY_CODE
    #define COUNTRY_CODE "01"

@@ -39,6 +39,7 @@ const String routePrefixes[maxSsids] = {"IO:AUTO:", "IO:AUTO:", "IO:AUTO:", "IO:
 // This will also set the power level to the maximum allowed for that country code.
 // This is not recommended unless you are sure of the country code of the device you are connecting to.
 
+// Included for future use.  This currently does nothing
 // #define ENFORCED_COUNTRY_CODE true
 
 // ********************************************************************************************
@@ -83,3 +84,14 @@ const String routePrefixes[maxSsids] = {"IO:AUTO:", "IO:AUTO:", "IO:AUTO:", "IO:
 // Uncomment the following line and increase the time if you are having problems with mDNS discovery
 
 // #define MDNS_WAIT_TIME 10000
+
+// ********************************************************************************************
+
+// Scanning and sorting method for WiFi networks
+// By default networks are scanned but not sorted
+
+// Uncomment the following line to enable sorting of WiFi networks by signal strength (RSSI) 
+// #define SORT_WIFI_NETWORKS true
+
+// Uncomment the following line to use  fast scan method (less thorough)
+// #define USE_FAST_WIFI_SCAN_METHOD true

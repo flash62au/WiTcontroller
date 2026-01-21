@@ -604,12 +604,20 @@ void browseSsids() { // show the found SSIDs
   writeOledArray(false, false, true, true);
 
   debug_println("Setting Scan Method");
-  WiFi.setScanMethod(WIFI_ALL_CHANNEL_SCAN);
-  debug_println("Setting Sort Method");
-  WiFi.setSortMethod(WIFI_CONNECT_AP_BY_SIGNAL);
+  #ifdef USE_FAST_WIFI_SCAN_METHOD
+    WiFi.setScanMethod(WIFI_FAST_SCAN);
+  #else
+    WiFi.setScanMethod(WIFI_ALL_CHANNEL_SCAN);
+  #endif
   
-  debug_println("Stating Scan");
+  #ifndef SORT_WIFI_NETWORKS
+    debug_println("Setting Sort Method");
+    WiFi.setSortMethod(WIFI_CONNECT_AP_BY_SIGNAL);
+  #endif
+  
+  debug_println("Starting Scan");
   int numSsids = WiFi.scanNetworks();
+
   debug_println("Processing Scan Results");
   while ( (numSsids == -1)
     && ((nowTime-startTime) <= 10000) ) { // try for 10 seconds
@@ -1685,9 +1693,12 @@ void setup() {
     currentSpeedStep[i] = speedStep;
   }
   
+  WiFi.mode(WIFI_STA);
+  WiFi.disconnect();
+  delay(100);
   WiFi.setHostname(DEVICE_NAME);
-  #if USE_COUNTRY_CODE
-    esp_wifi_set_country_code("01", false);
+  #if USE_WIFI_COUNTRY_CODE
+    esp_wifi_set_country_code(COUNTRY_CODE, false);
   #endif
 }
 
