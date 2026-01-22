@@ -1,6 +1,6 @@
 # Change Log
 ### V1.98
-- the SSID scan will no longer sort by default
+- The SSID scan will no longer sort by default
 - Addition of two defines for the SSID scan ``SORT_WIFI_NETWORKS`` and ``USE_FAST_WIFI_SCAN_METHOD``
   - Use ``#define SORT_WIFI_NETWORKS true`` to sort the SSIDs
   - Use ``#define USE_FAST_WIFI_SCAN_METHOD true`` to use a faster scanning method

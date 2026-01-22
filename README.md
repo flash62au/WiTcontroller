@@ -877,6 +877,18 @@ Enabling this option will automatically acquire the only roster entry after conn
 
 <hr style="height: 1px;">
 
+### WiFi Scanning options
+
+``#define SORT_WIFI_NETWORKS true``
+
+The 'found' SSIDs will not be sorted by default (from version v1.98)  To restore this feature, uncomment or add the line above in your ``config_network.h``.  If enabled, the SSIDs are sorted by signal strength.
+
+``#define USE_FAST_WIFI_SCAN_METHOD true``
+
+To do a fast scan for SSIDs, uncomment or add the line above in your ``config_network.h``.  Fast scans are not as through. 
+
+<hr style="height: 1px;">
+
 ### Instructions for German Translations     Anleitung für deutsche Übersetzungen
 
 The file [language_deutsch.h](language_deutsch.h) contains German translations (by Bastian Zechendorf).  Uncomment (or add) the ``#include "language_deutsch.h"`` line in ``config_buttons.h`` to see menus and messages in German.
