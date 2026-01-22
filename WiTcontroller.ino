@@ -608,11 +608,11 @@ void browseSsids() { // show the found SSIDs
     WiFi.setScanMethod(WIFI_FAST_SCAN);
   #else
     WiFi.setScanMethod(WIFI_ALL_CHANNEL_SCAN);
-  #endif
-  
-  #ifndef SORT_WIFI_NETWORKS
-    debug_println("Setting Sort Method");
-    WiFi.setSortMethod(WIFI_CONNECT_AP_BY_SIGNAL);
+
+    #ifndef SORT_WIFI_NETWORKS
+      debug_println("Setting Sort Method");
+      WiFi.setSortMethod(WIFI_CONNECT_AP_BY_SIGNAL);
+    #endif
   #endif
   
   debug_println("Starting Scan");

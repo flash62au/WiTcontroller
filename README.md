@@ -879,13 +879,15 @@ Enabling this option will automatically acquire the only roster entry after conn
 
 ### WiFi Scanning options
 
+``#define USE_FAST_WIFI_SCAN_METHOD true``
+
+To do a Fast Scan for SSIDs, uncomment or add the line above in your ``config_network.h``.  Fast scans are not as through. 
+
 ``#define SORT_WIFI_NETWORKS true``
 
 The 'found' SSIDs will not be sorted by default (from version v1.98). To restore this feature, uncomment or add the line above in your ``config_network.h``.  If enabled, the SSIDs are sorted by signal strength.
 
-``#define USE_FAST_WIFI_SCAN_METHOD true``
-
-To do a fast scan for SSIDs, uncomment or add the line above in your ``config_network.h``.  Fast scans are not as through. 
+Note: sorting can't be used if the Fast Scan is enabled.
 
 <hr style="height: 1px;">
 
