@@ -881,7 +881,7 @@ Enabling this option will automatically acquire the only roster entry after conn
 
 ``#define SORT_WIFI_NETWORKS true``
 
-The 'found' SSIDs will not be sorted by default (from version v1.98)  To restore this feature, uncomment or add the line above in your ``config_network.h``.  If enabled, the SSIDs are sorted by signal strength.
+The 'found' SSIDs will not be sorted by default (from version v1.98). To restore this feature, uncomment or add the line above in your ``config_network.h``.  If enabled, the SSIDs are sorted by signal strength.
 
 ``#define USE_FAST_WIFI_SCAN_METHOD true``
 
