@@ -841,7 +841,7 @@ If the battery does not show 100% when plugged into the charger, you may need to
 
 ``#define USE_BATTERY_SLEEP_AT_PERCENT 3``
 
-The display of the battery can be temporarily toggled by setting a key or button to ``SHOW_HIDE_BATTERY``.  The display will cycle between none, icon only and icon plus percent value. Note that ``USE_BATTERY_TEST`` must be set to `true` for this to have any effect.
+The display of the battery can be temporarily toggled by setting a key or button to ``SHOW_HIDE_BATTERY``.  The display will cycle between none, icon only and icon plus percent value. Note that ``USE_BATTERY_TEST`` must be set to `true` for this to have any effect. By default it is disabled (0).
 
 Note: 
 I recommend adding a physical power switch to disconnect the battery as this feature will, slowly, continually drain the battery, even when not being used.
@@ -888,6 +888,12 @@ To do a Fast Scan for SSIDs, uncomment or add the line above in your ``config_ne
 The 'found' SSIDs will not be sorted by default (from version v1.98). To restore this feature, uncomment or add the line above in your ``config_network.h``.  If enabled, the SSIDs are sorted by signal strength.
 
 Note: sorting can't be used if the Fast Scan is enabled.
+
+``#define BYPASS_WIFI_SCAN_ON_STARTUP true``
+
+This option to allows you to bypass the initial WiFi scan.  The WiTcontroller will instead show you the list of SSIDs you have defined in ``config_network.h``.  From that you can still to the scan if you wish by pressing ``#``.  Byt default this option is disbled and the network will be scanned at startup.
+
+Note: Some ESP32s seem to have an intermitient WiFi problem that causes the WifI Scan to lockup the device.  This option may be may be useful in this situation.
 
 <hr style="height: 1px;">
 
