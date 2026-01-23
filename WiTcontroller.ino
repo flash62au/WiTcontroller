@@ -1643,6 +1643,13 @@ void additionalButtonLoop() {
 
 void setup() {
   Serial.begin(115200);
+
+  debug_println("WiFi Start"); 
+  WiFi.mode(WIFI_STA);
+  WiFi.disconnect();
+  delay(100);
+  debug_println("u8g2 Start"); 
+
   // u8g2.setI2CAddress(0x3C * 2);
   // u8g2.setBusClock(100000);
   u8g2.begin();
