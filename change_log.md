@@ -1,5 +1,5 @@
 # Change Log
-### V1.100
+### V1.101
 - If the SSID scan fails, it lets you choose from the list in the config_network.h 
 ### V1.100
 - Changed the SSID scan to a non-blocking approach 
