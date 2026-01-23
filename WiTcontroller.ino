@@ -623,7 +623,7 @@ void browseSsids() { // show the found SSIDs
   debug_println("Waiting for Scan Results");
   int numSsids = -1;
   int j=0;
-  while ( (numSsids < 0)  && ((nowTime-startTime) <= 20000) ) { // wait up to 20 seconds
+  while ( (numSsids < 0)  && ((nowTime-startTime) <= 15000) ) { // wait up to 15 seconds
     numSsids = WiFi.scanComplete();
     // debug_print(" ");debug_print(numSsids);debug_print(" ");
     delay(250);
