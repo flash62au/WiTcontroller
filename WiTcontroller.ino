@@ -1643,6 +1643,8 @@ void additionalButtonLoop() {
 
 void setup() {
   Serial.begin(115200);
+  debug_println("Starting WiTcontroller"); 
+  debug_print("WiTcontroller - Version: "); debug_println(appVersion);
 
   debug_println("WiFi Start"); 
   WiFi.mode(WIFI_STA);
@@ -1656,15 +1658,14 @@ void setup() {
   u8g2.firstPage();
   delay(1000);
 
-  debug_println("Starting WiTcontroller"); 
-  debug_print("WiTcontroller - Version: "); debug_println(appVersion);
-
+  debug_println("Battery Start"); 
   batteryTest_loop();  // do the battery check once to start
 
   clearOledArray(); oledText[0] = appName; oledText[6] = appVersion; oledText[2] = MSG_START;
   writeOledBattery();
   writeOledArray(false, false, true, true);
 
+  debug_println("Encoder Start"); 
   rotaryEncoder.begin();  //initialize rotary encoder
   rotaryEncoder.setup(readEncoderISR);
   //set boundaries and if values should cycle or not 
@@ -1679,16 +1680,19 @@ void setup() {
     pinMode(ROTARY_ENCODER_B_PIN, INPUT_PULLUP);
   }
 
+  debug_println("Event Listener Start"); 
   keypad.addEventListener(keypadEvent); // Add an event listener for this keypad
   keypad.setDebounceTime(KEYPAD_DEBOUNCE_TIME);
   keypad.setHoldTime(KEYPAD_HOLD_TIME);
 
+  debug_println("Sleep Enable Start"); 
   esp_sleep_enable_ext0_wakeup(GPIO_NUM_13,0); //1 = High, 0 = Low
 
   keypadUseType = KEYPAD_USE_SELECT_SSID;
   encoderUseType = ENCODER_USE_OPERATION;
   ssidSelectionSource = SSID_CONNECTION_SOURCE_BROWSE;
 
+  debug_println("Additional Buttons Start"); 
   initialiseAdditionalButtons();
 
   resetAllFunctionLabels();
@@ -1700,10 +1704,13 @@ void setup() {
     currentSpeedStep[i] = speedStep;
   }
 
+  debug_println("Host Name and Country Start"); 
   WiFi.setHostname(DEVICE_NAME);
   #if USE_WIFI_COUNTRY_CODE
     esp_wifi_set_country_code(COUNTRY_CODE, false);
   #endif
+
+  debug_println("Start complete"); 
 }
 
 void loop() {
