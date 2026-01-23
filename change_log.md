@@ -1,4 +1,6 @@
 # Change Log
+### V1.102
+- Included a 20 second timeout for the new SSID scan
 ### V1.101
 - If the SSID scan fails, it lets you choose from the list in the config_network.h 
 ### V1.100
