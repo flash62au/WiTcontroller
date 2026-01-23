@@ -1,4 +1,4 @@
-const String appVersion = "v1.102";
+const String appVersion = "v1.103";
 #ifndef CUSTOM_APPNAME
    const String appName = "WiTcontroller";
 #else

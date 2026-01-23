@@ -1704,7 +1704,11 @@ void setup() {
 
   keypadUseType = KEYPAD_USE_SELECT_SSID;
   encoderUseType = ENCODER_USE_OPERATION;
-  ssidSelectionSource = SSID_CONNECTION_SOURCE_BROWSE;
+  #ifndef BYPASS_WIFI_SCAN_ON_STARTUP
+    ssidSelectionSource = SSID_CONNECTION_SOURCE_BROWSE;
+  #else 
+    ssidSelectionSource = SSID_CONNECTION_SOURCE_LIST;
+  #endif
 
   debug_println("Additional Buttons Start"); 
   initialiseAdditionalButtons();

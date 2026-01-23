@@ -1,4 +1,6 @@
 # Change Log
+### V1.103
+- Option to bypass the initial WiFi scan ``#define BYPASS_WIFI_SCAN_ON_STARTUP true``
 ### V1.102
 - Included a 15 second timeout for the new SSID scan
 ### V1.101

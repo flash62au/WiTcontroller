@@ -94,4 +94,7 @@ const String routePrefixes[maxSsids] = {"IO:AUTO:", "IO:AUTO:", "IO:AUTO:", "IO:
 // #define SORT_WIFI_NETWORKS true
 
 // Uncomment the following line to use  fast scan method (less thorough)
-#define USE_FAST_WIFI_SCAN_METHOD true
+// #define USE_FAST_WIFI_SCAN_METHOD true
+
+// Uncomment the following line to bypass the WiFi scan on startup
+// #define BYPASS_WIFI_SCAN_ON_STARTUP true
