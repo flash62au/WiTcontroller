@@ -1692,10 +1692,7 @@ void setup() {
     currentDirection[i] = Forward;
     currentSpeedStep[i] = speedStep;
   }
-  
-  WiFi.mode(WIFI_STA);
-  WiFi.disconnect();
-  delay(100);
+
   WiFi.setHostname(DEVICE_NAME);
   #if USE_WIFI_COUNTRY_CODE
     esp_wifi_set_country_code(COUNTRY_CODE, false);

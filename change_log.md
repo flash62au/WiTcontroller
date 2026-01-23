@@ -1,4 +1,6 @@
 # Change Log
+### V1.99
+- removed some of the code added in the previous version as it was not proving to be helpful.
 ### V1.98
 - The SSID scan will no longer sort by default
 - Addition of two defines for the SSID scan ``SORT_WIFI_NETWORKS`` and ``USE_FAST_WIFI_SCAN_METHOD``
