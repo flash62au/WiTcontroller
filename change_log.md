@@ -1,4 +1,6 @@
 # Change Log
+### V1.100
+- Changed the SSID scan to a non-blocking approach 
 ### V1.99
 - removed some of the code added in the previous version as it was not proving to be helpful.
 ### V1.98

@@ -603,33 +603,44 @@ void browseSsids() { // show the found SSIDs
   writeOledBattery();
   writeOledArray(false, false, true, true);
 
-  debug_println("Setting Scan Method");
+  debug_print("Setting Scan Method");
   #ifdef USE_FAST_WIFI_SCAN_METHOD
+    debug_println("- Fast Scan Method");
     WiFi.setScanMethod(WIFI_FAST_SCAN);
   #else
+    debug_println("- All Scan Method");
     WiFi.setScanMethod(WIFI_ALL_CHANNEL_SCAN);
 
-    #ifndef SORT_WIFI_NETWORKS
-      debug_println("Setting Sort Method");
+    #ifdef SORT_WIFI_NETWORKS
+      debug_println("Setting Sort Method - By Signal");
       WiFi.setSortMethod(WIFI_CONNECT_AP_BY_SIGNAL);
     #endif
   #endif
   
   debug_println("Starting Scan");
-  int numSsids = WiFi.scanNetworks();
+  WiFi.scanNetworks(true);
 
-  debug_println("Processing Scan Results");
-  while ( (numSsids == -1)
-    && ((nowTime-startTime) <= 10000) ) { // try for 10 seconds
+  debug_println("Waiting for Scan Results");
+  int numSsids = -1;
+  int j=0;
+  while (numSsids < 0) {
+    numSsids = WiFi.scanComplete();
+    // debug_print(" ");debug_print(numSsids);debug_print(" ");
     delay(250);
-    debug_print(".");
     nowTime = millis();
+    j++;
+    oledText[3] = getDots(j);
+    writeOledArray(false, false, true, true);
+    debug_print(".");
   }
+  debug_println("Scan Complete");
 
   startWaitForSelection = millis();
 
   foundSsidsCount = 0;
-  if (numSsids == -1) {
+  // if (numSsids == -1) {
+  if (numSsids < 0) {
+    // debug_println(" ");debug_print(numSsids);debug_print(" ");
     debug_println("Couldn't get a wifi connection");
 
   } else {
