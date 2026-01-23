@@ -69,8 +69,8 @@ const String routePrefixes[maxSsids] = {"IO:AUTO:", "IO:AUTO:", "IO:AUTO:", "IO:
 
 // For some reason WifiTrax WFD-30 system don't respond unless the commands are preceeded with CR+LF
 // Originally these would be sent if the SSID name contains "wftrx_" or you could override the name
-// From version v1.77 the extra CR+LF are sent by default.  This is a new define that allows you to
-// override this behaviour if needed.
+// From version v1.77 the extra CR+LF are sent by default.  This define allows you to override this
+// behaviour if needed.
 // 
 // Uncomment the following line and set to false to disable this feature
 
@@ -94,4 +94,4 @@ const String routePrefixes[maxSsids] = {"IO:AUTO:", "IO:AUTO:", "IO:AUTO:", "IO:
 // #define SORT_WIFI_NETWORKS true
 
 // Uncomment the following line to use  fast scan method (less thorough)
-// #define USE_FAST_WIFI_SCAN_METHOD true
+#define USE_FAST_WIFI_SCAN_METHOD true

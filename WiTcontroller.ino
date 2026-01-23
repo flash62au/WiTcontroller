@@ -638,11 +638,14 @@ void browseSsids() { // show the found SSIDs
   startWaitForSelection = millis();
 
   foundSsidsCount = 0;
-  // if (numSsids == -1) {
-  if (numSsids < 0) {
+  if (numSsids < 0) {  // -2
     // debug_println(" ");debug_print(numSsids);debug_print(" ");
-    debug_println("Couldn't get a wifi connection");
-
+    debug_println("Scan failed or no SSIDs found");
+    ssidSelectionSource = SSID_CONNECTION_SOURCE_LIST;
+    
+    oledText[3] = MSG_NO_SSIDS_FOUND;
+    writeOledArray(false, false, true, true);
+    delay(2000);
   } else {
     for (int thisSsid = 0; thisSsid < numSsids; thisSsid++) {
       /// remove duplicates (repeaters and mesh networks)
