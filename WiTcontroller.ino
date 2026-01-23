@@ -1647,16 +1647,16 @@ void setup() {
   debug_println("WiFi Start"); 
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
-  delay(100);
-  debug_println("u8g2 Start"); 
+  delay(1000);
 
+  debug_println("u8g2 Start"); 
   // u8g2.setI2CAddress(0x3C * 2);
   // u8g2.setBusClock(100000);
   u8g2.begin();
   u8g2.firstPage();
-
   delay(1000);
-  debug_println("Start"); 
+
+  debug_println("Starting WiTcontroller"); 
   debug_print("WiTcontroller - Version: "); debug_println(appVersion);
 
   batteryTest_loop();  // do the battery check once to start
