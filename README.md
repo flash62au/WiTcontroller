@@ -881,17 +881,17 @@ Enabling this option will automatically acquire the only roster entry after conn
 
 ``#define USE_FAST_WIFI_SCAN_METHOD true``
 
-To do a Fast Scan for SSIDs, uncomment or add the line above in your ``config_network.h``.  Fast scans are not as through. 
+To do a Fast Scan for SSIDs, uncomment or add the line above in your ``config_network.h``.  Fast scans are not as through. By default this option is disbled.
 
 ``#define SORT_WIFI_NETWORKS true``
 
-The 'found' SSIDs will not be sorted by default (from version v1.98). To restore this feature, uncomment or add the line above in your ``config_network.h``.  If enabled, the SSIDs are sorted by signal strength.
+The 'found' SSIDs will not be sorted by default (from version v1.98). To restore this feature, uncomment or add the line above in your ``config_network.h``.  If enabled, the SSIDs are sorted by signal strength. By default this option is disbled.
 
 Note: sorting can't be used if the Fast Scan is enabled.
 
 ``#define BYPASS_WIFI_SCAN_ON_STARTUP true``
 
-This option to allows you to bypass the initial WiFi scan.  The WiTcontroller will instead show you the list of SSIDs you have defined in ``config_network.h``.  From that you can still to the scan if you wish by pressing ``#``.  Byt default this option is disbled and the network will be scanned at startup.
+This option to allows you to bypass the initial WiFi scan.  The WiTcontroller will instead show you the list of SSIDs you have defined in ``config_network.h``.  From that you can still to the scan if you wish by pressing ``#``.  By default this option is disbled and the network will be scanned at startup.
 
 Note: Some ESP32s seem to have an intermitient WiFi problem that causes the WifI Scan to lockup the device.  This option may be may be useful in this situation.
 
