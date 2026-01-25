@@ -78,7 +78,9 @@ While the basic form is simple, the design is flexible and you can add several a
 
     *Note: any ESP32 will work but the pinouts may need to be adjusted, and a separate LiPo charger may be required*
 
-    *WARNING:* I have reports of some of the versions of this board with the USB-C connectors having problems with the WiFi.  Some are clearly fine, but others are not.  I am still investigating this, but I would recommend avoiding the USB-C version for now.
+    <span style="color:red;">**WARNING:**</span> 
+    
+    I have reports of some of the versions of this board with the USB-C connectors having problems with the WiFi.  Some are clearly fine, but others are not. </br> I am still investigating this, but I would recommend avoiding the USB-C version for now.
 
 2. 3x4 Keypad  ([Example](https://www.jaycar.com.au/12-key-numeric-keypad/p/SP0770?pos=2&queryId=20aedf107668ad42c6fe1f8b7f7a9ca7)) 
 
@@ -100,7 +102,7 @@ While the basic form is simple, the design is flexible and you can add several a
 
     *Note: Any capacity will work, but 400mAh will give about 6 hours of run time.*
     
-    **WARNING:**
+    <span style="color:red;">**WARNING:**</span>
 
     ***I have found that some batteries come with the positive and negative leads the other way around to the terminals on the ESP32.*** <br/> **Check they are correct before plugging it in.** <br/> The polarity of the battery is easy to swap, by getting a knife blade under the small tabs on the plastic connector and pulling each male socket out. <br/> Take extreme care. ***DO NOT SHORT THE TERMINALS.*** 
 
