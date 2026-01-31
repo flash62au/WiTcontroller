@@ -669,6 +669,15 @@ To change the configuration so that rotating the encoder clockwise increases spe
 
 <hr style="height: 1px;">
 
+### Direction of rotation of the encoder when the Loco is reversed
+
+By default, when the loco is reversed, to increase the speed of the loco you need to rotate the encoder in the same direction as when the loco direction is forward.  (See the previous heading.)
+If you wish to increase speed by rotating the encoder in the oposite direction when the direction is reverse' you can add the following define.  Uncomment (remove the ``//``) following line in your ``config_buttons.h``.
+
+``#define ENCODER_INVERT_ROTATION_WHEN_REVERSED                     true``
+
+<hr style="height: 1px;">
+
 ### Optional Additional Buttons 
 
 The way to add additional buttons changed in version 1.83.  The old way will continue to work but only the new way is described here.

@@ -1437,6 +1437,12 @@ void rotary_loop() {
 }
 
 void encoderSpeedChange(bool rotationIsClockwise, int speedChange) {
+    #ifdef ENCODER_INVERT_ROTATION_WHEN_REVERSED
+      if (currentDirection[currentThrottleIndex] == Reverse) {
+        rotationIsClockwise = !rotationIsClockwise;
+      }
+    #endif
+
   if (encoderRotationClockwiseIsIncreaseSpeed) {
     if (rotationIsClockwise) {
       speedUp(currentThrottleIndex, speedChange);

@@ -17,6 +17,12 @@
 
 // #define ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED                     false
 
+// Choose if you want to invert the rotary encoder rotation when the direction is reversed
+// i.e. If the direction of the current loco is 'Rev', turning the encoder clockwise will decrease the speed instead of increase
+// (or the opposite direction if ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED is true)
+// Uncomment the following line to enable this feature
+// #define ENCODER_INVERT_ROTATION_WHEN_REVERSED true
+
 // Define what the rotary encoder button does.   (Pushing down on the knob)
 // By default it will stop the loco if moving, then a second push will change the direction.
 // Uncomment and change the action if you wish it to do something else.
