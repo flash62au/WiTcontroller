@@ -1,6 +1,8 @@
 # Change Log
+### V1.105
+- Initial Chinese language support.  Needed a new define to be able to override the direction font
 ### V1.104
-- Option to invert the meanaing of the encoder rotation when the loco is reversed ``#define ENCODER_INVERT_ROTATION_WHEN_REVERSED true``
+- Option to invert the meaning of the encoder rotation when the loco is reversed ``#define ENCODER_INVERT_ROTATION_WHEN_REVERSED true``
 ### V1.103
 - Option to bypass the initial WiFi scan ``#define BYPASS_WIFI_SCAN_ON_STARTUP true``
 ### V1.102

@@ -1,4 +1,4 @@
-const String appVersion = "v1.104";
+const String appVersion = "v1.105";
 #ifndef CUSTOM_APPNAME
    const String appName = "WiTcontroller";
 #else
@@ -533,9 +533,13 @@ const char ssidPasswordBlankChar = 164;
 #endif
 #define FONT_FUNCTION_INDICATORS u8g2_font_tiny_simon_tr
 #define FONT_THROTTLE_NUMBER u8g2_font_neuecraft_tr
-#define FONT_PASSWORD u8g2_font_9x15_tf
+#ifndef FONT_PASSWORD
+   #define FONT_PASSWORD u8g2_font_9x15_tf
+#endif
 #define FONT_SPEED u8g2_font_profont29_mr
-#define FONT_DIRECTION u8g2_font_neuecraft_tr
+#ifndef FONT_DIRECTION
+   #define FONT_DIRECTION u8g2_font_neuecraft_tr
+#endif
 // #define FONT_TRACK_POWER u8g2_font_profont10_tf
 #define FONT_NEXT_THROTTLE u8g2_font_6x12_m_symbols
 #define FONT_GLYPHS u8g2_font_open_iconic_all_1x_t

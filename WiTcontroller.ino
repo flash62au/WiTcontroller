@@ -3609,7 +3609,7 @@ void writeOledSpeed() {
   // direction
   // needed for new function state format
   u8g2.setFont(FONT_DIRECTION); // medium
-  u8g2.drawStr(79,36, sDirection.c_str());
+  u8g2.drawUTF8(79,36, sDirection.c_str());
 
   // speed
   const char *cSpeed = sSpeed.c_str();

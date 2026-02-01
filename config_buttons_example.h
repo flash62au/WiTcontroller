@@ -480,6 +480,43 @@
 //
 // German - Deutsche
 // #include "language_deutsch.h"
+// Italian - Italiano
+// #include "language_italiano.h"
+// Chinese - 中文
+// #include "language_chinese.h"
+
+// *******************************************************************************************************************
+// Primary Font override (not recommended other than for use of Chinese characters)
+
+// Any 8 pixel high fonts from here can be used https://github.com/olikraus/u8g2/wiki/fntlist8#8-pixel-height
+// Uncomment if and change to the appropriate font if required
+//  #define FONT_DEFAULT u8g2_font_5x8_tf
+
+// Chinese
+// This font is required for Chinese characters
+// #define FONT_DEFAULT u8g2_font_boutique_bitmap_7x7_t_gb2312
+
+// Direction Indication Font override (not recommended other than for use of Chinese characters)
+// Any font from here can be used https://github.com/olikraus/u8g2/wiki/fntlist8#8-pixel-height
+// The default one is 29px high
+// Uncomment if and change to the appropriate font if required
+// #define FONT_DIRECTION u8g2_font_neuecraft_tr
+
+// Chinese
+// This font is required for Chinese characters
+
+// *****
+
+// #define FONT_DIRECTION u8g2_font_boutique_bitmap_9x9_bold_t_gb2312
+// Direction Indication Font override (not recommended other than for use of Chinese characters)
+// Any font from here can be used https://github.com/olikraus/u8g2/wiki/fntlist8#8-pixel-height
+// The default one is 29px high
+// Uncomment if and change to the appropriate font if required
+// #define FONT_DIRECTION u8g2_font_neuecraft_tr
+
+// Chinese
+// This font is required for Chinese characters
+// #define FONT_DIRECTION u8g2_font_boutique_bitmap_9x9_bold_t_gb2312
 
 // *******************************************************************************************************************
 // Startup Commands
@@ -528,13 +565,6 @@
 // enabled by default
 
 // #define RESTORE_ACQUIRED_LOCOS false
-
-// *******************************************************************************************************************
-// Primary Font override (not recommended)
-
-// Any 8 pixel high fonts from here can be used https://github.com/olikraus/u8g2/wiki/fntlist8#8-pixel-height
-// Uncomment if and change to the appropriate font if required
-//  #define FONT_DEFAULT u8g2_font_5x8_tf
 
 // *******************************************************************************************************************
 // Custom App Name
