@@ -510,12 +510,13 @@
 // #define FONT_DIRECTION u8g2_font_boutique_bitmap_9x9_bold_t_gb2312
 // Direction Indication Font override (not recommended other than for use of Chinese characters)
 // Any font from here can be used https://github.com/olikraus/u8g2/wiki/fntlist8#8-pixel-height
-// The default one is 29px high
+// The default one is 14px high
 // Uncomment if and change to the appropriate font if required
 // #define FONT_DIRECTION u8g2_font_neuecraft_tr
 
 // Chinese
-// This font is required for Chinese characters
+// One (only) of these fonts is required for Chinese characters.  The first is recommended. The second is smaller is preferred.
+// #define FONT_DIRECTION u8g2_font_wqy13_t_gb2312a
 // #define FONT_DIRECTION u8g2_font_boutique_bitmap_9x9_bold_t_gb2312
 
 // *******************************************************************************************************************
