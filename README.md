@@ -938,7 +938,7 @@ Per ogni questione, il contatto ufficiale è il canale Discord di DCC-EX nella s
 
 ### Instructions for Chinese Translations - ###中文翻译说明
 
-The file [language_chinese.h] contains Chinese translations (by Tom).  
+The file [language_chinese.h] contains Chinese translations (by Lin Huiyu).  
 
 To see menus and messages in Chinese:
 
