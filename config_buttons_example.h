@@ -92,6 +92,18 @@
 // #define CHOSEN_KEYPAD_8_DISPLAY_NAME     "8 Estop"
 // #define CHOSEN_KEYPAD_9_DISPLAY_NAME     "9 Fwd"
 
+// Chinese equivalent for the default keypad display names
+// #define CHOSEN_KEYPAD_0_DISPLAY_NAME     "0 灯光"
+// #define CHOSEN_KEYPAD_1_DISPLAY_NAME     "1 铃声"
+// #define CHOSEN_KEYPAD_2_DISPLAY_NAME     "2 喇叭"
+// #define CHOSEN_KEYPAD_3_DISPLAY_NAME     "3 F3"
+// #define CHOSEN_KEYPAD_4_DISPLAY_NAME     "4 F4"
+// #define CHOSEN_KEYPAD_5_DISPLAY_NAME     "5 下一个总计"
+// #define CHOSEN_KEYPAD_6_DISPLAY_NAME     "6 X倍速度"
+// #define CHOSEN_KEYPAD_7_DISPLAY_NAME     "7 倒车"
+// #define CHOSEN_KEYPAD_8_DISPLAY_NAME     "8 急停"
+// #define CHOSEN_KEYPAD_9_DISPLAY_NAME     "9 前进"
+
 // '#" button action
 // By default, # will show the list above. 
 //   true = will take you to the Loco Function Labels screen directly
@@ -482,6 +494,8 @@
 // #include "language_deutsch.h"
 // Italian - Italiano
 // #include "language_italiano.h"
+
+// Note: to use Chinese characters a suitable font must also be selected below
 // Chinese - 中文
 // #include "language_chinese.h"
 
@@ -494,7 +508,10 @@
 
 // Chinese
 // This font is required for Chinese characters
+// Uncomment it if you wish to use the Chinese translations
 // #define FONT_DEFAULT u8g2_font_boutique_bitmap_7x7_t_gb2312
+
+// ******************
 
 // Direction Indication Font override (not recommended other than for use of Chinese characters)
 // Any font from here can be used https://github.com/olikraus/u8g2/wiki/fntlist8#8-pixel-height
@@ -503,21 +520,9 @@
 // #define FONT_DIRECTION u8g2_font_neuecraft_tr
 
 // Chinese
-// This font is required for Chinese characters
-
-// *****
-
-// #define FONT_DIRECTION u8g2_font_boutique_bitmap_9x9_bold_t_gb2312
-// Direction Indication Font override (not recommended other than for use of Chinese characters)
-// Any font from here can be used https://github.com/olikraus/u8g2/wiki/fntlist8#8-pixel-height
-// The default one is 14px high
-// Uncomment if and change to the appropriate font if required
-// #define FONT_DIRECTION u8g2_font_neuecraft_tr
-
-// Chinese
 // One (only) of these fonts is required for Chinese characters.  The first is recommended. The second is smaller is preferred.
-// #define FONT_DIRECTION u8g2_font_wqy13_t_gb2312a
 // #define FONT_DIRECTION u8g2_font_boutique_bitmap_9x9_bold_t_gb2312
+// #define FONT_DIRECTION u8g2_font_wqy13_t_gb2312a
 
 // *******************************************************************************************************************
 // Startup Commands

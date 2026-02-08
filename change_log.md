@@ -1,4 +1,6 @@
 # Change Log
+### V1.106
+- bug fix for the user defined menus
 ### V1.105
 - Initial Chinese language support.  Needed a new define to be able to override the direction font
 ### V1.104
@@ -20,7 +22,7 @@
   - Use ``#define USE_FAST_WIFI_SCAN_METHOD true`` to use a faster scanning method
 - Now disconects the WiFi as a precaution on startup
 - Fixed a bug with use of the WiFi country codes
-- Realised that ``#define ENFORCED_COUNTRY_CODE true`` is not actualyl used byt the code.  I will look into that later
+- Realised that ``#define ENFORCED_COUNTRY_CODE true`` is not actually used by the code.  I will look into that later
 
 ### V1.97
 - Additional logging

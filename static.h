@@ -1,4 +1,4 @@
-const String appVersion = "v1.105";
+const String appVersion = "v1.106";
 #ifndef CUSTOM_APPNAME
    const String appName = "WiTcontroller";
 #else
@@ -467,6 +467,70 @@ const int glyph_speed_step = 0x00d6;
 #else 
    const int menuCharsRequired[20] = MENU_CHARS_REQUIRED;
 #endif
+
+// catchall in case a particular menu item isn't used
+// must be unique and not be used for any actual menu item
+#ifndef MENU_ITEM_FUNCTION
+   #define MENU_ITEM_FUNCTION                   'M'
+#endif
+#ifndef MENU_ITEM_ADD_LOCO
+   #define MENU_ITEM_ADD_LOCO                   'N'
+#endif
+#ifndef MENU_ITEM_DROP_LOCO
+   #define MENU_ITEM_DROP_LOCO                  'O'
+#endif
+#ifndef MENU_ITEM_TOGGLE_DIRECTION
+   #define MENU_ITEM_TOGGLE_DIRECTION           'P'
+#endif
+#ifndef MENU_ITEM_SPEED_STEP_MULTIPLIER
+   #define MENU_ITEM_SPEED_STEP_MULTIPLIER      'Q'
+#endif
+#ifndef MENU_ITEM_THROW_POINT
+   #define MENU_ITEM_THROW_POINT                'R'
+#endif
+#ifndef MENU_ITEM_CLOSE_POINT
+   #define MENU_ITEM_CLOSE_POINT                'S'
+#endif
+#ifndef MENU_ITEM_ROUTE
+   #define MENU_ITEM_ROUTE                      'T'
+#endif
+#ifndef MENU_ITEM_TRACK_POWER
+   #define MENU_ITEM_TRACK_POWER                'U'
+#endif
+#ifndef MENU_ITEM_EXTRAS
+   #define MENU_ITEM_EXTRAS                     'V'
+#endif
+#ifndef MENU_ITEM_FUNCTION_KEY_TOGGLE
+   #define MENU_ITEM_FUNCTION_KEY_TOGGLE        'W'
+#endif
+#ifndef MENU_ITEM_EDIT_CONSIST
+   #define MENU_ITEM_EDIT_CONSIST               'X'
+#endif
+#ifndef MENU_ITEM_TBA
+   #define MENU_ITEM_TBA                        'Y'
+#endif
+#ifndef MENU_ITEM_HEARTBEAT_TOGGLE
+   #define MENU_ITEM_HEARTBEAT_TOGGLE           'Z'
+#endif
+#ifndef MENU_ITEM_INCREASE_MAX_THROTTLES
+   #define MENU_ITEM_INCREASE_MAX_THROTTLES     '{'
+#endif
+#ifndef MENU_ITEM_DECREASE_MAX_THROTTLES
+   #define MENU_ITEM_DECREASE_MAX_THROTTLES     '}'
+#endif
+#ifndef MENU_ITEM_DISCONNECT
+   #define MENU_ITEM_DISCONNECT                 '['
+#endif
+#ifndef MENU_ITEM_OFF_SLEEP
+   #define MENU_ITEM_OFF_SLEEP                  ']'
+#endif
+#ifndef MENU_ITEM_DROP_BEFORE_ACQUIRE_TOGGLE
+   #define MENU_ITEM_DROP_BEFORE_ACQUIRE_TOGGLE ':'
+#endif
+#ifndef MENU_ITEM_SAVE_CURRENT_LOCOS
+   #define MENU_ITEM_SAVE_CURRENT_LOCOS         ';'
+#endif
+
 
 // if defined in config_buttons.h these values will be overwritten
 //
