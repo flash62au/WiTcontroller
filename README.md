@@ -936,6 +936,14 @@ Per ogni questione, il contatto ufficiale è il canale Discord di DCC-EX nella s
 
 <hr style="height: 1px;">
 
+### Instructions for Dutch Translations
+
+The file [language_nederlands.h](language_nederlands.h) contains Dutch translations (by Hans Metselaar).  Uncomment (or add) the ``#include " language_nederlands"`` line in ``config_buttons.h`` to see menus and messages in German.
+
+You can override any of these translations individually by adding an appropriate ``#define`` statement in the ``config_buttons.h``, but it *must* be *before* the ``#include...`` statement.
+
+<hr style="height: 1px;">
+
 ### Instructions for Chinese Translations - ###中文翻译说明
 
 The file [language_chinese.h] contains Chinese translations (by Lin Huiyu).  

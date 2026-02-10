@@ -1,4 +1,6 @@
 # Change Log
+### V1.107
+- Dutch translations by Hans Metselaar
 ### V1.106
 - bug fix for the user defined menus
 ### V1.105
