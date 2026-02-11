@@ -939,7 +939,7 @@ Per ogni questione, il contatto ufficiale è il canale Discord di DCC-EX nella s
 
 ### Instructions for Dutch Translations
 
-The file [language_nederlands.h](language_nederlands.h) contains Dutch translations (by Hans Metselaar).  Uncomment (or add) the ``#include " language_nederlands"`` line in ``config_buttons.h`` to see menus and messages in Dutch.
+The file [language_nederlands.h](language_nederlands.h) contains Dutch translations (by Hans Metselaar).  Uncomment (or add) the ``#include " language_nederlands.h"`` line in ``config_buttons.h`` to see menus and messages in Dutch.
 
 You can override any of these translations individually by adding an appropriate ``#define`` statement in the ``config_buttons.h``, but it *must* be *before* the ``#include...`` statement.
 
