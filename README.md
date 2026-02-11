@@ -288,6 +288,7 @@ Some videos:
 * https://youtu.be/RKnhfBCP_SQ
 * https://www.youtube.com/shorts/1w7H2OvP8Jg
 * https://www.youtube.com/watch?v=Ga_80A6LwCI (Full assembly video by DriverD)
+* https://www.youtube.com/watch?v=cClRS21x_cc&t=4s  - A deconstructed view of a WiTcontroller in action
 
 ---
 
@@ -938,7 +939,7 @@ Per ogni questione, il contatto ufficiale è il canale Discord di DCC-EX nella s
 
 ### Instructions for Dutch Translations
 
-The file [language_nederlands.h](language_nederlands.h) contains Dutch translations (by Hans Metselaar).  Uncomment (or add) the ``#include " language_nederlands"`` line in ``config_buttons.h`` to see menus and messages in German.
+The file [language_nederlands.h](language_nederlands.h) contains Dutch translations (by Hans Metselaar).  Uncomment (or add) the ``#include " language_nederlands"`` line in ``config_buttons.h`` to see menus and messages in Dutch.
 
 You can override any of these translations individually by adding an appropriate ``#define`` statement in the ``config_buttons.h``, but it *must* be *before* the ``#include...`` statement.
 
