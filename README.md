@@ -928,20 +928,20 @@ Bei Interesse kontaktieren Sie mich bitte direkt für eine Anleitung.
 
 ### Istruzioni per la traduzione in Italiano
 
-Il file [language_italiano.h](language_italiano.h) contiene la traduzione italiana (by Roberto B). Rimuovere il commento o aggiungere la linea "#include language_italiano.h" (senza le " ") nel file "config_buttons.h" per avere menù e messaggi in Italiano.
+Il file [language_italiano.h](language_italiano.h) contiene la traduzione italiana (by Roberto B). Rimuovere il commento o aggiungere la linea ``#include language_italiano.h`` nel file ``config_buttons.h`` per avere menù e messaggi in Italiano.
 
-Si può sovrascrivere una qualunque di queste traduzioni individualmente aggiungendo la relativa "#define" nel file "config_buttons.h" ma deve essere fatto assolutamente prima dell' "#include" della traduzione.
+Si può sovrascrivere una qualunque di queste traduzioni individualmente aggiungendo la relativa ``#define`` nel file ``config_buttons.h`` ma deve essere fatto assolutamente prima dell' ``#include...`` della traduzione.
 
 Qualunque contributo è gradito.
 Per ogni questione, il contatto ufficiale è il canale Discord di DCC-EX nella sezione wifi-throttles.
 
 <hr style="height: 1px;">
 
-### Instructions for Dutch Translations
+### Instructions for Dutch Translations - Instructies voor de Nederlandse vertalingen
 
-The file [language_nederlands.h](language_nederlands.h) contains Dutch translations (by Hans Metselaar).  Uncomment (or add) the ``#include " language_nederlands.h"`` line in ``config_buttons.h`` to see menus and messages in Dutch.
+Het bestand [language_nederlands.h](language_nederlands.h) bevat de Nederlandse vertalingen (door Hans Metselaar). Verwijder het commentaar voor de regel ``#include "language_nederlands.h"`` (of voeg deze toe) in ``config_buttons.h`` om de menu’s en meldingen in het Nederlands weer te geven.
 
-You can override any of these translations individually by adding an appropriate ``#define`` statement in the ``config_buttons.h``, but it *must* be *before* the ``#include...`` statement.
+Je kunt ieder van deze vertalingen individueel overschrijven door het desbetreffende ``#define`` statement in de ``config_buttons.h`` toe te voegen, deze *moet* dan voor het ``#include...`` statement worden geplaatst.
 
 <hr style="height: 1px;">
 
