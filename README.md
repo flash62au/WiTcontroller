@@ -427,7 +427,7 @@ A "Throttle" can control only one train, which may be one loco, or more than one
 WiTcontroller:
 - Provides a list of discovered SSIDs with the ability to choose one. When you select one:
   - If it is one in your specified list (in the sketch), it will use that specified password 
-  - If it is a DCC-EX EX-CommandStation in Access Point (AP) mode, it will try to guess the password. <br /> *Warning!* It assumes the it will be the default password. If you have changed the password it will fail to connect unless you have the SSID *and correct password* listed in `config_network.h`.  (I am looking into a solution for this situation.)
+  - If it is a DCC-EX EX-CommandStation in Access Point (AP) mode, it will try to guess the password. <br /> *Warning!* prior to version 1.108 It assumes the it will be the default password. If you have changed the password it will fail to connect unless you have the SSID *and correct password* listed in `config_network.h`.  <br /> From version 1.108 it will try to connect to a DCC-EX EX-CommandStation with the 'guessed' password on the first attempt.  Then, if it fails to connect, it will ask for the password on the second attempt.
   - Otherwise it will ask to enter the password (Use the rotary encoder to choose each character and the encoder button to select it.  * = backspace.  # = enter the password.) 
 - Optionally provides a list of SSIDs with the specified passwords (in the sketch) to choose from
 - Auto-connects to the first found WiThrottle Protocol Server if only one found, otherwise 
