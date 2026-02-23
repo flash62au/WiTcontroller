@@ -129,6 +129,7 @@ int ssidConnectionState = CONNECTION_STATE_DISCONNECTED;
 String ssidPasswordEntered = "";
 bool ssidPasswordChanged = true;
 char ssidPasswordCurrentChar = ssidPasswordBlankChar; 
+bool haveTriedGuessedDccexPassword = false;
 
 IPAddress selectedWitServerIP;
 int selectedWitServerPort = 0;
@@ -723,11 +724,17 @@ void getSsidPasswordAndWitIpForFound() {
 
   if (!found) {
     if ( (selectedSsid.substring(0,6) == "DCCEX_") && (selectedSsid.length()==12) ) {
+      if (!haveTriedGuessedDccexPassword) {
+      haveTriedGuessedDccexPassword = true;
       selectedSsidPassword = "PASS_" + selectedSsid.substring(6);
+      debug_println("getSsidPasswordAndWitIpForFound() Using guessed DCC-EX password");
+      } else {
+        selectedSsidPassword = "";
+      debug_println("getSsidPasswordAndWitIpForFound() already tried guessed DCC-EX password. not trying again");
+      }
       witServerIpAndPortEntered = "19216800400102560";
       turnoutPrefix = DCC_EX_TURNOUT_PREFIX;
       routePrefix = DCC_EX_ROUTE_PREFIX;
-      debug_println("getSsidPasswordAndWitIpForFound() Using guessed DCC-EX password");
     } 
   }
 }
