@@ -1,5 +1,7 @@
 # Change Log
 
+## Versions
+
 ### V1.108
 
 - When trying to connect to a DCC-EX EX-CommandStation it will now try the 'guessed' password on the first attempt.  Then, if it fails to connect, it will ask for the password on the second attempt.
