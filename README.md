@@ -802,10 +802,9 @@ Which is exactly the same as...
 #define NEW_ADDITIONAL_BUTTON_TYPE {INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT}
 ```
 
-*Notes:*
-
-* The ``\`` at the end of the lines is a continuation.  It means that the following line will be treated as part of the line which ends in the ``\``. <br /> i.e All the defines can just as easily be written on single lines without the ``\``.
-* The last entry in each list *must not* have a comma (,) after it.  The other entries *must* have the comma (,) after.
+> [!NOTES]
+> * The ``\`` at the end of the lines is a continuation.  It means that the following line will be treated as part of the line which ends in the ``\``. <br /> i.e All the defines can just as easily be written on single lines without the ``\``.
+> * The last entry in each list *must not* have a comma (,) after it.  The other entries *must* have the comma (,) after.
 
 </details>
 
@@ -935,7 +934,8 @@ If the battery does not show 100% when plugged into the charger, you may need to
 
 The display of the battery can be temporarily toggled by setting a key or button to ``SHOW_HIDE_BATTERY``.  The display will cycle between none, icon only and icon plus percent value. Note that ``USE_BATTERY_TEST`` must be set to `true` for this to have any effect. By default it is disabled (0).
 
-*Note: I recommend adding a physical power switch to disconnect the battery as this feature will, slowly, continually drain the battery, even when not being used.*
+> [!NOTE]
+> I recommend adding a physical power switch to disconnect the battery as this feature will, slowly, continually drain the battery, even when not being used.*
 
 <hr style="height: 1px;">
 
