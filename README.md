@@ -341,6 +341,7 @@ The instructions below are for using the **Arduino IDE** and **GitHub Desktop**.
 5. These should have been automatically installed when you downloaded the esp32 boards. <br/> *YOU SHOULD NOT NEED TO DO ANYTHING SPECIFIC TO GET THESE*
     * *WiFi.h*  - https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi
     * *ESPmDNS.h* - https://github.com/espressif/arduino-esp32/blob/master/libraries/ESPmDNS
+    * *Preferences.h*
 
       Notes: <br/> **DO NOT** download these libraries *directly*. Use the *Boards Manager*. <br/> **DO NOT** put them in the WiTcontroller folder. <br/> These libraries do not appear in your list of libraries, but will be available to use regardless. (The files are actually buried away in a subfolder of the ESP32 Boards library.)
 
@@ -356,7 +357,7 @@ The instructions below are for using the **Arduino IDE** and **GitHub Desktop**.
       
       Whereas, *if you open it from a File manger app* (by double clicking on it) only the file you selected will open.
 
-8. Edit your personal ``config_network.h`` file. 
+8. Edit your personal ``config_network.h`` file.
     * Edit it to include the network SSIDs you want to use.  (Not essential, but entering passwords via the encoder is tedious.)
 
 9. Edit your personal ``config_buttons.h`` file.
@@ -408,9 +409,9 @@ The instructions below are for using the **Arduino IDE** and **GitHub Desktop**.
 ### Be aware of...
 
 ### WiFi limitations
- 
-The ESP32 *cannot use the 5gHz* frequencies.  It is limited to the 2.4gHz  frequencies. 
- 
+
+The ESP32 *cannot use the 5gHz* frequencies.  It is limited to the 2.4gHz  frequencies.
+
 Using 2.4gHz Wifi channels beyond 10 (11-13) is problematic. I have added an experimental set of definitions in [config_network_example.h](config_network_example.h) that allow you to set the country code.  In theory this will allow the use of the additional channels, but requires the use the version 3.2.0 (or later) of the ESP32 board library.  This has had only minimal testing.
 
 ## Definitions and Explanations
@@ -427,11 +428,11 @@ A "Throttle" can control only one train, which may be one loco, or more than one
 WiTcontroller:
 
 * Provides a list of discovered SSIDs with the ability to choose one. When you select one:
-  * If it is one in your specified list (in the sketch), it will use that specified password 
+  * If it is one in your specified list (in the sketch), it will use that specified password
   * If it is a DCC-EX EX-CommandStation in Access Point (AP) mode, it will try to guess the password. <br /> *Warning!* prior to version 1.108 It assumes the it will be the default password. If you have changed the password it will fail to connect unless you have the SSID *and correct password* listed in `config_network.h`.  <br /> From version 1.108 it will try to connect to a DCC-EX EX-CommandStation with the 'guessed' password on the first attempt.  Then, if it fails to connect, it will ask for the password on the second attempt.
   * Otherwise it will ask to enter the password (Use the rotary encoder to choose each character and the encoder button to select it.  * = backspace.  # = enter the password.) <br /> Entered passwords will be stored in non-volatile memory
 * Optionally provides a list of SSIDs with the specified passwords (in the sketch) to choose from
-* Auto-connects to the first found WiThrottle Protocol Server if only one found, otherwise 
+* Auto-connects to the first found WiThrottle Protocol Server if only one found, otherwise
   * Asks which to connect to
   * If none found will ask to enter the IP Address and Port
   * Guesses the WiThrottle IP address and Port for DCC-EX EX-CommandStations in Access Point (AP) mode
@@ -478,12 +479,13 @@ WiTcontroller:
 * Translations files for German and Italian included.
 
 **ToDo:**
+
 * Speed button repeat (i.e. hold the button down)
 * Deal with unexpected disconnects better
   * automatic attempt to reconnect
 * Keep a list of IP addresses and ports if mDNS doesn't provide any
 
-#### Command menu:
+#### Command menu
 
 * 0-9 keys = pressing these directly will do whatever has been configured in your ``config_buttons.h`` for them to do, or whatever is the default for that key  (see \# below)
 * \* = Menu:  The button press following the \* is the actual command:
@@ -655,7 +657,7 @@ Note: you need to edit ``config_buttons.h`` to alter these assignments   (copy `
 
 ### Rotary Encoder 'sensitivity'
 
-If you find that moving the encoder slightly flick the speed or the selected option back a forward, try adjusting this define by uncommenting (removing the ``//``) following line in your ``config_buttons.h`` and changing the value. (Decrease the value to make it less sensitive. Increase the value to make it more.)
+If you find that moving the encoder slightly flicks the speed or the selected option back and forward, try adjusting this define by uncommenting (removing the ``//``) following line in your ``config_buttons.h`` and changing the value. (Decrease the value to make it less sensitive. Increase the value to make it more.)
 
 ``#define ENCODER_SENSITIVITY  85``
 
@@ -749,6 +751,63 @@ This array lists the type of the pin.
 This has the general form ``NEW_ADDITIONAL_BUTTON_TYPE{val0, val1, .. val10, up-to-val11}``
 
 See additional information in [config_button_example.h](config_buttons_example.h).
+
+<details>
+
+<summary>Example - Click to expand</summary>
+
+The following example is for 5 additianl buttons.
+
+```
+#define USE_NEW_ADDITIONAL_BUTTONS_FORMAT true
+#define NEW_MAX_ADDITIONAL_BUTTONS 5
+#define NEW_ADDITIONAL_BUTTON_ACTIONS {\
+                        E_STOP,\
+                        CUSTOM_4,\
+                        FUNCTION_2,\
+                        FUNCTION_3,\
+                        FUNCTION_4\
+                        }
+#define NEW_ADDITIONAL_BUTTON_LATCHING {\
+                        true,\
+                        true,\
+                        true,\
+                        true,\
+                        true\
+                        }
+#define NEW_ADDITIONAL_BUTTON_PIN {\
+                        5,\
+                        15,\
+                        25,\
+                        26,\
+                        39\
+                        }
+#define NEW_ADDITIONAL_BUTTON_TYPE {\
+                        INPUT_PULLUP,\
+                        INPUT_PULLUP,\
+                        INPUT_PULLUP,\
+                        INPUT_PULLUP,\
+                        INPUT\
+                        }
+```
+
+Which is exactly the same as...
+
+```
+#define USE_NEW_ADDITIONAL_BUTTONS_FORMAT true
+#define NEW_MAX_ADDITIONAL_BUTTONS 5
+#define NEW_ADDITIONAL_BUTTON_ACTIONS {E_STOP,CUSTOM_4,FUNCTION_2,FUNCTION_3,FUNCTION_4}
+#define NEW_ADDITIONAL_BUTTON_LATCHING {true,true,true,true,true}
+#define NEW_ADDITIONAL_BUTTON_PIN {5,15,25,26,39}
+#define NEW_ADDITIONAL_BUTTON_TYPE {INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT}
+```
+
+*Notes:*
+
+* The ``\`` at the end of the lines is a continuation.  It means that the following line will be treated as part of the line which ends in the ``\``. <br /> i.e All the defines can just as easily be written on single lines without the ``\``.
+* The last entry in each list *must not* have a comma (,) after it.  The other entries *must* have the comma (,) after.
+
+</details>
 
 <hr style="height: 1px;">
 
