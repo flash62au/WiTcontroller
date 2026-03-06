@@ -71,59 +71,56 @@ While the basic form is simple, the design is flexible and you can add several a
 
 ### Required Components
 
-1. WeMos Lite LOLIN32  (ESP32 Arduino with LiPo charger) ([Example](https://www.ebay.com.au/itm/284800618644?hash=item424f709094:g:-soAAOSwHslfC9ce&frcectupt=true)) 
+1. **WeMos Lite LOLIN32**  (ESP32 Arduino with LiPo charger) ([Example](https://www.ebay.com.au/itm/284800618644?hash=item424f709094:g:-soAAOSwHslfC9ce&frcectupt=true)) 
 
-    *Note: any ESP32 will work but the pinouts may need to be adjusted, and a separate LiPo charger may be required*
-
-<div style="padding-left: 30px;" markdown="1">
+> [!NOTE]
+> Any ESP32 will work but the pinouts may need to be adjusted, and a separate LiPo charger may be required*
 
 > [!CAUTION]
 > I have reports of some of the versions of this board with the USB-C connectors having problems with the WiFi.  Some are clearly fine, but others are not. </br> I am still investigating this, but I would recommend avoiding the USB-C version for now.
-</div>
 
-2. 3x4 Keypad  ([Example](https://www.jaycar.com.au/12-key-numeric-keypad/p/SP0770?pos=2&queryId=20aedf107668ad42c6fe1f8b7f7a9ca7)) 
+2. **3x4 Keypad**  ([Example](https://www.jaycar.com.au/12-key-numeric-keypad/p/SP0770?pos=2&queryId=20aedf107668ad42c6fe1f8b7f7a9ca7)) 
 
 > [!NOTE]
 > * Alternately a 4x4 keypad can also be used (see optional components below)
 > * Different keypad manufacturers may arrange the pins on the base of the keypad differently.*** See notes in the [Default Pins for the keypads](#default-pins-for-the-keypads) section below.
 
-3. KY-040 Rotary Encoder Module ([Example](https://www.aliexpress.com/item/1005003946689694.html?albagn=888888&&src=google&albch=search&acnt=479-062-3723&isdl=y&aff_short_key=UneMJZVf&albcp=21520181724&albag=168529973707&slnk=&trgt=dsa-1464330247393&plac=&crea=707854323770&netw=g&device=c&mtctp=&memo1=&albbt=Google_7_search&aff_platform=google&gad_source=1&gclid=Cj0KCQjwiOy1BhDCARIsADGvQnBPdlEVLYbYnLoOnN1p2bdjte0jYmInrgFD0WG16aF3GZtvrWTb6o0aAo8VEALw_wcB&gclsrc=aw.ds)) 
+3. **KY-040 Rotary Encoder Module** ([Example](https://www.aliexpress.com/item/1005003946689694.html?albagn=888888&&src=google&albch=search&acnt=479-062-3723&isdl=y&aff_short_key=UneMJZVf&albcp=21520181724&albag=168529973707&slnk=&trgt=dsa-1464330247393&plac=&crea=707854323770&netw=g&device=c&mtctp=&memo1=&albbt=Google_7_search&aff_platform=google&gad_source=1&gclid=Cj0KCQjwiOy1BhDCARIsADGvQnBPdlEVLYbYnLoOnN1p2bdjte0jYmInrgFD0WG16aF3GZtvrWTb6o0aAo8VEALw_wcB&gclsrc=aw.ds)) 
 
 > [!NOTE]
-> The EC11 rotary encoder will also work, but requires a small configuration change in ``config_buttons.h`` (see below)
+> The **EC11 rotary encoder** will also work, but requires a small configuration change in ``config_buttons.h`` (see below)
 
-4. OLED Display 0.96" 128x64 I2C IIC SSD1306 ([Example](https://www.ebay.com.au/itm/273746192621?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2060353.m2749.l2649))
+4. **OLED Display** 0.96" 128x64 I2C IIC SSD1306 ([Example](https://www.ebay.com.au/itm/273746192621?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2060353.m2749.l2649))
 
 > [!NOTE]
 > * The code for the one of the common 1.3" displays is also included (see below).
 > * Some OLED displays up to 2.4 inch will also work (see below)*
 
-5. Polymer Lithium Ion Battery LiPo 400mAh (or larger) 3.7V 502535 JST Connector. ([500mAh Example](https://www.ebay.com.au/itm/133708965793?hash=item1f21ace7a1:g:tlwAAOSwfORgYqYK)) 
+5. **Polymer Lithium Ion Battery LiPo** 400mAh (or larger) 3.7V 502535 JST Connector. ([500mAh Example](https://www.ebay.com.au/itm/133708965793?hash=item1f21ace7a1:g:tlwAAOSwfORgYqYK)) 
 
 > [!NOTE]
-> Any capacity will work, but 400mAh will give about 6 hours of run time.
+> Any capacity will work. A 400mAh will give about 6 hours of run time.
     
-    <span style="color:red;">**WARNING:**</span>
+> [!WARNING]
+> *I have found that some batteries come with the positive and negative leads the other way around to the terminals on the ESP32.* <br/> Check they are correct before plugging it in. <br/> The polarity of the battery is easy to swap, by getting a knife blade under the small tabs on the plastic connector and pulling each male socket out. <br/> Take extreme care. **DO NOT SHORT THE TERMINALS.**
 
-    ***I have found that some batteries come with the positive and negative leads the other way around to the terminals on the ESP32.*** <br/> **Check they are correct before plugging it in.** <br/> The polarity of the battery is easy to swap, by getting a knife blade under the small tabs on the plastic connector and pulling each male socket out. <br/> Take extreme care. ***DO NOT SHORT THE TERMINALS.*** 
+6. **A Case to put it in**. Links to a few different designs are below, but any box will do. My case was 3d printed for me (see below).
 
-6. A Case to put it in. Links to a few different designs are below, but any box will do. My case was 3d printed for me (see below).
+7. **A Knob** ([Example](https://www.jaycar.com.au/35mm-knob-matching-equipment-style/p/HK7766?pos=7&queryId=cbd19e2486968bca41273cc2dbce54a4&sort=relevance))
 
-7. A Knob ([Example](https://www.jaycar.com.au/35mm-knob-matching-equipment-style/p/HK7766?pos=7&queryId=cbd19e2486968bca41273cc2dbce54a4&sort=relevance))
-
-8. Wire - If you plan to solder the connections, which is the recommended approach, then stranded, coloured wire is advisable.  ([Example](https://www.jaycar.com.au/rainbow-cable-16-core-sold-per-metre/p/WM4516))
+8. **Wire** - If you plan to solder the connections, which is the recommended approach, then stranded, coloured wire is advisable.  ([Example](https://www.jaycar.com.au/rainbow-cable-16-core-sold-per-metre/p/WM4516))
 
 ### Optional Components
 
-9. *Optional:* A power switch. Push button or toggle. <br/> The battery in WiTcontroller will last a week or two in deep sleep, but you may wish to add a power switch on the positive feed of the battery if you expect to leave it unused for long periods.
+9. *Optional:* **A power switch**. Push button or toggle. <br/> The battery in WiTcontroller will last a week or two in deep sleep, but you may wish to add a power switch on the positive feed of the battery if you expect to leave it unused for long periods.
 
-10. *Optional:* You can use a 4x4 keypad instead of the 3x4 keypad. <br/> Note: You will need to make a small configuration change in ``config_buttons.h`` for this to work correctly.
+10. *Optional:* You can use a **4x4 keypad** instead of the 3x4 keypad. <br/> Note: You will need to make a small configuration change in ``config_buttons.h`` for this to work correctly.
 
-11. *Optional:* Up to eleven (11) additional push buttons can be added directly to the ESP32, each with their own independent commands. ([Example](https://www.jaycar.com.au/red-miniature-pushbutton-spst-momentary-action-125v-1a-rating/p/SP0710))
+11. *Optional:* Up to eleven (11) additional **push buttons** can be added directly to the ESP32, each with their own independent commands. ([Example](https://www.jaycar.com.au/red-miniature-pushbutton-spst-momentary-action-125v-1a-rating/p/SP0710))
 
-12. *Optional:* A 1.3" or 2.4" OLED Display (128x64) can be used instead of the 0.96" OLED Display 128x64 ([Example](https://www.aliexpress.com/item/32683094040.html?spm=a2g0o.order_list.order_list_main.110.25621802jRBB7y)) Note: You will need to make a minor change in the config file for this to work correctly.
+12. *Optional:* **A 1.3" or 2.4" OLED Display** (128x64) can be used instead of the 0.96" OLED Display 128x64 ([Example](https://www.aliexpress.com/item/32683094040.html?spm=a2g0o.order_list.order_list_main.110.25621802jRBB7y)) Note: You will need to make a minor change in the config file for this to work correctly.
 
-13. *Optional:* It is possible to use a Potentiometer instead of the Rotary Encoder for throttle control.  The code supports it if you make the appropriate configuration changes in ``config_buttons.h``.   However this has had only limited testing. <br/> This is documented to some degree in [config_buttons_example.h[(config_buttons_example.h)] if you wish to try it.
+13. *Optional:* It is possible to use a **Potentiometer** instead of the Rotary Encoder for throttle control.  The code supports it if you make the appropriate configuration changes in ``config_buttons.h``.   However this has had only limited testing. <br/> This is documented to some degree in [config_buttons_example.h[(config_buttons_example.h)] if you wish to try it.
 
 ### Pinouts
 
