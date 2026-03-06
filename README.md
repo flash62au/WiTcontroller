@@ -73,17 +73,17 @@ While the basic form is simple, the design is flexible and you can add several a
 
 1. **WeMos Lite LOLIN32**  (ESP32 Arduino with LiPo charger) ([Example](https://www.ebay.com.au/itm/284800618644?hash=item424f709094:g:-soAAOSwHslfC9ce&frcectupt=true)) 
 
-> [!NOTE]
-> Any ESP32 will work but the pinouts may need to be adjusted, and a separate LiPo charger may be required*
+    Note: *Any ESP32 will work but the pinouts may need to be adjusted, and a separate LiPo charger may be required*
 
-> [!CAUTION]
-> I have reports of some of the versions of this board with the USB-C connectors having problems with the WiFi.  Some are clearly fine, but others are not. </br> I am still investigating this, but I would recommend avoiding the USB-C version for now.
+    > [!CAUTION]
+    > I have reports of some of the versions of this board with the USB-C connectors having problems with the WiFi.  Some are clearly fine, but others are not. </br> I am still investigating this, but I would recommend avoiding the USB-C version for now.
 
 2. **3x4 Keypad**  ([Example](https://www.jaycar.com.au/12-key-numeric-keypad/p/SP0770?pos=2&queryId=20aedf107668ad42c6fe1f8b7f7a9ca7)) 
 
-> [!NOTE]
-> * Alternately a 4x4 keypad can also be used (see optional components below)
-> * Different keypad manufacturers may arrange the pins on the base of the keypad differently.*** See notes in the [Default Pins for the keypads](#default-pins-for-the-keypads) section below.
+    Notes:
+
+    * Alternately a 4x4 keypad can also be used (see optional components below)
+    * Different keypad manufacturers may arrange the pins on the base of the keypad differently.*** See notes in the [Default Pins for the keypads](#default-pins-for-the-keypads) section below.
 
 3. **KY-040 Rotary Encoder Module** ([Example](https://www.aliexpress.com/item/1005003946689694.html?albagn=888888&&src=google&albch=search&acnt=479-062-3723&isdl=y&aff_short_key=UneMJZVf&albcp=21520181724&albag=168529973707&slnk=&trgt=dsa-1464330247393&plac=&crea=707854323770&netw=g&device=c&mtctp=&memo1=&albbt=Google_7_search&aff_platform=google&gad_source=1&gclid=Cj0KCQjwiOy1BhDCARIsADGvQnBPdlEVLYbYnLoOnN1p2bdjte0jYmInrgFD0WG16aF3GZtvrWTb6o0aAo8VEALw_wcB&gclsrc=aw.ds)) 
 
@@ -102,7 +102,7 @@ While the basic form is simple, the design is flexible and you can add several a
 > Any capacity will work. A 400mAh will give about 6 hours of run time.
     
 > [!WARNING]
-> *I have found that some batteries come with the positive and negative leads the other way around to the terminals on the ESP32.* <br/> Check they are correct before plugging it in. <br/> The polarity of the battery is easy to swap, by getting a knife blade under the small tabs on the plastic connector and pulling each male socket out. <br/> Take extreme care. **DO NOT SHORT THE TERMINALS.**
+> *I have found that some batteries come with the positive and negative leads the other way around to the terminals on the ESP32.* <br/> Check they are correct before plugging it in. <br/> The polarity of the battery is easy to swap, by getting a knife blade under the small tabs on the plastic connector and pulling each male socket out. Take extreme care. **DO NOT SHORT THE TERMINALS.**
 
 6. **A Case to put it in**. Links to a few different designs are below, but any box will do. My case was 3d printed for me (see below).
 
@@ -140,7 +140,7 @@ While the basic form is simple, the design is flexible and you can add several a
 ![Assembly diagram - Optional Battery Monitor and Additional Buttons](images/WiTcontroller%20-%20Optional%20battery%20monitor.png)
 
 > [!WARNING]
-> * ***Different keypad manufacturers may arrange the pins on the base of the keypad differently to the examples above.*** See notes in the [Default Pins for the keypads](#default-pins-for-the-keypads)  section below.
+> * *Different keypad manufacturers may arrange the pins on the base of the keypad differently to the examples above.* <br/> See notes in the [Default Pins for the keypads](#default-pins-for-the-keypads)  section below.
 
 ---
 
@@ -288,7 +288,7 @@ Some videos:
 
 ---
 
-And for a very different take on what is possible by extending the design, have a look at: https://1fatgmc.com/RailRoad/DCC/HandCab-Index.html
+And for a very different take on what is possible by extending the design, have a look at: https://1fatgmc.com/RailRoad/DCC/HandCab-Index.html and at: https://1fatgmc.com/RailRoad/DCC/PhL%20Industries%20Cab%20Index.html
 
 
 <br/>
@@ -296,7 +296,7 @@ And for a very different take on what is possible by extending the design, have 
 
 ## Loading the code
 
-The instructions below are for using the **Arduino IDE** and **GitHub Desktop**. 
+The instructions below are for using the **Arduino IDE** and **GitHub Desktop**.
 
 **Visual Studio Code (VSC)** can be used instead of the Arduino IDE, and is actually my preferred IDE, but no instructions are included here.  Contact me if you need assistance with VSC.
 
