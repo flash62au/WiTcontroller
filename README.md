@@ -24,11 +24,9 @@ While the basic form is simple, the design is flexible and you can add several a
 
 *WiTcontroller* is a contraction of 'WiThrottle Controller' as it uses the WiThrottle Protocol for communications with the server.  I pronounce it as 'Wit Controller', but you can pronounce it however you like.😊
 
-**Notes:**
-
-* 'WiThrottle' is a trademark owned by Brett Hoffman. It is also an iOS app developed by Brett Hoffman.
-  
-* The 'WiThrottle protocol' is a communications protocol developed by Brett Hoffman.  It is used by **WiTcontroller**, JMRI, Engine Driver, the WiThrottle app plus a number of other apps and DCC Command Stations. References in this document to a 'WiThrottle Server', refer to any server that can communicate using the 'WiThrottle protocol'.
+> [!NOTE]
+> * 'WiThrottle' is a trademark owned by Brett Hoffman. It is also an iOS app developed by Brett Hoffman.
+> * The 'WiThrottle protocol' is a communications protocol developed by Brett Hoffman.  It is used by **WiTcontroller**, JMRI, Engine Driver, the WiThrottle app plus a number of other apps and DCC Command Stations. References in this document to a 'WiThrottle Server', refer to any server that can communicate using the 'WiThrottle protocol'.
  
 ---
 
@@ -69,7 +67,6 @@ While the basic form is simple, the design is flexible and you can add several a
 <br/>
 <hr style="border: none; height: 4px; background-color: #007bff; border-radius: 2px;">
 
-
 ## Building
 
 ### Required Components
@@ -78,29 +75,30 @@ While the basic form is simple, the design is flexible and you can add several a
 
     *Note: any ESP32 will work but the pinouts may need to be adjusted, and a separate LiPo charger may be required*
 
-    <span style="color:red;">**WARNING:**</span> 
-    
-    I have reports of some of the versions of this board with the USB-C connectors having problems with the WiFi.  Some are clearly fine, but others are not. </br> I am still investigating this, but I would recommend avoiding the USB-C version for now.
+> [!CAUTION]
+> I have reports of some of the versions of this board with the USB-C connectors having problems with the WiFi.  Some are clearly fine, but others are not. </br> I am still investigating this, but I would recommend avoiding the USB-C version for now.
 
 2. 3x4 Keypad  ([Example](https://www.jaycar.com.au/12-key-numeric-keypad/p/SP0770?pos=2&queryId=20aedf107668ad42c6fe1f8b7f7a9ca7)) 
 
-    *Note: Alternately a 4x4 keypad can also be used (see optional components below)* 
-      
-    ***Note: Different keypad manufacturers may arrange the pins on the base of the keypad differently.*** See notes in the [Default Pins for the keypads](#default-pins-for-the-keypads) section below.
+> [!NOTE]
+> * Alternately a 4x4 keypad can also be used (see optional components below)
+> * Different keypad manufacturers may arrange the pins on the base of the keypad differently.*** See notes in the [Default Pins for the keypads](#default-pins-for-the-keypads) section below.
 
 3. KY-040 Rotary Encoder Module ([Example](https://www.aliexpress.com/item/1005003946689694.html?albagn=888888&&src=google&albch=search&acnt=479-062-3723&isdl=y&aff_short_key=UneMJZVf&albcp=21520181724&albag=168529973707&slnk=&trgt=dsa-1464330247393&plac=&crea=707854323770&netw=g&device=c&mtctp=&memo1=&albbt=Google_7_search&aff_platform=google&gad_source=1&gclid=Cj0KCQjwiOy1BhDCARIsADGvQnBPdlEVLYbYnLoOnN1p2bdjte0jYmInrgFD0WG16aF3GZtvrWTb6o0aAo8VEALw_wcB&gclsrc=aw.ds)) 
 
-    *Note: The EC11 rotary encoder will also work, but requires a small configuration change in ``config_buttons.h`` (see below)*
+> [!NOTE]
+> The EC11 rotary encoder will also work, but requires a small configuration change in ``config_buttons.h`` (see below)
 
 4. OLED Display 0.96" 128x64 I2C IIC SSD1306 ([Example](https://www.ebay.com.au/itm/273746192621?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2060353.m2749.l2649))
 
-    *Note: The code for the one of the common 1.3" displays is also included (see below).* 
-    
-    *Note: Some OLED displays up to 2.4 inch will also work (see below)*
+> [!NOTE]
+> * The code for the one of the common 1.3" displays is also included (see below).
+> * Some OLED displays up to 2.4 inch will also work (see below)*
 
 5. Polymer Lithium Ion Battery LiPo 400mAh (or larger) 3.7V 502535 JST Connector. ([500mAh Example](https://www.ebay.com.au/itm/133708965793?hash=item1f21ace7a1:g:tlwAAOSwfORgYqYK)) 
 
-    *Note: Any capacity will work, but 400mAh will give about 6 hours of run time.*
+> [!NOTE]
+> Any capacity will work, but 400mAh will give about 6 hours of run time.
     
     <span style="color:red;">**WARNING:**</span>
 
@@ -141,10 +139,8 @@ While the basic form is simple, the design is flexible and you can add several a
 *Pinouts for Optional Battery Monitor and Additional Buttons*
 ![Assembly diagram - Optional Battery Monitor and Additional Buttons](images/WiTcontroller%20-%20Optional%20battery%20monitor.png)
 
-**WARNING:**
-    
-***Different keypad manufacturers may arrange the pins on the 
-base of the keypad differently to the examples above.*** See notes in the [Default Pins for the keypads](#default-pins-for-the-keypads)  section below.
+> [!WARNING]
+> * ***Different keypad manufacturers may arrange the pins on the base of the keypad differently to the examples above.*** See notes in the [Default Pins for the keypads](#default-pins-for-the-keypads)  section below.
 
 ---
 
@@ -802,7 +798,7 @@ Which is exactly the same as...
 #define NEW_ADDITIONAL_BUTTON_TYPE {INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT}
 ```
 
-> [!NOTES]
+> [!NOTE]
 > * The ``\`` at the end of the lines is a continuation.  It means that the following line will be treated as part of the line which ends in the ``\``. <br /> i.e All the defines can just as easily be written on single lines without the ``\``.
 > * The last entry in each list *must not* have a comma (,) after it.  The other entries *must* have the comma (,) after.
 
@@ -911,11 +907,11 @@ If the battery does not show 100% when plugged into the charger, you may need to
   d) Wait. (Don't connect to a WiThrottle server.) <br/>
   You will see lines like...
 
-  ``
+  ```
   BATTERY TestValue: 100 (10003)
   BATTERY lastAnalogReadValue: 2491 (10003)
   BATTERY If Battery full, BATTERY_CONVERSION_FACTOR should be: 1.69 (10014)
-  ``
+  ```
 
   Let it run for a while. <br/>
   e) Note one of the recommended values (it will vary a bit) and enter it into the define in your ``config_buttons.h`` <br/>
@@ -956,7 +952,8 @@ It is believed that the YaMoRC Command Stations are not sending this as the shou
 Optional. If defined, up to four commands will be executed, in order, after connection to the WiThrottle Server.
 Each must be ONLY ONE single valid command.  Either a direct action or a menu action.  Any can be blank or not defined, the others will still be executed.
 
-*Note: Selecting from the roster/turnouts etc. is not possible as the commands will execute before the roster loads.*
+> [!NOTE]
+> Selecting from the roster/turnouts etc. is not possible as the commands will execute before the roster loads.
 
 <hr style="height: 1px;">
 
@@ -978,13 +975,15 @@ To do a Fast Scan for SSIDs, uncomment or add the line above in your ``config_ne
 
 The 'found' SSIDs will not be sorted by default (from version v1.98). To restore this feature, uncomment or add the line above in your ``config_network.h``.  If enabled, the SSIDs are sorted by signal strength. By default this option is disbled.
 
-*Note: sorting can't be used if the Fast Scan is enabled.*
+> [!NOTE]
+> sorting can't be used if the Fast Scan is enabled.
 
 ``#define BYPASS_WIFI_SCAN_ON_STARTUP true``
 
 This option to allows you to bypass the initial WiFi scan.  The WiTcontroller will instead show you the list of SSIDs you have defined in ``config_network.h``.  From that you can still to the scan if you wish by pressing ``#``.  By default this option is disbled and the network will be scanned at startup.
 
-*Note: Some ESP32s seem to have an intermitient WiFi problem that causes the WifI Scan to lockup the device.  This option may be may be useful in this situation.*
+> [!NOTE]
+> Some ESP32s seem to have an intermitient WiFi problem that causes the WifI Scan to lockup the device.  This option may be may be useful in this situation.
 
 <hr style="height: 1px;">
 
