@@ -14,10 +14,9 @@
 #include <WiFi.h>                 // https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi     GPL 2.1
 #include <ESPmDNS.h>              // https://github.com/espressif/arduino-esp32/blob/master/libraries/ESPmDNS  GPL 2.1
 #include <esp_wifi.h>             // https://git.liberatedsystems.co.uk/jacob.eva/arduino-esp32/src/branch/master/tools/sdk/esp32s2/include/esp_wif  GPL 2.0
+#include <Preferences.h>
 
 // ----------------------
-
-#include <Preferences.h>
 
 // use the Arduino IDE 'Library' Manager to get these libraries
 #include <Keypad.h>               // https://www.arduinolibraries.info/libraries/keypad                        GPL 3.0
@@ -57,6 +56,8 @@ Preferences nvsPrefs;
 bool nvsInit = false;
 bool nvsPrefsSaved = false;
 bool preferencesRead = false;
+String retrievedSsid = "";
+String retrievedPassword = "";
 
 // *********************************************************************************
 
@@ -737,6 +738,14 @@ void getSsidPasswordAndWitIpForFound() {
       routePrefix = DCC_EX_ROUTE_PREFIX;
     } 
   }
+
+  if (!found) { // see if we have it in non-volitile storage from a previous connection
+    debug_println("getSsidPasswordAndWitIpForFound() No configured password. See if we have it in non-volitile storage");
+    if (retrieveSsidAndPasswordPreference()) {
+      // preload the password so that if they select this ssid, we can try to connect immediately without having to ask them to enter the password
+      ssidPasswordEntered = retrievedPassword;
+    }
+  }
 }
 
 void enterSsidPassword() {
@@ -1319,6 +1328,47 @@ void writePreferences() {
   nvsPrefs.end();
 }
 
+boolean retrieveSsidAndPasswordPreference() {
+  debug_println("retrieveSsidAndPasswordPreference()");
+  boolean found = false;
+
+  nvsPrefs.begin("WitController", true); // read mode
+  nvsInit = nvsPrefs.isKey("nvsInit");
+  if (nvsInit) {
+    const char *key = ("ssid_"+selectedSsid).c_str();
+    if (nvsPrefs.isKey(key)) {
+      retrievedSsid = selectedSsid;
+      retrievedPassword = nvsPrefs.getString(key);
+      found = true;
+      debug_println("retrieveSsidAndPasswordPreference(): Found:" + retrievedSsid + " pwd: " + retrievedPassword);
+    }
+  } else {
+    debug_println("retrieveSsidAndPasswordPreference(): Non-volitile storage not initialised");
+  }
+  preferencesRead = true;
+  nvsPrefs.end();
+
+  return found;
+}
+
+void saveSsidAndPasswordPreference() {
+  debug_println("writeSsidAndPassword(): Writing SSID and password to non-volitile storage ");
+  nvsPrefs.begin("WitController", false); // write mode
+
+  if (nvsInit) {
+    const char *key = ("ssid_"+selectedSsid).c_str();
+    String val = ssidPasswordEntered;
+    if (nvsPrefs.isKey(key)) {
+      nvsPrefs.remove(key);
+    }
+    nvsPrefs.putString(key, val);
+    debug_println("saveSsidAndPasswordPreference(): Saved:" + retrievedSsid + " pwd: " + val);
+  } else {
+    debug_println("writePreferences(): Non-volitile storage not initialised");
+  }
+  nvsPrefs.end();
+}
+
 void clearPreferences() {
   setupPreferences(true);
 }
@@ -1698,7 +1748,7 @@ void setup() {
   //set boundaries and if values should cycle or not 
   rotaryEncoder.setBoundaries(0, 1000, circleValues); //minValue, maxValue, circleValues true|false (when max go to min and vice versa)
   //rotaryEncoder.disableAcceleration(); //acceleration is now enabled by default - disable if you don't need it
-  rotaryEncoder.setAcceleration(100); //or set the value - larger number = more acceleration; 0 or 1 means disabled acceleration
+  rotaryEncoder.setAcceleration(encoderSensitivity); //or set the value - larger number = more acceleration; 0 or 1 means disabled acceleration
 
   //if EC11 is used in hardware build WITHOUT physical pullup resistore, then make then enable GPIO pullups on EC11 A and B inputs
   if (EC11_PULLUPS_REQUIRED) {
@@ -1917,6 +1967,7 @@ void doKeyPress(char key, bool pressed) {
               encoderUseType = ENCODER_USE_OPERATION;
               keypadUseType = KEYPAD_USE_OPERATION;
               ssidConnectionState = CONNECTION_STATE_SELECTED;
+              saveSsidAndPasswordPreference();
             break;
           default:  // do nothing 
             break;

@@ -1,4 +1,4 @@
-const String appVersion = "v1.108";
+const String appVersion = "v1.109";
 #ifndef CUSTOM_APPNAME
    const String appName = "WiTcontroller";
 #else
@@ -559,6 +559,13 @@ const int glyph_speed_step = 0x00d6;
 #endif
 #ifndef SPEED_STEP_ADDITIONAL_MULTIPLIER
    #define SPEED_STEP_ADDITIONAL_MULTIPLIER 2
+#endif
+
+
+#ifdef ENCODER_SENSITIVITY
+  const int encoderSensitivity = ENCODER_SENSITIVITY;
+#else
+  const int encoderSensitivity = 85;
 #endif
 
 #ifdef  DISPLAY_SPEED_AS_PERCENT

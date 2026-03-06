@@ -2,6 +2,11 @@
 
 ## Versions
 
+### V1.109
+
+- Added ``#define ENCODER_SENSITIVITY``  Default is now 85 for the encoder acceleration instead of the previously fixed 100, but can be overridden
+- Added feature to automatically store all entered passwords in non-volatile memory.
+
 ### V1.108
 
 - When trying to connect to a DCC-EX EX-CommandStation it will now try the 'guessed' password on the first attempt.  Then, if it fails to connect, it will ask for the password on the second attempt.

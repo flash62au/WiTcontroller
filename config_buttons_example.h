@@ -143,6 +143,11 @@
 // will take presidence over DISPLAY_SPEED_AS_0_TO_28
 // Note: there will be rounding errors!
 
+// Encoder sensitivity
+// Uncoment and change this value if you find the encoder too sensitive or not sensitive enough.  (values 0-100+)
+// The higher the number, the more sensitive it is.  Default is 85. (Previouly 100 but I found that too sensitive.))
+// #define ENCODER_SENSITIVITY              85
+
 // Uncomment this line to display the speeds a percentage.
 // #define DISPLAY_SPEED_AS_PERCENT         true
 // Uncomment this line to display the speeds as 0-28.

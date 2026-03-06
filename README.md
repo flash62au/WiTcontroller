@@ -425,101 +425,102 @@ A "Throttle" can control only one train, which may be one loco, or more than one
 
 **Currently functioning:**
 WiTcontroller:
-- Provides a list of discovered SSIDs with the ability to choose one. When you select one:
-  - If it is one in your specified list (in the sketch), it will use that specified password 
-  - If it is a DCC-EX EX-CommandStation in Access Point (AP) mode, it will try to guess the password. <br /> *Warning!* prior to version 1.108 It assumes the it will be the default password. If you have changed the password it will fail to connect unless you have the SSID *and correct password* listed in `config_network.h`.  <br /> From version 1.108 it will try to connect to a DCC-EX EX-CommandStation with the 'guessed' password on the first attempt.  Then, if it fails to connect, it will ask for the password on the second attempt.
-  - Otherwise it will ask to enter the password (Use the rotary encoder to choose each character and the encoder button to select it.  * = backspace.  # = enter the password.) 
-- Optionally provides a list of SSIDs with the specified passwords (in the sketch) to choose from
-- Auto-connects to the first found WiThrottle Protocol Server if only one found, otherwise 
-  - Asks which to connect to
-  - If none found will ask to enter the IP Address and Port
-  - Guesses the WiThrottle IP address and Port for DCC-EX EX-CommandStations in Access Point (AP) mode
-  - Optionally you can add a #define (a preference) to disable this auto connect feature
-- Allows On-the-fly consists/MUs
+
+* Provides a list of discovered SSIDs with the ability to choose one. When you select one:
+  * If it is one in your specified list (in the sketch), it will use that specified password 
+  * If it is a DCC-EX EX-CommandStation in Access Point (AP) mode, it will try to guess the password. <br /> *Warning!* prior to version 1.108 It assumes the it will be the default password. If you have changed the password it will fail to connect unless you have the SSID *and correct password* listed in `config_network.h`.  <br /> From version 1.108 it will try to connect to a DCC-EX EX-CommandStation with the 'guessed' password on the first attempt.  Then, if it fails to connect, it will ask for the password on the second attempt.
+  * Otherwise it will ask to enter the password (Use the rotary encoder to choose each character and the encoder button to select it.  * = backspace.  # = enter the password.) <br /> Entered passwords will be stored in non-volatile memory
+* Optionally provides a list of SSIDs with the specified passwords (in the sketch) to choose from
+* Auto-connects to the first found WiThrottle Protocol Server if only one found, otherwise 
+  * Asks which to connect to
+  * If none found will ask to enter the IP Address and Port
+  * Guesses the WiThrottle IP address and Port for DCC-EX EX-CommandStations in Access Point (AP) mode
+  * Optionally you can add a #define (a preference) to disable this auto connect feature
+* Allows On-the-fly consists/MUs
   Allows assigning commands directly to the 1-9 buttons (in the sketch) (see list below)
-  - This is done in config_button.h
-  - Latching / non-latching for the function is provided by the roster entry of the WiThrottle server
-- Optionally uses a potentiometer (pot) instead of the rotary encoder
-- Optional ability to assign commands directly to the 1-11 additional buttons (in the sketch) (see list below)
-  - These are defined config_button.h
-- Provides a command **Menu** (see below for full list) including:
-  - Able to select and deselect locos:
-    - by their DCC address, via the keypad
-      - On NCE systems, a leading zero (0) will force a long address
-    - from the first 50 locos in the roster (can be increased)
-  - Able to select multiple locos to create a consist
-    - Able to change the facing of the additional locos in the consists/MUs (via the 'extra' menu after selection)
-  - Able to activate any function (0-31)
-    - Showing of the roster function labels (from the WiThrottle server if provided)
-    - Quick access to the functions by pressing #. Temporarily enabled via the Extras menu (or permanently enabled in config_button.h)
-    - Limited ability to configure which functions are sent to the first or all locos in a consist (defined in config_button.h)
-  - Able to throw/close turnouts/points:
-    - from the address
-    - from the first 50 turnouts/points in the server list
-  - Able to activate routes:
-    - from their address
-    - from the first 50 routes in the server list
-  - Set/unset a multiplier for the rotary encoder
-  - Power Track On/Off
-  - Disconnect / Reconnect
-  - Put ESP32 in deep sleep and restart it
-  - Option to switch between Single Loco and Consist/MU (Drop before Acquire)
-  - Option to save the currently select locos (on multiple throttles) and have them automatically re-acquired on next connection.
-  - Option to disable the heartbeat check
-- Option to have up to 6 command sequences executed on connection
-- Option to automatically acquire a loco if there is only one loco in the roster
-- Have up to 6 throttles, each with an unlimited number of locos in consist. <br/> The default is 2 throttles, which can be increased or decreased temporarily via the Extras menu (or permanently enabled in config_button.h)
-- Limited dealing with unexpected disconnects.  It will throw you back to the WiThrottle Server selection screen.
-- The boundary between short and long DCC addresses can be configured in config_buttons.h. <br/> The default is that 127 and below are Short Addresses.
-- The default speed step (per encoder click) can be configured in config_buttons.h
-- The controller will automatically shut down if no SSID is selected or entered in 4 minutes (to conserve the battery)
-- Relatively easy to add/use translation files.
-- Translations files for German and Italian included.
+  * This is done in config_button.h
+  * Latching / non-latching for the function is provided by the roster entry of the WiThrottle server
+* Optionally uses a potentiometer (pot) instead of the rotary encoder
+* Optional ability to assign commands directly to the 1-11 additional buttons (in the sketch) (see list below)
+  * These are defined config_button.h
+* Provides a command **Menu** (see below for full list) including:
+  * Able to select and deselect locos:
+    * by their DCC address, via the keypad
+      * On NCE systems, a leading zero (0) will force a long address
+    * from the first 50 locos in the roster (can be increased)
+  * Able to select multiple locos to create a consist
+    * Able to change the facing of the additional locos in the consists/MUs (via the 'extra' menu after selection)
+  * Able to activate any function (0-31)
+    * Showing of the roster function labels (from the WiThrottle server if provided)
+    * Quick access to the functions by pressing #. Temporarily enabled via the Extras menu (or permanently enabled in config_button.h)
+    * Limited ability to configure which functions are sent to the first or all locos in a consist (defined in config_button.h)
+  * Able to throw/close turnouts/points:
+    * from the address
+    * from the first 50 turnouts/points in the server list
+  * Able to activate routes:
+    * from their address
+    * from the first 50 routes in the server list
+  * Set/unset a multiplier for the rotary encoder
+  * Power Track On/Off
+  * Disconnect / Reconnect
+  * Put ESP32 in deep sleep and restart it
+  * Option to switch between Single Loco and Consist/MU (Drop before Acquire)
+  * Option to save the currently select locos (on multiple throttles) and have them automatically re-acquired on next connection.
+  * Option to disable the heartbeat check
+* Option to have up to 6 command sequences executed on connection
+* Option to automatically acquire a loco if there is only one loco in the roster
+* Have up to 6 throttles, each with an unlimited number of locos in consist. <br/> The default is 2 throttles, which can be increased or decreased temporarily via the Extras menu (or permanently enabled in config_button.h)
+* Limited dealing with unexpected disconnects.  It will throw you back to the WiThrottle Server selection screen.
+* The boundary between short and long DCC addresses can be configured in config_buttons.h. <br/> The default is that 127 and below are Short Addresses.
+* The default speed step (per encoder click) can be configured in config_buttons.h
+* The controller will automatically shut down if no SSID is selected or entered in 4 minutes (to conserve the battery)
+* Relatively easy to add/use translation files.
+* Translations files for German and Italian included.
 
 **ToDo:**
-- Speed button repeat (i.e. hold the button down)
-- Deal with unexpected disconnects better
-  - automatic attempt to reconnect
-- Keep a list of IP addresses and ports if mDNS doesn't provide any
-- Remember SSIDs and manually entered passwords 
+* Speed button repeat (i.e. hold the button down)
+* Deal with unexpected disconnects better
+  * automatic attempt to reconnect
+* Keep a list of IP addresses and ports if mDNS doesn't provide any
 
 #### Command menu:
-- 0-9 keys = pressing these directly will do whatever has been configured in your ``config_buttons.h`` for them to do, or whatever is the default for that key  (see \# below)
-- \* = Menu:  The button press following the \* is the actual command:
-  - 1 = Add loco.  
-     - Followed by the loco number, followed by \# to complete.  e.g. to select loco 99 you would press '\*199\#'
-     - or \# alone to show the roster   \# again will show the next page
-  - 2 = release loco:
-     - Followed by the loco number, followed by \# to release an individual loco.  e.g. to deselect the loco 99 you would press '\*299\#'
-     - Otherwise followed directly by \#  to release all e.g. '\*2\#'
-  - 3 = Toggle direction.
-  - 4 = Set / Unset a 2 times multiplier for the rotary encoder dial.
-  - 5 = Throw turnout/point.  
-     - Followed by the turnout/point number, followed by the \# to complete.  e.g. Throw turnout XX12 '\*512\#'  (where XX is a prefix defined in the sketch) 
-     - or \# alone to show the list from the server   \# again will show the next page
-  - 6 = Close turnout.    
-     - Followed by the turnout/point number, followed by \# to complete.  e.g. Close turnout XX12 '\*612\#'  (where XX is a prefix defined in the sketch)
-     - or \# alone to show the list from the server
-  - 7 = Set Route.    
-      - Followed by the Route number, followed by \# to complete.  e.g. to Set route XX:XX:0012 '\*60012\#'  (where \'XX:XX:\' is a prefix defined in the sketch)
-      - or \# alone to show the list from the server   \# again will show the next page
-  - 0 = Function button. Followed by...
-      - the function number, Followed by \# to complete.  e.g. to set function 17 you would press '\*017\#'
-      - \# alone, to show the list of functions.
-  - 8 = Track Power On/Off.
-  - 9 = Extras. Followed by...
-      - 0 then \# to toggle the action the the \# key does as a direct action, either to show the direct action key definitions, or the Function labels.  
-      - 1 to change the facing of locos in a consist.
-      - 3 to toggle the heartbeat check.
-      - 4 to increase the number of available throttle (up to 6)
-      - 5 to decrease the number of available throttle (down to 1)
-      - 6 to Disconnect/Reconnect.  
-      - 7 to put into deep sleep
-      - 8 Toggle between Single loco and Consist/MU (Drop before Acquire)
-      - 9 Save the Currently selected locos so they will be automatically acquired on reconnection
+
+* 0-9 keys = pressing these directly will do whatever has been configured in your ``config_buttons.h`` for them to do, or whatever is the default for that key  (see \# below)
+* \* = Menu:  The button press following the \* is the actual command:
+  * 1 = Add loco.  
+    * Followed by the loco number, followed by \# to complete.  e.g. to elect loco 99 you would press '\*199\#'
+    * or \# alone to show the roster   \# again will show the next page
+  * 2 = release loco:
+    * Followed by the loco number, followed by \# to release an individual loco.  e.g. to deselect the loco 99 you would press '\*299\#'
+    * Otherwise followed directly by \#  to release all e.g. '\*2\#'
+  * 3 = Toggle direction.
+  * 4 = Set / Unset a 2 times multiplier for the rotary encoder dial.
+  * 5 = Throw turnout/point.  
+    * Followed by the turnout/point number, followed by the \# to complete.  e.g. Throw turnout XX12 '\*512\#'  (where XX is a prefix defined in the sketch)
+    * or \# alone to show the list from the server   \# again will show the next page
+  * 6 = Close turnout.
+    * Followed by the turnout/point number, followed by \# to complete.  e.g. Close turnout XX12 '\*612\#'  (where XX is a prefix defined in the sketch)
+    * or \# alone to show the list from the server
+  * 7 = Set Route.
+    * Followed by the Route number, followed by \# to complete.  e.g. to Set route XX:XX:0012 '\*60012\#'  (where \'XX:XX:\' is a prefix defined in the sketch)
+    * or \# alone to show the list from the server   \# again will show the next page
+  * 0 = Function button. Followed by...
+    * the function number, Followed by \# to complete.  e.g. to set function 17 you would press '\*017\#'
+    * \# alone, to show the list of functions.
+  * 8 = Track Power On/Off.
+  * 9 = Extras. Followed by...
+    * 0 then \# to toggle the action the the \# key does as a direct action, either to show the direct action key definitions, or the Function labels.  
+      * 1 to change the facing of locos in a consist.
+      * 3 to toggle the heartbeat check.
+      * 4 to increase the number of available throttle (up to 6)
+      * 5 to decrease the number of available throttle (down to 1)
+      * 6 to Disconnect/Reconnect.  
+      * 7 to put into deep sleep
+      * 8 Toggle between Single loco and Consist/MU (Drop before Acquire)
+      * 9 Save the Currently selected locos so they will be automatically acquired on reconnection
 Pressing '\*' again before the '\#' will terminate the current command (but not start a new command)
- - \# = Pressing # alone will show the function the the numbered keys (0-9) perform, outside the menu.
-       Optionally, you can configure it so that the the Function labels from the roster show 
+* \# = Pressing # alone will show the function the the numbered keys (0-9) perform, outside the menu.
+       Optionally, you can configure it so that the the Function labels from the roster show
 
 Pressing the Encoder button while the ESP32 is in Deep Sleep will revive it.
 
@@ -607,55 +608,66 @@ mmmmmmmmm
 ### Allowed assignments for the 0-9 keys and/or Additional Buttons:
 
 Note: you need to edit ``config_buttons.h`` to alter these assignments   (copy ``config_buttons_example.h``)
-- FUNCTION_NULL   - don't do anything
-- FUNCTION_0 - FUNCTION_31
-- SPEED_STOP
-- SPEED_UP
-- SPEED_DOWN
-- SPEED_UP_FAST
-- SPEED_DOWN_FAST
-- SPEED_MULTIPLIER
-- E_STOP   - E Stop all locos on all throttles
-- E_STOP_CURRENT_LOCO - E Stop locos on current throttle only
-- POWER_TOGGLE
-- POWER_ON
-- POWER_OFF
-- SHOW_HIDE_BATTERY
-- DIRECTION_TOGGLE
-- DIRECTION_FORWARD
-- DIRECTION_REVERSE
-- NEXT_THROTTLE
-- SPEED_STOP_THEN_TOGGLE_DIRECTION   - stops the loco if moving.  Toggles the direction if stationary.
-- MAX_THROTTLE_INCREASE    - change the number of available throttles on-the-fly
-- MAX_THROTTLE_DECREASE    - change the number of available throttles on-the-fly
-- POWER_TOGGLE - track power toggle
-- POWER_ON - track power on
-- POWER_OFF - track power off
-- THROTTLE_1   - change to a specific throttle
-- THROTTLE_2   - change to a specific throttle
-- THROTTLE_3   - change to a specific throttle
-- THROTTLE_4   - change to a specific throttle
-- THROTTLE_5   - change to a specific throttle
-- THROTTLE_6   - change to a specific throttle
-- SLEEP   - put device to sleep
-- CUSTOM_1   - There must be already be a command defined as ``#CUSTOM_COMMAND_1 ...``
-- CUSTOM_2   - There must be already be a command defined as ``#CUSTOM_COMMAND_2 ...``
-- CUSTOM_3   - There must be already be a command defined as ``#CUSTOM_COMMAND_3 ...``
-- CUSTOM_4   - There must be already be a command defined as ``#CUSTOM_COMMAND_4 ...``
-- CUSTOM_5   - There must be already be a command defined as ``#CUSTOM_COMMAND_5 ...``
-- CUSTOM_6   - There must be already be a command defined as ``#CUSTOM_COMMAND_6 ...``
-- CUSTOM_7   - There must be already be a command defined as ``#CUSTOM_COMMAND_7 ...``
+
+* FUNCTION_NULL   - don't do anything
+* FUNCTION_0 - FUNCTION_31
+* SPEED_STOP
+* SPEED_UP
+* SPEED_DOWN
+* SPEED_UP_FAST
+* SPEED_DOWN_FAST
+* SPEED_MULTIPLIER
+* E_STOP   - E Stop all locos on all throttles
+* E_STOP_CURRENT_LOCO - E Stop locos on current throttle only
+* POWER_TOGGLE
+* POWER_ON
+* POWER_OFF
+* SHOW_HIDE_BATTERY
+* DIRECTION_TOGGLE
+* DIRECTION_FORWARD
+* DIRECTION_REVERSE
+* NEXT_THROTTLE
+* SPEED_STOP_THEN_TOGGLE_DIRECTION   - stops the loco if moving.  Toggles the direction if stationary.
+* MAX_THROTTLE_INCREASE    - change the number of available throttles on-the-fly
+* MAX_THROTTLE_DECREASE    - change the number of available throttles on-the-fly
+* POWER_TOGGLE - track power toggle
+* POWER_ON - track power on
+* POWER_OFF - track power off
+* THROTTLE_1   - change to a specific throttle
+* THROTTLE_2   - change to a specific throttle
+* THROTTLE_3   - change to a specific throttle
+* THROTTLE_4   - change to a specific throttle
+* THROTTLE_5   - change to a specific throttle
+* THROTTLE_6   - change to a specific throttle
+* SLEEP   - put device to sleep
+* CUSTOM_1   - There must be already be a command defined as ``#CUSTOM_COMMAND_1 ...``
+* CUSTOM_2   - There must be already be a command defined as ``#CUSTOM_COMMAND_2 ...``
+* CUSTOM_3   - There must be already be a command defined as ``#CUSTOM_COMMAND_3 ...``
+* CUSTOM_4   - There must be already be a command defined as ``#CUSTOM_COMMAND_4 ...``
+* CUSTOM_5   - There must be already be a command defined as ``#CUSTOM_COMMAND_5 ...``
+* CUSTOM_6   - There must be already be a command defined as ``#CUSTOM_COMMAND_6 ...``
+* CUSTOM_7   - There must be already be a command defined as ``#CUSTOM_COMMAND_7 ...``
 
 <br/>
 <hr style="border: none; height: 4px; background-color: #007bff; border-radius: 2px;">
 
 ## Options and Extras
 
+### Rotary Encoder 'sensitivity'
+
+If you find that moving the encoder slightly flick the speed or the selected option back a forward, try adjusting this define by uncommenting (removing the ``//``) following line in your ``config_buttons.h`` and changing the value. (Decrease the value to make it less sensitive. Increase the value to make it more.)
+
+``#define ENCODER_SENSITIVITY  85``
+
+Depending on your encoder - generally try between 80 and 100 till you get expected behaviour.  The default is 85.  (Prior to version 1.109 the it was hard coded to 100.)
+
+<hr style="height: 1px;">
+
 ### Rotary Encoder 'bounce'
 
 If you find that moving the encoder a single click sends more than one speed command, try adjusting this define by uncommenting (removing the ``//``) following line in your ``config_buttons.h`` and changing the value. (Usually you need to increase the value.)
 
-``#define ROTARY_ENCODER_STEPS 2`` 
+``#define ROTARY_ENCODER_STEPS 2``
 
 Depending on your encoder - try 1,2,3 or 4 till you get expected behaviour.  The default is 2
 
@@ -680,7 +692,7 @@ If you wish to increase speed by rotating the encoder in the opposite direction 
 
 <hr style="height: 1px;">
 
-### Optional Additional Buttons 
+### Optional Additional Buttons
 
 The way to add additional buttons changed in version 1.83.  The old way will continue to work but only the new way is described here.
 
@@ -707,40 +719,40 @@ Then the following lists MUST have the same number of elements as NEW_MAX_ADDITI
 
 For **NEW_ADDITIONAL_BUTTON_ACTIONS**
 
-  This array lists the *functions or actions* assigned to the buttons. See the list of 'Allowed assignments' above (or in [actions.h](actions.h)).
+This array lists the *functions or actions* assigned to the buttons. See the list of 'Allowed assignments' above (or in [actions.h](actions.h)).
 
-  This has the general form ``NEW_ADDITIONAL_BUTTON_ACTIONS{val0, val1, .. val10, up-to-val11}``
+This has the general form ``NEW_ADDITIONAL_BUTTON_ACTIONS{val0, val1, .. val10, up-to-val11}``
 
 For **NEW_ADDITIONAL_BUTTON_LATCHING**
 
-  This array lists if the functions assigned to the buttons should be *latching* or not. This is only relevant if the assigned function is for ``FUNCTION_0`` to ``FUNCTION_31``.
+This array lists if the functions assigned to the buttons should be *latching* or not. This is only relevant if the assigned function is for ``FUNCTION_0`` to ``FUNCTION_31``.
 
-  This has the general form ``NEW_ADDITIONAL_BUTTON_LATCHING{val0, val1, .. val10, up-to-val11}``
+This has the general form ``NEW_ADDITIONAL_BUTTON_LATCHING{val0, val1, .. val10, up-to-val11}``
 
 For **NEW_ADDITIONAL_BUTTON_PIN**
 
-  This array lists the *pins* that the buttons will be attached to.
+This array lists the *pins* that the buttons will be attached to.
 
-  * For pins on the ESP32 use the number shown on the board/diagram
-  * If you are using pins on a I2C GPIO Expansion board, they will be numbered: 0-15
-  * If don't want to use pin, but retain the entry set it to ``-1``.
+* For pins on the ESP32 use the number shown on the board/diagram
+* If you are using pins on a I2C GPIO Expansion board, they will be numbered: 0-15
+* If don't want to use pin, but retain the entry set it to ``-1``.
 
-  This has the general form ``NEW_ADDITIONAL_BUTTON_PIN{val0, val1, .. val10, up-to-val11}``
+This has the general form ``NEW_ADDITIONAL_BUTTON_PIN{val0, val1, .. val10, up-to-val11}``
 
 For **NEW_ADDITIONAL_BUTTON_TYPE**
 
-  This array lists the type of the pin.
+This array lists the type of the pin.
 
-  * Set to either INPUT_PULLUP or INPUT.  If INPUT, the pin will need an external pullup resister (e.g. 10k)
-  * Pins 34,35,36,39 can be used but don't have an internal pullup, so use INPUT for these
+* Set to either INPUT_PULLUP or INPUT.  If INPUT, the pin will need an external pullup resister (e.g. 10k)
+* Pins 34,35,36,39 can be used but don't have an internal pullup, so use INPUT for these
 
-  This has the general form ``NEW_ADDITIONAL_BUTTON_TYPE{val0, val1, .. val10, up-to-val11}``
+This has the general form ``NEW_ADDITIONAL_BUTTON_TYPE{val0, val1, .. val10, up-to-val11}``
 
 See additional information in [config_button_example.h](config_buttons_example.h).
 
 <hr style="height: 1px;">
 
-### Optional use of a EC11 rotary encoder (with no physical resistor pullups) in place of the KY040 encoder module 
+### Optional use of a EC11 rotary encoder (with no physical resistor pullups) in place of the KY040 encoder module
 
 Internal GPIO pullups required if the hardware build utilises a bare EC11 rotary encoder in place of a KY040 encoder module. (The encoder module has physical pullups fitted)
 
@@ -773,7 +785,6 @@ This is one of the common 1.3 inch OLED displays
 This one works with the 2.42 inch SSD1309 based oLED from [Amazon](https://www.amazon.co.uk/dp/B0DLGD8HQH?ref_=ppx_hzsearch_conn_dt_b_fed_asin_title_4&th=1)
 
 ``#define OLED_TYPE U8G2_SSD1309_128X64_NONAME2_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);``
-
 
 See [config_buttons_example.h](config_buttons_example.h) for more information.
 
@@ -834,7 +845,7 @@ If the battery does not show 100% when plugged into the charger, you may need to
 
   In your ``config_buttons.h`` add (or uncomment -remove the ``//``) this define:
   
-    #define WITCONTROLLER_DEBUG    0
+  ``#define WITCONTROLLER_DEBUG    0``
 
   a) **Make sure your battery is fully charged** first! <br/>
   b) Upload the code WiTcontroller code if you have not already done so.  <br/>
@@ -842,9 +853,11 @@ If the battery does not show 100% when plugged into the charger, you may need to
   d) Wait. (Don't connect to a WiThrottle server.) <br/>
   You will see lines like...
 
-    BATTERY TestValue: 100 (10003)
-    BATTERY lastAnalogReadValue: 2491 (10003)
-    BATTERY If Battery full, BATTERY_CONVERSION_FACTOR should be: 1.69 (10014)
+  ``
+  BATTERY TestValue: 100 (10003)
+  BATTERY lastAnalogReadValue: 2491 (10003)
+  BATTERY If Battery full, BATTERY_CONVERSION_FACTOR should be: 1.69 (10014)
+  ``
 
   Let it run for a while. <br/>
   e) Note one of the recommended values (it will vary a bit) and enter it into the define in your ``config_buttons.h`` <br/>
@@ -863,8 +876,7 @@ If the battery does not show 100% when plugged into the charger, you may need to
 
 The display of the battery can be temporarily toggled by setting a key or button to ``SHOW_HIDE_BATTERY``.  The display will cycle between none, icon only and icon plus percent value. Note that ``USE_BATTERY_TEST`` must be set to `true` for this to have any effect. By default it is disabled (0).
 
-Note: 
-I recommend adding a physical power switch to disconnect the battery as this feature will, slowly, continually drain the battery, even when not being used.
+*Note: I recommend adding a physical power switch to disconnect the battery as this feature will, slowly, continually drain the battery, even when not being used.*
 
 <hr style="height: 1px;">
 
@@ -885,7 +897,7 @@ It is believed that the YaMoRC Command Stations are not sending this as the shou
 Optional. If defined, up to four commands will be executed, in order, after connection to the WiThrottle Server.
 Each must be ONLY ONE single valid command.  Either a direct action or a menu action.  Any can be blank or not defined, the others will still be executed.
 
-Note: Selecting from the roster/turnouts etc. is not possible as the commands will execute before the roster loads.
+*Note: Selecting from the roster/turnouts etc. is not possible as the commands will execute before the roster loads.*
 
 <hr style="height: 1px;">
 
@@ -907,13 +919,13 @@ To do a Fast Scan for SSIDs, uncomment or add the line above in your ``config_ne
 
 The 'found' SSIDs will not be sorted by default (from version v1.98). To restore this feature, uncomment or add the line above in your ``config_network.h``.  If enabled, the SSIDs are sorted by signal strength. By default this option is disbled.
 
-Note: sorting can't be used if the Fast Scan is enabled.
+*Note: sorting can't be used if the Fast Scan is enabled.*
 
 ``#define BYPASS_WIFI_SCAN_ON_STARTUP true``
 
 This option to allows you to bypass the initial WiFi scan.  The WiTcontroller will instead show you the list of SSIDs you have defined in ``config_network.h``.  From that you can still to the scan if you wish by pressing ``#``.  By default this option is disbled and the network will be scanned at startup.
 
-Note: Some ESP32s seem to have an intermitient WiFi problem that causes the WifI Scan to lockup the device.  This option may be may be useful in this situation.
+*Note: Some ESP32s seem to have an intermitient WiFi problem that causes the WifI Scan to lockup the device.  This option may be may be useful in this situation.*
 
 <hr style="height: 1px;">
 
