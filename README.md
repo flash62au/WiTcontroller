@@ -76,6 +76,7 @@ While the basic form is simple, the design is flexible and you can add several a
     *Note: any ESP32 will work but the pinouts may need to be adjusted, and a separate LiPo charger may be required*
 
 <div style="padding-left: 30px;" markdown="1">
+
 > [!CAUTION]
 > I have reports of some of the versions of this board with the USB-C connectors having problems with the WiFi.  Some are clearly fine, but others are not. </br> I am still investigating this, but I would recommend avoiding the USB-C version for now.
 <div>
