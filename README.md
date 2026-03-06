@@ -432,8 +432,14 @@ WiTcontroller:
 
 * Provides a list of discovered SSIDs with the ability to choose one. When you select one:
   * If it is one in your specified list (in the sketch), it will use that specified password
-  * If it is a DCC-EX EX-CommandStation in Access Point (AP) mode, it will try to guess the password. <br /> *Warning!* prior to version 1.108 It assumes the it will be the default password. If you have changed the password it will fail to connect unless you have the SSID *and correct password* listed in `config_network.h`.  <br /> From version 1.108 it will try to connect to a DCC-EX EX-CommandStation with the 'guessed' password on the first attempt.  Then, if it fails to connect, it will ask for the password on the second attempt.
-  * Otherwise it will ask to enter the password (Use the rotary encoder to choose each character and the encoder button to select it.  * = backspace.  # = enter the password.) <br /> Entered passwords will be stored in non-volatile memory
+  * If it is a DCC-EX EX-CommandStation in Access Point (AP) mode, it will try to guess the password. 
+  
+    *Warning!* prior to version 1.108 WiTcontroller assumes that it will be the default password for EX-CommandStations. If you have changed the password it will fail to connect unless you have the SSID *and correct password* listed in `config_network.h`.  
+    
+    From version 1.108 it will try to connect to a DCC-EX EX-CommandStation with the 'guessed' password on the first attempt.  Then, if it fails to connect, it will ask for the password on the second attempt.
+  * Otherwise it will ask to enter the password (Use the rotary encoder to choose each character and the encoder button to select it.  * = backspace.  # = enter the password.) 
+  
+    Any/all entered passwords will be stored in non-volatile memory an retrieved on the next attempt to connect and allow you to edit or confirm it.
 * Optionally provides a list of SSIDs with the specified passwords (in the sketch) to choose from
 * Auto-connects to the first found WiThrottle Protocol Server if only one found, otherwise
   * Asks which to connect to
@@ -473,13 +479,17 @@ WiTcontroller:
   * Option to disable the heartbeat check
 * Option to have up to 6 command sequences executed on connection
 * Option to automatically acquire a loco if there is only one loco in the roster
-* Have up to 6 throttles, each with an unlimited number of locos in consist. <br/> The default is 2 throttles, which can be increased or decreased temporarily via the Extras menu (or permanently enabled in config_button.h)
+* Have up to 6 throttles, each with an unlimited number of locos in consist.
+  
+  The default is 2 throttles, which can be increased or decreased temporarily via the Extras menu (or permanently enabled in ``config_button.h``)
 * Limited dealing with unexpected disconnects.  It will throw you back to the WiThrottle Server selection screen.
-* The boundary between short and long DCC addresses can be configured in config_buttons.h. <br/> The default is that 127 and below are Short Addresses.
-* The default speed step (per encoder click) can be configured in config_buttons.h
+* The boundary between short and long DCC addresses can be configured in ``config_buttons.h`.
+
+  The default is that 127 and below are Short Addresses.
+* The default speed step (per encoder click) can be configured in ``config_buttons.h``
 * The controller will automatically shut down if no SSID is selected or entered in 4 minutes (to conserve the battery)
 * Relatively easy to add/use translation files.
-* Translations files for German and Italian included.
+* Translations files for German, Italian Dutch and Chinese are included.
 
 **ToDo:**
 
@@ -487,6 +497,7 @@ WiTcontroller:
 * Deal with unexpected disconnects better
   * automatic attempt to reconnect
 * Keep a list of IP addresses and ports if mDNS doesn't provide any
+* Additional translation files
 
 #### Command menu
 
@@ -610,7 +621,7 @@ mmmmmmmmm
 * 8 = SPEED_STOP
 * 9 = DIRECTION_FORWARD
 
-### Allowed assignments for the 0-9 keys and/or Additional Buttons:
+### Allowed assignments for the 0-9 keys and/or Additional Buttons
 
 Note: you need to edit ``config_buttons.h`` to alter these assignments   (copy ``config_buttons_example.h``)
 
