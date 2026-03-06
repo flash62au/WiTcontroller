@@ -25,6 +25,7 @@ While the basic form is simple, the design is flexible and you can add several a
 *WiTcontroller* is a contraction of 'WiThrottle Controller' as it uses the WiThrottle Protocol for communications with the server.  I pronounce it as 'Wit Controller', but you can pronounce it however you like.😊
 
 > [!NOTE]
+>
 > * 'WiThrottle' is a trademark owned by Brett Hoffman. It is also an iOS app developed by Brett Hoffman.
 > * The 'WiThrottle protocol' is a communications protocol developed by Brett Hoffman.  It is used by **WiTcontroller**, JMRI, Engine Driver, the WiThrottle app plus a number of other apps and DCC Command Stations. References in this document to a 'WiThrottle Server', refer to any server that can communicate using the 'WiThrottle protocol'.
  
@@ -75,8 +76,8 @@ While the basic form is simple, the design is flexible and you can add several a
 
     Note: *Any ESP32 will work but the pinouts may need to be adjusted, and a separate LiPo charger may be required*
 
-    > [!CAUTION]
-    > I have reports of some of the versions of this board with the USB-C connectors having problems with the WiFi.  Some are clearly fine, but others are not. </br> I am still investigating this, but I would recommend avoiding the USB-C version for now.
+> [!CAUTION]
+> I have reports of some of the versions of this board with the USB-C connectors having problems with the WiFi.  Some are clearly fine, but others are not. </br> I am still investigating this, but I would recommend avoiding the USB-C version for now.
 
 2. **3x4 Keypad**  ([Example](https://www.jaycar.com.au/12-key-numeric-keypad/p/SP0770?pos=2&queryId=20aedf107668ad42c6fe1f8b7f7a9ca7)) 
 
@@ -87,19 +88,25 @@ While the basic form is simple, the design is flexible and you can add several a
 
 3. **KY-040 Rotary Encoder Module** ([Example](https://www.aliexpress.com/item/1005003946689694.html?albagn=888888&&src=google&albch=search&acnt=479-062-3723&isdl=y&aff_short_key=UneMJZVf&albcp=21520181724&albag=168529973707&slnk=&trgt=dsa-1464330247393&plac=&crea=707854323770&netw=g&device=c&mtctp=&memo1=&albbt=Google_7_search&aff_platform=google&gad_source=1&gclid=Cj0KCQjwiOy1BhDCARIsADGvQnBPdlEVLYbYnLoOnN1p2bdjte0jYmInrgFD0WG16aF3GZtvrWTb6o0aAo8VEALw_wcB&gclsrc=aw.ds)) 
 
-> [!NOTE]
-> The **EC11 rotary encoder** will also work, but requires a small configuration change in ``config_buttons.h`` (see below)
+
+    Notes:
+
+    *The **EC11 rotary encoder** will also work, but requires a small configuration change in ``config_buttons.h`` (see below)*
 
 4. **OLED Display** 0.96" 128x64 I2C IIC SSD1306 ([Example](https://www.ebay.com.au/itm/273746192621?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2060353.m2749.l2649))
 
-> [!NOTE]
-> * The code for the one of the common 1.3" displays is also included (see below).
-> * Some OLED displays up to 2.4 inch will also work (see below)*
+
+    Notes:
+
+    * *The code for the one of the common 1.3" displays is also included (see below).*
+    * *Some OLED displays up to 2.4 inch will also work (see below)*
 
 5. **Polymer Lithium Ion Battery LiPo** 400mAh (or larger) 3.7V 502535 JST Connector. ([500mAh Example](https://www.ebay.com.au/itm/133708965793?hash=item1f21ace7a1:g:tlwAAOSwfORgYqYK)) 
 
-> [!NOTE]
-> Any capacity will work. A 400mAh will give about 6 hours of run time.
+
+    Notes:
+
+    * Any capacity will work. A 400mAh will give about 6 hours of run time.*
     
 > [!WARNING]
 > *I have found that some batteries come with the positive and negative leads the other way around to the terminals on the ESP32.* <br/> Check they are correct before plugging it in. <br/> The polarity of the battery is easy to swap, by getting a knife blade under the small tabs on the plastic connector and pulling each male socket out. Take extreme care. **DO NOT SHORT THE TERMINALS.**
@@ -706,6 +713,7 @@ Then the following lists MUST have the same number of elements as NEW_MAX_ADDITI
 * ``NEW_ADDITIONAL_BUTTON_TYPE``
 
 > [!NOTE]
+>
 > It is theoretically possible to add up to 11 additional buttons directly to the ESP32. <br/>
 > Pins 5,15,25,26,27,32,33 are the 7 normally used for the buttons. <br/>
 > However one of these becomes unavailable if you have an optional 4x4 keypad. <br/>
@@ -799,6 +807,7 @@ Which is exactly the same as...
 ```
 
 > [!NOTE]
+>
 > * The ``\`` at the end of the lines is a continuation.  It means that the following line will be treated as part of the line which ends in the ``\``. <br /> i.e All the defines can just as easily be written on single lines without the ``\``.
 > * The last entry in each list *must not* have a comma (,) after it.  The other entries *must* have the comma (,) after.
 
@@ -931,6 +940,7 @@ If the battery does not show 100% when plugged into the charger, you may need to
 The display of the battery can be temporarily toggled by setting a key or button to ``SHOW_HIDE_BATTERY``.  The display will cycle between none, icon only and icon plus percent value. Note that ``USE_BATTERY_TEST`` must be set to `true` for this to have any effect. By default it is disabled (0).
 
 > [!NOTE]
+>
 > I recommend adding a physical power switch to disconnect the battery as this feature will, slowly, continually drain the battery, even when not being used.*
 
 <hr style="height: 1px;">
@@ -953,6 +963,7 @@ Optional. If defined, up to four commands will be executed, in order, after conn
 Each must be ONLY ONE single valid command.  Either a direct action or a menu action.  Any can be blank or not defined, the others will still be executed.
 
 > [!NOTE]
+>
 > Selecting from the roster/turnouts etc. is not possible as the commands will execute before the roster loads.
 
 <hr style="height: 1px;">
@@ -976,6 +987,7 @@ To do a Fast Scan for SSIDs, uncomment or add the line above in your ``config_ne
 The 'found' SSIDs will not be sorted by default (from version v1.98). To restore this feature, uncomment or add the line above in your ``config_network.h``.  If enabled, the SSIDs are sorted by signal strength. By default this option is disbled.
 
 > [!NOTE]
+>
 > sorting can't be used if the Fast Scan is enabled.
 
 ``#define BYPASS_WIFI_SCAN_ON_STARTUP true``
@@ -983,6 +995,7 @@ The 'found' SSIDs will not be sorted by default (from version v1.98). To restore
 This option to allows you to bypass the initial WiFi scan.  The WiTcontroller will instead show you the list of SSIDs you have defined in ``config_network.h``.  From that you can still to the scan if you wish by pressing ``#``.  By default this option is disbled and the network will be scanned at startup.
 
 > [!NOTE]
+>
 > Some ESP32s seem to have an intermitient WiFi problem that causes the WifI Scan to lockup the device.  This option may be may be useful in this situation.
 
 <hr style="height: 1px;">
