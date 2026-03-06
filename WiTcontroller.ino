@@ -24,7 +24,7 @@
 #include <WiThrottleProtocol.h>   // https://github.com/flash62au/WiThrottleProtocol                           Creative Commons 4.0  Attribution-ShareAlike
 #include <AiEsp32RotaryEncoder.h> // https://github.com/igorantolic/ai-esp32-rotary-encoder                    GPL 2.0
 
-// this library is included with the WiTController code
+// this library is included with the WiTcontroller code
 #include "Pangodream_18650_CL.h"  // https://github.com/pangodream/18650CL                                     Copyright (c) 2019 Pangodream
 
 // create these files by copying the example files and editing them as needed
@@ -1369,6 +1369,7 @@ void saveSsidAndPasswordPreference() {
   nvsPrefs.end();
 }
 
+// Caution!  This will clear any saved passwords as well
 void clearPreferences() {
   setupPreferences(true);
 }
@@ -2551,8 +2552,6 @@ void doMenuCommand(char menuItem) {
     case MENU_ITEM_DISCONNECT: { // disconnect   
         if (witConnectionState == CONNECTION_STATE_CONNECTED) {
           witConnectionState = CONNECTION_STATE_DISCONNECTED;
-          // clearPreferences();
-          // writePreferences();
           preferencesRead = false;
           disconnectWitServer();
         } else {
@@ -2561,8 +2560,6 @@ void doMenuCommand(char menuItem) {
         break;
       }
     case MENU_ITEM_OFF_SLEEP: { // sleep/off
-        // clearPreferences();
-        // writePreferences();
         deepSleepStart();
         break;
       }

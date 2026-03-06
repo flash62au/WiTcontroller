@@ -202,7 +202,7 @@
 // This is one of the common 1.3 inch OLED displays
 // #define OLED_TYPE U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);
 
-// This one works with the 2.42 inch SSD1309 based oLED from Amazon https://www.amazon.co.uk/dp/B0DLGD8HQH?ref_=ppx_hzsearch_conn_dt_b_fed_asin_title_4&th=1
+// This one works with a 2.42 inch SSD1309 based oLED
 // #define OLED_TYPE U8G2_SSD1309_128X64_NONAME2_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);
 
 // *******************************************************************************************************************
@@ -354,7 +354,7 @@
 //
 // note: The '\' at the end of each line below makes it a multi-line command 
 //       and is required for every line except the last for each array definition.
-//       Alternately you can put the entire array on a single line without the '\'.
+//       Alternately you can put the entire array on a single line without the '\'s.
 
 
 //   #define USE_NEW_ADDITIONAL_BUTTONS_FORMAT true

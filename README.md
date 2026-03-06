@@ -6,11 +6,11 @@ A WiTcontroller is a simple DIY, handheld controller that talks to a WiThrottle 
 
 ---
 
-**Why WiTcontroller?**
+## Why WiTcontroller?
 
 <img src="images/petegsx_version.png" width="150" style="float:right;"></img>
 
-There are a number of excellent DIY DCC controllers available but most require a lot of components and a lot of soldering.  I wanted to create the simplest possible controller so that it would be as easy (as possible) to make one.
+There are a number of excellent DIY DCC controllers available, but most require a lot of components and a lot of soldering.  I wanted to create the simplest possible controller so that it would be as easy (as possible) to make one.
 
 In its basic form, the WiTcontroller uses only four components plus a battery.  You can even put it together without soldering, though I don't recommend that for long term use.
 
@@ -20,7 +20,7 @@ While the basic form is simple, the design is flexible and you can add several a
 [and another...](https://www.youtube.com/watch?v=1w7H2OvP8Jg) (from GingeAngles)
 [and another...](https://youtu.be/69rTwZ4NM7E?si=bjXsFOhbpBvZsjaS) (from Sumner)
 
-**The name**
+## The name
 
 *WiTcontroller* is a contraction of 'WiThrottle Controller' as it uses the WiThrottle Protocol for communications with the server.  I pronounce it as 'Wit Controller', but you can pronounce it however you like.😊
 
@@ -31,12 +31,12 @@ While the basic form is simple, the design is flexible and you can add several a
  
 ---
 
-**Index:**
+## Index / Contents
 
 * [Prerequisites](#prerequisites)
 * [Building](#building)
 * [Loading the Code](#loading-the-code)
-* [Using WiTController](#using-witcontroller)
+* [Using WiTcontroller](#using-witcontroller)
 * [Allowed Actions](#allowed-assignments-for-the-0-9-keys-andor-additional-buttons)
 * [Options and Extras](#options-and-extras)
 * [Contact Me](#contact-me) <br/> <br/>
@@ -77,7 +77,7 @@ While the basic form is simple, the design is flexible and you can add several a
     Note: *Any ESP32 will work but the pinouts may need to be adjusted, and a separate LiPo charger may be required*
 
 > [!CAUTION]
-> I have reports of some of the versions of this board with the USB-C connectors having problems with the WiFi.  Some are clearly fine, but others are not. </br> I am still investigating this, but I would recommend avoiding the USB-C version for now.
+> I have reports of some of the versions of this board with the USB-C connectors having problems with the WiFi.  Some are clearly fine, but others are not. I am still investigating this, but I would recommend avoiding the USB-C version for now.
 
 2. **3x4 Keypad**  ([Example](https://www.jaycar.com.au/12-key-numeric-keypad/p/SP0770?pos=2&queryId=20aedf107668ad42c6fe1f8b7f7a9ca7)) 
 
@@ -87,7 +87,6 @@ While the basic form is simple, the design is flexible and you can add several a
     * Different keypad manufacturers may arrange the pins on the base of the keypad differently.*** See notes in the [Default Pins for the keypads](#default-pins-for-the-keypads) section below.
 
 3. **KY-040 Rotary Encoder Module** ([Example](https://www.aliexpress.com/item/1005003946689694.html?albagn=888888&&src=google&albch=search&acnt=479-062-3723&isdl=y&aff_short_key=UneMJZVf&albcp=21520181724&albag=168529973707&slnk=&trgt=dsa-1464330247393&plac=&crea=707854323770&netw=g&device=c&mtctp=&memo1=&albbt=Google_7_search&aff_platform=google&gad_source=1&gclid=Cj0KCQjwiOy1BhDCARIsADGvQnBPdlEVLYbYnLoOnN1p2bdjte0jYmInrgFD0WG16aF3GZtvrWTb6o0aAo8VEALw_wcB&gclsrc=aw.ds)) 
-
 
     Notes:
 
@@ -106,7 +105,7 @@ While the basic form is simple, the design is flexible and you can add several a
 
     Notes:
 
-    * Any capacity will work. A 400mAh will give about 6 hours of run time.*
+    * Any capacity battery will work. A 400mAh will give about 6 hours of run time.*
     
 > [!WARNING]
 > *I have found that some batteries come with the positive and negative leads the other way around to the terminals on the ESP32.* <br/> Check they are correct before plugging it in. <br/> The polarity of the battery is easy to swap, by getting a knife blade under the small tabs on the plastic connector and pulling each male socket out. Take extreme care. **DO NOT SHORT THE TERMINALS.**
@@ -127,7 +126,7 @@ While the basic form is simple, the design is flexible and you can add several a
 
 12. *Optional:* **A 1.3" or 2.4" OLED Display** (128x64) can be used instead of the 0.96" OLED Display 128x64 ([Example](https://www.aliexpress.com/item/32683094040.html?spm=a2g0o.order_list.order_list_main.110.25621802jRBB7y)) Note: You will need to make a minor change in the config file for this to work correctly.
 
-13. *Optional:* It is possible to use a **Potentiometer** instead of the Rotary Encoder for throttle control.  The code supports it if you make the appropriate configuration changes in ``config_buttons.h``.   However this has had only limited testing. <br/> This is documented to some degree in [config_buttons_example.h[(config_buttons_example.h)] if you wish to try it.
+13. *Optional:* It is possible to use a **Potentiometer** instead of the Rotary Encoder for throttle control.  The code supports it if you make the appropriate configuration changes in ``config_buttons.h``.   However this has had only limited testing. <br/> This is documented to some degree in [config_buttons_example.h](config_buttons_example.h) if you wish to try it.
 
 ### Pinouts
 
@@ -147,7 +146,7 @@ While the basic form is simple, the design is flexible and you can add several a
 ![Assembly diagram - Optional Battery Monitor and Additional Buttons](images/WiTcontroller%20-%20Optional%20battery%20monitor.png)
 
 > [!WARNING]
-> * *Different keypad manufacturers may arrange the pins on the base of the keypad differently to the examples above.* <br/> See notes in the [Default Pins for the keypads](#default-pins-for-the-keypads)  section below.
+> *Different keypad manufacturers may arrange the pins on the base of the keypad differently to the examples above.* <br/> See notes in the [Default Pins for the keypads](#default-pins-for-the-keypads)  section below.
 
 ---
 
@@ -230,11 +229,11 @@ Cx = Column x      Rx = Row x
 
 WARNING:
 Different keypad manufacturers may arrange the pins on the 
-base of the keypad differently to those listed above.  
+base of the keypad differently to those listed above.
 So it is important to make sure the pins on the keypad are 
 correctly identified and adjusted as needed.
 
- ```
+```
  
 </details>
 
@@ -283,7 +282,6 @@ David Virgo's version using the EC11 encoder. See [GitHub](https://github.com/dv
 <img src="images/markwtech_case.jpg" width="300;"></img> <br/> 
 markwtech version. See [Thingiverse](https://www.thingiverse.com/thing:7029069)
 
-
 ---
 
 Some videos:
@@ -297,7 +295,6 @@ Some videos:
 
 And for a very different take on what is possible by extending the design, have a look at: https://1fatgmc.com/RailRoad/DCC/HandCab-Index.html and at: https://1fatgmc.com/RailRoad/DCC/PhL%20Industries%20Cab%20Index.html
 
-
 <br/>
 <hr style="border: none; height: 4px; background-color: #007bff; border-radius: 2px;">
 
@@ -307,10 +304,10 @@ The instructions below are for using the **Arduino IDE** and **GitHub Desktop**.
 
 **Visual Studio Code (VSC)** can be used instead of the Arduino IDE, and is actually my preferred IDE, but no instructions are included here.  Contact me if you need assistance with VSC.
 
-1. Download the Arduino IDE.
+1. Download the **Arduino IDE**.
     * Available from  https://support.arduino.cc/hc/en-us/articles/360019833020-Download-and-install-Arduino-IDE
 
-2. Download the **esp32** boards in the Arduino IDE.
+2. Download the **esp32** *boards* in the Arduino IDE.
     * Add the esp322 support with the following instructions:  (See here for detailed instructions:  https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/)
         * In the Arduino IDE, go to *File* > *Preferences*
         * Enter the following into the 'Additional Board Manager URLs' field:  https://dl.espressif.com/dl/package_esp32_index.json
@@ -338,7 +335,7 @@ The instructions below are for using the **Arduino IDE** and **GitHub Desktop**.
     * *AiEsp32RotaryEncoder.h* - search for "Ai Esp32 Rotary Encoder".  Install Version 1.6
     * *Keypad.h* - Search for "Keypad" by Mark Stanley.  Install version 3.1.1 or later. <br/> (later versions should work, but go back to this 3.1.1 if you have problems.)
     * *WiThrottleProtocol.h* - Search for "WiThrottleProtocol" (not "WiThrottle").  Install the latest version available. <br/> (see *version notes* below for which versions of WiTcontroller require which versions of the library.)
-    
+
       Note: <br/> **DO NOT** download these libraries *directly*. Use the *Library Manager*. <br/> **DO NOT** put them in the WiTcontroller folder.
 
 5. These should have been automatically installed when you downloaded the esp32 boards. <br/> *YOU SHOULD NOT NEED TO DO ANYTHING SPECIFIC TO GET THESE*
@@ -348,16 +345,16 @@ The instructions below are for using the **Arduino IDE** and **GitHub Desktop**.
 
       Notes: <br/> **DO NOT** download these libraries *directly*. Use the *Boards Manager*. <br/> **DO NOT** put them in the WiTcontroller folder. <br/> These libraries do not appear in your list of libraries, but will be available to use regardless. (The files are actually buried away in a subfolder of the ESP32 Boards library.)
 
-6. Copy the two example config files. <br/> You will need to use a *File Manger* type of app on the PC to do this.
-    * Copy ``config_network_example.h`` to a new file ``config_network.h``. 
-    * Copy ``config_buttons_example.h`` to a new file ``config_buttons.h``.
+6. Copy and rename the two example config files. <br/> You will need to use a *File Manger* type of app on the PC to do this.
+    * Copy ``config_network_example.h`` to a new file ``config_network.h``
+    * Copy ``config_buttons_example.h`` to a new file ``config_buttons.h``
 
-      Note: <br/> These new files are not included in the download, so that you can personalise your configuration without fear that those configurations will be overridden if you update (download again) the WiTcontoller code.
+      Note: <br/> These new files are not included in the download, so that you can personalise your configuration without fear that your configurations will be overridden if you update (download again) the WiTcontoller code.
 
 7. Open the Arduino IDE and **THEN** find and open the ``WiTcontoller.ino`` file.
 
-      Note: <br/> *If you open the file **from** the IDE*, rather then opening it from a File Manager, will automatically open *all the files in the WiTcontroller folder* in the IDE. 
-      
+      Note: <br/> *If you open the file **from** the IDE*, rather then opening it from a File Manager, will automatically open *all the files in the WiTcontroller folder* in the IDE.
+
       Whereas, *if you open it from a File manger app* (by double clicking on it) only the file you selected will open.
 
 8. Edit your personal ``config_network.h`` file.
@@ -380,38 +377,38 @@ The instructions below are for using the **Arduino IDE** and **GitHub Desktop**.
 
 <summary>Click to expand</summary>
 
-   * WiTcontroller version 1.83 includes a new way to add additional buttons. (see below) The old way will continue to work, but conversion to the new format is recommended. <br/> This change allows up to a total of 11 additional buttons, but some of the extra pins may be in use for the 4x4 keypad, the battery test, etc.
-   * WiTcontroller version 1.82 or later requires WiThrottleProtocol version 1.1.26 or later.
-   * WiTcontroller version 1.73 or later is recommended to use WiThrottleProtocol version 1.1.25 or later to address a bug in heartbeat send, but only seen with JMRI WiThrottle .
-   * WiTcontroller version 1.66 or later requires WiThrottleProtocol version 1.1.24 or later.
-   * WiTcontroller version 1.65 or later requires WiThrottleProtocol version 1.1.23 or later.
-   * WiTcontroller version 1.57 or later requires WiThrottleProtocol version 1.1.20 or later for the E_STOP and E_STOP_CURRENT_LOCO to work correctly.
-   * WiTcontroller version 1.45 or later requires WiThrottleProtocol version 1.1.14 or later.
-   * WiTcontroller version 1.41 or later requires WiThrottleProtocol version 1.1.12 or later.
-   * WiTcontroller version 1.39 or later requires WiThrottleProtocol version 1.1.11 or later.
-   * WiTcontroller version 1.38 or later requires WiThrottleProtocol version 1.1.10 or later.
-   * WiTcontroller version 1.35 or later requires WiThrottleProtocol version 1.1.7 or later.
-   * WiTcontroller version 1.33 or later requires WiThrottleProtocol version 1.1.6 or later.
-   * WiTcontroller version 1.19 - 1.32 requires WiThrottleProtocol version 1.1.3 - 1.1.5 or later.
-   * WiTcontroller version 1.06 or later requires WiThrottleProtocol version 1.1.2 or later.
-   * WiTcontroller version 1.01 or later requires WiThrottleProtocol version 1.1.0 or later.
-   * WiTcontroller version 0.10 or later requires WiThrottleProtocol version 1.0.3 or later.
-   * The *WiFi.h* and *ESPmDNS.h* libraries were automatically installed for me when I installed the esp32 boards, however it is possible that you may need to install them manually, but this is seriously not recommended.
-   * Later versions of the ESP board support are available and do appear to work, but if you have difficulties version 2.0.11 and 1.0.6 appear to be stable.
-   * Later versions of the libraries generally should work, but if you have difficulties use the versions listed above.
-   * To get the WiTcontroller sketch I recommend using either the git command line, or the far more friendly 'GitHub Desktop' app.  See instructions above.
-   * If you receive and error related to Python, and you are on MacOS 12 and above please edit the platform file, change from python to python3 as follows; preferences->user/path/arduino/packages/hardware/esp32/version/platform.txt and edit the line that looks as follows:tools.gen_esp32part.cmd=python3 "{runtime.platform.path}/tools/gen_esp32part.py"
+* WiTcontroller version 1.83 includes a new way to add additional buttons. (see below) The old way will continue to work, but conversion to the new format is recommended. <br/> This change allows up to a total of 11 additional buttons, but some of the extra pins may be in use for the 4x4 keypad, the battery test, etc.
+* WiTcontroller version 1.82 or later requires WiThrottleProtocol version 1.1.26 or later.
+* WiTcontroller version 1.73 or later is recommended to use WiThrottleProtocol version 1.1.25 or later to address a bug in heartbeat send, but only seen with JMRI WiThrottle .
+* WiTcontroller version 1.66 or later requires WiThrottleProtocol version 1.1.24 or later.
+* WiTcontroller version 1.65 or later requires WiThrottleProtocol version 1.1.23 or later.
+* WiTcontroller version 1.57 or later requires WiThrottleProtocol version 1.1.20 or later for the E_STOP and E_STOP_CURRENT_LOCO to work correctly.
+* WiTcontroller version 1.45 or later requires WiThrottleProtocol version 1.1.14 or later.
+* WiTcontroller version 1.41 or later requires WiThrottleProtocol version 1.1.12 or later.
+* WiTcontroller version 1.39 or later requires WiThrottleProtocol version 1.1.11 or later.
+* WiTcontroller version 1.38 or later requires WiThrottleProtocol version 1.1.10 or later.
+* WiTcontroller version 1.35 or later requires WiThrottleProtocol version 1.1.7 or later.
+* WiTcontroller version 1.33 or later requires WiThrottleProtocol version 1.1.6 or later.
+* WiTcontroller version 1.19 - 1.32 requires WiThrottleProtocol version 1.1.3 - 1.1.5 or later.
+* WiTcontroller version 1.06 or later requires WiThrottleProtocol version 1.1.2 or later.
+* WiTcontroller version 1.01 or later requires WiThrottleProtocol version 1.1.0 or later.
+* WiTcontroller version 0.10 or later requires WiThrottleProtocol version 1.0.3 or later.
+* The *WiFi.h* and *ESPmDNS.h* libraries were automatically installed for me when I installed the esp32 boards, however it is possible that you may need to install them manually, but this is seriously not recommended.
+* Later versions of the ESP board support are available and do appear to work, but if you have difficulties version 2.0.11 and 1.0.6 appear to be stable.
+* Later versions of the libraries generally should work, but if you have difficulties use the versions listed above.
+* To get the WiTcontroller sketch I recommend using either the git command line, or the far more friendly 'GitHub Desktop' app.  See instructions above.
+* If you receive and error related to Python, and you are on MacOS 12 and above please edit the platform file, change from python to python3 as follows; preferences->user/path/arduino/packages/hardware/esp32/version/platform.txt and edit the line that looks as follows:tools.gen_esp32part.cmd=python3 "{runtime.platform.path}/tools/gen_esp32part.py"
 
 </details>
 
 <br/>
 <hr style="border: none; height: 4px; background-color: #007bff; border-radius: 2px;">
 
-## Using WiTController
+## Using WiTcontroller
 
 ### Be aware of...
 
-### WiFi limitations
+#### WiFi limitations
 
 The ESP32 *cannot use the 5gHz* frequencies.  It is limited to the 2.4gHz  frequencies.
 
@@ -435,35 +432,35 @@ WiTcontroller:
   * If it is a DCC-EX EX-CommandStation in Access Point (AP) mode, it will try to guess the password. 
   
     *Warning!* prior to version 1.108 WiTcontroller assumes that it will be the default password for EX-CommandStations. If you have changed the password it will fail to connect unless you have the SSID *and correct password* listed in `config_network.h`.  
-    
+
     From version 1.108 it will try to connect to a DCC-EX EX-CommandStation with the 'guessed' password on the first attempt.  Then, if it fails to connect, it will ask for the password on the second attempt.
-  * Otherwise it will ask to enter the password (Use the rotary encoder to choose each character and the encoder button to select it.  * = backspace.  # = enter the password.) 
-  
-    Any/all entered passwords will be stored in non-volatile memory an retrieved on the next attempt to connect and allow you to edit or confirm it.
+  * Otherwise it will ask to enter the password (Use the rotary encoder to choose each character and the encoder button to select it.  ``*`` = backspace.  ``#`` = enter the password.) 
+
+    Any/all passwords entered this way will be stored in non-volatile memory and will be retrieved on the next attempt to connect, then WiTcontroller will allow you to edit or confirm it
 * Optionally provides a list of SSIDs with the specified passwords (in the sketch) to choose from
-* Auto-connects to the first found WiThrottle Protocol Server if only one found, otherwise
-  * Asks which to connect to
+* Auto-connects to the first found WiThrottle Protocol Server if only one found, otherwise:
+  * Asks which server to connect to
   * If none found will ask to enter the IP Address and Port
   * Guesses the WiThrottle IP address and Port for DCC-EX EX-CommandStations in Access Point (AP) mode
   * Optionally you can add a #define (a preference) to disable this auto connect feature
 * Allows On-the-fly consists/MUs
   Allows assigning commands directly to the 1-9 buttons (in the sketch) (see list below)
-  * This is done in config_button.h
+  * This is done in ``config_button.h``
   * Latching / non-latching for the function is provided by the roster entry of the WiThrottle server
 * Optionally uses a potentiometer (pot) instead of the rotary encoder
 * Optional ability to assign commands directly to the 1-11 additional buttons (in the sketch) (see list below)
-  * These are defined config_button.h
+  * These are defined ``config_button.h``
 * Provides a command **Menu** (see below for full list) including:
   * Able to select and deselect locos:
     * by their DCC address, via the keypad
       * On NCE systems, a leading zero (0) will force a long address
-    * from the first 50 locos in the roster (can be increased)
+    * From the first 50 locos in the roster (can be increased)
   * Able to select multiple locos to create a consist
     * Able to change the facing of the additional locos in the consists/MUs (via the 'extra' menu after selection)
   * Able to activate any function (0-31)
     * Showing of the roster function labels (from the WiThrottle server if provided)
-    * Quick access to the functions by pressing #. Temporarily enabled via the Extras menu (or permanently enabled in config_button.h)
-    * Limited ability to configure which functions are sent to the first or all locos in a consist (defined in config_button.h)
+    * Quick access to the functions by pressing ``#``. Temporarily enabled via the Extras menu (or permanently enabled in ``config_button.h``)
+    * Limited ability to configure which functions are sent to the first or all locos in a consist (defined in ``config_button.h``)
   * Able to throw/close turnouts/points:
     * from the address
     * from the first 50 turnouts/points in the server list
@@ -493,7 +490,7 @@ WiTcontroller:
 
 **ToDo:**
 
-* Speed button repeat (i.e. hold the button down)
+* Speed button repeat (i.e. hold the keypad button down)
 * Deal with unexpected disconnects better
   * automatic attempt to reconnect
 * Keep a list of IP addresses and ports if mDNS doesn't provide any
@@ -501,42 +498,42 @@ WiTcontroller:
 
 #### Command menu
 
-* 0-9 keys = pressing these directly will do whatever has been configured in your ``config_buttons.h`` for them to do, or whatever is the default for that key  (see \# below)
-* \* = Menu:  The button press following the \* is the actual command:
-  * 1 = Add loco.  
+* **0-9** keys = pressing these directly will do whatever has been configured in your ``config_buttons.h`` for them to do, or whatever is the default for that key  (see \# below)
+* **\*** = Menu:  The button press following the \* is the actual command:
+  * **1** = Add loco.  
     * Followed by the loco number, followed by \# to complete.  e.g. to elect loco 99 you would press '\*199\#'
     * or \# alone to show the roster   \# again will show the next page
-  * 2 = release loco:
+  * **2** = release loco:
     * Followed by the loco number, followed by \# to release an individual loco.  e.g. to deselect the loco 99 you would press '\*299\#'
     * Otherwise followed directly by \#  to release all e.g. '\*2\#'
-  * 3 = Toggle direction.
-  * 4 = Set / Unset a 2 times multiplier for the rotary encoder dial.
-  * 5 = Throw turnout/point.  
+  * **3** = Toggle direction.
+  * **4** = Set / Unset a 2 times multiplier for the rotary encoder dial.
+  * **5** = Throw turnout/point.  
     * Followed by the turnout/point number, followed by the \# to complete.  e.g. Throw turnout XX12 '\*512\#'  (where XX is a prefix defined in the sketch)
     * or \# alone to show the list from the server   \# again will show the next page
-  * 6 = Close turnout.
+  * **6** = Close turnout.
     * Followed by the turnout/point number, followed by \# to complete.  e.g. Close turnout XX12 '\*612\#'  (where XX is a prefix defined in the sketch)
     * or \# alone to show the list from the server
-  * 7 = Set Route.
+  * **7** = Set Route.
     * Followed by the Route number, followed by \# to complete.  e.g. to Set route XX:XX:0012 '\*60012\#'  (where \'XX:XX:\' is a prefix defined in the sketch)
     * or \# alone to show the list from the server   \# again will show the next page
-  * 0 = Function button. Followed by...
-    * the function number, Followed by \# to complete.  e.g. to set function 17 you would press '\*017\#'
-    * \# alone, to show the list of functions.
-  * 8 = Track Power On/Off.
-  * 9 = Extras. Followed by...
+  * **8** = Track Power On/Off.
+  * **9** = Extras. Followed by...
     * 0 then \# to toggle the action the the \# key does as a direct action, either to show the direct action key definitions, or the Function labels.  
-      * 1 to change the facing of locos in a consist.
-      * 3 to toggle the heartbeat check.
-      * 4 to increase the number of available throttle (up to 6)
-      * 5 to decrease the number of available throttle (down to 1)
-      * 6 to Disconnect/Reconnect.  
-      * 7 to put into deep sleep
-      * 8 Toggle between Single loco and Consist/MU (Drop before Acquire)
-      * 9 Save the Currently selected locos so they will be automatically acquired on reconnection
+      * **1** to change the facing of locos in a consist.
+      * **3** to toggle the heartbeat check.
+      * **4** to increase the number of available throttle (up to 6)
+      * **5** to decrease the number of available throttle (down to 1)
+      * **6** to Disconnect/Reconnect.  
+      * **7** to put into deep sleep
+      * **8** Toggle between Single loco and Consist/MU (Drop before Acquire)
+      * **9** Save the Currently selected locos so they will be automatically acquired on reconnection
+  * **0** = Function button. Followed by...
+    * the function number, Followed by \# to complete.  e.g. to set function 17 you would press '\*017\#'
+    * **\#** alone, to show the list of functions.
 Pressing '\*' again before the '\#' will terminate the current command (but not start a new command)
-* \# = Pressing # alone will show the function the the numbered keys (0-9) perform, outside the menu.
-       Optionally, you can configure it so that the the Function labels from the roster show
+* **\#** = Pressing # alone will show the actions the numbered keys (0-9) perform, outside the menu.
+       Optionally, you can configure it so that it shows the Function labels from the roster
 
 Pressing the Encoder button while the ESP32 is in Deep Sleep will revive it.
 
@@ -671,7 +668,7 @@ Note: you need to edit ``config_buttons.h`` to alter these assignments   (copy `
 
 ### Rotary Encoder 'sensitivity'
 
-If you find that moving the encoder slightly flicks the speed or the selected option back and forward, try adjusting this define by uncommenting (removing the ``//``) following line in your ``config_buttons.h`` and changing the value. (Decrease the value to make it less sensitive. Increase the value to make it more.)
+If you find that moving the encoder very slightly flicks the speed or the selected option back and forward, try adjusting this define by uncommenting (removing the ``//``) following line in your ``config_buttons.h`` and changing the value. (Decrease the value to make it less sensitive. Increase the value to make it more.)
 
 ``#define ENCODER_SENSITIVITY  85``
 
@@ -691,7 +688,7 @@ Depending on your encoder - try 1,2,3 or 4 till you get expected behaviour.  The
 
 ### Direction of rotation of the encoder
 
-The default configuration is to rotate the encoder counter-clockwise to increase speed.  This made sense for the original simple case, but is not for many of the new cases that people have designed.
+The default configuration is to rotate the encoder counter-clockwise to increase speed.  This made sense for the original simple case where the knob is on the top end of the case, but is not for many of the new cases that people have designed where the knob is on the front face of the case.
 
 To change the configuration so that rotating the encoder clockwise increases speed, uncomment (remove the ``//``) following line in your ``config_buttons.h`` and change the value to true.
 
@@ -727,12 +724,17 @@ Then the following lists MUST have the same number of elements as NEW_MAX_ADDITI
 >
 > It is theoretically possible to add up to 11 additional buttons directly to the ESP32. <br/>
 > Pins 5,15,25,26,27,32,33 are the 7 normally used for the buttons. <br/>
-> However one of these becomes unavailable if you have an optional 4x4 keypad. <br/>
-> Also one of these becomes unavailable if you use the battery test. <br/>
-> Pins 34,35,36,39 can also be used, *but*: <br/>
-> a) they don't have an internal pullup, so need and external resister, and they need to configured (in config_buttons.h) as ``INPUT`` rather than ``INPUT_PULLUP`` <br/>
-> b) one of these pins may used by the optional 4x4 keypad <br/>
-> c) one of these pins may used by the optional battery monitor
+> However:
+>
+> * One of these becomes unavailable if you have an optional 4x4 keypad
+> * Also one of these becomes unavailable if you use the battery test
+>
+> Additionally: <br/>
+> Pins 34,35,36,39 can also be used, *but*:
+>
+> * They don't have an internal pullup, so need and external resister, and they need to configured (in config_buttons.h) as ``INPUT`` rather than ``INPUT_PULLUP`` <br/>
+> * One of these pins may used by the optional 4x4 keypad <br/>
+> * One of these pins may used by the optional battery monitor
 
 For **NEW_ADDITIONAL_BUTTON_ACTIONS**
 
@@ -771,7 +773,7 @@ See additional information in [config_button_example.h](config_buttons_example.h
 
 <summary>Example - Click to expand</summary>
 
-The following example is for 5 additianl buttons.
+The following example is for 5 additional buttons, one of which requires the external pullup resister.
 
 ```
 #define USE_NEW_ADDITIONAL_BUTTONS_FORMAT true
@@ -817,10 +819,10 @@ Which is exactly the same as...
 #define NEW_ADDITIONAL_BUTTON_TYPE {INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT}
 ```
 
-> [!NOTE]
+> *NOTE*
 >
-> * The ``\`` at the end of the lines is a continuation.  It means that the following line will be treated as part of the line which ends in the ``\``. <br /> i.e All the defines can just as easily be written on single lines without the ``\``.
-> * The last entry in each list *must not* have a comma (,) after it.  The other entries *must* have the comma (,) after.
+> * The ``\`` at the end of the lines is a continuation.  It means that the following line will be treated as part of the line which ends in the ``\``. <br /> i.e All the defines can just as easily be written on single lines without the ``\``s.
+> * The last value in each list *must not* have a comma (,) after it.  The other values *must* have the comma (,) after.
 
 </details>
 
@@ -832,9 +834,9 @@ Internal GPIO pullups required if the hardware build utilises a bare EC11 rotary
 
 ``#define EC11_PULLUPS_REQUIRED         true``
 
-If the ``EC11_PULLUPS_REQUIRED`` is set to ``false`` a KY040 module used in hardware build OR bare EC11 used but with physical pullup resistors 
+If the ``EC11_PULLUPS_REQUIRED`` is set to ``false`` a KY040 module used in hardware build OR bare EC11 used but with physical pullup resistors.
 
-If the ``EC11_PULLUPS_REQUIRED`` is set to ``true`` an EC11 used for hardware build WITHOUT any physical pullups, GPIO pullups will ne enabled in main
+If the ``EC11_PULLUPS_REQUIRED`` is set to ``true`` an EC11 used for hardware build WITHOUT any physical pullups, GPIO pullups will ne enabled in main.
 
 The default is ``false``.
 
@@ -856,7 +858,7 @@ This is one of the common 1.3 inch OLED displays
 
 ``#define OLED_TYPE U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);``
 
-This one works with the 2.42 inch SSD1309 based oLED from [Amazon](https://www.amazon.co.uk/dp/B0DLGD8HQH?ref_=ppx_hzsearch_conn_dt_b_fed_asin_title_4&th=1)
+This one works with a 2.42 inch SSD1309 based oLED
 
 ``#define OLED_TYPE U8G2_SSD1309_128X64_NONAME2_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);``
 
@@ -866,15 +868,15 @@ See [config_buttons_example.h](config_buttons_example.h) for more information.
 
 ### Optional use of a potentiometer (pot) instead of the encoder for the throttle
 
-config_buttons.h can include the following optional defines:
+``config_buttons.h`` can include the following optional defines:
 
-* \#define USE_ROTARY_ENCODER_FOR_THROTTLE false
-* \#define THROTTLE_POT_PIN 39
-* \#define THROTTLE_POT_USE_NOTCHES true 
-\#define THROTTLE_POT_NOTCH_VALUES {1,585,1170,1755,2340,2925,3510,4094}
-* \#define THROTTLE_POT_NOTCH_SPEEDS {0,18,36,54,72,90,108,127} 
+* ``#define USE_ROTARY_ENCODER_FOR_THROTTLE false``
+* ``#define THROTTLE_POT_PIN 39``
+* ``#define THROTTLE_POT_USE_NOTCHES true``
+* ``#define THROTTLE_POT_NOTCH_VALUES {1,585,1170,1755,2340,2925,3510,4094}``
+* ``#define THROTTLE_POT_NOTCH_SPEEDS {0,18,36,54,72,90,108,127}``
 
-If ``USE_ROTARY_ENCODER_FOR_THROTTLE`` is set to ``false`` the rotary encoder is ignored and a pot on the pin defined with ``THROTTLE_POT_PIN`` will be used instead.
+If ``USE_ROTARY_ENCODER_FOR_THROTTLE`` is set to ``false`` the rotary encoder is ignored for thottle/speed control and a pot on the pin defined with ``THROTTLE_POT_PIN`` will be used instead.
 
 You must specify the PIN to be used.  Currently PINs 34, 35 and 39 are the only ones that cannot be used by the app for other purposes, so these are the safest to use.  This should be connected to the centre pin of the pot. The 3v and GND should be connected to the outer pins of the pot.
 
@@ -914,8 +916,7 @@ If the battery does not show 100% when plugged into the charger, you may need to
 
 ``#define BATTERY_CONVERSION_FACTOR 1.7``
 
-  To help work out the correct BATTERY_CONVERSION_FACTOR, 
-  you can enable so serial monitor message that will assist.
+  To help work out the correct BATTERY_CONVERSION_FACTOR, you can enable some serial monitor messages that will assist.
 
   In your ``config_buttons.h`` add (or uncomment -remove the ``//``) this define:
   
@@ -952,7 +953,7 @@ The display of the battery can be temporarily toggled by setting a key or button
 
 > [!NOTE]
 >
-> I recommend adding a physical power switch to disconnect the battery as this feature will, slowly, continually drain the battery, even when not being used.*
+> I recommend adding a physical power switch to disconnect the battery as this feature will, slowly, continually drain the battery, even when not being used.
 
 <hr style="height: 1px;">
 
@@ -960,7 +961,7 @@ The display of the battery can be temporarily toggled by setting a key or button
 
 ``#define DEFAULT_HEARTBEAT_PERIOD 10``
 
-The heartbeat period defaults to 10 seconds.  The server should send the period that it is expecting on connection and overide the default, so generally you should never need to adjust this. 
+The heartbeat period defaults to 10 seconds.  The server should send the period that it is expecting on connection and overide the default, so generally you should never need to adjust this.
 
 It is believed that the YaMoRC Command Stations are not sending this as the should (according to the WiThrottle specification).  For those, and any other WiThrottle that do not send it, uncomment or add the define above and adjust the number of seconds to match the setting on the server.
 
@@ -983,7 +984,7 @@ Each must be ONLY ONE single valid command.  Either a direct action or a menu ac
 
 ``#define ACQUIRE_ROSTER_ENTRY_IF_ONLY_ONE true``
 
-Enabling this option will automatically acquire the only roster entry after connection to the WiThrottle Server, but only if there is ***only one*** roster entry. 
+Enabling this option will automatically acquire the only roster entry after connection to the WiThrottle Server, but only if there is ***only one*** roster entry.
 
 <hr style="height: 1px;">
 
@@ -991,19 +992,19 @@ Enabling this option will automatically acquire the only roster entry after conn
 
 ``#define USE_FAST_WIFI_SCAN_METHOD true``
 
-To do a Fast Scan for SSIDs, uncomment or add the line above in your ``config_network.h``.  Fast scans are not as through. By default this option is disbled.
+To do a Fast Scan for SSIDs, uncomment or add the line above in your ``config_network.h``.  Fast scans are not as through. By default this option is disabled.
 
 ``#define SORT_WIFI_NETWORKS true``
 
-The 'found' SSIDs will not be sorted by default (from version v1.98). To restore this feature, uncomment or add the line above in your ``config_network.h``.  If enabled, the SSIDs are sorted by signal strength. By default this option is disbled.
+The 'found' SSIDs will not be sorted by default (from version v1.98). To restore this feature, uncomment or add the line above in your ``config_network.h``.  If enabled, the SSIDs are sorted by signal strength. By default this option is disabled.
 
 > [!NOTE]
 >
-> sorting can't be used if the Fast Scan is enabled.
+> Sorting can't be used if the Fast Scan is enabled.
 
 ``#define BYPASS_WIFI_SCAN_ON_STARTUP true``
 
-This option to allows you to bypass the initial WiFi scan.  The WiTcontroller will instead show you the list of SSIDs you have defined in ``config_network.h``.  From that you can still to the scan if you wish by pressing ``#``.  By default this option is disbled and the network will be scanned at startup.
+This option to allows you to bypass the initial WiFi scan.  The WiTcontroller will instead show you the list of SSIDs you have defined in ``config_network.h``.  From that you can still to the scan if you wish by pressing ``#``.  By default this option is disabled and the network will be scanned at startup.
 
 > [!NOTE]
 >
