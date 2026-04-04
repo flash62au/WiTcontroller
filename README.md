@@ -94,7 +94,6 @@ While the basic form is simple, the design is flexible and you can add several a
 
 4. **OLED Display** 0.96" 128x64 I2C IIC SSD1306 ([Example](https://www.ebay.com.au/itm/273746192621?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2060353.m2749.l2649))
 
-
     Notes:
 
     * *The code for the one of the common 1.3" displays is also included (see below).*
@@ -107,8 +106,8 @@ While the basic form is simple, the design is flexible and you can add several a
 
     * Any capacity battery will work. A 400mAh will give about 6 hours of run time.*
     
-> [!WARNING]
-> *I have found that some batteries come with the positive and negative leads the other way around to the terminals on the ESP32.* <br/> Check they are correct before plugging it in. <br/> The polarity of the battery is easy to swap, by getting a knife blade under the small tabs on the plastic connector and pulling each male socket out. Take extreme care. **DO NOT SHORT THE TERMINALS.**
+> [!CAUTION]
+> *I have found that some batteries come with the positive and negative leads the other way around to the terminals on the ESP32.* **Check they are correct before plugging it in!** <br/> <br/> The polarity of the battery is easy to swap, by getting a knife blade under the small tabs on the plastic connector and pulling each male socket out. Take extreme care. **DO NOT SHORT THE TERMINALS.**
 
 6. **A Case to put it in**. Links to a few different designs are below, but any box will do. My case was 3d printed for me (see below).
 
@@ -126,7 +125,7 @@ While the basic form is simple, the design is flexible and you can add several a
 
 12. *Optional:* **A 1.3" or 2.4" OLED Display** (128x64) can be used instead of the 0.96" OLED Display 128x64 ([Example](https://www.aliexpress.com/item/32683094040.html?spm=a2g0o.order_list.order_list_main.110.25621802jRBB7y)) Note: You will need to make a minor change in the config file for this to work correctly.
 
-13. *Optional:* It is possible to use a **Potentiometer** instead of the Rotary Encoder for throttle control.  The code supports it if you make the appropriate configuration changes in ``config_buttons.h``.   However this has had only limited testing. <br/> This is documented to some degree in [config_buttons_example.h](config_buttons_example.h) if you wish to try it.
+13. *Optional:* Though not recommended, it is possible to use a **Potentiometer** instead of the Rotary Encoder for throttle control.  The code supports it if you make the appropriate configuration changes in ``config_buttons.h``.   However this has had only limited testing. <br/> This is documented to some degree in [config_buttons_example.h](config_buttons_example.h) if you wish to try it.
 
 ### Pinouts
 
