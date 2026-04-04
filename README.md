@@ -255,32 +255,35 @@ My case was 3D Printed for me by peteGSX (See the [Thingiverse.](https://www.thi
 <img src="images/sumner_version.png" width="300;"></img> <br/>
 See [*sumner* version](https://1fatgmc.com/RailRoad/DCC/WiTcontroller-Index.html).
 
-<img src="images/syurev_case.png" width="300;"></img> <br/>
+<img src="images/syurev_case.png" height="300;"></img> <br/>
 syurev version. See [Thingiverse](https://www.thingiverse.com/thing:6541187) or [cults3d](https://cults3d.com/en/3d-model/gadget/case-for-dccexcontroller-witcontroller?srsltid=AfmBOor1vJFxJRlUXj0FpI2E6JM4anwHzLv4IxYo9wwbWouIjegVqiMr)
 
-<img src="images/railsnail_case.png" width="300;"></img> <br/>
+<img src="images/railsnail_case.png" height="240;"></img> <br/>
 Railsnail version. See [RMweb](https://www.rmweb.co.uk/forums/topic/186297-project-a-witcontroller-wireless-throttle-to-control-my-dcc-ex-commandstation/).
 
-<img src="images/kees_case.png" width="300;"></img> <br/>
+<img src="images/kees_case.png" height="300;"></img> <br/>
 kees version. See [printables](https://www.printables.com/model/907658-dccexcontroller-witcontroller).
 
-<img src="images/case_uknown.png" width="300;"></img> <br/>
+<img src="images/case_uknown.png" height="300;"></img> <br/>
 Unknown author. See [Thingiverse](https://makerworld.com/en/models/819825).
 
-<img src="images/gingerangles_version.png" width="300;"></img> <br/>
+<img src="images/gingerangles_version.png" height="300;"></img> <br/>
 *gingerangles* version with 2.4 inch screen...
 gingerangels can be contacted on the DCC-EX Discord server.
 [Discord Invite](https://discord.gg/8ghsjsBup8) - 
 [specific message](https://discord.com/channels/713189617066836079/735156882511102033/1316646832297742380)
 
-<img src="images/rdbnogueira_version.png" width="300;"></img> <br/> 
+<img src="images/rdbnogueira_version.png" height="250;"></img> <br/> 
 rdbnogueira version. See [Thingiverse](https://www.thingiverse.com/thing:6956982)
 
-<img src="https://github.com/dvirgo62/Printed-case-for-witcontroller/blob/main/PXL_20250910_022436424.jpg?raw=true" width="300;"></img> <br/>
+<img src="https://github.com/dvirgo62/Printed-case-for-witcontroller/blob/main/PXL_20250910_022436424.jpg?raw=true" height="300;"></img> <br/>
 David Virgo's version using the EC11 encoder. See [GitHub](https://github.com/dvirgo62/Printed-case-for-witcontroller?fbclid=IwY2xjawMyNLNleHRuA2FlbQIxMABicmlkETFTZ3RWbmRYck9MRENISVczAR7I770O70-brr0UWQ1O463MGa91Kf7WoZwbx85NPC72q69bG04gduhkIRDuFg_aem_znuhLVk6PxQxmlZntuLdAA)
 
-<img src="images/markwtech_case.jpg" width="300;"></img> <br/> 
+<img src="images/markwtech_case.jpg" height="200;"></img> <br/> 
 markwtech version. See [Thingiverse](https://www.thingiverse.com/thing:7029069)
+
+<img src="images/michael_tagg.png" height="200;"></img> <br/> 
+Michael Tagg version.
 
 ---
 
