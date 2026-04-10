@@ -2,6 +2,10 @@
 
 ## Versions
 
+### V1.110
+
+- Now 'guesses' that there will be a server on 192.168.4.1:2650 if the SSID name contains "DCCEX" or "DCC-EX"
+
 ### V1.109
 
 - Added ``#define ENCODER_SENSITIVITY``  Default is now 85 for the encoder acceleration instead of the previously fixed 100, but can be overridden

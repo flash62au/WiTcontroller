@@ -437,6 +437,8 @@ WiTcontroller:
     *Warning!* prior to version 1.108 WiTcontroller assumes that it will be the default password for EX-CommandStations. If you have changed the password it will fail to connect unless you have the SSID *and correct password* listed in `config_network.h`.  
 
     From version 1.108 it will try to connect to a DCC-EX EX-CommandStation with the 'guessed' password on the first attempt.  Then, if it fails to connect, it will ask for the password on the second attempt.
+
+    Note that it will only try to guess the EX-CommandStation password if the SSID name is in the default form of "DCCEX_xxxxxx". Where xxxxxx is part of the MAC address of the device.
   * Otherwise it will ask to enter the password (Use the rotary encoder to choose each character and the encoder button to select it.  ``*`` = backspace.  ``#`` = enter the password.)
 
     Any/all passwords entered this way will be stored in non-volatile memory and will be retrieved on the next attempt to connect, then WiTcontroller will allow you to edit or confirm it
@@ -445,6 +447,8 @@ WiTcontroller:
   * Asks which server to connect to
   * If none found will ask to enter the IP Address and Port
   * Guesses the WiThrottle IP address and Port for DCC-EX EX-CommandStations in Access Point (AP) mode
+
+    From version 1.110 it 'guesses' that there will be a server on 192.168.4.1:2650 if the SSID name contains "DCCEX" or "DCC-EX". (Prior version 1.110 it would only guess if the SSID name was in the default form of "DCCEX_xxxxxx".)
   * Optionally you can add a #define (a preference) to disable this auto connect feature
 * Allows On-the-fly consists/MUs
   Allows assigning commands directly to the 1-9 buttons (in the sketch) (see list below)
