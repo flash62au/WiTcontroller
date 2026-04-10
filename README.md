@@ -448,7 +448,7 @@ WiTcontroller:
   * If none found will ask to enter the IP Address and Port
   * Guesses the WiThrottle IP address and Port for DCC-EX EX-CommandStations in Access Point (AP) mode
 
-    From version 1.110 it 'guesses' that there will be a server on 192.168.4.1:2650 if the SSID name contains "DCCEX" or "DCC-EX". (Prior version 1.110 it would only guess if the SSID name was in the default form of "DCCEX_xxxxxx".)
+    From version 1.111 it 'guesses' that there will be a server on 192.168.4.1:2650 if the SSID name contains "DCCEX" or "DCC-EX". (Prior version 1.111 it would only guess if the SSID name was in the default form of "DCCEX_xxxxxx".)
   * Optionally you can add a #define (a preference) to disable this auto connect feature
 * Allows On-the-fly consists/MUs
   Allows assigning commands directly to the 1-9 buttons (in the sketch) (see list below)

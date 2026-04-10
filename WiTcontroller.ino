@@ -955,7 +955,7 @@ void browseWitService() {
 
   noOfWitServices = 0;
   // if ( (selectedSsid.substring(0,6) == "DCCEX_") && (selectedSsid.length()==12) ) {
-  if ( (selectedSsid.indexOf("DCCEX")>0) || (selectedSsid.indexOf("DCC-EX")>0) ) {
+  if ( (selectedSsid.indexOf("DCCEX")>=0) || (selectedSsid.indexOf("DCC-EX")>=0) ) {
     debug_println(MSG_BYPASS_WIT_SERVER_SEARCH);
     oledText[1] = MSG_BYPASS_WIT_SERVER_SEARCH;
     writeOledBattery();
@@ -998,7 +998,7 @@ void browseWitService() {
     }
   }
   // if ( (selectedSsid.substring(0,6) == "DCCEX_") && (selectedSsid.length()==12) ) {
-  if ( (selectedSsid.indexOf("DCCEX")>0) || (selectedSsid.indexOf("DCC-EX")>0) ) {
+  if ( (selectedSsid.indexOf("DCCEX")>=0) || (selectedSsid.indexOf("DCC-EX")>=0) ) {
     foundWitServersIPs[foundWitServersCount].fromString("192.168.4.1");
     foundWitServersPorts[foundWitServersCount] = 2560;
     foundWitServersNames[foundWitServersCount] = MSG_GUESSED_EX_CS_WIT_SERVER;

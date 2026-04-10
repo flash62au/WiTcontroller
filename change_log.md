@@ -2,6 +2,10 @@
 
 ## Versions
 
+### V1.111
+
+- bug fix for 1.110
+
 ### V1.110
 
 - Now 'guesses' that there will be a server on 192.168.4.1:2650 if the SSID name contains "DCCEX" or "DCC-EX"
