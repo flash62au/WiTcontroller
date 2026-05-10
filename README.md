@@ -284,6 +284,10 @@ markwtech version. See [Thingiverse](https://www.thingiverse.com/thing:7029069)
 <img src="images/michael_tagg.png" height="200;"></img> <br/> 
 Michael Tagg version.
 
+<img src="images/driverd_variation.png" height="100;"></img> <br/> 
+DriverD's variation of the design. See [YouTube](https://youtu.be/i4kLNncoFLA?si=Nli4HzZWGFATpnhh)
+
+
 ---
 
 Some videos:
@@ -291,6 +295,7 @@ Some videos:
 * https://youtu.be/RKnhfBCP_SQ
 * https://www.youtube.com/shorts/1w7H2OvP8Jg
 * https://www.youtube.com/watch?v=Ga_80A6LwCI (Full assembly video by DriverD)
+* https://youtu.be/i4kLNncoFLA?si=bzF-ETGZtZM3IBoa (A variation by DriverD)
 * https://www.youtube.com/watch?v=cClRS21x_cc&t=4s  - A deconstructed view of a WiTcontroller in action
 
 ---
