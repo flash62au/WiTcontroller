@@ -1976,7 +1976,12 @@ void loop() {
       witServiceLoop();
       checkForShutdownOnNoResponse();
     } else {
-      wiThrottleProtocol.check();    // parse incoming messages
+      static unsigned long lastCheck = 0;
+
+      if (millis() - lastCheck >= 100) {
+        lastCheck = millis();
+        wiThrottleProtocol.check();
+      }
 
       setLastServerResponseTime(false);
 
