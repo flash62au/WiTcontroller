@@ -1,6 +1,6 @@
-//
+// **********************************************************************
 // DO NOT alter this file
-// 
+// **********************************************************************
 
 #define FUNCTION_NULL -1 // do nothing
 
@@ -56,7 +56,9 @@
 #define MAX_THROTTLE_INCREASE 56
 #define MAX_THROTTLE_DECREASE 57
 
+// **********************************************************************
 // actions that are not related to a loco need to be above 500
+// **********************************************************************
 
 #define POWER_TOGGLE 501
 #define POWER_ON 502
@@ -86,12 +88,30 @@
 #define CUSTOM_10 530
 #define CUSTOM_11 531
 
+#define CUSTOM_MENU_SELECT_1 532
+#define CUSTOM_MENU_SELECT_2 533
+#define CUSTOM_MENU_SELECT_3 534
+#define CUSTOM_MENU_SELECT_4 535
+#define CUSTOM_MENU_SELECT_5 536
+#define CUSTOM_MENU_SELECT_6 537
+#define CUSTOM_MENU_SELECT_7 538
+#define CUSTOM_MENU_SELECT_8 539
+#define CUSTOM_MENU_SELECT_9 540
+#define CUSTOM_MENU_SELECT_10 542
+#define CUSTOM_MENU_SELECT_11 543
+
+// **********************************************************************
 // search functions
+// **********************************************************************
 // these can only be assigned to 'additional buttons' and not to the keypad or encoder button
+
 #define HORN_OR_WHISTLE_SEARCH 600
 #define WHISTLE_SEARCH 601
 #define HORN_SEARCH 602
 #define BRAKE_SEARCH 603
 
+// **********************************************************************
 // reserved for custom search commands
 // 900 - 999
+
+// **********************************************************************

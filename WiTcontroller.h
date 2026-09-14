@@ -147,6 +147,7 @@ void doDirectAdditionalButtonCommand (int, bool);
 void doDirectAction(int);
 void doMenu(void);
 void resetMenu(void);
+void doCustomMenuSelectCommand(String); 
 
 void resetFunctionStates(int);
 void resetFunctionLabels(int); 

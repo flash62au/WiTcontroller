@@ -1713,16 +1713,16 @@ void additionalButtonLoop() {
       buttonRead = digitalRead(additionalButtonPin[i]);
 
       if (additionalButtonLastRead[i] != buttonRead) { // on process on a change
-        if ((millis() - lastAdditionalButtonDebounceTime[i]) > additionalButtonDebounceDelay) {   // only process if there is sufficent delay since the last read
+        if ((millis() - lastAdditionalButtonDebounceTime[i]) > additionalButtonDebounceDelay) {   // only process if there is sufficient delay since the last read
           lastAdditionalButtonDebounceTime[i] = millis();
           additionalButtonRead[i] = buttonRead;
 
           if ( ((additionalButtonType[i] == INPUT_PULLUP) && (additionalButtonRead[i] == LOW)) 
               || ((additionalButtonType[i] == INPUT) && (additionalButtonRead[i] == HIGH)) ) {
             debug_print("Additional Button Pressed: "); debug_print(i); debug_print(" pin:"); debug_print(additionalButtonPin[i]); debug_print(" action:"); debug_println(additionalButtonActions[i]); 
-            if (wiThrottleProtocol.getNumberOfLocomotives(currentThrottleIndexChar) > 0) { // only process if there are locos aquired
+            if (wiThrottleProtocol.getNumberOfLocomotives(currentThrottleIndexChar) > 0) { // only process if there are locos acquired
               doDirectAdditionalButtonCommand(i,true);
-            } else { // check for actions not releted to a loco
+            } else { // check for actions not related to a loco
               int buttonAction = additionalButtonActions[i];
               if (buttonAction >= 500) {
                   doDirectAdditionalButtonCommand(i,true);
@@ -1730,9 +1730,9 @@ void additionalButtonLoop() {
             }
           } else {
             debug_print("Additional Button Released: "); debug_print(i); debug_print(" pin:"); debug_print(additionalButtonPin[i]); debug_print(" action:"); debug_println(additionalButtonActions[i]); 
-            if (wiThrottleProtocol.getNumberOfLocomotives(currentThrottleIndexChar) > 0) { // only process if there are locos aquired
+            if (wiThrottleProtocol.getNumberOfLocomotives(currentThrottleIndexChar) > 0) { // only process if there are locos acquired
               doDirectAdditionalButtonCommand(i,false);
-            } else { // check for actions not releted to a loco
+            } else { // check for actions not related to a loco
               int buttonAction = additionalButtonActions[i];
               if (buttonAction >= 500) {
                   doDirectAdditionalButtonCommand(i,false);
@@ -2407,6 +2407,7 @@ void doDirectAdditionalButtonCommand (int buttonIndex, bool pressed) {
       }
 
     } else { 
+      // debug_println("doDirectAdditionalButtonCommand(): check if search function");
 
       // see if it is a search function, if so then process it as a search function, otherwise process it as a direct action
       bool isSearchFunction = false;
@@ -2578,8 +2579,59 @@ void doDirectAction(int buttonAction) {
         wiThrottleProtocol.sendCommand(CUSTOM_COMMAND_11);
         break; 
       }
+      case CUSTOM_MENU_SELECT_1: {
+        doCustomMenuSelectCommand(CUSTOM_MENU_SELECT_COMMAND_1);
+        break; 
+      }
+      case CUSTOM_MENU_SELECT_2: {
+        doCustomMenuSelectCommand(CUSTOM_MENU_SELECT_COMMAND_2);
+        break; 
+      }
+      case CUSTOM_MENU_SELECT_3: {
+        doCustomMenuSelectCommand(CUSTOM_MENU_SELECT_COMMAND_3);
+        break; 
+      }
+      case CUSTOM_MENU_SELECT_4: {
+        doCustomMenuSelectCommand(CUSTOM_MENU_SELECT_COMMAND_4);
+        break; 
+      }
+      case CUSTOM_MENU_SELECT_5: {
+        doCustomMenuSelectCommand(CUSTOM_MENU_SELECT_COMMAND_5);
+        break; 
+      }
+      case CUSTOM_MENU_SELECT_6: {
+        doCustomMenuSelectCommand(CUSTOM_MENU_SELECT_COMMAND_6);
+        break; 
+      }
+      case CUSTOM_MENU_SELECT_7: {
+        doCustomMenuSelectCommand(CUSTOM_MENU_SELECT_COMMAND_7);
+        break; 
+      }
+      case CUSTOM_MENU_SELECT_8: {
+        doCustomMenuSelectCommand(CUSTOM_MENU_SELECT_COMMAND_8);
+        break; 
+      }
+      case CUSTOM_MENU_SELECT_9: {
+        doCustomMenuSelectCommand(CUSTOM_MENU_SELECT_COMMAND_9);
+        break; 
+      }
+      case CUSTOM_MENU_SELECT_10: {
+        doCustomMenuSelectCommand(CUSTOM_MENU_SELECT_COMMAND_10);
+        break; 
+      }
+      case CUSTOM_MENU_SELECT_11: {
+        doCustomMenuSelectCommand(CUSTOM_MENU_SELECT_COMMAND_11);
+        break; 
+      }
   }
   // debug_println("doDirectAction(): end");
+}
+
+void doCustomMenuSelectCommand(String cmd) {
+  debug_print("doCustomMenuSelectCommand(): "); debug_println(menuCommand);
+  for (int i=0; i<cmd.length(); i++ ) {
+    doKeyPress(cmd.charAt(i), true);
+  }
 }
 
 void doMenu() {
@@ -3933,7 +3985,7 @@ void writeOledBattery() {
     // if (useBatteryPercentAsWellAsIcon) {
     if (showBatteryTest==ICON_AND_PERCENT) {
       // x = 13; y = 36;
-      x = 112; y = 10;
+      x = 111; y = 10;
       u8g2.setFont(FONT_FUNCTION_INDICATORS);
       if(lastBatteryTestValue<5) {
         u8g2.drawStr(x,y, String("LOW").c_str());

@@ -108,7 +108,7 @@
 // By default, # will show the list above. 
 //   true = will take you to the Loco Function Labels screen directly
 //   false = will take you to the Key Definitions
-// The Defualt is false
+// The Default is false
 
 // #define HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS         false
 
@@ -187,6 +187,25 @@
 // #define CUSTOM_COMMAND_9 ""
 // #define CUSTOM_COMMAND_10 ""
 // #define CUSTOM_COMMAND_11 ""
+
+// *******************************************************************************************************************
+// Additional / optional menu select commands
+// These can be any legitimate menu character sequence.  It can be multiple commands.
+// e.g. "*1" will open the add loco menu screen
+// e.g. "*1999#" will select loco 999 and return you to the throttle screen
+// e.g. "*2#*1888#*1999#" will drop the current locos, then select locos 888 and 999 and return you to the throttle screen
+
+// #define CUSTOM_MENU_SELECT_COMMAND_1 "*1"
+// #define CUSTOM_MENU_SELECT_COMMAND_2 ""
+// #define CUSTOM_MENU_SELECT_COMMAND_3 ""
+// #define CUSTOM_MENU_SELECT_COMMAND_4 ""
+// #define CUSTOM_MENU_SELECT_COMMAND_5 ""
+// #define CUSTOM_MENU_SELECT_COMMAND_6 ""
+// #define CUSTOM_MENU_SELECT_COMMAND_7 ""
+// #define CUSTOM_MENU_SELECT_COMMAND_8 ""
+// #define CUSTOM_MENU_SELECT_COMMAND_9 ""
+// #define CUSTOM_MENU_SELECT_COMMAND_10 ""
+// #define CUSTOM_MENU_SELECT_COMMAND_11 ""
 
 // ********************************************************************************************
 // oLED definition
