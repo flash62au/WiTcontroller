@@ -2,6 +2,11 @@
 
 ## Versions
 
+### V1.115
+
+- Added option to allow the use of the keypad direct commands in guest mode. It is disabled by default.
+- Added separate option for allowing NEXT_THROTTLE in guest mode. It is disabled by default.
+
 ### V1.114
 
 - Added the optional custom menu commands

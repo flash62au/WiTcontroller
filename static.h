@@ -1,4 +1,4 @@
-const String appVersion = "v1.114";
+const String appVersion = "v1.115";
 #ifndef CUSTOM_APPNAME
    const String appName = "WiTcontroller";
 #else
@@ -1342,4 +1342,12 @@ const char ssidPasswordBlankChar = 164;
 
 #ifndef GESTURE_PARTNER_WINDOW
    #define GESTURE_PARTNER_WINDOW 250
+#endif
+
+#ifndef GUEST_MODE_ALLOW_DIRECT_KEYBOARD_COMMANDS
+   #define GUEST_MODE_ALLOW_DIRECT_KEYBOARD_COMMANDS false
+#endif
+
+#ifndef GUEST_MODE_ALLOW_NEXT_THROTTLE
+   #define GUEST_MODE_ALLOW_NEXT_THROTTLE true
 #endif

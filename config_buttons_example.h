@@ -647,8 +647,16 @@
 // #define GUEST_MODE_PIN_1 41
 // #define GUEST_MODE_PIN_2 42
 
-// optional  defaults to disabled (-1)
+// optional defaults to disabled (-1)
 // #define GUEST_MODE_LED_PIN 2
 
 // #define GUEST_MODE_HOLD_DURATION 1000
 // #define GESTURE_PARTNER_WINDOW 250
+
+// optionally allow access to the direct keypad commands. .i.e. everything except '*'
+// defaults to false
+// #define GUEST_MODE_ALLOW_DIRECT_KEYBOARD_COMMANDS true
+
+// optionally allow access to the other throttles (NEXT_THROTTLE)
+// defaults to false
+// #define GUEST_MODE_ALLOW_NEXT_THROTTLE true

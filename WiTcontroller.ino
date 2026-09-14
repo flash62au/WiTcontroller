@@ -2003,7 +2003,7 @@ void loop() {
 // *********************************************************************************
 
 void doKeyPress(char key, bool pressed) {
-  if (guestModeActive) return;
+  if (guestModeActive && !GUEST_MODE_ALLOW_DIRECT_KEYBOARD_COMMANDS) return;
 
   debug_print("doKeyPress(): key: "); debug_print(key); debug_print(" keypadUseType: ");debug_println(keypadUseType);
 
@@ -2020,6 +2020,8 @@ void doKeyPress(char key, bool pressed) {
               resetMenu();
               writeOledSpeed();
             } else {
+              if (guestModeActive) return;  // will react here if GUEST_MODE_ALLOW_DIRECT_KEYBOARD_COMMANDS is true
+
               menuCommandStarted = true;
               debug_println("doKeyPress(): Command started");
               writeOledMenu("", true);
@@ -3261,9 +3263,9 @@ void powerToggle() {
 }
 
 void nextThrottle() {
-  debug_print("nextThrottle(): "); 
+  debug_println("nextThrottle(): "); 
   
-  if (guestModeActive) return;  // don't allow next throttle in guest mode
+  if (guestModeActive && !GUEST_MODE_ALLOW_NEXT_THROTTLE) return;  // don't allow next throttle in guest mode
 
   int wasThrottle = currentThrottleIndex;
   currentThrottleIndex++;

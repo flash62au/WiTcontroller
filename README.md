@@ -1052,6 +1052,16 @@ Timing parameters
 ``#define GUEST_MODE_HOLD_DURATION 1000``
 ``#define GESTURE_PARTNER_WINDOW 250``
 
+Optionally allow access to the direct keypad commands. .i.e. everything except '*'. Defaults to false.
+
+``#define GUEST_MODE_ALLOW_DIRECT_KEYBOARD_COMMANDS true``
+
+Optionally allow access to the other throttles (NEXT_THROTTLE). Defaults to false.
+
+``#define GUEST_MODE_ALLOW_NEXT_THROTTLE true``
+
+Note: Holding the guest mode activation mode buttons can currently be problematic if you have assigned custom menu commands (see below) to those buttons.  I am working on a solution for that.
+
 <hr style="height: 1px;">
 
 ### Optional Search Function commands
@@ -1105,7 +1115,7 @@ These are created by assing values to ``CUSTOM_COMMAND_1`` to ``CUSTOM_COMMAND_1
 
 To use these custom WiThrottle commands on additional buttons you assign the button the value ``CUSTOM_1`` to ``CUSTOM_11``.  (See the example above.)
 
-Note: The definiton of the command and what you assign to the additional button are different.
+Note: The definition of the command and what you assign to the additional button are different.
 
 <hr style="height: 1px;">
 
@@ -1129,7 +1139,7 @@ These are created by assing values to ``CUSTOM_MENU_SELECT_COMMAND_1`` to ``CUST
 
 To use these custom menu commands on additional buttons you assign the button the value ``CUSTOM_MENU_SELECT_1`` to ``CUSTOM_MENU_SELECT_11``.  (See the example above.)
 
-Note: The definiton of the command and what you assign to the additional button are different.
+Note: The definition of the command and what you assign to the additional button are different.
 
 <hr style="height: 1px;">
 
