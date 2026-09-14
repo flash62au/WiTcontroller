@@ -1121,10 +1121,6 @@ Note: The definition of the command and what you assign to the additional button
 
 ### Additional / optional menu select commands
 
-// e.g. "*1" will open the add loco menu screen
-// e.g. "*1999#" will select loco 999 and return you to the throttle screen
-// e.g. "*2#*1888#*1999#" will drop the current locos, then select locos 888 and 999 and return you to the throttle screen
-
 Up to 11 custom menu commands can be assigned to the additional buttons.
 
 These can be any legitimate menu character sequence.  Each can can contain multiple commands.
