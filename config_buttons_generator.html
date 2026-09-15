@@ -124,13 +124,13 @@
 
   const startupAndDisplayFields = [
     {title:"Startup and Display", items:[
-      ["STARTUP_COMMAND_1","text",null,"Startup command 1"], 
-      ["STARTUP_COMMAND_2","text",null,"Startup command 2"],
-      ["STARTUP_COMMAND_3","text",null,"Startup command 3"], 
-      ["STARTUP_COMMAND_4","text",null,"Startup command 4"],
+      ["STARTUP_COMMAND_1","text",null,"Startup command 1 (in quotes)"], 
+      ["STARTUP_COMMAND_2","text",null,"Startup command 2 (in quotes)"],
+      ["STARTUP_COMMAND_3","text",null,"Startup command 3 (in quotes)"], 
+      ["STARTUP_COMMAND_4","text",null,"Startup command 4 (in quotes)"],
       ["ACQUIRE_ROSTER_ENTRY_IF_ONLY_ONE","select",bools,"Automatically acquire the only roster entry"],
       ["DISPLAY_LOCO_NAME","flag",null,"Display loco names instead of DCC addresses"],
-      ["CONSIST_SPACE_BETWEEN_LOCOS","text",null,"Space between loco names / addresses"],
+      ["CONSIST_SPACE_BETWEEN_LOCOS","text",null,"Space between loco names / addresses (in quotes)"],
       ["RESTORE_ACQUIRED_LOCOS","select",bools,"Restore saved locos on connection"], 
       ["CUSTOM_APPNAME","text",null,"Custom app name"],
       ["DISPLAY_SPEED_AS_PERCENT","select",bools,"Display speed as a percentage"],
@@ -281,7 +281,7 @@
     defaultValues[`ADDITIONAL_BUTTON_${i}_LATCHING`] = "true";
   }
   for (let i = 1; i <= 4; i++) defaultValues[`STARTUP_COMMAND_${i}`] = '""';
-  const defaultLabel = name => `Use default value (${defaultValues[name] ?? "see static.h"})`;
+  const defaultLabel = name => `use default: «${defaultValues[name] ?? "see static.h"}»`;
   function renderField([name, type, values, label, explanation]) {
     const id = `field-${name}`;
     const note = optionExplanations[name] ?? explanation;
@@ -338,8 +338,8 @@
   const labels = Array.from({length:10}, (_, i) => [`CHOSEN_KEYPAD_${i}_DISPLAY_NAME`, `Key ${i} display label`]);
   form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>Keypad Display Labels</h2><div class="key-grid">${labels.map(([n,l]) => renderField([n,"text",null,l])).join("")}</div></section>`);
   
-  function addIndexed(title, prefix, count, type, values, labelPrefix, start = 1) {
-    form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>${title}</h2><div class="key-grid">${Array.from({length:count}, (_, i) => renderField([`${prefix}${i + start}`,type,values,`${labelPrefix} ${i + start}`])).join("")}</div></section>`);
+  function addIndexed(title, prefix, count, type, values, labelPrefix, labelSuffix, start = 1) {
+    form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>${title}</h2><div class="key-grid">${Array.from({length:count}, (_, i) => renderField([`${prefix}${i + start}`,type,values,`${labelPrefix} ${i + start} ${labelSuffix}`])).join("")}</div></section>`);
   }
 
   <!-- Function Labels -->
@@ -349,16 +349,16 @@
   });
 
   <!-- Custom WiThrottle Commands -->
-  addIndexed("Custom WiThrottle Commands", "CUSTOM_COMMAND_", 11, "text", null, "Command");
+  addIndexed("Custom WiThrottle Commands", "CUSTOM_COMMAND_", 11, "text", null, "Command", " (in quotes)");
   
   <!-- Custom Menu Select Commands -->
-  addIndexed("Custom Menu Select Commands", "CUSTOM_MENU_SELECT_COMMAND_", 11, "text", null, "Menu sequence");
+  addIndexed("Custom Menu Select Commands", "CUSTOM_MENU_SELECT_COMMAND_", 11, "text", null, "Menu sequence", " (in quotes)");
   
   <!-- Additional buttons (new format) -->
-  form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>Additional buttons (new format)</h2><p class="hint">Enable this format and set the same number of values in each list. Pins 34, 35, 36 and 39 require <code>INPUT</code> and an external pullup.</p><div class="grid">${renderField(["USE_NEW_ADDITIONAL_BUTTONS_FORMAT","select",bools,"Use new additional-button format"])}${renderField(["ADDITIONAL_BUTTON_OVERRIDE_DEFAULT_LATCHING","select",bools,"Override default latching"])}${renderField(["NEW_MAX_ADDITIONAL_BUTTONS","number",null,"Number of buttons (1–11)"])}</div><div class="key-grid">${renderField(["NEW_ADDITIONAL_BUTTON_ACTIONS","textarea",null,"Actions (comma-separated)"])}${renderField(["NEW_ADDITIONAL_BUTTON_LATCHING","textarea",null,"Latching values (comma-separated)"])}${renderField(["NEW_ADDITIONAL_BUTTON_PIN","textarea",null,"GPIO pins (comma-separated)"])}${renderField(["NEW_ADDITIONAL_BUTTON_TYPE","textarea",null,"Input types (comma-separated)"])}</div></section>`);
+  form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>Additional buttons (new format)</h2><p class="hint">Enable this format and set the same number of values in each list. Pins 34, 35, 36 and 39 require <code>INPUT</code> and an external pullup.</p><div class="grid">${renderField(["USE_NEW_ADDITIONAL_BUTTONS_FORMAT","select",bools,"Use new additional-button format"])}${renderField(["ADDITIONAL_BUTTON_OVERRIDE_DEFAULT_LATCHING","select",bools,"Override default latching"])}${renderField(["NEW_MAX_ADDITIONAL_BUTTONS","number",null,"Number of buttons (1–11)"])}</div><div class="key-grid">${renderField(["NEW_ADDITIONAL_BUTTON_ACTIONS","textarea",null,"Actions (C++ list syntax)"])}${renderField(["NEW_ADDITIONAL_BUTTON_LATCHING","textarea",null,"Latching values (C++ list syntax)"])}${renderField(["NEW_ADDITIONAL_BUTTON_PIN","textarea",null,"GPIO pins (C++ list syntax)"])}${renderField(["NEW_ADDITIONAL_BUTTON_TYPE","textarea",null,"Input types (C++ list syntax)"])}</div></section>`);
 
   <!-- Throttle Potentiometer -->
-  form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>Throttle Potentiometer (Optional)</h2><div class="grid">${renderField(["USE_ROTARY_ENCODER_FOR_THROTTLE","select",bools,"Use rotary encoder for throttle"])}${renderField(["THROTTLE_POT_PIN","number",null,"Potentiometer pin"])}${renderField(["THROTTLE_POT_USE_NOTCHES","select",bools,"Use all potentiometer notches"])}${renderField(["THROTTLE_POT_NOTCH_VALUES","text",null,"Notch values (8 comma-separated numbers)"])}${renderField(["THROTTLE_POT_NOTCH_SPEEDS","text",null,"Notch speeds (8 comma-separated numbers)"])}</div></section>`);
+  form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>Throttle Potentiometer (Optional)</h2><div class="grid">${renderField(["USE_ROTARY_ENCODER_FOR_THROTTLE","select",bools,"Use rotary encoder for throttle"])}${renderField(["THROTTLE_POT_PIN","number",null,"Potentiometer pin"])}${renderField(["THROTTLE_POT_USE_NOTCHES","select",bools,"Use all potentiometer notches"])}${renderField(["THROTTLE_POT_NOTCH_VALUES","text",null,"Notch values (8 comma-separated numbers) (c++ list format)"])}${renderField(["THROTTLE_POT_NOTCH_SPEEDS","text",null,"Notch speeds (8 comma-separated numbers) (c++ list format)"])}</div></section>`);
 
   <!-- Battery, heartbeat and roster -->
   batteryFields.forEach(group => {
