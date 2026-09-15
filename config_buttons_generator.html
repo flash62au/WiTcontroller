@@ -61,97 +61,136 @@
 </main>
 <script>
   const actions = [
-    ["FUNCTION_NULL", "Do nothing"], ...Array.from({length: 32}, (_, i) => [`FUNCTION_${i}`, `Function ${i}${i < 3 ? [" (lights)", " (bell)", " (horn)"][i] : ""}`]),
-    ["SPEED_STOP", "Stop"], ["SPEED_UP", "Speed up"], ["SPEED_DOWN", "Speed down"],
-    ["SPEED_UP_FAST", "Speed up fast"], ["SPEED_DOWN_FAST", "Speed down fast"], ["E_STOP", "Emergency stop"],
-    ["SPEED_MULTIPLIER", "Speed multiplier"], ["DIRECTION_TOGGLE", "Toggle direction"],
-    ["DIRECTION_FORWARD", "Forward"], ["DIRECTION_REVERSE", "Reverse"],
-    ["SPEED_STOP_THEN_TOGGLE_DIRECTION", "Stop, then toggle direction"], ["E_STOP_CURRENT_LOCO", "Emergency stop current loco"],
-    ["MAX_THROTTLE_INCREASE", "Increase maximum throttle"], ["MAX_THROTTLE_DECREASE", "Decrease maximum throttle"],
-    ["POWER_TOGGLE", "Toggle power"], ["POWER_ON", "Power on"], ["POWER_OFF", "Power off"],
-    ["SHOW_HIDE_BATTERY", "Show/hide battery"], ["SLEEP", "Sleep"], ["NEXT_THROTTLE", "Next throttle"],
+    ["FUNCTION_NULL", "Do nothing"], 
+    ...Array.from({length: 32}, (_, i) => [`FUNCTION_${i}`, `Function ${i}${i < 3 ? [" (lights)", " (bell)", " (horn)"][i] : ""}`]),
+    ["SPEED_STOP", "Stop"], 
+    ["SPEED_UP", "Speed up"], 
+    ["SPEED_DOWN", "Speed down"],
+    ["SPEED_UP_FAST", "Speed up fast"], 
+    ["SPEED_DOWN_FAST", "Speed down fast"], 
+    ["E_STOP", "Emergency stop"],
+    ["SPEED_MULTIPLIER", "Speed multiplier"], 
+    ["DIRECTION_TOGGLE", "Toggle direction"],
+    ["DIRECTION_FORWARD", "Forward"], 
+    ["DIRECTION_REVERSE", "Reverse"],
+    ["SPEED_STOP_THEN_TOGGLE_DIRECTION", "Stop, then toggle direction"], 
+    ["E_STOP_CURRENT_LOCO", "Emergency stop current loco"],
+    ["MAX_THROTTLE_INCREASE", "Increase maximum throttle"], 
+    ["MAX_THROTTLE_DECREASE", "Decrease maximum throttle"],
+    ["POWER_TOGGLE", "Toggle power"], 
+    ["POWER_ON", "Power on"], 
+    ["POWER_OFF", "Power off"],
+    ["SHOW_HIDE_BATTERY", "Show/hide battery"], 
+    ["SLEEP", "Sleep"], 
+    ["NEXT_THROTTLE", "Next throttle"],
     ...Array.from({length: 6}, (_, i) => [`THROTTLE_${i + 1}`, `Throttle ${i + 1}`]),
     ...Array.from({length: 11}, (_, i) => [`CUSTOM_${i + 1}`, `Custom command ${i + 1}`]),
     ...Array.from({length: 11}, (_, i) => [`CUSTOM_MENU_SELECT_${i + 1}`, `Custom menu ${i + 1}`])
   ];
   const choices = values => values.map(([value, label]) => ({value, label}));
   const bools = choices([["true", "true"], ["false", "false"]]);
-  const fields = [
-    {title:"Encoder", items:[
-      ["ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED","select",bools,"Clockwise increases speed"],
-      ["ENCODER_INVERT_ROTATION_WHEN_REVERSED","select",bools,"Invert rotation when direction is reversed"],
-      ["ENCODER_BUTTON_ACTION","select",choices(actions),"Encoder button action"],
-      ["TOGGLE_DIRECTION_ON_ENCODER_BUTTON_PRESSED_WHEN_STATIONAY","select",bools,"Toggle direction when stationary"],
+
+  const keypadAndEncoderFields = [
+    {title:"Encoder Hardware and Actions", items:[
+      ["ROTARY_ENCODER_A_PIN","number",null,"Rotary encoder A pin"], 
+      ["ROTARY_ENCODER_B_PIN","number",null,"Rotary encoder B pin"],
+      ["ROTARY_ENCODER_BUTTON_PIN","number",null,"Rotary encoder button pin"], 
+      ["ROTARY_ENCODER_VCC_PIN","number",null,"Rotary encoder VCC pin (-1 for direct 3.3V)"],
       ["ROTARY_ENCODER_STEPS","number",null,"Encoder steps (usually 1–4)"],
       ["ROTARY_ENCODER_DEBOUNCE_TIME","number",null,"Encoder button debounce (milliseconds)"],
-      ["EC11_PULLUPS_REQUIRED","select",bools,"Enable internal pullups for a bare EC11"]
+      ["ENCODER_SENSITIVITY","number",null,"Encoder sensitivity"],
+      ["EC11_PULLUPS_REQUIRED","select",bools,"Enable internal pullups for a bare EC11"],
+      ["ADDITIONAL_BUTTON_DEBOUNCE_DELAY","number",null,"Additional button debounce (milliseconds)"],
+      ["ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED","select",bools,"Clockwise increases speed"],
+      ["ENCODER_INVERT_ROTATION_WHEN_REVERSED","select",bools,"Invert rotation when direction is reversed"],
+      ["SPEED_STEP","number",null,"Speed step per encoder click"],
+      ["ENCODER_BUTTON_ACTION","select",choices(actions),"Encoder button action"],
+      ["TOGGLE_DIRECTION_ON_ENCODER_BUTTON_PRESSED_WHEN_STATIONAY","select",bools,"Toggle direction when stationary"],
     ]},
 
-    {title:"Keypad Hardware", items:[
-      ["HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS","select",bools,"# opens function labels instead of key definitions"],
-      ["ROW_NUM","select",choices([["3","3"],["4","4"]]),"Keypad row count"], 
+    {title:"Keypad Hardware and Actions", items:[
+      ["ROW_NUM","select",choices([["4","4"]]),"Keypad row count"], 
       ["COLUMN_NUM","select",choices([["3","3"],["4","4"]]),"Keypad column count"],
-      ["MAX_THROTTLES","number",null,"Maximum throttles (1–6)"],
-      ["SPEED_STEP","number",null,"Speed step per encoder click"],
+      ["KEYPAD_KEYS","text",null,"Keypad layout (C++ list syntax)"],
+      ["KEYPAD_ROW_PINS","text",null,"Keypad row pins (C++ list syntax)"], 
+      ["KEYPAD_COLUMN_PINS","text",null,"Keypad column pins (C++ list syntax)"],
+      ["KEYPAD_DEBOUNCE_TIME","number",null,"Keypad debounce (milliseconds)"], 
+      ["KEYPAD_HOLD_TIME","number",null,"Keypad hold time (milliseconds)"],
       ["SPEED_STEP_MULTIPLIER","number",null,"Fast speed-step multiplier"],
       ["SPEED_STEP_ADDITIONAL_MULTIPLIER","number",null,"Additional speed multiplier"],
-      ["ENCODER_SENSITIVITY","number",null,"Encoder sensitivity"],
-      ["DISPLAY_SPEED_AS_PERCENT","select",bools,"Display speed as a percentage"],
-      ["DISPLAY_SPEED_AS_0_TO_28","select",bools,"Display speed as 0–28"]
-    ]},
+      ["HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS","select",bools,"# (hash) key opens function labels instead of key definitions"]
+    ]}
+  ];
 
-    {title:"Consists and commands", items:[
-      ["CONSIST_FUNCTION_FOLLOW_F0","select",[["CONSIST_ALL_LOCOS","All locos"],["CONSIST_LEAD_LOCO","Lead loco"]],"F0 consist behaviour"],
-      ["CONSIST_FUNCTION_FOLLOW_F1","select",[["CONSIST_ALL_LOCOS","All locos"],["CONSIST_LEAD_LOCO","Lead loco"]],"F1 consist behaviour"],
-      ["CONSIST_FUNCTION_FOLLOW_F2","select",[["CONSIST_ALL_LOCOS","All locos"],["CONSIST_LEAD_LOCO","Lead loco"]],"F2 consist behaviour"]
-    ]},
-
-    {title:"Hardware and timing", items:[
-      ["ROTARY_ENCODER_A_PIN","number",null,"Rotary encoder A pin"], ["ROTARY_ENCODER_B_PIN","number",null,"Rotary encoder B pin"],
-      ["ROTARY_ENCODER_BUTTON_PIN","number",null,"Rotary encoder button pin"], ["ROTARY_ENCODER_VCC_PIN","number",null,"Rotary encoder VCC pin (-1 for direct 3.3V)"],
-      ["KEYPAD_KEYS","text",null,"Keypad layout (for example {'1','2','3'},...)"],
-      ["KEYPAD_ROW_PINS","text",null,"Keypad row pins (comma-separated)"], ["KEYPAD_COLUMN_PINS","text",null,"Keypad column pins (comma-separated)"],
-      ["KEYPAD_DEBOUNCE_TIME","number",null,"Keypad debounce (milliseconds)"], ["KEYPAD_HOLD_TIME","number",null,"Keypad hold time (milliseconds)"],
-      ["ADDITIONAL_BUTTON_DEBOUNCE_DELAY","number",null,"Additional button debounce (milliseconds)"]
-    ]},
-
-    {title:"Battery, heartbeat and roster", items:[
-      ["USE_BATTERY_TEST","select",bools,"Enable battery test"], ["BATTERY_TEST_PIN","number",null,"Battery test pin"],
-      ["BATTERY_CONVERSION_FACTOR","number",null,"Battery conversion factor"], ["USE_BATTERY_PERCENT_AS_WELL_AS_ICON","select",bools,"Show battery percentage and icon"],
-      ["USE_BATTERY_SLEEP_AT_PERCENT","number",null,"Sleep below battery percentage (0 disables)"],
-      ["MAX_HEARTBEAT_PERIOD","number",null,"Maximum heartbeat period (milliseconds)"], ["HEARTBEAT_ENABLED","select",bools,"Enable heartbeat by default"],
-      ["DEFAULT_HEARTBEAT_PERIOD","number",null,"Default heartbeat period (seconds)"], ["ROSTER_SORT_SEQUENCE","select",[["0","Server order"],["1","Name"],["2","DCC address"]],"Roster sorting"],
-      ["DROP_LOCO_BY_INDEX","select",bools,"Release consist loco by index"]
-    ]},
-
+  const startupAndDisplayFields = [
     {title:"Startup and Display", items:[
-      ["STARTUP_COMMAND_1","text",null,"Startup command 1"], ["STARTUP_COMMAND_2","text",null,"Startup command 2"],
-      ["STARTUP_COMMAND_3","text",null,"Startup command 3"], ["STARTUP_COMMAND_4","text",null,"Startup command 4"],
+      ["STARTUP_COMMAND_1","text",null,"Startup command 1"], 
+      ["STARTUP_COMMAND_2","text",null,"Startup command 2"],
+      ["STARTUP_COMMAND_3","text",null,"Startup command 3"], 
+      ["STARTUP_COMMAND_4","text",null,"Startup command 4"],
       ["ACQUIRE_ROSTER_ENTRY_IF_ONLY_ONE","select",bools,"Automatically acquire the only roster entry"],
       ["DISPLAY_LOCO_NAME","flag",null,"Display loco names instead of DCC addresses"],
       ["CONSIST_SPACE_BETWEEN_LOCOS","text",null,"Space between loco names / addresses"],
-      ["DROP_BEFORE_ACQUIRE","select",bools,"Drop existing locos before acquiring"],
-      ["RESTORE_ACQUIRED_LOCOS","select",bools,"Restore saved locos on connection"], ["CUSTOM_APPNAME","text",null,"Custom app name"]
-    ]},
+      ["RESTORE_ACQUIRED_LOCOS","select",bools,"Restore saved locos on connection"], 
+      ["CUSTOM_APPNAME","text",null,"Custom app name"],
+      ["DISPLAY_SPEED_AS_PERCENT","select",bools,"Display speed as a percentage"],
+      ["DISPLAY_SPEED_AS_0_TO_28","select",bools,"Display speed as 0–28"]
+    ]}
+  ];
 
+  const otherActionsFields = [
+    {title:"Other Actions", items:[
+      ["DROP_LOCO_BY_INDEX","select",bools,"Release consist loco by index"],
+      ["DROP_BEFORE_ACQUIRE","select",bools,"Drop existing locos before acquiring"],
+      ["MAX_THROTTLES","number",null,"Maximum throttles (1–6)"],
+      ["ROSTER_SORT_SEQUENCE","select",choices([["0","Server order"],["1","Name"],["2","DCC address"]]),"Roster sorting"]
+    ]}
+  ];
+
+  const consistsAndCommandsFields = [
+    {title:"Consists and Commands", items:[
+      ["CONSIST_FUNCTION_FOLLOW_F0","select",choices([["CONSIST_ALL_LOCOS","All locos"],["CONSIST_LEAD_LOCO","Lead loco"]]),"F0 consist behaviour"],
+      ["CONSIST_FUNCTION_FOLLOW_F1","select",choices([["CONSIST_ALL_LOCOS","All locos"],["CONSIST_LEAD_LOCO","Lead loco"]]),"F1 consist behaviour"],
+      ["CONSIST_FUNCTION_FOLLOW_F2","select",choices([["CONSIST_ALL_LOCOS","All locos"],["CONSIST_LEAD_LOCO","Lead loco"]]),"F2 consist behaviour"]
+    ]},
+  ];
+
+  const guestModeFields = [
     {title:"Guest Mode", items:[
-      ["GUEST_MODE_ENABLED","select",bools,"Enable guest mode"], ["GUEST_MODE_PIN_1","number",null,"Guest mode button pin 1"],
-      ["GUEST_MODE_PIN_2","number",null,"Guest mode button pin 2"], ["GUEST_MODE_LED_PIN","number",null,"Guest mode LED pin"],
+      ["GUEST_MODE_ENABLED","select",bools,"Enable guest mode"], 
+      ["GUEST_MODE_PIN_1","number",null,"Guest mode button pin 1"],
+      ["GUEST_MODE_PIN_2","number",null,"Guest mode button pin 2"], 
+      ["GUEST_MODE_LED_PIN","number",null,"Guest mode LED pin"],
       ["GUEST_MODE_HOLD_DURATION","number",null,"Guest mode hold duration (milliseconds)"], ["GESTURE_PARTNER_WINDOW","number",null,"Guest gesture window (milliseconds)"],
       ["GUEST_MODE_ALLOW_DIRECT_KEYBOARD_COMMANDS","select",bools,"Allow direct keypad commands in guest mode"],
       ["GUEST_MODE_ALLOW_NEXT_THROTTLE","select",bools,"Allow changing throttles in guest mode"]
-    ]},
+    ]}
+  ];
 
+  const batteryFields = [
+    {title:"Battery and Heartbeat", items:[
+      ["USE_BATTERY_TEST","select",bools,"Enable battery test"], 
+      ["BATTERY_TEST_PIN","number",null,"Battery test pin"],
+      ["BATTERY_CONVERSION_FACTOR","number",null,"Battery conversion factor"], ["USE_BATTERY_PERCENT_AS_WELL_AS_ICON","select",bools,"Show battery percentage and icon"],
+      ["USE_BATTERY_SLEEP_AT_PERCENT","number",null,"Sleep below battery percentage (0 disables)"],
+      ["MAX_HEARTBEAT_PERIOD","number",null,"Maximum heartbeat period (milliseconds)"], 
+      ["HEARTBEAT_ENABLED","select",bools,"Enable heartbeat by default"],
+      ["DEFAULT_HEARTBEAT_PERIOD","number",null,"Default heartbeat period (seconds)"] 
+    ]}
+  ];
+
+  const fields = [
     {title:"Function Labels", items:[
-      ["F0_LABEL","text",null,"F0 label"], ["F1_LABEL","text",null,"F1 label"], ["F2_LABEL","text",null,"F2 label"]
+      ["F0_LABEL","text",null,"F0 label"], 
+      ["F1_LABEL","text",null,"F1 label"], 
+      ["F2_LABEL","text",null,"F2 label"]
     ]},
 
     {title:"Search Functions for Additional Buttons", items:[
+      ["FUNCTION_SEARCH_RANDOM_MATCH","select",bools,"Choose a random matching function"],
       ["MAX_FUNCTION_SEARCH","number",null,"Number of function searches"],
       ["FUNCTION_SEARCH_LABELS","text",null,"Search labels (C++ list syntax)"],
-      ["FUNCTION_SEARCH_IDS","text",null,"Search IDs (comma-separated)"],
-      ["BELL_SEARCH","number",null,"Custom bell search ID (900–999)"],
-      ["FUNCTION_SEARCH_RANDOM_MATCH","select",bools,"Choose a random matching function"]
+      ["FUNCTION_SEARCH_IDS","text",null,"Search IDs (C++ list syntax)"]
     ]}
   ];
 
@@ -167,7 +206,7 @@
   const optionExplanations = {
     LANGUAGE: "To use Chinese characters a suitable font must also be selected below",
     FONT_DEFAULT: "This font is required for Chinese characters:\nu8g2_font_boutique_bitmap_7x7_t_gb2312",
-    FONT_DIRECTION: "Direction Indication Font override (not recommended to change other than for use of Chinese characters)\nAny font from here can be used https://github.com/olikraus/u8g2/wiki/fntlist8#8-pixel-height\nThe default one is 29px high",
+    FONT_DIRECTION: "Direction Indication Font override (not recommended to change other than for use of Chinese characters)\nAny font from here can be used https://github.com/olikraus/u8g2/wiki/fntlist8#8-pixel-height. The default one is 29px high",
 
     ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED: "Defines the rotation direction for the rotary encoder to increase speed\nfalse = Counter clockwise (default)\ntrue = clockwise",
     ENCODER_BUTTON_ACTION: "Action performed when the rotary encoder button is pressed.\nSee static.h or README.md for details on the allowed functions",
@@ -178,7 +217,14 @@
     EC11_PULLUPS_REQUIRED: "Internal GPIO pullups required if the hardware build utilises a bare EC11 rotary encoder in place of a KY040 encoder module. (That encoder module has physical pullups fitted)\ntrue = bare EC11 used for hardware build WITHOUT any physical pullups, GPIO pullups will ne enabled in main\nfalse = KY040 module used in hardware build OR bare EC11 used but with physical pullup resistors ",
 
     KEYPAD_KEYS: "Enter one row per keypad row, using the same order as the physical keys.",
-    OLED_TYPE: "This is one of the common .9 inch OLED displays and is included by default\n#define OLED_TYPE U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);OLED_TYPE\n\nThis is one of the common 1.3 inch OLED displays\n#define OLED_TYPE U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);\n\nThis one works with a 2.42 inch SSD1309 based oLED\n#define OLED_TYPE U8G2_SSD1309_128X64_NONAME2_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);",
+    OLED_TYPE: "This is one of the common .9 inch OLED displays and is included by default\nOLED_TYPE U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);OLED_TYPE\n\nThis is one of the common 1.3 inch OLED displays\nU8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);\n\nThis one works with a 2.42 inch SSD1309 based oLED\nOLED_TYPE U8G2_SSD1309_128X64_NONAME2_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);",
+
+    ROW_NUM: "Only 4x3 and 4x4 keyboards are currently supported",
+    COLUMN_NUM: "Only 4x3 and 4x4 keyboards are currently supported",
+    KEYPAD_KEYS: "For 4x3 use:- {'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}, {'*', '0', '#'}\nFor 4x4 use:- {'1', '2', '3', 'A'},  {'4', '5', '6', 'B'},  {'7', '8', '9', 'C'},  {'*', '0', '#', 'D'}\n or similar",
+    KEYPAD_ROW_PINS: "Four values must be specified",
+    KEYPAD_COLUMN_PINS: "For 4x3:- Three values must be specified\nFor 4x4:- Four values must be specified",
+
     DEBUG_LEVEL: "0 = errors only, 1 = default level, 2 = verbose, 3 = extreme, 4 = everything"
   };
   const form = document.querySelector("#config-form");
@@ -249,37 +295,87 @@
     return `<label>${label}${control}<span class="field-note">${name}</span>${explanationMarkup}</label>`;
   }
 
+  <!-- ------------------------------------------------------------------------------- -->
+
+  <!-- Language and Fonts -->
   form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>Language and Fonts</h2><div class="grid">${renderField(["LANGUAGE","select",choices([["language_deutsch.h","German"],["language_italiano.h","Italian"],["language_chinese.h","Chinese"]]),"Language"])}${renderField(["FONT_DEFAULT","text",null,"Default font"])}${renderField(["FONT_DIRECTION","text",null,"Direction font"])}</div></section>`);
 
+  <!-- Encoder -->
+  <!-- Keypad Hardware -->
+  keypadAndEncoderFields.forEach(group => {
+    form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>${group.title}</h2><div class="grid">${group.items.map(renderField).join("")}</div></section>`);
+  });
+
+  <!-- oLED Hardware Definition -->
+  form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>oLED Hardware Definition</h2><p class="hint">Enter the complete constructor expression after <code>oLED_TYPE</code>, including the <code>u8g2(...)</code> instance.</p>${renderField(["OLED_TYPE","text",null,"oLED constructor"])}</section>`);
+
+  <!-- Function Labels -->
+  <!-- Search Functions for Additional Buttons -->
   fields.forEach(group => {
     form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>${group.title}</h2><div class="grid">${group.items.map(renderField).join("")}</div></section>`);
   });
 
-  const keyFunctions = Array.from({length: 14}, (_, i) => [`CHOSEN_KEYPAD_${i < 10 ? i : String.fromCharCode(55 + i)}_FUNCTION`, i < 10 ? `Key ${i}` : `Key ${String.fromCharCode(55 + i)}`]);
+  <!-- Startup and Display -->
+  startupAndDisplayFields.forEach(group => {
+    form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>${group.title}</h2><div class="grid">${group.items.map(renderField).join("")}</div></section>`);
+  });
 
+  <!-- Consists and commands -->
+  consistsAndCommandsFields.forEach(group => {
+    form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>${group.title}</h2><div class="grid">${group.items.map(renderField).join("")}</div></section>`);
+  });
+
+  <!-- Other Actions -->
+  otherActionsFields.forEach(group => {
+    form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>${group.title}</h2><div class="grid">${group.items.map(renderField).join("")}</div></section>`);
+  });
+
+  <!-- Keypad Button Actions -->
+  const keyFunctions = Array.from({length: 14}, (_, i) => [`CHOSEN_KEYPAD_${i < 10 ? i : String.fromCharCode(55 + i)}_FUNCTION`, i < 10 ? `Key ${i}` : `Key ${String.fromCharCode(55 + i)}`]);
   form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>Keypad Button Actions</h2><p class="hint">The <code>*</code> and <code>#</code> keys cannot be remapped. Key A–D require a 4x4 keypad.\n If you alter these, you should later the corresponding labels in the next section.</p><div class="key-grid">${keyFunctions.map(([n,l]) => renderField([n,"select",choices(actions),l])).join("")}</div></section>`);
 
+  <!-- Keypad Display Labels -->
   const labels = Array.from({length:10}, (_, i) => [`CHOSEN_KEYPAD_${i}_DISPLAY_NAME`, `Key ${i} display label`]);
-
   form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>Keypad Display Labels</h2><div class="key-grid">${labels.map(([n,l]) => renderField([n,"text",null,l])).join("")}</div></section>`);
   
   function addIndexed(title, prefix, count, type, values, labelPrefix, start = 1) {
     form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>${title}</h2><div class="key-grid">${Array.from({length:count}, (_, i) => renderField([`${prefix}${i + start}`,type,values,`${labelPrefix} ${i + start}`])).join("")}</div></section>`);
   }
 
+  <!-- Function Labels -->
+  <!-- Search Functions for Additional Buttons -->
+  fields.forEach(group => {
+    form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>${group.title}</h2><div class="grid">${group.items.map(renderField).join("")}</div></section>`);
+  });
+
+  <!-- Custom WiThrottle Commands -->
   addIndexed("Custom WiThrottle Commands", "CUSTOM_COMMAND_", 11, "text", null, "Command");
   
+  <!-- Custom Menu Select Commands -->
   addIndexed("Custom Menu Select Commands", "CUSTOM_MENU_SELECT_COMMAND_", 11, "text", null, "Menu sequence");
   
+  <!-- Additional buttons (new format) -->
   form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>Additional buttons (new format)</h2><p class="hint">Enable this format and set the same number of values in each list. Pins 34, 35, 36 and 39 require <code>INPUT</code> and an external pullup.</p><div class="grid">${renderField(["USE_NEW_ADDITIONAL_BUTTONS_FORMAT","select",bools,"Use new additional-button format"])}${renderField(["ADDITIONAL_BUTTON_OVERRIDE_DEFAULT_LATCHING","select",bools,"Override default latching"])}${renderField(["NEW_MAX_ADDITIONAL_BUTTONS","number",null,"Number of buttons (1–11)"])}</div><div class="key-grid">${renderField(["NEW_ADDITIONAL_BUTTON_ACTIONS","textarea",null,"Actions (comma-separated)"])}${renderField(["NEW_ADDITIONAL_BUTTON_LATCHING","textarea",null,"Latching values (comma-separated)"])}${renderField(["NEW_ADDITIONAL_BUTTON_PIN","textarea",null,"GPIO pins (comma-separated)"])}${renderField(["NEW_ADDITIONAL_BUTTON_TYPE","textarea",null,"Input types (comma-separated)"])}</div></section>`);
 
-  form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>Throttle Potentiometer</h2><div class="grid">${renderField(["USE_ROTARY_ENCODER_FOR_THROTTLE","select",bools,"Use rotary encoder for throttle"])}${renderField(["THROTTLE_POT_PIN","number",null,"Potentiometer pin"])}${renderField(["THROTTLE_POT_USE_NOTCHES","select",bools,"Use all potentiometer notches"])}${renderField(["THROTTLE_POT_NOTCH_VALUES","text",null,"Notch values (8 comma-separated numbers)"])}${renderField(["THROTTLE_POT_NOTCH_SPEEDS","text",null,"Notch speeds (8 comma-separated numbers)"])}</div></section>`);
+  <!-- Throttle Potentiometer -->
+  form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>Throttle Potentiometer (Optional)</h2><div class="grid">${renderField(["USE_ROTARY_ENCODER_FOR_THROTTLE","select",bools,"Use rotary encoder for throttle"])}${renderField(["THROTTLE_POT_PIN","number",null,"Potentiometer pin"])}${renderField(["THROTTLE_POT_USE_NOTCHES","select",bools,"Use all potentiometer notches"])}${renderField(["THROTTLE_POT_NOTCH_VALUES","text",null,"Notch values (8 comma-separated numbers)"])}${renderField(["THROTTLE_POT_NOTCH_SPEEDS","text",null,"Notch speeds (8 comma-separated numbers)"])}</div></section>`);
 
-  form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>oLED Hardware Definition</h2><p class="hint">Enter the complete constructor expression after <code>oLED_TYPE</code>, including the <code>u8g2(...)</code> instance.</p>${renderField(["OLED_TYPE","text",null,"oLED constructor"])}</section>`);
+  <!-- Battery, heartbeat and roster -->
+  batteryFields.forEach(group => {
+    form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>${group.title}</h2><div class="grid">${group.items.map(renderField).join("")}</div></section>`);
+  });
 
+  <!-- Guest Mode -->
+  guestModeFields.forEach(group => {
+    form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>${group.title}</h2><div class="grid">${group.items.map(renderField).join("")}</div></section>`);
+  });
+
+  <!-- debugging -->
   debuggingFields.forEach(group => {
     form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>${group.title}</h2><div class="grid">${group.items.map(renderField).join("")}</div></section>`);
   });
+
+  <!-- ------------------------------------------------------------------------------- -->
 
   const output = document.querySelector("#output"), status = document.querySelector("#status");
   const arrayDefines = /^(KEYPAD_(KEYS|ROW_PINS|COLUMN_PINS)|ADDITIONAL_BUTTONS_(PINS|TYPE)|NEW_ADDITIONAL_BUTTON_(ACTIONS|LATCHING|PIN|TYPE)|THROTTLE_POT_(NOTCH_VALUES|NOTCH_SPEEDS)|FUNCTION_SEARCH_(LABELS|IDS))$/;
