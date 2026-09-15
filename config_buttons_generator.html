@@ -204,7 +204,7 @@
 
   // Add entries here to show extra guidance below matching configuration options.
   const optionExplanations = {
-    LANGUAGE: "To use Chinese characters a suitable font must also be selected below",
+    LANGUAGE: "To use Chinese characters a suitable font must also be selected next",
     FONT_DEFAULT: "This font is required for Chinese characters:\nu8g2_font_boutique_bitmap_7x7_t_gb2312",
     FONT_DIRECTION: "Direction Indication Font override (not recommended to change other than for use of Chinese characters)\nAny font from here can be used https://github.com/olikraus/u8g2/wiki/fntlist8#8-pixel-height. The default one is 29px high",
 
@@ -224,6 +224,11 @@
     KEYPAD_KEYS: "For 4x3 use:- {'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}, {'*', '0', '#'}\nFor 4x4 use:- {'1', '2', '3', 'A'},  {'4', '5', '6', 'B'},  {'7', '8', '9', 'C'},  {'*', '0', '#', 'D'}\n or similar",
     KEYPAD_ROW_PINS: "Four values must be specified",
     KEYPAD_COLUMN_PINS: "For 4x3:- Three values must be specified\nFor 4x4:- Four values must be specified",
+
+    NEW_ADDITIONAL_BUTTON_ACTIONS: "{val0, val1, .. val10, up-to-val11}",
+    NEW_ADDITIONAL_BUTTON_LATCHING: "{val0, val1, .. val10, up-to-val11}",
+    NEW_ADDITIONAL_BUTTON_PIN: "{val0, val1, .. val10, up-to-val11}",
+    NEW_ADDITIONAL_BUTTON_TYPE: "{val0, val1, .. val10, up-to-val11}",
 
     DEBUG_LEVEL: "0 = errors only, 1 = default level, 2 = verbose, 3 = extreme, 4 = everything"
   };
@@ -274,8 +279,8 @@
   }
   for (const key of ["A","B","C","D"]) defaultValues[`CHOSEN_KEYPAD_${key}_FUNCTION`] = `CUSTOM_${["A","B","C","D"].indexOf(key) + 1}`;
   for (let i = 1; i <= 11; i++) {
-    defaultValues[`CUSTOM_COMMAND_${i}`] = '""';
-    defaultValues[`CUSTOM_MENU_SELECT_COMMAND_${i}`] = '""';
+    defaultValues[`CUSTOM_COMMAND_${i}`] = '';
+    defaultValues[`CUSTOM_MENU_SELECT_COMMAND_${i}`] = '';
   }
   for (let i = 0; i < 7; i++) {
     defaultValues[`CHOSEN_ADDITIONAL_BUTTON_${i}_FUNCTION`] = "FUNCTION_NULL";
@@ -300,7 +305,9 @@
   <!-- ------------------------------------------------------------------------------- -->
 
   <!-- Language and Fonts -->
-  form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>Language and Fonts</h2><div class="grid">${renderField(["LANGUAGE","select",choices([["language_deutsch.h","German"],["language_italiano.h","Italian"],["language_chinese.h","Chinese"]]),"Language"])}${renderField(["FONT_DEFAULT","text",null,"Default font"])}${renderField(["FONT_DIRECTION","text",null,"Direction font"])}</div></section>`);
+  form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>Language and Fonts</h2><div class="grid">
+    ${renderField(["LANGUAGE","select",choices([["language_deutsch.h","German"],["language_italiano.h","Italian"],["language_chinese.h","Chinese"]]),"Language"])}
+    ${renderField(["FONT_DEFAULT","select",choices([["u8g2_font_5x8_tf","English (u8g2_font_5x8_tf)"],["u8g2_font_boutique_bitmap_7x7_t_gb2312","Chinese (u8g2_font_boutique_bitmap_7x7_t_gb2312)"]]),"Default font"])}${renderField(["FONT_DIRECTION","text",null,"Direction font"])}</div></section>`);
 
   <!-- Encoder -->
   <!-- Keypad Hardware -->
@@ -357,7 +364,7 @@
   addIndexed("Custom Menu Select Commands", "CUSTOM_MENU_SELECT_COMMAND_", 11, "text", null, "Menu sequence", " (no quotes)");
   
   <!-- Additional buttons (new format) -->
-  form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>Additional buttons (new format)</h2><p class="hint">Enable this format and set the same number of values in each list. Pins 34, 35, 36 and 39 require <code>INPUT</code> and an external pullup.</p><div class="grid">${renderField(["USE_NEW_ADDITIONAL_BUTTONS_FORMAT","select",bools,"Use new additional-button format"])}${renderField(["ADDITIONAL_BUTTON_OVERRIDE_DEFAULT_LATCHING","select",bools,"Override default latching"])}${renderField(["NEW_MAX_ADDITIONAL_BUTTONS","number",null,"Number of buttons (1–11)"])}</div><div class="key-grid">${renderField(["NEW_ADDITIONAL_BUTTON_ACTIONS","textarea",null,"Actions (C++ list syntax)"])}${renderField(["NEW_ADDITIONAL_BUTTON_LATCHING","textarea",null,"Latching values (C++ list syntax)"])}${renderField(["NEW_ADDITIONAL_BUTTON_PIN","textarea",null,"GPIO pins (C++ list syntax)"])}${renderField(["NEW_ADDITIONAL_BUTTON_TYPE","textarea",null,"Input types (C++ list syntax)"])}</div></section>`);
+  form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>Additional buttons (new format)</h2><p class="hint">Enable this format and set the same number of values in each list. Pins 34, 35, 36 and 39 require <code>INPUT</code> and an external pullup.</p><div class="grid">${renderField(["USE_NEW_ADDITIONAL_BUTTONS_FORMAT","select",bools,"Use new additional-button format"])}${renderField(["ADDITIONAL_BUTTON_OVERRIDE_DEFAULT_LATCHING","select",bools,"Override default latching"])}${renderField(["NEW_MAX_ADDITIONAL_BUTTONS","number",null,"Number of buttons (0-11)"])}</div><div class="key-grid">${renderField(["NEW_ADDITIONAL_BUTTON_ACTIONS","textarea",null,"Actions (C++ list syntax)"])}${renderField(["NEW_ADDITIONAL_BUTTON_LATCHING","textarea",null,"Latching values (C++ list syntax)"])}${renderField(["NEW_ADDITIONAL_BUTTON_PIN","textarea",null,"GPIO pins (C++ list syntax)"])}${renderField(["NEW_ADDITIONAL_BUTTON_TYPE","textarea",null,"Input types (C++ list syntax)"])}</div></section>`);
 
   <!-- Throttle Potentiometer -->
   form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>Throttle Potentiometer (Optional)</h2><div class="grid">${renderField(["USE_ROTARY_ENCODER_FOR_THROTTLE","select",bools,"Use rotary encoder for throttle"])}${renderField(["THROTTLE_POT_PIN","number",null,"Potentiometer pin"])}${renderField(["THROTTLE_POT_USE_NOTCHES","select",bools,"Use all potentiometer notches"])}${renderField(["THROTTLE_POT_NOTCH_VALUES","text",null,"Notch values (8 comma-separated numbers) (c++ list format)"])}${renderField(["THROTTLE_POT_NOTCH_SPEEDS","text",null,"Notch speeds (8 comma-separated numbers) (c++ list format)"])}</div></section>`);
