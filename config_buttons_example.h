@@ -571,8 +571,8 @@
 // ******************
 
 // Direction Indication Font override (not recommended other than for use of Chinese characters)
-// Any font from here can be used https://github.com/olikraus/u8g2/wiki/fntlist8#8-pixel-height
-// The default one is 29px high
+// Any font from here can be used https://github.com/olikraus/u8g2/wiki/fntlist12
+// The default one is 9px high
 // Uncomment if and change to the appropriate font if required
 // #define FONT_DIRECTION u8g2_font_neuecraft_tr
 
