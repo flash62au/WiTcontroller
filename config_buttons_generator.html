@@ -337,7 +337,7 @@
   form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>Keypad Button Actions</h2><p class="hint">The <code>*</code> and <code>#</code> keys cannot be remapped. Key A–D require a 4x4 keypad.\n If you alter these, you should later the corresponding labels in the next section.</p><div class="key-grid">${keyFunctions.map(([n,l]) => renderField([n,"select",choices(actions),l])).join("")}</div></section>`);
 
   <!-- Keypad Display Labels -->
-  const labels = Array.from({length:10}, (_, i) => [`CHOSEN_KEYPAD_${i}_DISPLAY_NAME`, `Key ${i} display label`]);
+  const labels = Array.from({length:10}, (_, i) => [`CHOSEN_KEYPAD_${i}_DISPLAY_NAME`, `Key ${i} display label (no quotes)`]);
   form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>Keypad Display Labels</h2><div class="key-grid">${labels.map(([n,l]) => renderField([n,"text",null,l])).join("")}</div></section>`);
   
   function addIndexed(title, prefix, count, type, values, labelPrefix, labelSuffix, start = 1) {
