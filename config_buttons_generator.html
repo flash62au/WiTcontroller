@@ -111,7 +111,7 @@
     {title:"Keypad Hardware and Actions", items:[
       ["ROW_NUM","select",choices([["4","4"]]),"Keypad row count"], 
       ["COLUMN_NUM","select",choices([["3","3"],["4","4"]]),"Keypad column count"],
-      ["KEYPAD_KEYS","text",null,"Keypad layout (C++ list syntax)"],
+      ["KEYPAD_KEYS","textarea",null,"Keypad layout (C++ list syntax)"],
       ["KEYPAD_ROW_PINS","text",null,"Keypad row pins (C++ list syntax)"], 
       ["KEYPAD_COLUMN_PINS","text",null,"Keypad column pins (C++ list syntax)"],
       ["KEYPAD_DEBOUNCE_TIME","number",null,"Keypad debounce (milliseconds)"], 
@@ -124,13 +124,13 @@
 
   const startupAndDisplayFields = [
     {title:"Startup and Display", items:[
-      ["STARTUP_COMMAND_1","text",null,"Startup command 1 (in quotes)"], 
-      ["STARTUP_COMMAND_2","text",null,"Startup command 2 (in quotes)"],
-      ["STARTUP_COMMAND_3","text",null,"Startup command 3 (in quotes)"], 
-      ["STARTUP_COMMAND_4","text",null,"Startup command 4 (in quotes)"],
+      ["STARTUP_COMMAND_1","text",null,"Startup command 1 (no quotes)"], 
+      ["STARTUP_COMMAND_2","text",null,"Startup command 2 (no quotes)"],
+      ["STARTUP_COMMAND_3","text",null,"Startup command 3 (no quotes)"], 
+      ["STARTUP_COMMAND_4","text",null,"Startup command 4 (no quotes)"],
       ["ACQUIRE_ROSTER_ENTRY_IF_ONLY_ONE","select",bools,"Automatically acquire the only roster entry"],
       ["DISPLAY_LOCO_NAME","flag",null,"Display loco names instead of DCC addresses"],
-      ["CONSIST_SPACE_BETWEEN_LOCOS","text",null,"Space between loco names / addresses (in quotes)"],
+      ["CONSIST_SPACE_BETWEEN_LOCOS","text",null,"Space between loco names / addresses (no quotes)"],
       ["RESTORE_ACQUIRED_LOCOS","select",bools,"Restore saved locos on connection"], 
       ["CUSTOM_APPNAME","text",null,"Custom app name"],
       ["DISPLAY_SPEED_AS_PERCENT","select",bools,"Display speed as a percentage"],
@@ -181,16 +181,16 @@
 
   const fields = [
     {title:"Function Labels", items:[
-      ["F0_LABEL","text",null,"F0 label"], 
-      ["F1_LABEL","text",null,"F1 label"], 
-      ["F2_LABEL","text",null,"F2 label"]
+      ["F0_LABEL","text",null,"F0 label (no quotes)"], 
+      ["F1_LABEL","text",null,"F1 label (no quotes)"], 
+      ["F2_LABEL","text",null,"F2 label (no quotes)"]
     ]},
 
     {title:"Search Functions for Additional Buttons", items:[
       ["FUNCTION_SEARCH_RANDOM_MATCH","select",bools,"Choose a random matching function"],
       ["MAX_FUNCTION_SEARCH","number",null,"Number of function searches"],
-      ["FUNCTION_SEARCH_LABELS","text",null,"Search labels (C++ list syntax)"],
-      ["FUNCTION_SEARCH_IDS","text",null,"Search IDs (C++ list syntax)"]
+      ["FUNCTION_SEARCH_LABELS","textarea",null,"Search labels (C++ list syntax)"],
+      ["FUNCTION_SEARCH_IDS","textarea",null,"Search IDs (C++ list syntax)"]
     ]}
   ];
 
@@ -236,6 +236,7 @@
         "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
       }[character]))
   ).join("");
+
   const defaultValues = {
     ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED:"false", ENCODER_INVERT_ROTATION_WHEN_REVERSED:"false",
     ENCODER_BUTTON_ACTION:"SPEED_STOP_THEN_TOGGLE_DIRECTION", TOGGLE_DIRECTION_ON_ENCODER_BUTTON_PRESSED_WHEN_STATIONAY:"true",
@@ -282,6 +283,7 @@
   }
   for (let i = 1; i <= 4; i++) defaultValues[`STARTUP_COMMAND_${i}`] = '""';
   const defaultLabel = name => `use default: «${defaultValues[name] ?? "see static.h"}»`;
+
   function renderField([name, type, values, label, explanation]) {
     const id = `field-${name}`;
     const note = optionExplanations[name] ?? explanation;
@@ -349,10 +351,10 @@
   });
 
   <!-- Custom WiThrottle Commands -->
-  addIndexed("Custom WiThrottle Commands", "CUSTOM_COMMAND_", 11, "text", null, "Command", " (in quotes)");
+  addIndexed("Custom WiThrottle Commands", "CUSTOM_COMMAND_", 11, "text", null, "Command", " (no quotes)");
   
   <!-- Custom Menu Select Commands -->
-  addIndexed("Custom Menu Select Commands", "CUSTOM_MENU_SELECT_COMMAND_", 11, "text", null, "Menu sequence", " (in quotes)");
+  addIndexed("Custom Menu Select Commands", "CUSTOM_MENU_SELECT_COMMAND_", 11, "text", null, "Menu sequence", " (no quotes)");
   
   <!-- Additional buttons (new format) -->
   form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>Additional buttons (new format)</h2><p class="hint">Enable this format and set the same number of values in each list. Pins 34, 35, 36 and 39 require <code>INPUT</code> and an external pullup.</p><div class="grid">${renderField(["USE_NEW_ADDITIONAL_BUTTONS_FORMAT","select",bools,"Use new additional-button format"])}${renderField(["ADDITIONAL_BUTTON_OVERRIDE_DEFAULT_LATCHING","select",bools,"Override default latching"])}${renderField(["NEW_MAX_ADDITIONAL_BUTTONS","number",null,"Number of buttons (1–11)"])}</div><div class="key-grid">${renderField(["NEW_ADDITIONAL_BUTTON_ACTIONS","textarea",null,"Actions (C++ list syntax)"])}${renderField(["NEW_ADDITIONAL_BUTTON_LATCHING","textarea",null,"Latching values (C++ list syntax)"])}${renderField(["NEW_ADDITIONAL_BUTTON_PIN","textarea",null,"GPIO pins (C++ list syntax)"])}${renderField(["NEW_ADDITIONAL_BUTTON_TYPE","textarea",null,"Input types (C++ list syntax)"])}</div></section>`);
@@ -382,9 +384,11 @@
   const stringDefines = /^(CUSTOM_COMMAND_|CUSTOM_MENU_SELECT_COMMAND_|STARTUP_COMMAND_|CHOSEN_KEYPAD_[0-9]+_DISPLAY_NAME$|F[0-2]_LABEL$|CONSIST_SPACE_BETWEEN_LOCOS$|CUSTOM_APPNAME$)/;
   function formatValue(name, value) {
     if (stringDefines.test(name) && !/^".*"$/.test(value)) return `"${value.replaceAll('"', '\\"')}"`;
-    if (arrayDefines.test(name) && !/^\{.*\}$/.test(value)) return `{${value}}`;
+    <!-- if (arrayDefines.test(name) && !/^\{.*\}$/.test(value)) return `{${value}}`; -->
+    if (arrayDefines.test(name) && !/^\{.*\}$/.test(value)) return `${value}`;
     return value;
   }
+
   const define = (name, value) => `#define ${name}${value === true ? "" : ` ${formatValue(name, value)}`}`;
   function valueFor(el) {
     if (el.type === "checkbox") return el.checked ? true : null;
