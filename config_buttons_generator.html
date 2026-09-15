@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Experimental WiTcontroller config_buttons.h generator</title>
+  <style>
+    :root { color-scheme: light; --ink:#17212b; --muted:#5c6b78; --line:#d7dee5; --blue:#0969da; --panel:#f6f8fa; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:#eef2f6; color:var(--ink); font:14px/1.35 system-ui,-apple-system,"Segoe UI",sans-serif; }
+    main { max-width:1180px; margin:0 auto; padding:1.25rem .75rem 2.5rem; }
+    h1 { margin:.1rem 0 .3rem; font-size:clamp(1.5rem,3vw,2.2rem); }
+    h2 { margin:0 0 .25rem; font-size:1.05rem; }
+    h3 { margin:1rem 0 .45rem; font-size:.9rem; }
+    p { margin:.35rem 0 1rem; }
+    .intro, .panel { background:#fff; border:1px solid var(--line); border-radius:8px; padding:.8rem; margin:.65rem 0; box-shadow:0 1px 2px #17212b0d; }
+    .intro p, .hint { color:var(--muted); }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.55rem .75rem; }
+    label { display:flex; flex-direction:column; gap:.15rem; font-weight:600; }
+    label.checkbox { flex-direction:row; align-items:center; font-weight:500; }
+    input, select, textarea, button { font:inherit; }
+    input, select, textarea { width:100%; border:1px solid #aeb8c2; border-radius:4px; padding:.3rem .4rem; background:#fff; color:var(--ink); }
+    input[type=checkbox] { width:auto; accent-color:var(--blue); }
+    textarea { min-height:7rem; font:11px/1.3 ui-monospace,SFMono-Regular,Consolas,monospace; resize:vertical; }
+    .field-note { color:var(--muted); font-size:.85rem; font-weight:400; }
+    .field-explanation { color:var(--muted); font-size:.85rem; font-weight:400; }
+    .key-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.45rem .75rem; }
+    .key-grid label { font-size:.82rem; }
+    .actions { display:flex; flex-wrap:wrap; gap:.45rem; margin:.6rem 0; }
+    button { border:1px solid #0969da; border-radius:5px; padding:.35rem .65rem; cursor:pointer; background:var(--blue); color:#fff; font-weight:600; }
+    button.secondary { background:#fff; color:var(--blue); }
+    .output { position:sticky; bottom:0; z-index:2; }
+    .status { min-height:1.4em; color:#176b35; font-size:.9rem; }
+    code { background:#eef2f6; padding:.1rem .25rem; border-radius:3px; }
+    @media (max-width:650px) {
+      main { padding:.75rem .5rem 2rem; }
+      .panel { padding:.65rem; }
+      .grid, .key-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <section class="intro">
+    <h1>Experimental WiTcontroller configuration generator</h1>
+    <p>Select only the settings you want to override. The generated file is a personal <code>config_buttons.h</code>; save it beside <code>WiTcontroller.ino</code> and upload the sketch.</p>
+    <p>Refer to the readme or to config_button_example.h for details on the configuration options below.</p>
+    <p class="hint">To add explanatory text, edit the <code>optionExplanations</code> object in this HTML file. Use a configuration name as the key; entries may be added for any or all options. Use <code>\n</code> or <code>&lt;br&gt;</code> for line breaks.</p>
+    <p class="hint">This page runs entirely in your browser. It does not upload or store your configuration.</p>
+  </section>
+  <form id="config-form"></form>
+  <section class="panel output">
+    <h2>Generated config_buttons.h</h2>
+    <div class="actions">
+      <button type="button" id="copy">Copy to clipboard</button>
+      <button type="button" class="secondary" id="download">Download config_buttons.h</button>
+      <button type="button" class="secondary" id="clear">Clear selections</button>
+    </div>
+    <textarea id="output" readonly spellcheck="false" aria-label="Generated config_buttons.h"></textarea>
+    <div class="status" id="status" role="status"></div>
+  </section>
+</main>
+<script>
+  const actions = [
+    ["FUNCTION_NULL", "Do nothing"], ...Array.from({length: 32}, (_, i) => [`FUNCTION_${i}`, `Function ${i}${i < 3 ? [" (lights)", " (bell)", " (horn)"][i] : ""}`]),
+    ["SPEED_STOP", "Stop"], ["SPEED_UP", "Speed up"], ["SPEED_DOWN", "Speed down"],
+    ["SPEED_UP_FAST", "Speed up fast"], ["SPEED_DOWN_FAST", "Speed down fast"], ["E_STOP", "Emergency stop"],
+    ["SPEED_MULTIPLIER", "Speed multiplier"], ["DIRECTION_TOGGLE", "Toggle direction"],
+    ["DIRECTION_FORWARD", "Forward"], ["DIRECTION_REVERSE", "Reverse"],
+    ["SPEED_STOP_THEN_TOGGLE_DIRECTION", "Stop, then toggle direction"], ["E_STOP_CURRENT_LOCO", "Emergency stop current loco"],
+    ["MAX_THROTTLE_INCREASE", "Increase maximum throttle"], ["MAX_THROTTLE_DECREASE", "Decrease maximum throttle"],
+    ["POWER_TOGGLE", "Toggle power"], ["POWER_ON", "Power on"], ["POWER_OFF", "Power off"],
+    ["SHOW_HIDE_BATTERY", "Show/hide battery"], ["SLEEP", "Sleep"], ["NEXT_THROTTLE", "Next throttle"],
+    ...Array.from({length: 6}, (_, i) => [`THROTTLE_${i + 1}`, `Throttle ${i + 1}`]),
+    ...Array.from({length: 11}, (_, i) => [`CUSTOM_${i + 1}`, `Custom command ${i + 1}`]),
+    ...Array.from({length: 11}, (_, i) => [`CUSTOM_MENU_SELECT_${i + 1}`, `Custom menu ${i + 1}`])
+  ];
+  const choices = values => values.map(([value, label]) => ({value, label}));
+  const bools = choices([["true", "true"], ["false", "false"]]);
+  const fields = [
+    {title:"Encoder", items:[
+      ["ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED","select",bools,"Clockwise increases speed"],
+      ["ENCODER_INVERT_ROTATION_WHEN_REVERSED","select",bools,"Invert rotation when direction is reversed"],
+      ["ENCODER_BUTTON_ACTION","select",choices(actions),"Encoder button action"],
+      ["TOGGLE_DIRECTION_ON_ENCODER_BUTTON_PRESSED_WHEN_STATIONAY","select",bools,"Toggle direction when stationary"],
+      ["ROTARY_ENCODER_STEPS","number",null,"Encoder steps (usually 1–4)"],
+      ["ROTARY_ENCODER_DEBOUNCE_TIME","number",null,"Encoder button debounce (milliseconds)"],
+      ["EC11_PULLUPS_REQUIRED","select",bools,"Enable internal pullups for a bare EC11"]
+    ]},
+    {title:"Keypad", items:[
+      ["HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS","select",bools,"# opens function labels instead of key definitions"],
+      ["ROW_NUM","select",choices([["3","3"],["4","4"]]),"Keypad row count"], ["COLUMN_NUM","select",choices([["3","3"],["4","4"]]),"Keypad column count"],
+      ["MAX_THROTTLES","number",null,"Maximum throttles (1–6)"],
+      ["SPEED_STEP","number",null,"Speed step per encoder click"],
+      ["SPEED_STEP_MULTIPLIER","number",null,"Fast speed-step multiplier"],
+      ["SPEED_STEP_ADDITIONAL_MULTIPLIER","number",null,"Additional speed multiplier"],
+      ["ENCODER_SENSITIVITY","number",null,"Encoder sensitivity"],
+      ["DISPLAY_SPEED_AS_PERCENT","select",bools,"Display speed as a percentage"],
+      ["DISPLAY_SPEED_AS_0_TO_28","select",bools,"Display speed as 0–28"]
+    ]},
+    {title:"Consists and commands", items:[
+      ["CONSIST_FUNCTION_FOLLOW_F0","select",[["CONSIST_ALL_LOCOS","All locos"],["CONSIST_LEAD_LOCO","Lead loco"]],"F0 consist behaviour"],
+      ["CONSIST_FUNCTION_FOLLOW_F1","select",[["CONSIST_ALL_LOCOS","All locos"],["CONSIST_LEAD_LOCO","Lead loco"]],"F1 consist behaviour"],
+      ["CONSIST_FUNCTION_FOLLOW_F2","select",[["CONSIST_ALL_LOCOS","All locos"],["CONSIST_LEAD_LOCO","Lead loco"]],"F2 consist behaviour"]
+    ]},
+    {title:"Debugging", items:[
+      ["WITCONTROLLER_DEBUG","select",[["0","Enabled"],["1","Disabled"]],"WiTcontroller console messages"],
+      ["WITHROTTLE_PROTOCOL_DEBUG","select",[["0","Disabled"],["1","Enabled"]],"WiThrottle protocol console messages"],
+      ["DEBUG_LEVEL","number",null,"Debug level (0–3)"]
+    ]},
+    {title:"Hardware and timing", items:[
+      ["ROTARY_ENCODER_A_PIN","number",null,"Rotary encoder A pin"], ["ROTARY_ENCODER_B_PIN","number",null,"Rotary encoder B pin"],
+      ["ROTARY_ENCODER_BUTTON_PIN","number",null,"Rotary encoder button pin"], ["ROTARY_ENCODER_VCC_PIN","number",null,"Rotary encoder VCC pin (-1 for direct 3.3V)"],
+      ["KEYPAD_KEYS","text",null,"Keypad layout (for example {'1','2','3'},...)"],
+      ["KEYPAD_ROW_PINS","text",null,"Keypad row pins (comma-separated)"], ["KEYPAD_COLUMN_PINS","text",null,"Keypad column pins (comma-separated)"],
+      ["KEYPAD_DEBOUNCE_TIME","number",null,"Keypad debounce (milliseconds)"], ["KEYPAD_HOLD_TIME","number",null,"Keypad hold time (milliseconds)"],
+      ["ADDITIONAL_BUTTON_DEBOUNCE_DELAY","number",null,"Additional button debounce (milliseconds)"]
+    ]},
+    {title:"Battery, heartbeat and roster", items:[
+      ["USE_BATTERY_TEST","select",bools,"Enable battery test"], ["BATTERY_TEST_PIN","number",null,"Battery test pin"],
+      ["BATTERY_CONVERSION_FACTOR","number",null,"Battery conversion factor"], ["USE_BATTERY_PERCENT_AS_WELL_AS_ICON","select",bools,"Show battery percentage and icon"],
+      ["USE_BATTERY_SLEEP_AT_PERCENT","number",null,"Sleep below battery percentage (0 disables)"],
+      ["MAX_HEARTBEAT_PERIOD","number",null,"Maximum heartbeat period (milliseconds)"], ["HEARTBEAT_ENABLED","select",bools,"Enable heartbeat by default"],
+      ["DEFAULT_HEARTBEAT_PERIOD","number",null,"Default heartbeat period (seconds)"], ["ROSTER_SORT_SEQUENCE","select",[["0","Server order"],["1","Name"],["2","DCC address"]],"Roster sorting"],
+      ["DROP_LOCO_BY_INDEX","select",bools,"Release consist loco by index"]
+    ]},
+    {title:"Startup and display", items:[
+      ["STARTUP_COMMAND_1","text",null,"Startup command 1"], ["STARTUP_COMMAND_2","text",null,"Startup command 2"],
+      ["STARTUP_COMMAND_3","text",null,"Startup command 3"], ["STARTUP_COMMAND_4","text",null,"Startup command 4"],
+      ["ACQUIRE_ROSTER_ENTRY_IF_ONLY_ONE","select",bools,"Automatically acquire the only roster entry"],
+      ["DISPLAY_LOCO_NAME","flag",null,"Display loco names instead of DCC addresses"],
+      ["CONSIST_SPACE_BETWEEN_LOCOS","text",null,"Space between loco names / addresses"],
+      ["DROP_BEFORE_ACQUIRE","select",bools,"Drop existing locos before acquiring"],
+      ["RESTORE_ACQUIRED_LOCOS","select",bools,"Restore saved locos on connection"], ["CUSTOM_APPNAME","text",null,"Custom app name"]
+    ]},
+    {title:"Guest mode", items:[
+      ["GUEST_MODE_ENABLED","select",bools,"Enable guest mode"], ["GUEST_MODE_PIN_1","number",null,"Guest mode button pin 1"],
+      ["GUEST_MODE_PIN_2","number",null,"Guest mode button pin 2"], ["GUEST_MODE_LED_PIN","number",null,"Guest mode LED pin"],
+      ["GUEST_MODE_HOLD_DURATION","number",null,"Guest mode hold duration (milliseconds)"], ["GESTURE_PARTNER_WINDOW","number",null,"Guest gesture window (milliseconds)"],
+      ["GUEST_MODE_ALLOW_DIRECT_KEYBOARD_COMMANDS","select",bools,"Allow direct keypad commands in guest mode"],
+      ["GUEST_MODE_ALLOW_NEXT_THROTTLE","select",bools,"Allow changing throttles in guest mode"]
+    ]},
+    {title:"Function labels", items:[
+      ["F0_LABEL","text",null,"F0 label"], ["F1_LABEL","text",null,"F1 label"], ["F2_LABEL","text",null,"F2 label"]
+    ]},
+    {title:"Search functions for additional buttons", items:[
+      ["MAX_FUNCTION_SEARCH","number",null,"Number of function searches"],
+      ["FUNCTION_SEARCH_LABELS","text",null,"Search labels (C++ list syntax)"],
+      ["FUNCTION_SEARCH_IDS","text",null,"Search IDs (comma-separated)"],
+      ["BELL_SEARCH","number",null,"Custom bell search ID (900–999)"],
+      ["FUNCTION_SEARCH_RANDOM_MATCH","select",bools,"Choose a random matching function"]
+    ]}
+  ];
+  // Add entries here to show extra guidance below matching configuration options.
+  const optionExplanations = {
+    ENCODER_BUTTON_ACTION: "Action performed when the rotary encoder button is pressed.\nThis can be changed for each encoder press.",
+    MAX_THROTTLES: "The number of throttles that can be selected and controlled.",
+    KEYPAD_KEYS: "Enter one row per keypad row, using the same order as the physical keys.",
+    OLED_TYPE: "This is one of the common .9 inch OLED displays and is included by default\n#define OLED_TYPE U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);OLED_TYPE\n\nThis is one of the common 1.3 inch OLED displays\n#define OLED_TYPE U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);\n\nThis one works with a 2.42 inch SSD1309 based oLED\n#define OLED_TYPE U8G2_SSD1309_128X64_NONAME2_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);"
+  };
+  const form = document.querySelector("#config-form");
+  const option = (value, label, selected = false) => `<option value="${value}"${selected ? " selected" : ""}>${label}</option>`;
+  const explanationHtml = value => String(value).split(/(<br\s*\/?>|\r?\n|\\n)/gi).map(part =>
+    /^<br\s*\/?>$/i.test(part) || part === "\n" || part === "\r\n" || part === "\\n"
+      ? "<br>"
+      : part.replace(/[&<>"']/g, character => ({
+        "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+      }[character]))
+  ).join("");
+  const defaultValues = {
+    ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED:"false", ENCODER_INVERT_ROTATION_WHEN_REVERSED:"false",
+    ENCODER_BUTTON_ACTION:"SPEED_STOP_THEN_TOGGLE_DIRECTION", TOGGLE_DIRECTION_ON_ENCODER_BUTTON_PRESSED_WHEN_STATIONAY:"true",
+    ROTARY_ENCODER_STEPS:"2", ROTARY_ENCODER_DEBOUNCE_TIME:"200", EC11_PULLUPS_REQUIRED:"false",
+    HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS:"false", MAX_THROTTLES:"2", SPEED_STEP:"4",
+    SPEED_STEP_MULTIPLIER:"3", SPEED_STEP_ADDITIONAL_MULTIPLIER:"2", ENCODER_SENSITIVITY:"85",
+    DISPLAY_SPEED_AS_PERCENT:"false", DISPLAY_SPEED_AS_0_TO_28:"false",
+    CONSIST_FUNCTION_FOLLOW_F0:"CONSIST_ALL_LOCOS", CONSIST_FUNCTION_FOLLOW_F1:"CONSIST_LEAD_LOCO", CONSIST_FUNCTION_FOLLOW_F2:"CONSIST_LEAD_LOCO",
+    WITCONTROLLER_DEBUG:"0", WITHROTTLE_PROTOCOL_DEBUG:"1", DEBUG_LEVEL:"1",
+    ROTARY_ENCODER_A_PIN:"12", ROTARY_ENCODER_B_PIN:"14", ROTARY_ENCODER_BUTTON_PIN:"13", ROTARY_ENCODER_VCC_PIN:"-1",
+    ROW_NUM:"4", COLUMN_NUM:"3", KEYPAD_KEYS:"{'1','2','3'}, {'4','5','6'}, {'7','8','9'}, {'*','0','#'}",
+    KEYPAD_ROW_PINS:"{19,18,17,16}", KEYPAD_COLUMN_PINS:"{4,0,2,}", KEYPAD_DEBOUNCE_TIME:"10", KEYPAD_HOLD_TIME:"200",
+    ADDITIONAL_BUTTON_DEBOUNCE_DELAY:"50", ADDITIONAL_BUTTONS_PINS:"{5,15,25,26,27,32,33}",
+    ADDITIONAL_BUTTONS_TYPE:"{INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP,INPUT_PULLUP}",
+    USE_NEW_ADDITIONAL_BUTTONS_FORMAT:"false", ADDITIONAL_BUTTON_OVERRIDE_DEFAULT_LATCHING:"false", NEW_MAX_ADDITIONAL_BUTTONS:"0",
+    NEW_ADDITIONAL_BUTTON_ACTIONS:"{FUNCTION_NULL}", NEW_ADDITIONAL_BUTTON_LATCHING:"{true}",
+    NEW_ADDITIONAL_BUTTON_PIN:"{-1}", NEW_ADDITIONAL_BUTTON_TYPE:"{INPUT_PULLUP}",
+    USE_ROTARY_ENCODER_FOR_THROTTLE:"true", THROTTLE_POT_PIN:"39", THROTTLE_POT_USE_NOTCHES:"true",
+    THROTTLE_POT_NOTCH_VALUES:"{1111,1347,1591,1833,2105,2379,2622,2837}", THROTTLE_POT_NOTCH_SPEEDS:"{0,18,36,54,72,90,108,127}",
+    USE_BATTERY_TEST:"false", BATTERY_TEST_PIN:"34", BATTERY_CONVERSION_FACTOR:"1.7", USE_BATTERY_PERCENT_AS_WELL_AS_ICON:"false",
+    USE_BATTERY_SLEEP_AT_PERCENT:"0", MAX_HEARTBEAT_PERIOD:"240000", HEARTBEAT_ENABLED:"true", DEFAULT_HEARTBEAT_PERIOD:"10",
+    ROSTER_SORT_SEQUENCE:"1", ACQUIRE_ROSTER_ENTRY_IF_ONLY_ONE:"false", CONSIST_SPACE_BETWEEN_LOCOS:'" "', DROP_BEFORE_ACQUIRE:"false",
+    RESTORE_ACQUIRED_LOCOS:"true", DROP_LOCO_BY_INDEX:"true", MAX_FUNCTION_SEARCH:"4",
+    FUNCTION_SEARCH_LABELS:'{{"Horn","Whistle"},{"Horn",""},{"Whistle",""},{"Brake",""}}',
+    FUNCTION_SEARCH_IDS:"{HORN_OR_WHISTLE_SEARCH,HORN_SEARCH,WHISTLE_SEARCH,BRAKE_SEARCH}", FUNCTION_SEARCH_RANDOM_MATCH:"false",
+    F0_LABEL:"Light", F1_LABEL:"Bell", F2_LABEL:"Horn", FONT_DEFAULT:"u8g2_font_NokiaSmallPlain_te",
+    FONT_DIRECTION:"u8g2_font_neuecraft_tr", OLED_TYPE:"U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE, 22, 23)",
+    ACQUIRE_ROSTER_ENTRY_IF_ONLY_ONE:"false", CUSTOM_APPNAME:"WiTcontroller", GUEST_MODE_ENABLED:"false",
+    GUEST_MODE_PIN_1:"41", GUEST_MODE_PIN_2:"42", GUEST_MODE_LED_PIN:"-1", GUEST_MODE_HOLD_DURATION:"1000",
+    GESTURE_PARTNER_WINDOW:"250", GUEST_MODE_ALLOW_DIRECT_KEYBOARD_COMMANDS:"false", GUEST_MODE_ALLOW_NEXT_THROTTLE:"true"
+  };
+  for (let i = 0; i < 10; i++) {
+    defaultValues[`CHOSEN_KEYPAD_${i}_DISPLAY_NAME`] = `${i} ${["Lights","Bell","Horn","F3","F4","Nxt Ttl","X Spd","Rev","Estop","Fwd"][i]}`;
+    defaultValues[`CHOSEN_KEYPAD_${i}_FUNCTION`] = `FUNCTION_${i}`;
+  }
+  for (const key of ["A","B","C","D"]) defaultValues[`CHOSEN_KEYPAD_${key}_FUNCTION`] = `CUSTOM_${["A","B","C","D"].indexOf(key) + 1}`;
+  for (let i = 1; i <= 11; i++) {
+    defaultValues[`CUSTOM_COMMAND_${i}`] = '""';
+    defaultValues[`CUSTOM_MENU_SELECT_COMMAND_${i}`] = '""';
+  }
+  for (let i = 0; i < 7; i++) {
+    defaultValues[`CHOSEN_ADDITIONAL_BUTTON_${i}_FUNCTION`] = "FUNCTION_NULL";
+    defaultValues[`ADDITIONAL_BUTTON_${i}_LATCHING`] = "true";
+  }
+  for (let i = 1; i <= 4; i++) defaultValues[`STARTUP_COMMAND_${i}`] = '""';
+  const defaultLabel = name => `Use default value (${defaultValues[name] ?? "see static.h"})`;
+  function renderField([name, type, values, label, explanation]) {
+    const id = `field-${name}`;
+    const note = optionExplanations[name] ?? explanation;
+    const explanationMarkup = note ? `<span class="field-explanation">${explanationHtml(note)}</span>` : "";
+    if (type === "flag") return `<label class="checkbox"><input id="${id}" data-define="${name}" type="checkbox"> ${label}${explanationMarkup}</label>`;
+    const control = type === "select"
+      ? `<select id="${id}" data-define="${name}">${option("", defaultLabel(name), true)}${values.map(v => option(v.value, v.label)).join("")}</select>`
+      : type === "textarea"
+        ? `<textarea id="${id}" data-define="${name}" placeholder="${defaultLabel(name).replaceAll('"', '&quot;')}"></textarea>`
+        : `<input id="${id}" data-define="${name}" type="${type}" placeholder="${defaultLabel(name).replaceAll('"', '&quot;')}">`;
+    return `<label>${label}${control}<span class="field-note">${name}</span>${explanationMarkup}</label>`;
+  }
+  fields.forEach(group => {
+    form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>${group.title}</h2><div class="grid">${group.items.map(renderField).join("")}</div></section>`);
+  });
+  const keyFunctions = Array.from({length: 14}, (_, i) => [`CHOSEN_KEYPAD_${i < 10 ? i : String.fromCharCode(55 + i)}_FUNCTION`, i < 10 ? `Key ${i}` : `Key ${String.fromCharCode(55 + i)}`]);
+  form.insertAdjacentHTML("afterbegin", `<section class="panel"><h2>Keypad button actions</h2><p class="hint">The <code>*</code> and <code>#</code> keys cannot be remapped. Key A–D require a 4x4 keypad.</p><div class="key-grid">${keyFunctions.map(([n,l]) => renderField([n,"select",choices(actions),l])).join("")}</div></section>`);
+  const labels = Array.from({length:10}, (_, i) => [`CHOSEN_KEYPAD_${i}_DISPLAY_NAME`, `Key ${i} display label`]);
+  form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>Keypad display labels</h2><div class="key-grid">${labels.map(([n,l]) => renderField([n,"text",null,l])).join("")}</div></section>`);
+  function addIndexed(title, prefix, count, type, values, labelPrefix, start = 1) {
+    form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>${title}</h2><div class="key-grid">${Array.from({length:count}, (_, i) => renderField([`${prefix}${i + start}`,type,values,`${labelPrefix} ${i + start}`])).join("")}</div></section>`);
+  }
+  addIndexed("Custom WiThrottle commands", "CUSTOM_COMMAND_", 11, "text", null, "Command");
+  addIndexed("Custom menu commands", "CUSTOM_MENU_SELECT_COMMAND_", 11, "text", null, "Menu sequence");
+  form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>Additional buttons (new format)</h2><p class="hint">Enable this format and set the same number of values in each list. Pins 34, 35, 36 and 39 require <code>INPUT</code> and an external pullup.</p><div class="grid">${renderField(["USE_NEW_ADDITIONAL_BUTTONS_FORMAT","select",bools,"Use new additional-button format"])}${renderField(["ADDITIONAL_BUTTON_OVERRIDE_DEFAULT_LATCHING","select",bools,"Override default latching"])}${renderField(["NEW_MAX_ADDITIONAL_BUTTONS","number",null,"Number of buttons (1–11)"])}</div><div class="key-grid">${renderField(["NEW_ADDITIONAL_BUTTON_ACTIONS","textarea",null,"Actions (comma-separated)"])}${renderField(["NEW_ADDITIONAL_BUTTON_LATCHING","textarea",null,"Latching values (comma-separated)"])}${renderField(["NEW_ADDITIONAL_BUTTON_PIN","textarea",null,"GPIO pins (comma-separated)"])}${renderField(["NEW_ADDITIONAL_BUTTON_TYPE","textarea",null,"Input types (comma-separated)"])}</div></section>`);
+  form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>Throttle potentiometer</h2><div class="grid">${renderField(["USE_ROTARY_ENCODER_FOR_THROTTLE","select",bools,"Use rotary encoder for throttle"])}${renderField(["THROTTLE_POT_PIN","number",null,"Potentiometer pin"])}${renderField(["THROTTLE_POT_USE_NOTCHES","select",bools,"Use all potentiometer notches"])}${renderField(["THROTTLE_POT_NOTCH_VALUES","text",null,"Notch values (8 comma-separated numbers)"])}${renderField(["THROTTLE_POT_NOTCH_SPEEDS","text",null,"Notch speeds (8 comma-separated numbers)"])}</div></section>`);
+  form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>Language and fonts</h2><div class="grid">${renderField(["LANGUAGE","select",choices([["language_deutsch.h","German"],["language_italiano.h","Italian"],["language_chinese.h","Chinese"]]),"Language"])}${renderField(["FONT_DEFAULT","text",null,"Default font"])}${renderField(["FONT_DIRECTION","text",null,"Direction font"])}</div></section>`);
+  form.insertAdjacentHTML("beforeend", `<section class="panel"><h2>OLED</h2><p class="hint">Enter the complete constructor expression after <code>OLED_TYPE</code>, including the <code>u8g2(...)</code> instance.</p>${renderField(["OLED_TYPE","text",null,"OLED constructor"])}</section>`);
+
+  const output = document.querySelector("#output"), status = document.querySelector("#status");
+  const arrayDefines = /^(KEYPAD_(KEYS|ROW_PINS|COLUMN_PINS)|ADDITIONAL_BUTTONS_(PINS|TYPE)|NEW_ADDITIONAL_BUTTON_(ACTIONS|LATCHING|PIN|TYPE)|THROTTLE_POT_(NOTCH_VALUES|NOTCH_SPEEDS)|FUNCTION_SEARCH_(LABELS|IDS))$/;
+  const stringDefines = /^(CUSTOM_COMMAND_|CUSTOM_MENU_SELECT_COMMAND_|STARTUP_COMMAND_|CHOSEN_KEYPAD_[0-9]+_DISPLAY_NAME$|F[0-2]_LABEL$|CONSIST_SPACE_BETWEEN_LOCOS$|CUSTOM_APPNAME$)/;
+  function formatValue(name, value) {
+    if (stringDefines.test(name) && !/^".*"$/.test(value)) return `"${value.replaceAll('"', '\\"')}"`;
+    if (arrayDefines.test(name) && !/^\{.*\}$/.test(value)) return `{${value}}`;
+    return value;
+  }
+  const define = (name, value) => `#define ${name}${value === true ? "" : ` ${formatValue(name, value)}`}`;
+  function valueFor(el) {
+    if (el.type === "checkbox") return el.checked ? true : null;
+    if (el.tagName === "SELECT") return el.value || null;
+    return el.value.trim() || null;
+  }
+  function generate() {
+    const lines = ["// Generated by the WiTcontroller config_buttons.h generator", "// Copy this file to your WiTcontroller project.", ""];
+    let current = "";
+    document.querySelectorAll("[data-define]").forEach(el => {
+      const section = el.closest(".panel")?.querySelector("h2")?.textContent || "";
+      if (section !== current) { if (lines[lines.length - 1] !== "") lines.push(""); lines.push(`// ${section}`); current = section; }
+      let value = valueFor(el);
+      if (el.dataset.define === "LANGUAGE" && value) { lines.push(`#include "${value}"`); return; }
+      if (value !== null) lines.push(define(el.dataset.define, value));
+    });
+    output.value = lines.join("\n") + "\n";
+  }
+  form.addEventListener("input", generate); form.addEventListener("change", generate); generate();
+  document.querySelector("#copy").addEventListener("click", async () => {
+    await navigator.clipboard.writeText(output.value); status.textContent = "Copied to clipboard.";
+  });
+  document.querySelector("#download").addEventListener("click", () => {
+    const blob = new Blob([output.value], {type:"text/plain"}), link = document.createElement("a");
+    link.href = URL.createObjectURL(blob); link.download = "config_buttons.h"; link.click(); URL.revokeObjectURL(link.href);
+    status.textContent = "Downloaded config_buttons.h.";
+  });
+  document.querySelector("#clear").addEventListener("click", () => { form.reset(); generate(); status.textContent = "Selections cleared."; });
+</script>
+</body>
+</html>

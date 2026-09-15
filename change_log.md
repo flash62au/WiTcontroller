@@ -2,6 +2,10 @@
 
 ## Versions
 
+### V1.116
+
+- Disable all custom menu commands if guest mode is active.
+
 ### V1.115
 
 - Added option to allow the use of the keypad direct commands in guest mode. It is disabled by default.

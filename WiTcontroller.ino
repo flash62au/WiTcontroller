@@ -2630,6 +2630,8 @@ void doDirectAction(int buttonAction) {
 }
 
 void doCustomMenuSelectCommand(String cmd) {
+  if (guestModeActive) return;
+  
   debug_print("doCustomMenuSelectCommand(): "); debug_println(menuCommand);
   for (int i=0; i<cmd.length(); i++ ) {
     doKeyPress(cmd.charAt(i), true);

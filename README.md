@@ -1119,7 +1119,7 @@ Note: The definition of the command and what you assign to the additional button
 
 <hr style="height: 1px;">
 
-### Additional / optional menu select commands
+### Additional / optional Custom Menu Select Commands
 
 Up to 11 custom menu commands can be assigned to the additional buttons.
 
@@ -1136,6 +1136,7 @@ These are created by assing values to ``CUSTOM_MENU_SELECT_COMMAND_1`` to ``CUST
 To use these custom menu commands on additional buttons you assign the button the value ``CUSTOM_MENU_SELECT_1`` to ``CUSTOM_MENU_SELECT_11``.  (See the example above.)
 
 Note: The definition of the command and what you assign to the additional button are different.
+Note: Custom menu commands are fully disabled in guest mode.
 
 <hr style="height: 1px;">
 
