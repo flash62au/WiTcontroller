@@ -118,7 +118,7 @@
 
 ### V1.90
 
-- Option to release locos in consist/mu by the index rather than the Address. New optional ``#define DROP_LOCO_BY_INDEX true``
+- Option to release locos in consist/mu by the index rather than the Address. New optional ``#define CONSIST_RELEASE_BY_INDEX true``
 
 ### V1.89
 
