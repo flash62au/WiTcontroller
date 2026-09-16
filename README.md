@@ -356,6 +356,8 @@ The instructions below are for using the **Arduino IDE** and **GitHub Desktop**.
     * Copy ``config_network_example.h`` to a new file ``config_network.h``
     * Copy ``config_buttons_example.h`` to a new file ``config_buttons.h``
 
+      Alternately, you can use the experimental [configuration generator page](https://flash62au.github.io/WiTcontroller/config_buttons_generator.html) to create the ``config_buttons.h`` for you.
+
       Note: <br/> These new files are not included in the download, so that you can personalise your configuration without fear that your configurations will be overridden if you update (download again) the WiTcontoller code.
 
 7. Open the Arduino IDE and **THEN** find and open the ``WiTcontoller.ino`` file.
