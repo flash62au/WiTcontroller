@@ -16,6 +16,7 @@
     .intro, .panel { background:#fff; border:1px solid var(--line); border-radius:8px; padding:.8rem; margin:.65rem 0; box-shadow:0 1px 2px #17212b0d; }
     .intro p, .hint { color:var(--muted); }
     .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.55rem .75rem; }
+    .grid-3 { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.55rem .75rem; }
     label { display:flex; flex-direction:column; gap:.15rem; font-weight:600; }
     label.checkbox { flex-direction:row; align-items:center; font-weight:500; }
     input, select, textarea, button { font:inherit; }
@@ -25,6 +26,7 @@
     .field-note { color:var(--muted); font-size:.85rem; font-weight:400; }
     .field-explanation { color:var(--muted); font-size:.8rem; font-weight:400; }
     .key-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.45rem .75rem; }
+    .key-grid-3 { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.45rem .75rem; }
     .key-grid label { font-size:.82rem; }
     .actions { display:flex; flex-wrap:wrap; gap:.45rem; margin:.6rem 0; }
     button { border:1px solid #0969da; border-radius:5px; padding:.35rem .65rem; cursor:pointer; background:var(--blue); color:#fff; font-weight:600; }
@@ -36,6 +38,7 @@
       main { padding:.75rem .5rem 2rem; }
       .panel { padding:.65rem; }
       .grid, .key-grid { grid-template-columns:1fr; }
+      .grid-3,.key-grid-3 { grid-template-columns:1fr; }
     }
   </style>
 </head>
@@ -158,13 +161,13 @@
     ]}
   ];
 
-  const consistsAndCommandsFields = [
-    {title:"Consist/MU Function Actions", items:[
-      ["CONSIST_FUNCTION_FOLLOW_F0","select",choices([["CONSIST_ALL_LOCOS","All locos (CONSIST_ALL_LOCOS)"],["CONSIST_LEAD_LOCO","Lead loco (CONSIST_LEAD_LOCO)"]]),"F0 consist behaviour"],
-      ["CONSIST_FUNCTION_FOLLOW_F1","select",choices([["CONSIST_ALL_LOCOS","All locos (CONSIST_ALL_LOCOS)"],["CONSIST_LEAD_LOCO","Lead loco (CONSIST_LEAD_LOCO)"]]),"F1 consist behaviour"],
-      ["CONSIST_FUNCTION_FOLLOW_F2","select",choices([["CONSIST_ALL_LOCOS","All locos (CONSIST_ALL_LOCOS)"],["CONSIST_LEAD_LOCO","Lead loco (CONSIST_LEAD_LOCO)"]]),"F2 consist behaviour"]
-    ]},
-  ];
+  // const consistsAndCommandsFields = [
+  //   {title:"Consist/MU Function Actions", items:[
+  //     ["CONSIST_FUNCTION_FOLLOW_F0","select",choices([["CONSIST_ALL_LOCOS","All locos (CONSIST_ALL_LOCOS)"],["CONSIST_LEAD_LOCO","Lead loco (CONSIST_LEAD_LOCO)"]]),"F0 consist behaviour"],
+  //     ["CONSIST_FUNCTION_FOLLOW_F1","select",choices([["CONSIST_ALL_LOCOS","All locos (CONSIST_ALL_LOCOS)"],["CONSIST_LEAD_LOCO","Lead loco (CONSIST_LEAD_LOCO)"]]),"F1 consist behaviour"],
+  //     ["CONSIST_FUNCTION_FOLLOW_F2","select",choices([["CONSIST_ALL_LOCOS","All locos (CONSIST_ALL_LOCOS)"],["CONSIST_LEAD_LOCO","Lead loco (CONSIST_LEAD_LOCO)"]]),"F2 consist behaviour"]
+  //   ]},
+  // ];
 
   const guestModeFields = [
     {title:"Guest Mode (Optional)", items:[
@@ -448,19 +451,19 @@
     </section>`);
   });
 
-  <!-- Consists and commands -->
-  consistsAndCommandsFields.forEach(group => {
-    form.insertAdjacentHTML("beforeend", `<section class="panel">
-      <h2>${group.title}</h2>
-      <p class="hint">How functions are sent, or not sent, to other locos ina Consist/MU.</p>
-      <div class="grid">
-        ${group.items.map(renderField).join("")}
-      </div>
-    </section>`);
-  });
+  // <!-- Consists and commands -->
+  // consistsAndCommandsFields.forEach(group => {
+  //   form.insertAdjacentHTML("beforeend", `<section class="panel">
+  //     <h2>${group.title}</h2>
+  //     <p class="hint">How functions are sent, or not sent, to other locos ina Consist/MU.</p>
+  //     <div class="grid">
+  //       ${group.items.map(renderField).join("")}
+  //     </div>
+  //   </section>`);
+  // });
 
   <!-- Consists and commands -->
-  addIndexed("Consist/MU Function Actions", "CONSIST_FUNCTION_FOLLOW_F", 31, "select",choices([["CONSIST_ALL_LOCOS","All locos (CONSIST_ALL_LOCOS)"],["CONSIST_LEAD_LOCO","Lead loco (CONSIST_LEAD_LOCO)"]]), "Consist behaviour F", "");
+  addIndexed3("Consist/MU Function Actions", "How functions are sent, or not sent, to other locos ina Consist/MU.", "CONSIST_FUNCTION_FOLLOW_F", 31, "select",choices([["CONSIST_ALL_LOCOS","All locos (CONSIST_ALL_LOCOS)"],["CONSIST_LEAD_LOCO","Lead loco (CONSIST_LEAD_LOCO)"]]), "Consist behaviour F", "");
 
 
   <!-- Other Actions -->
@@ -494,11 +497,22 @@
     </div>
   </section>`);
   
-  function addIndexed(title, prefix, count, type, values, labelPrefix, labelSuffix, start = 1) {
+  function addIndexed(title, hint, prefix, count, type, values, labelPrefix, labelSuffix, start = 1) {
     form.insertAdjacentHTML("beforeend", `<section class="panel">
       <h2>${title}</h2>
+      <p class="hint">${hint}</p>
       <div class="key-grid">
         ${Array.from({length:count}, (_, i) => renderField([`${prefix}${i + start}`,type,values,`${labelPrefix} ${i + start} ${labelSuffix}`])).join("")}
+      </div>
+    </section>`);
+  }
+
+  function addIndexed3(title, hint, prefix, count, type, values, labelPrefix, labelSuffix, start = 1) {
+    form.insertAdjacentHTML("beforeend", `<section class="panel">
+      <h2>${title}</h2>
+      <p class="hint">${hint}</p>
+      <div class="key-grid-3">
+        ${Array.from({length:count}, (_, i) => renderField([`${prefix}${i + start}`,type,values,`${labelPrefix}${i + start} ${labelSuffix}`])).join("")}
       </div>
     </section>`);
   }
@@ -525,10 +539,10 @@
   });
 
   <!-- Custom WiThrottle Commands -->
-  addIndexed("Custom WiThrottle Commands (Optional)", "CUSTOM_COMMAND_", 11, "text", null, "Command", " (no quotes)");
+  addIndexed("Custom WiThrottle Commands (Optional)", "These can be any legitimate WiThrottle protocol command enclosed in quotes or double quotes<br/>Refer to the <a href='https://www.jmri.org/help/en/package/jmri/jmrit/withrottle/Protocol.shtml'>JMRI WiThrottle Protocol reference</a>", "CUSTOM_COMMAND_", 11, "text", null, "Command", " (no quotes)");
   
   <!-- Custom Menu Select Commands -->
-  addIndexed("Custom Menu Select Commands (Optional)", "CUSTOM_MENU_SELECT_COMMAND_", 11, "text", null, "Menu sequence", " (no quotes)");
+  addIndexed("Custom Menu Select Commands (Optional)", "These can be any legitimate menu character sequence.  It can be multiple commands.<br/>e.g. \"*1\" will open the add loco menu screen<br/>e.g. \"*1999#\" will select loco 999 and return you to the throttle screen", "CUSTOM_MENU_SELECT_COMMAND_", 11, "text", null, "Menu sequence", " (no quotes)");
   
   <!-- Additional Buttons (new format) (Optional) -->
   form.insertAdjacentHTML("beforeend", `<section class="panel">
