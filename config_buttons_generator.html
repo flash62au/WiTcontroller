@@ -93,6 +93,33 @@
     ...Array.from({length: 11}, (_, i) => [`CUSTOM_${i + 1}`, `Custom command ${i + 1}`]),
     ...Array.from({length: 11}, (_, i) => [`CUSTOM_MENU_SELECT_${i + 1}`, `Custom menu ${i + 1}`])
   ];
+  // custom menu select commands can't be assigned to the keypad
+  const actionsKeypadOnly = [
+    ["FUNCTION_NULL", "Do nothing"], 
+    ...Array.from({length: 32}, (_, i) => [`FUNCTION_${i}`, `Function ${i}${i < 3 ? [" (lights)", " (bell)", " (horn)"][i] : ""}`]),
+    ["SPEED_STOP", "Stop"], 
+    ["SPEED_UP", "Speed up"], 
+    ["SPEED_DOWN", "Speed down"],
+    ["SPEED_UP_FAST", "Speed up fast"], 
+    ["SPEED_DOWN_FAST", "Speed down fast"], 
+    ["E_STOP", "Emergency stop"],
+    ["SPEED_MULTIPLIER", "Speed multiplier"], 
+    ["DIRECTION_TOGGLE", "Toggle direction"],
+    ["DIRECTION_FORWARD", "Forward"], 
+    ["DIRECTION_REVERSE", "Reverse"],
+    ["SPEED_STOP_THEN_TOGGLE_DIRECTION", "Stop, then toggle direction"], 
+    ["E_STOP_CURRENT_LOCO", "Emergency stop current loco"],
+    ["MAX_THROTTLE_INCREASE", "Increase maximum throttle"], 
+    ["MAX_THROTTLE_DECREASE", "Decrease maximum throttle"],
+    ["POWER_TOGGLE", "Toggle power"], 
+    ["POWER_ON", "Power on"], 
+    ["POWER_OFF", "Power off"],
+    ["SHOW_HIDE_BATTERY", "Show/hide battery"], 
+    ["SLEEP", "Sleep"], 
+    ["NEXT_THROTTLE", "Next throttle"],
+    ...Array.from({length: 6}, (_, i) => [`THROTTLE_${i + 1}`, `Throttle ${i + 1}`]),
+    ...Array.from({length: 11}, (_, i) => [`CUSTOM_${i + 1}`, `Custom command ${i + 1}`]),
+  ];
   const choices = values => values.map(([value, label]) => ({value, label}));
   const bools = choices([["true", "true"], ["false", "false"]]);
   const gpios = choices([[0,"GPIO0"],[1,"GPIO1"],[2,"GPIO2"],[3,"GPIO3"],[4,"GPIO4"],[5,"GPIO5"],[6,"GPIO6"],[7,"GPIO7"],[8,"GPIO8"],[9,"GPIO9"],[10,"GPIO10"],[11,"GPIO11"],[12,"GPIO12"],[13,"GPIO13"],[14,"GPIO14"],[15,"GPIO15"],[16,"GPIO16"],[17,"GPIO17"],[18,"GPIO18"],[19,"GPIO19"],[21,"GPIO21"],[22,"GPIO22"],[23,"GPIO23"],[25,"GPIO25"],[26,"GPIO26"],[27,"GPIO27"],[32,"GPIO32"],[33,"GPIO33"],[34,"GPIO34"],[35,"GPIO35"],[36,"GPIO36"],[37,"GPIO37"],[38,"GPIO38"],[39,"GPIO39"]]);
@@ -482,8 +509,8 @@
     <h2>Keypad Button Actions</h2>
     <p class="hint">This section allows to alter the actions of the keypad buttons, when not inside menu - Direct Actions.</p>
     <p class="hint">The <code>*</code> and <code>#</code> keys cannot be remapped. Key A–D require a 4x4 keypad.\n If you alter these, you should alter the corresponding labels in the next section to match.</p>
-    <div class="key-grid">
-      ${keyFunctions.map(([n,l]) => renderField([n,"select",choices(actions),l])).join("")}
+    <div class="key-grid-3">
+      ${keyFunctions.map(([n,l]) => renderField([n,"select",choices(actionsKeypadOnly),l])).join("")}
     </div>
   </section>`);
 
@@ -492,16 +519,17 @@
   form.insertAdjacentHTML("beforeend", `<section class="panel">
     <h2>Keypad Display Labels</h2>
     <p class="hint">If you have altered the default mapping of the Direct Keypad Actions in the previous section, you should adjust the labels in this section to match.  Keep labels short / abbreviate a lot.
-    <div class="key-grid">
+    <div class="key-grid-3">
       ${labels.map(([n,l]) => renderField([n,"text",null,l])).join("")}
     </div>
   </section>`);
   
+  <!-- Function Labels -->
   function addIndexed(title, hint, prefix, count, type, values, labelPrefix, labelSuffix, start = 1) {
     form.insertAdjacentHTML("beforeend", `<section class="panel">
       <h2>${title}</h2>
       <p class="hint">${hint}</p>
-      <div class="key-grid">
+      <div class="key-grid-3">
         ${Array.from({length:count}, (_, i) => renderField([`${prefix}${i + start}`,type,values,`${labelPrefix} ${i + start} ${labelSuffix}`])).join("")}
       </div>
     </section>`);
