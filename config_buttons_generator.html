@@ -580,11 +580,12 @@
   <!-- Custom Menu Select Commands -->
   addIndexed("Custom Menu Select Commands (Optional)", "These can be any legitimate menu character sequence.  It can be multiple commands.<br/>e.g. \"*1\" will open the add loco menu screen<br/>e.g. \"*1999#\" will select loco 999 and return you to the throttle screen", "CUSTOM_MENU_SELECT_COMMAND_", 11, "text", null, "Menu sequence", " (no quotes)");
   
-  <!-- Additional Buttons (new format) (Optional) -->
+  <!-- Additional Buttons (new format) -->
   form.insertAdjacentHTML("beforeend", `<section class="panel">
-    <h2>Additional buttons (new format)</h2>
+    <h2>Additional Buttons (new format) (Optional)</h2>
+    <p class="hint">Requires installing the Additional Button hardware.</p>
     <p class="hint">To use the new format USE_NEW_ADDITIONAL_BUTTONS_FORMAT must be set to 'true'<br/>
-    And NEW_MAX_ADDITIONAL_BUTTONS must be set to the number you want to use.<br/>
+    And NEW_MAX_ADDITIONAL_BUTTONS must be set to the number you want to use, and must be 1 or greater.<br/>
     Then the following lists MUST have the same number of elements:<br/>
     - NEW_ADDITIONAL_BUTTON_ACTIONS{val0, val1, .. val10, up-to-val11}<br/>
     - NEW_ADDITIONAL_BUTTON_LATCHING{val0, val1, .. val10, up-to-val11}<br/>
@@ -594,7 +595,7 @@
     <div class="grid">
       ${renderField(["USE_NEW_ADDITIONAL_BUTTONS_FORMAT","select",bools,"Use new additional-button format"])}
       ${renderField(["ADDITIONAL_BUTTON_OVERRIDE_DEFAULT_LATCHING","select",bools,"Override default latching"])}
-      ${renderField(["NEW_MAX_ADDITIONAL_BUTTONS","number",null,"Number of buttons (0-11)"])}
+      ${renderField(["NEW_MAX_ADDITIONAL_BUTTONS","number",null,"Number of buttons (1-11)"])}
     </div>
     <br/>
     <div class="key-grid">
