@@ -583,7 +583,14 @@
   <!-- Additional Buttons (new format) (Optional) -->
   form.insertAdjacentHTML("beforeend", `<section class="panel">
     <h2>Additional buttons (new format)</h2>
-    <p class="hint">Enable this format and set the <b>same number of values</b> in each list. Pins 34, 35, 36 and 39 require <code>INPUT</code> and an external pullup.</p>
+    <p class="hint">To use the new format USE_NEW_ADDITIONAL_BUTTONS_FORMAT must be set to 'true'<br/>
+    And NEW_MAX_ADDITIONAL_BUTTONS must be set to the number you want to use.<br/>
+    Then the following lists MUST have the same number of elements:<br/>
+    - NEW_ADDITIONAL_BUTTON_ACTIONS{val0, val1, .. val10, up-to-val11}<br/>
+    - NEW_ADDITIONAL_BUTTON_LATCHING{val0, val1, .. val10, up-to-val11}<br/>
+    - NEW_ADDITIONAL_BUTTON_PIN{val0, val1, .. val10, up-to-val11}<br/>
+    - NEW_ADDITIONAL_BUTTON_TYPE{val0, val1, .. val10, up-to-val11}<br/>
+    Make sure the last entry in each list does NOT have the comma (,)</p>
     <div class="grid">
       ${renderField(["USE_NEW_ADDITIONAL_BUTTONS_FORMAT","select",bools,"Use new additional-button format"])}
       ${renderField(["ADDITIONAL_BUTTON_OVERRIDE_DEFAULT_LATCHING","select",bools,"Override default latching"])}

@@ -5,15 +5,25 @@
 #define FUNCTION_NULL -1 // do nothing
 
 #define FUNCTION_0 0 // lights
+#define FUNCTION_00 0 // lights
 #define FUNCTION_1 1 // bell
+#define FUNCTION_01 1 // bell
 #define FUNCTION_2 2 // horn
+#define FUNCTION_02 2 // horn
 #define FUNCTION_3 3
+#define FUNCTION_03 3
 #define FUNCTION_4 4
+#define FUNCTION_04 4
 #define FUNCTION_5 5
+#define FUNCTION_05 5
 #define FUNCTION_6 6
+#define FUNCTION_06 6
 #define FUNCTION_7 7
+#define FUNCTION_07 7
 #define FUNCTION_8 8
+#define FUNCTION_08 8
 #define FUNCTION_9 9
+#define FUNCTION_09 9
 #define FUNCTION_10 10
 #define FUNCTION_11 11
 #define FUNCTION_12 12
