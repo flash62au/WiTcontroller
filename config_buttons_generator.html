@@ -443,7 +443,7 @@
     defaultValues[`ADDITIONAL_BUTTON_${i}_LATCHING`] = "true";
   }
   for (let i = 1; i <= 4; i++) defaultValues[`STARTUP_COMMAND_${i}`] = '""';
-  const defaultLabel = name => `use default: ▫${defaultValues[name] ?? "see static.h"}▫`;
+  const defaultLabel = name => `use default: ▫${defaultValues[name] ?? "no default"}▫`;
 
   function renderField([name, type, values, label, explanation]) {
     const id = `field-${name}`;
@@ -620,7 +620,7 @@
     <div class="grid">
       ${renderField(["USE_NEW_ADDITIONAL_BUTTONS_FORMAT","select",bools,"Use new additional-button format"])}
       ${renderField(["ADDITIONAL_BUTTON_OVERRIDE_DEFAULT_LATCHING","select",bools,"Override default latching"])}
-      ${renderField(["NEW_MAX_ADDITIONAL_BUTTONS","number",null,"Number of buttons (0-11)"])}
+      ${renderField(["NEW_MAX_ADDITIONAL_BUTTONS","number",null,"Number of buttons (1-11)"])}
     </div>
     <br/>
     <div id="additional-button-fields" class="additional-button-grid"></div>
@@ -644,7 +644,7 @@
   const additionalButtonCountLabel = additionalButtonCount.closest("label");
   const additionalButtonOverrideLatchingLabel = additionalButtonOverrideLatching.closest("label");
   const additionalButtonDebounceDelayLabel = additionalButtonDebounceDelay.closest("label");
-  additionalButtonCount.min = "0";
+  additionalButtonCount.min = "1";
   additionalButtonCount.max = "11";
   additionalButtonCount.step = "1";
 
