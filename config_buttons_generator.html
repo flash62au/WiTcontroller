@@ -60,12 +60,24 @@
   <form id="config-form"></form>
   <section class="panel output">
     <h2>Generated config_buttons.h</h2>
-    <div class="actions">
-      <button type="button" id="copy">Copy to clipboard</button>
-      <button type="button" class="secondary" id="download">Download config_buttons.h</button>
-      <button type="button" class="secondary" id="clear">Clear selections</button>
-    </div>
-    <textarea id="output" readonly spellcheck="false" aria-label="Generated config_buttons.h"></textarea>
+    <table style="width:100%;">
+      <tr>
+        <td style="width:30%;">
+          <div class="actions">
+            <button type="button" id="copy">Copy to clipboard</button>
+          </div>
+          <div class="actions">
+            <button type="button" class="secondary" id="download">Download config_buttons.h</button>
+          </div>
+          <div class="actions">
+            <button type="button" class="secondary" id="clear">Clear selections</button>
+          </div>
+        </td>
+        <td>
+          <textarea id="output" style="min-height: 7rem" readonly spellcheck="false" aria-label="Generated config_buttons.h"></textarea>
+        </td>
+    </tr>
+    </table>
     <div class="status" id="status" role="status"></div>
   </section>
 </main>
@@ -553,7 +565,7 @@
   const labels = Array.from({length:10}, (_, i) => [`CHOSEN_KEYPAD_${i}_DISPLAY_NAME`, `Key ${i} display label (no quotes)`]);
   form.insertAdjacentHTML("beforeend", `<section class="panel">
     <h2>Keypad Display Labels</h2>
-    <p class="hint">If you have altered the default mapping of the Direct Keypad Actions in the previous section, you should adjust the labels in this section to match.  Keep labels short / abbreviate a lot.<br/>Note: No labels are shown for the A-D keys)</p>
+    <p class="hint">If you have altered the default mapping of the Direct Keypad Actions in the previous section, you should adjust the labels in this section to match.  Keep labels short / abbreviate a lot.<br/>Note: No labels are shown for the A-D keys of the 4x4 keypad.</p>
     <div class="key-grid-3">
       ${labels.map(([n,l]) => renderField([n,"text",null,l])).join("")}
     </div>
@@ -610,7 +622,7 @@
   <!-- Additional Buttons -->
   form.insertAdjacentHTML("beforeend", `<section class="panel">
     <h2>Additional Buttons (new format)</h2>
-    <p class="hint">Modify this section if you have install the 1-11 Additional Buttons<br/><br/><code>USE_NEW_ADDITIONAL_BUTTONS_FORMAT</code> must be set to 'true' and <code>NEW_MAX_ADDITIONAL_BUTTONS</code> must be set to the number you want to use.<br/>
+    <p class="hint">Modify this section if you have installed the 1-11 Additional Buttons<br/><br/><code>USE_NEW_ADDITIONAL_BUTTONS_FORMAT</code> must be set to 'true' and <code>NEW_MAX_ADDITIONAL_BUTTONS</code> must be set to the number you want to use.<br/>
     Then the following lists MUST have the same number of elements:<br/>
     - <code>NEW_ADDITIONAL_BUTTON_ACTIONS</code> {val0, val1, .. val10, up-to-val11}<br/>
     - <code>NEW_ADDITIONAL_BUTTON_LATCHING</code> {val0, val1, .. val10, up-to-val11}<br/>
@@ -619,13 +631,13 @@
     Make sure the last entry in each list does NOT have the comma (,) after it.</p>
     <div class="grid">
       ${renderField(["USE_NEW_ADDITIONAL_BUTTONS_FORMAT","select",bools,"Use new additional-button format"])}
-      ${renderField(["ADDITIONAL_BUTTON_OVERRIDE_DEFAULT_LATCHING","select",bools,"Override default latching"])}
       ${renderField(["NEW_MAX_ADDITIONAL_BUTTONS","number",null,"Number of buttons (1-11)"])}
     </div>
     <br/>
     <div id="additional-button-fields" class="additional-button-grid"></div>
     <br/>
     <div class="grid">
+      ${renderField(["ADDITIONAL_BUTTON_OVERRIDE_DEFAULT_LATCHING","select",bools,"Override default latching"])}
       ${renderField(["ADDITIONAL_BUTTON_DEBOUNCE_DELAY","number",null,"Additional button debounce (milliseconds)"])}
     </div>
   </section>`);
