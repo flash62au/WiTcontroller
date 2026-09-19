@@ -7,6 +7,7 @@
   <style>
     :root { color-scheme: light; --ink:#17212b; --muted:#5c6b78; --line:#d7dee5; --blue:#0969da; --panel:#f6f8fa; }
     * { box-sizing:border-box; }
+    [hidden] { display:none !important; }
     body { margin:0; background:#eef2f6; color:var(--ink); font:14px/1.35 system-ui,-apple-system,"Segoe UI",sans-serif; }
     main { max-width:1180px; margin:0 auto; padding:1.25rem .75rem 2.5rem; }
     h1 { margin:.1rem 0 .3rem; font-size:clamp(1.5rem,3vw,2.2rem); }
@@ -27,6 +28,7 @@
     .field-explanation { color:var(--muted); font-size:.7rem; font-weight:400; }
     .key-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.45rem .75rem; }
     .key-grid-3 { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.45rem .75rem; }
+    .additional-button-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.45rem .75rem; }
     .key-grid label { font-size:.82rem; }
     .actions { display:flex; flex-wrap:wrap; gap:.45rem; margin:.6rem 0; }
     button { border:1px solid #0969da; border-radius:5px; padding:.35rem .65rem; cursor:pointer; background:var(--blue); color:#fff; font-weight:600; }
@@ -40,7 +42,7 @@
       main { padding:.75rem .5rem 2rem; }
       .panel { padding:.65rem; }
       .grid, .key-grid { grid-template-columns:1fr; }
-      .grid-3,.key-grid-3 { grid-template-columns:1fr; }
+      .grid-3,.key-grid-3,.additional-button-grid { grid-template-columns:1fr; }
     }
   </style>
 </head>
@@ -456,6 +458,11 @@
     return `<label>${label}${control}<span class="field-note">${name}</span>${explanationMarkup}</label>`;
   }
 
+  function renderAdditionalButtonField(name, index, values, label) {
+    return renderField([`${name}_${index}`, "select", values, `${label} ${index}`])
+      .replace(`data-define="${name}_${index}"`, `data-button-list="${name}"`);
+  }
+
   <!-- ------------------------------------------------------------------------------- -->
 
   <!-- Language and Fonts -->
@@ -616,17 +623,67 @@
       ${renderField(["NEW_MAX_ADDITIONAL_BUTTONS","number",null,"Number of buttons (0-11)"])}
     </div>
     <br/>
-    <div class="key-grid">
-      ${renderField(["NEW_ADDITIONAL_BUTTON_ACTIONS","textarea",null,"Actions (C++ list syntax)"])}
-      ${renderField(["NEW_ADDITIONAL_BUTTON_LATCHING","textarea",null,"Latching values (C++ list syntax)"])}
-      ${renderField(["NEW_ADDITIONAL_BUTTON_PIN","textarea",null,"GPIO pins (C++ list syntax)"])}
-      ${renderField(["NEW_ADDITIONAL_BUTTON_TYPE","textarea",null,"Input types (C++ list syntax)"])}
-    </div>
+    <div id="additional-button-fields" class="additional-button-grid"></div>
     <br/>
     <div class="grid">
       ${renderField(["ADDITIONAL_BUTTON_DEBOUNCE_DELAY","number",null,"Additional button debounce (milliseconds)"])}
     </div>
   </section>`);
+
+  const additionalButtonFieldDefinitions = [
+    ["NEW_ADDITIONAL_BUTTON_ACTIONS", choices(actions), "Action"],
+    ["NEW_ADDITIONAL_BUTTON_LATCHING", bools, "Latching"],
+    ["NEW_ADDITIONAL_BUTTON_PIN", gpios, "GPIO pin"],
+    ["NEW_ADDITIONAL_BUTTON_TYPE", choices([["INPUT_PULLUP", "INPUT_PULLUP"], ["INPUT", "INPUT"]]), "Input type"]
+  ];
+  const additionalButtonCount = document.querySelector("#field-NEW_MAX_ADDITIONAL_BUTTONS");
+  const additionalButtonFields = document.querySelector("#additional-button-fields");
+  const newAdditionalButtonsFormat = document.querySelector("#field-USE_NEW_ADDITIONAL_BUTTONS_FORMAT");
+  const additionalButtonOverrideLatching = document.querySelector("#field-ADDITIONAL_BUTTON_OVERRIDE_DEFAULT_LATCHING");
+  const additionalButtonDebounceDelay = document.querySelector("#field-ADDITIONAL_BUTTON_DEBOUNCE_DELAY");
+  const additionalButtonCountLabel = additionalButtonCount.closest("label");
+  const additionalButtonOverrideLatchingLabel = additionalButtonOverrideLatching.closest("label");
+  const additionalButtonDebounceDelayLabel = additionalButtonDebounceDelay.closest("label");
+  additionalButtonCount.min = "0";
+  additionalButtonCount.max = "11";
+  additionalButtonCount.step = "1";
+
+  function updateAdditionalButtonAvailability() {
+    const enabled = newAdditionalButtonsFormat.value === "true";
+    additionalButtonCount.disabled = !enabled;
+    additionalButtonCountLabel.hidden = !enabled;
+    additionalButtonOverrideLatchingLabel.hidden = !enabled;
+    additionalButtonDebounceDelayLabel.hidden = !enabled;
+    additionalButtonFields.hidden = !enabled;
+    additionalButtonFields.querySelectorAll("select, input, textarea").forEach(field => {
+      field.disabled = !enabled;
+    });
+  }
+
+  function renderAdditionalButtonFields() {
+    const count = Math.max(0, Math.min(11, Number.parseInt(additionalButtonCount.value, 10) || 0));
+    if (additionalButtonCount.value && additionalButtonCount.value !== String(count)) additionalButtonCount.value = String(count);
+    const previousValues = {};
+    additionalButtonFields.querySelectorAll("[data-button-list]").forEach(field => {
+      const index = field.id.match(/_(\d+)$/)?.[1];
+      if (index) previousValues[`${field.dataset.buttonList}_${index}`] = field.value;
+    });
+    additionalButtonFields.innerHTML = Array.from({length: count}, (_, index) => {
+      const buttonNumber = index + 1;
+      return additionalButtonFieldDefinitions
+        .map(([name, values, label]) => renderAdditionalButtonField(name, buttonNumber, values, label))
+        .join("");
+    }).join("");
+    additionalButtonFields.querySelectorAll("[data-button-list]").forEach(field => {
+      const previousValue = previousValues[field.id.replace("field-", "")];
+      if (previousValue) field.value = previousValue;
+    });
+    updateAdditionalButtonAvailability();
+  }
+
+  additionalButtonCount.addEventListener("input", renderAdditionalButtonFields);
+  newAdditionalButtonsFormat.addEventListener("change", updateAdditionalButtonAvailability);
+  renderAdditionalButtonFields();
 
   <!-- Throttle Potentiometer -->
   // form.insertAdjacentHTML("beforeend", `<section class="panel">
@@ -729,9 +786,19 @@
   function generate() {
     const lines = ["// Generated by the WiTcontroller config_buttons.h generator", "// Copy this file to your WiTcontroller project.", ""];
     let current = "";
-    document.querySelectorAll("[data-define]").forEach(el => {
+    const generatedButtonLists = new Set();
+    document.querySelectorAll("[data-define], [data-button-list]").forEach(el => {
+      if (el.disabled) return;
       const section = el.closest(".panel")?.querySelector("h2")?.textContent || "";
       if (section !== current) { if (lines[lines.length - 1] !== "") lines.push(""); lines.push(`// ${section}`); current = section; }
+      const listName = el.dataset.buttonList;
+      if (listName) {
+        if (generatedButtonLists.has(listName)) return;
+        generatedButtonLists.add(listName);
+        const values = [...document.querySelectorAll(`[data-button-list="${listName}"]`)].map(valueFor);
+        if (values.length && values.every(value => value !== null)) lines.push(define(listName, `{${values.join(", ")}}`));
+        return;
+      }
       let value = valueFor(el);
       if (el.dataset.define === "LANGUAGE" && value) { lines.push(`#include "${value}"`); return; }
       if (value !== null) lines.push(define(el.dataset.define, value));
