@@ -32,6 +32,8 @@
     button { border:1px solid #0969da; border-radius:5px; padding:.35rem .65rem; cursor:pointer; background:var(--blue); color:#fff; font-weight:600; }
     button.secondary { background:#fff; color:var(--blue); }
     .output { position:sticky; bottom:0; z-index:2; }
+    details.panel > summary { cursor:pointer; list-style-position:inside; }
+    details.panel > summary h2 { display:inline; }
     .status { min-height:1.4em; color:#176b35; font-size:.9rem; }
     code { background:#eef2f6; padding:.1rem .25rem; border-radius:3px; }
     @media (max-width:650px) {
@@ -126,7 +128,7 @@
   const gpiosPlusV = choices([[-1,"-1 = 3.3v"],[0,"GPIO0"],[1,"GPIO1"],[2,"GPIO2"],[3,"GPIO3"],[4,"GPIO4"],[5,"GPIO5"],[6,"GPIO6"],[7,"GPIO7"],[8,"GPIO8"],[9,"GPIO9"],[10,"GPIO10"],[11,"GPIO11"],[12,"GPIO12"],[13,"GPIO13"],[14,"GPIO14"],[15,"GPIO15"],[16,"GPIO16"],[17,"GPIO17"],[18,"GPIO18"],[19,"GPIO19"],[21,"GPIO21"],[22,"GPIO22"],[23,"GPIO23"],[25,"GPIO25"],[26,"GPIO26"],[27,"GPIO27"],[32,"GPIO32"],[33,"GPIO33"],[34,"GPIO34"],[35,"GPIO35"],[36,"GPIO36"],[37,"GPIO37"],[38,"GPIO38"],[39,"GPIO39"]]);
   const gpiosPlusNone = choices([[-1,"-1 = disabled"],[0,"GPIO0"],[1,"GPIO1"],[2,"GPIO2"],[3,"GPIO3"],[4,"GPIO4"],[5,"GPIO5"],[6,"GPIO6"],[7,"GPIO7"],[8,"GPIO8"],[9,"GPIO9"],[10,"GPIO10"],[11,"GPIO11"],[12,"GPIO12"],[13,"GPIO13"],[14,"GPIO14"],[15,"GPIO15"],[16,"GPIO16"],[17,"GPIO17"],[18,"GPIO18"],[19,"GPIO19"],[21,"GPIO21"],[22,"GPIO22"],[23,"GPIO23"],[25,"GPIO25"],[26,"GPIO26"],[27,"GPIO27"],[32,"GPIO32"],[33,"GPIO33"],[34,"GPIO34"],[35,"GPIO35"],[36,"GPIO36"],[37,"GPIO37"],[38,"GPIO38"],[39,"GPIO39"]]);
 
-  const keypadAndEncoderFields = [
+  const encoderFields = [
     {title:"Encoder Hardware and Actions", items:[
       ["ROTARY_ENCODER_A_PIN","select",gpios,"Rotary encoder A GPIO"], 
       ["ROTARY_ENCODER_B_PIN","select",gpios,"Rotary encoder B GPIO"],
@@ -142,7 +144,9 @@
       ["ENCODER_BUTTON_ACTION","select",choices(actions),"Encoder button action"],
       ["TOGGLE_DIRECTION_ON_ENCODER_BUTTON_PRESSED_WHEN_STATIONAY","select",bools,"Toggle direction when stationary"],
     ]},
+  ];
 
+  const keypadFields = [
     {title:"Keypad Hardware and Actions", items:[
       ["ROW_NUM","select",choices([["4","4"]]),"Keypad row count"], 
       ["COLUMN_NUM","select",choices([["3","3"],["4","4"]]),"Keypad column count"],
@@ -159,7 +163,7 @@
 
 
   const startupFields = [
-    {title:"Startup (optional)", items:[
+    {title:"Startup (Optional)", items:[
       ["STARTUP_COMMAND_1","text",null,"Startup command 1 (no quotes)"], 
       ["STARTUP_COMMAND_2","text",null,"Startup command 2 (no quotes)"],
       ["STARTUP_COMMAND_3","text",null,"Startup command 3 (no quotes)"], 
@@ -218,7 +222,7 @@
   ];
 
   const heartbeatFields = [
-    {title:"Heartbeat", items:[
+    {title:"Heartbeat (Optional)", items:[
       ["MAX_HEARTBEAT_PERIOD","number",null,"Maximum heartbeat period (milliseconds)"], 
       ["HEARTBEAT_ENABLED","select",bools,"Enable heartbeat by default"],
       ["DEFAULT_HEARTBEAT_PERIOD","number",null,"Default heartbeat period (seconds)"] 
@@ -241,7 +245,7 @@
   ];
 
   const debuggingFields = [  
-    {title:"Debugging", items:[
+    {title:"Debugging (Optional)", items:[
       ["WITCONTROLLER_DEBUG","select",choices([["0","Enabled"],["1","Disabled"]]),"WiTcontroller console messages"],
       ["WITHROTTLE_PROTOCOL_DEBUG","select",choices([["0","Disabled"],["1","Enabled"]]),"WiThrottle protocol console messages"],
       ["DEBUG_LEVEL","select",choices([[0,"0 = Errors only"],[1,"1 = Default level"],[2,"2 = Verbose"],[3,"3 = Extreme"],[4,"4 = Everything"]]),"Debug level (0–3)"]
@@ -292,6 +296,9 @@
     KEYPAD_ROW_PINS: "Four comma-separated values must be specified.\nIncluding the curly brackets {}",
     KEYPAD_COLUMN_PINS: "For 4x3:- Three comma-separated values must be specified\nFor 4x4:- Four values must be specified.\nIncluding the curly brackets {}",
 
+    KEYPAD_DEBOUNCE_TIME: "Play with this value and KEYPAD_HOLD_TIME if you see the keys bounce (activate twice on a single press)\nTimes are in milliseconds",
+    KEYPAD_HOLD_TIME: "Play with this value and KEYPAD_DEBOUNCE_TIME if you see the keys bounce (activate twice on a single press)\nTimes are in milliseconds",
+
     NEW_ADDITIONAL_BUTTON_ACTIONS: "{val0, val1, .. val10, up-to-val11}\ne.g. for all additional buttons might look like:\n{FUNCTION_0, FUNCTION_1, FUNCTION_2, SPEED_STOP, DIRECTION_TOGGLE, POWER_TOGGLE, NEXT_THROTTLE, CUSTOM_0, CUSTOM2, CUSTOM_MENU_SELECT_0, FUNCTION_NULL }",
     NEW_ADDITIONAL_BUTTON_LATCHING: "{val0, val1, .. val10, up-to-val11}\nNote these are are only relevant for FUNCTION_ assignments\n e.g. for the 11 button example above it might look like:\n{true, false, true, true, true, true, true, true, true, true, true}",
     NEW_ADDITIONAL_BUTTON_PIN: "{val0, val1, .. val10, up-to-val11}\nSet the pin value to -1 to skip that value.\n e.g. for the 11 button example above it might look like:\n{5, 15, 25, 26, 27, 32, 33, 34, 35, 36, 39 }",
@@ -302,6 +309,8 @@
     DEBUG_LEVEL: "0 = errors only, 1 = default level, 2 = verbose, 3 = extreme, 4 = everything"
   };
   const form = document.querySelector("#config-form");
+  // Add lower-case words here to collapse matching section titles by default.
+  const collapsibleSectionTitleTerms = ["optional"];
   const option = (value, label, selected = false) => `<option value="${value}"${selected ? " selected" : ""}>${label}</option>`;
   const explanationHtml = value => String(value).split(/(<br\s*\/?>|\r?\n|\\n)/gi).map(part =>
     /^<br\s*\/?>$/i.test(part) || part === "\n" || part === "\r\n" || part === "\\n"
@@ -452,6 +461,7 @@
   <!-- Language and Fonts -->
   form.insertAdjacentHTML("beforeend", `<section class="panel">
     <h2>Language and Fonts</h2>
+      <p class=hint">For English, do not alter anything in this section.</p>
     <div class="grid">
       ${renderField(["LANGUAGE","select",choices([["language_deutsch.h","German"],["language_italiano.h","Italian"],["language_chinese.h","Chinese"]]),"Language"])}
       ${renderField(["FONT_DEFAULT","select",choices([["u8g2_font_5x8_tf","English (u8g2_font_5x8_tf)"],["u8g2_font_boutique_bitmap_7x7_t_gb2312","Chinese (u8g2_font_boutique_bitmap_7x7_t_gb2312)"]]),"Default Font"])}${renderField(["FONT_DIRECTION","select",choices([["u8g2_font_neuecraft_tr","Default"],["u8g2_font_boutique_bitmap_9x9_bold_t_gb2312","Chinese 1 (recommended)"],["u8g2_font_wqy13_t_gb2312a","Chinese 2"]]),"Font used for the Direction Text (only)"])}
@@ -459,10 +469,20 @@
   </section>`);
 
   <!-- Encoder -->
+  encoderFields.forEach(group => {
+    form.insertAdjacentHTML("beforeend", `<section class="panel">
+      <h2>${group.title}</h2><p class=hint">If you have used the default pins (GPIOs) when installing your Rotary Encoder, you may not need to alter anything in this section.</p>
+        <div class="grid">
+          ${group.items.map(renderField).join("")}
+        </div>
+      </section>`);
+  });
+
   <!-- Keypad Hardware -->
-  keypadAndEncoderFields.forEach(group => {
+  keypadFields.forEach(group => {
     form.insertAdjacentHTML("beforeend", `<section class="panel">
       <h2>${group.title}</h2>
+      <p class=hint">If you have used the default pins (GPIOs) when installing your keypad, you may not need to alter anything in this section.</p>
         <div class="grid">
           ${group.items.map(renderField).join("")}
         </div>
@@ -498,7 +518,7 @@
   // });
 
   <!-- Consists and commands -->
-  addIndexed3("Consist/MU Function Actions", "How functions are sent, or not sent, to other locos ina Consist/MU.", "CONSIST_FUNCTION_FOLLOW_F", 31, "select",choices([["CONSIST_ALL_LOCOS","All locos (CONSIST_ALL_LOCOS)"],["CONSIST_LEAD_LOCO","Lead loco (CONSIST_LEAD_LOCO)"]]), "Consist behaviour F", "");
+  addIndexed3("Consist/MU Function Actions (Optional)", "How functions are sent, or not sent, to other locos ina Consist/MU.", "CONSIST_FUNCTION_FOLLOW_F", 31, "select",choices([["CONSIST_ALL_LOCOS","All locos (CONSIST_ALL_LOCOS)"],["CONSIST_LEAD_LOCO","Lead loco (CONSIST_LEAD_LOCO)"]]), "Consist behaviour F", "");
 
 
   <!-- Other Actions -->
@@ -515,8 +535,8 @@
   const keyFunctions = Array.from({length: 14}, (_, i) => [`CHOSEN_KEYPAD_${i < 10 ? i : String.fromCharCode(55 + i)}_FUNCTION`, i < 10 ? `Key ${i}` : `Key ${String.fromCharCode(55 + i)}`]);
   form.insertAdjacentHTML("beforeend", `<section class="panel">
     <h2>Keypad Button Actions</h2>
-    <p class="hint">This section allows to alter the actions of the keypad buttons, when not inside menu - Direct Actions.</p>
-    <p class="hint">The <code>*</code> and <code>#</code> keys cannot be remapped. Key A–D require a 4x4 keypad.\n If you alter these, you should alter the corresponding labels in the next section to match.</p>
+    <p class="hint">This section allows to alter the actions of the keypad buttons, when not inside menu - Direct Actions.<br/>If you alter these, you should alter the corresponding labels in the next section to match.</p>
+    <p class="hint">The <code>*</code> and <code>#</code> keys cannot be remapped. Key A–D require a 4x4 keypad.</p>
     <div class="key-grid-3">
       ${keyFunctions.map(([n,l]) => renderField([n,"select",choices(actionsKeypadOnly),l])).join("")}
     </div>
@@ -526,7 +546,7 @@
   const labels = Array.from({length:10}, (_, i) => [`CHOSEN_KEYPAD_${i}_DISPLAY_NAME`, `Key ${i} display label (no quotes)`]);
   form.insertAdjacentHTML("beforeend", `<section class="panel">
     <h2>Keypad Display Labels</h2>
-    <p class="hint">If you have altered the default mapping of the Direct Keypad Actions in the previous section, you should adjust the labels in this section to match.  Keep labels short / abbreviate a lot.
+    <p class="hint">If you have altered the default mapping of the Direct Keypad Actions in the previous section, you should adjust the labels in this section to match.  Keep labels short / abbreviate a lot.<br/>Note: No labels are shown for the A-D keys)</p>
     <div class="key-grid-3">
       ${labels.map(([n,l]) => renderField([n,"text",null,l])).join("")}
     </div>
@@ -580,22 +600,20 @@
   <!-- Custom Menu Select Commands -->
   addIndexed("Custom Menu Select Commands (Optional)", "These can be any legitimate menu character sequence.  It can be multiple commands.<br/>e.g. \"*1\" will open the add loco menu screen<br/>e.g. \"*1999#\" will select loco 999 and return you to the throttle screen", "CUSTOM_MENU_SELECT_COMMAND_", 11, "text", null, "Menu sequence", " (no quotes)");
   
-  <!-- Additional Buttons (new format) -->
+  <!-- Additional Buttons -->
   form.insertAdjacentHTML("beforeend", `<section class="panel">
-    <h2>Additional Buttons (new format) (Optional)</h2>
-    <p class="hint">Requires installing the Additional Button hardware.</p>
-    <p class="hint">To use the new format USE_NEW_ADDITIONAL_BUTTONS_FORMAT must be set to 'true'<br/>
-    And NEW_MAX_ADDITIONAL_BUTTONS must be set to the number you want to use, and must be 1 or greater.<br/>
+    <h2>Additional Buttons (new format)</h2>
+    <p class="hint">Modify this section if you have install the 1-11 Additional Buttons<br/><br/><code>USE_NEW_ADDITIONAL_BUTTONS_FORMAT</code> must be set to 'true' and <code>NEW_MAX_ADDITIONAL_BUTTONS</code> must be set to the number you want to use.<br/>
     Then the following lists MUST have the same number of elements:<br/>
-    - NEW_ADDITIONAL_BUTTON_ACTIONS{val0, val1, .. val10, up-to-val11}<br/>
-    - NEW_ADDITIONAL_BUTTON_LATCHING{val0, val1, .. val10, up-to-val11}<br/>
-    - NEW_ADDITIONAL_BUTTON_PIN{val0, val1, .. val10, up-to-val11}<br/>
-    - NEW_ADDITIONAL_BUTTON_TYPE{val0, val1, .. val10, up-to-val11}<br/>
-    Make sure the last entry in each list does NOT have the comma (,)</p>
+    - <code>NEW_ADDITIONAL_BUTTON_ACTIONS</code> {val0, val1, .. val10, up-to-val11}<br/>
+    - <code>NEW_ADDITIONAL_BUTTON_LATCHING</code> {val0, val1, .. val10, up-to-val11}<br/>
+    - <code>NEW_ADDITIONAL_BUTTON_PIN</code> {val0, val1, .. val10, up-to-val11}<br/>
+    - <code>NEW_ADDITIONAL_BUTTON_TYPE</code> {val0, val1, .. val10, up-to-val11}<br/>
+    Make sure the last entry in each list does NOT have the comma (,) after it.</p>
     <div class="grid">
       ${renderField(["USE_NEW_ADDITIONAL_BUTTONS_FORMAT","select",bools,"Use new additional-button format"])}
       ${renderField(["ADDITIONAL_BUTTON_OVERRIDE_DEFAULT_LATCHING","select",bools,"Override default latching"])}
-      ${renderField(["NEW_MAX_ADDITIONAL_BUTTONS","number",null,"Number of buttons (1-11)"])}
+      ${renderField(["NEW_MAX_ADDITIONAL_BUTTONS","number",null,"Number of buttons (0-11)"])}
     </div>
     <br/>
     <div class="key-grid">
@@ -665,6 +683,30 @@
       </div>
     </section>`);
   });
+
+  function makeOptionalSectionsCollapsible() {
+    const terms = collapsibleSectionTitleTerms
+      .map(term => String(term).trim().toLocaleLowerCase())
+      .filter(Boolean);
+
+    if (!terms.length) return;
+
+    form.querySelectorAll(":scope > section.panel").forEach(section => {
+      const heading = section.querySelector(":scope > h2");
+      const title = heading?.textContent.trim() || "";
+      if (!heading || !terms.some(term => title.toLocaleLowerCase().includes(term))) return;
+
+      const details = document.createElement("details");
+      details.className = section.className;
+      const summary = document.createElement("summary");
+      summary.append(heading);
+      details.append(summary);
+      while (section.firstChild) details.append(section.firstChild);
+      section.replaceWith(details);
+    });
+  }
+
+  makeOptionalSectionsCollapsible();
 
   <!-- ------------------------------------------------------------------------------- -->
 

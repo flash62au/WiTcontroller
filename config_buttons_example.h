@@ -293,7 +293,7 @@
 
 // Keypad configuration
 // Play with these values if you see the keys bounce (activate twice on a single press)
-// Times are in miliseconds
+// Times are in milliseconds
 
 // #define KEYPAD_DEBOUNCE_TIME 10
 // #define KEYPAD_HOLD_TIME 200
@@ -415,68 +415,22 @@
 // must be 1 or greater
 //    #define NEW_MAX_ADDITIONAL_BUTTONS 11
 
-//    #define NEW_ADDITIONAL_BUTTON_ACTIONS {\
-                            FUNCTION_NULL,\
-                            FUNCTION_NULL,\
-                            FUNCTION_NULL,\
-                            FUNCTION_NULL,\
-                            FUNCTION_NULL,\
-                            FUNCTION_NULL,\
-                            FUNCTION_NULL,\
-                            FUNCTION_NULL,\
-                            FUNCTION_NULL,\
-                            FUNCTION_NULL,\
-                            FUNCTION_NULL\
-                            }
+//    #define NEW_ADDITIONAL_BUTTON_ACTIONS  { FUNCTION_NULL, FUNCTION_NULL, FUNCTION_NULL, FUNCTION_NULL, FUNCTION_NULL, FUNCTION_NULL, FUNCTION_NULL, FUNCTION_NULL, FUNCTION_NULL, FUNCTION_NULL, FUNCTION_NULL }
 
-//    #define NEW_ADDITIONAL_BUTTON_LATCHING {\
-                            true,\
-                            true,\
-                            true,\
-                            true,\
-                            true,\
-                            true,\
-                            true,\
-                            true,\
-                            true,\
-                            true,\
-                            true\
-                            }
+// Only relevant for the buttons that are set to FUNCTION_0 to FUNCTION_32
+// Either 'true' = LATCHING or 'false' = NOT LATCHING
+//    #define NEW_ADDITIONAL_BUTTON_LATCHING {          true,          true,          true,          true,          true,          true,          true,          true,          true,          true,          true }
 
 // Set the pin value to -1 to skip that value.
 // For pins on the ESP32 use the number shown on the board/diagram
 // If you are using pins on a I2C GPIO Expansion board, they will be numbered: 0-15
 //
-//    #define NEW_ADDITIONAL_BUTTON_PIN {\
-                            5,\
-                            15,\
-                            25,\
-                            26,\
-                            27,\
-                            32,\
-                            33,\
-                            34,\
-                            35,\
-                            36,\
-                            39\
-                            }
+//    #define NEW_ADDITIONAL_BUTTON_PIN      {             5,             15,            25,            26,            27,           32,             33,            34,           35,            36,            39 }
 
 // Set to either INPUT_PULLUP or INPUT.  If INPUT, the pin will need an external pullup resister (e.g. 10k)
 // Pins 34,35,36,39 can be used but don't have an internal pullup, so use INPUT for these
 //
-//    #define NEW_ADDITIONAL_BUTTON_TYPE {\
-                            INPUT_PULLUP,\
-                            INPUT_PULLUP,\
-                            INPUT_PULLUP,\
-                            INPUT_PULLUP,\
-                            INPUT_PULLUP,\
-                            INPUT_PULLUP,\
-                            INPUT_PULLUP,\
-                            INPUT,\
-                            INPUT,\
-                            INPUT,\
-                            INPUT\
-                            }
+//    #define NEW_ADDITIONAL_BUTTON_TYPE     {  INPUT_PULLUP,   INPUT_PULLUP,   INPUT_PULLUP,  INPUT_PULLUP,  INPUT_PULLUP,  INPUT_PULLUP,  INPUT_PULLUP,         INPUT,        INPUT,         INPUT,         INPUT }
 
 // *******************************************************************************************************************
 // Throttle Pot
