@@ -163,9 +163,9 @@
 
   const extendedEncoderActionsFields = [
     {title:"Additional Rotary Encoder Actions (Optional)", items:[
-      ["ENCODER_INVERT_ROTATION_WHEN_REVERSED","select",bools,"Invert rotation when direction is reversed"],
-      ["SPEED_STEP","number",null,"Speed step per encoder click"],
-      ["ENCODER_BUTTON_ACTION","select",choices(actions),"Encoder button action"],
+      ["ENCODER_INVERT_ROTATION_WHEN_REVERSED","select",bools,"Invert Rotation When Direction is Reversed"],
+      ["SPEED_STEP","number",null,"Speed Step Increment/Decrement Per Encoder Click"],
+      ["ENCODER_BUTTON_ACTION","select",choices(actions),"Encoder Button Action"],
       ["TOGGLE_DIRECTION_ON_ENCODER_BUTTON_PRESSED_WHEN_STATIONAY","select",bools,"Toggle direction when stationary"],
     ]},
   ];
@@ -213,10 +213,10 @@
 
   const otherActionsFields = [
     {title:"Other Actions (Optional)", items:[
-      ["CONSIST_RELEASE_BY_INDEX","select",bools,"Release consist loco by index"],
+      ["CONSIST_RELEASE_BY_INDEX","select",bools,"Release Consist/MU Locos by Index"],
       ["DROP_BEFORE_ACQUIRE","select",bools,"Drop existing locos before acquiring the new loco"],
-      ["MAX_THROTTLES","number",null,"Maximum throttles (1–6)"],
-      ["ROSTER_SORT_SEQUENCE","select",choices([["0","Server order"],["1","Name"],["2","DCC address"]]),"Roster sorting"]
+      ["MAX_THROTTLES","number",null,"Default Maximum Number of Throttles (1–6)"],
+      ["ROSTER_SORT_SEQUENCE","select",choices([["0","Server order"],["1","Name"],["2","DCC address"]]),"Roster Sorting Order"]
     ]}
   ];
 
@@ -281,7 +281,7 @@
     FONT_DIRECTION: "Do not change unless using Chinese language",
 
     ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED: "Defines the rotation direction for the rotary encoder to increase speed\nfalse = Counter clockwise (default)\ntrue = Clockwise",
-    ENCODER_BUTTON_ACTION: "Action performed when the rotary encoder button is pressed.\nSee static.h or README.md for details on the allowed functions",
+    ENCODER_BUTTON_ACTION: "Action performed when the rotary encoder button is pressed.\nBy default, clicking the button will stop the loco if it is moving, and will toggle the direction if it is not moving.\nSee static.h or README.md for details on the allowed functions",
     TOGGLE_DIRECTION_ON_ENCODER_BUTTON_PRESSED_WHEN_STATIONAY: "What the rotary encoder button does when the loco is stationary.\ntrue = if the locos(s) are stationary, clicking the encoder button will toggle the direction\nfalse = does nothing\nThis only takes effect if the ENCODER_BUTTON_ACTION (above) is set to SPEED_STOP_THEN_TOGGLE_DIRECTION",
     ROTARY_ENCODER_STEPS: "If moving the encoder a single click sends more than one speed command, try adjusting this value",
     ROTARY_ENCODER_DEBOUNCE_TIME: "Increase this if the encoder button bounces (activates twice) or you get speed changes when you press the encoder button",
@@ -290,7 +290,7 @@
 
     ACQUIRE_ROSTER_ENTRY_IF_ONLY_ONE: " Enabling this will automatically acquire the only roster entry after connection to the WiThrottle Server, but only if there is only one roster entry",
 
-    CONSIST_RELEASE_BY_INDEX: "By default, you release a single loco from a consist/mu by entering the index number (0-8) of the loco in the consist. Enable this if you wish to release locos by entering the address of the loco",
+    CONSIST_RELEASE_BY_INDEX: "By default, you release a single loco from a Consist/MU by entering the index number (0-8) of the loco in the consist. Enable this if you wish to release locos by entering the address of the loco",
 
     MAX_THROTTLES: "Note that you can temporarily increase or decrease this number via the 'extra' menu at any time",
 
@@ -330,6 +330,10 @@
     NEW_ADDITIONAL_BUTTON_TYPE_1:"Pins 34,35,36,39 can be used but don't have an internal pullup, so use INPUT for these. For the rest, use INPUT_PULLUP",
 
     FUNCTION_SEARCH_RANDOM_MATCH: "If more than one function matches the search, randomly pick one from the matching list to invoke.",
+
+    ENCODER_INVERT_ROTATION_WHEN_REVERSED: "If this is enabled, increasing reverse speed will be achieved by rotating the encoder in the opposite direction to increasing forward speed.",
+    DROP_BEFORE_ACQUIRE: "Enable this if you 'never' want to use Consists/MUs",
+    ROSTER_SORT_SEQUENCE: "Default is to sort by Name (1)",
 
     DEBUG_LEVEL: "0 = errors only, 1 = default level, 2 = verbose, 3 = extreme, 4 = everything"
   };
@@ -602,6 +606,7 @@
   functionLabelFields.forEach(group => {
     form.insertAdjacentHTML("beforeend", `<section class="panel">
       <h2>${group.title}</h2>
+      <p class="hint">Set the labels that will show for the three common functions, for non-roster locos only.</p>
       <div class="grid">
         ${group.items.map(renderField).join("")}
       </div>
