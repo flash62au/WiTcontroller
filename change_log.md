@@ -2,6 +2,12 @@
 
 ## Versions
 
+### V1.117
+
+- New, experimental, configuration generation page
+- New option SPEED_ZERO_ON_DIRECTION_CHANGE from Nico/ocin
+- New option DEFAULT_SPEED_STEP_MULTIPLIER from Nico/ocin
+
 ### V1.116
 
 - Disable all custom menu commands if guest mode is active.
