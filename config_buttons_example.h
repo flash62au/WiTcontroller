@@ -591,6 +591,14 @@
 // #define CUSTOM_APPNAME "myname"
 
 // *******************************************************************************************************************
+// Custom Device Name
+
+// Uncomment and change if required
+//
+//#define DEVICE_NAME "Witcontroller"
+
+
+// *******************************************************************************************************************
 // Guest Mode
 // Uncomment and change if required
 
