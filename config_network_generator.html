@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WiTcontroller config_network.h generator</title>
+  <style>
+    :root { color-scheme: light; --ink:#17212b; --muted:#5c6b78; --line:#d7dee5; --blue:#0969da; }
+    * { box-sizing:border-box; }
+    [hidden] { display:none !important; }
+    body { margin:0; background:#eef2f6; color:var(--ink); font:14px/1.35 system-ui,-apple-system,"Segoe UI",sans-serif; }
+    main { max-width:1180px; margin:0 auto; padding:1.25rem .75rem 2.5rem; }
+    h1 { margin:.1rem 0 .3rem; font-size:clamp(1.5rem,3vw,2.2rem); }
+    h2 { margin:0 0 .25rem; font-size:1.05rem; }
+    p { margin:.35rem 0 1rem; }
+    .intro, .panel { background:#fff; border:1px solid var(--line); border-radius:8px; padding:.8rem; margin:.65rem 0; box-shadow:0 1px 2px #17212b0d; }
+    .hint, .field-note { color:var(--muted); }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.55rem .75rem; }
+    .grid-5 { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:.55rem .75rem; }
+    label { display:flex; flex-direction:column; gap:.15rem; font-weight:600; }
+    label.checkbox { flex-direction:row; align-items:center; font-weight:500; }
+    input, select, textarea, button { font:inherit; }
+    input, select { width:100%; border:1px solid #aeb8c2; border-radius:4px; padding:.3rem .4rem; background:#fff; color:var(--ink); }
+    input[type=checkbox] { width:auto; accent-color:var(--blue); }
+    .field-note { font-size:.7rem; font-weight:400; }
+    .network-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.45rem .75rem; }
+    .actions { display:flex; flex-wrap:wrap; gap:.45rem; margin:.6rem 0; }
+    button { border:1px solid var(--blue); border-radius:5px; padding:.35rem .65rem; cursor:pointer; background:var(--blue); color:#fff; font-weight:600; }
+    button.secondary { background:#fff; color:var(--blue); }
+    .output { position:sticky; bottom:0; z-index:2; }
+    .status { min-height:1.4em; color:#176b35; font-size:.9rem; }
+    code { background:#eef2f6; padding:.1rem .25rem; border-radius:3px; }
+    @media (max-width:650px) {
+      main { padding:.75rem .5rem 2rem; }
+      .panel { padding:.65rem; }
+      .grid, .network-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <section class="intro">
+    <h1><b>WiTcontroller</b> network configuration generator</h1>
+    <p>Enter your Wi-Fi networks and optional network settings. The generated <code>config_network.h</code> can be saved in the same folder as <code>WiTcontroller.ino</code>.</p>
+    <p>This page runs entirely in your browser and does not upload or store your configuration. Refer to <a href="config_network_example.h">config_network_example.h</a> for advanced details.</p>
+  </section>
+  <form id="config-form"></form>
+  <section class="panel output">
+    <h2>Generated config_network.h</h2>
+    <div class="actions">
+      <button type="button" id="copy">Copy to clipboard</button>
+      <button type="button" class="secondary" id="download">Download config_network.h</button>
+      <button type="button" class="secondary" id="clear">Restore defaults</button>
+    </div>
+    <textarea id="output" style="width:100%;min-height:12rem" readonly spellcheck="false" aria-label="Generated config_network.h"></textarea>
+    <div class="status" id="status" role="status"></div>
+  </section>
+</main>
+<script>
+  const form = document.querySelector("#config-form");
+  const defaultNetworks = {
+    ssids: ["Network1", "", "", ""],
+    passwords: ["password1", "", "", ""],
+    turnoutPrefixes: ["", "", "", ""],
+    routePrefixes: ["", "", "", ""]
+  };
+  const defaults = {
+    maxSsids: 4,
+    DEFAULT_IP_AND_PORT: "",
+    USE_WIFI_COUNTRY_CODE: "false",
+    COUNTRY_CODE: "01",
+    ENFORCED_COUNTRY_CODE: "false",
+    SSID_CONNECTION_TIMEOUT: "10000",
+    AUTO_CONNECT_TO_FIRST_DEFINED_SERVER: "false",
+    AUTO_CONNECT_TO_FIRST_WITHROTTLE_SERVER: "false",
+    OUTBOUND_COMMANDS_MINIMUM_DELAY: "50",
+    SEND_LEADING_CR_LF_FOR_COMMANDS: "true",
+    MDNS_WAIT_TIME: "10000",
+    SORT_WIFI_NETWORKS: "false",
+    USE_FAST_WIFI_SCAN_METHOD: "false",
+    BYPASS_WIFI_SCAN_ON_STARTUP: "false"
+  };
+  const optionalFields = [
+    ["USE_WIFI_COUNTRY_CODE", "checkbox", "Use Wi-Fi country code"],
+    ["COUNTRY_CODE", "select", "Wi-Fi country code"],
+    ["ENFORCED_COUNTRY_CODE", "checkbox", "Enforce Wi-Fi country code"],
+    ["SSID_CONNECTION_TIMEOUT", "number", "SSID connection timeout (milliseconds)"],
+    ["AUTO_CONNECT_TO_FIRST_DEFINED_SERVER", "checkbox", "Auto-connect to the first defined server"],
+    ["AUTO_CONNECT_TO_FIRST_WITHROTTLE_SERVER", "checkbox", "Auto-connect to the first WiThrottle server"],
+    ["OUTBOUND_COMMANDS_MINIMUM_DELAY", "number", "Minimum outbound command delay (milliseconds)"],
+    ["SEND_LEADING_CR_LF_FOR_COMMANDS", "checkbox", "Send leading CR+LF for commands"],
+    ["MDNS_WAIT_TIME", "number", "mDNS wait time (milliseconds)"],
+    ["SORT_WIFI_NETWORKS", "checkbox", "Sort Wi-Fi networks by signal strength"],
+    ["USE_FAST_WIFI_SCAN_METHOD", "checkbox", "Use fast Wi-Fi scan method"],
+    ["BYPASS_WIFI_SCAN_ON_STARTUP", "checkbox", "Bypass Wi-Fi scan on startup"]
+  ];
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, character => ({
+      "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+    }[character]));
+  }
+  function escapeCpp(value) {
+    return String(value).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+  }
+  function renderNetworkFields(resetValues = false) {
+    const maxSsids = document.querySelector("#maxSsids");
+    const count = Math.max(1, Number.parseInt(maxSsids.value, 10) || 1);
+    maxSsids.value = String(count);
+    const previous = {};
+    if (!resetValues) {
+      form.querySelectorAll("[data-network-list]").forEach(field => {
+        previous[`${field.dataset.networkList}-${field.dataset.index}`] = field.value;
+      });
+    }
+    document.querySelector("#network-fields").innerHTML = ["ssids", "passwords", "turnoutPrefixes", "routePrefixes"].map(name => {
+      const label = {ssids:"SSID", passwords:"Password", turnoutPrefixes:"Turnout/Point prefix", routePrefixes:"Route prefix"}[name];
+      return `<div><h3>${label}</h3>${Array.from({length:count}, (_, index) => {
+        const key = `${name}-${index}`;
+        const value = previous[key] ?? defaultNetworks[name][index] ?? "";
+        return `<label>${label} ${index + 1}<input data-network-list="${name}" data-index="${index}" value="${escapeHtml(value)}" required><span class="field-note">${name}[${index}]</span></label>`;
+      }).join("")}</div>`;
+    }).join("");
+    generate();
+  }
+  
+  <!-- ------------------------------------------------------------------------------- -->
+
+  form.innerHTML = `<section class="panel">
+    <h2>Wi-Fi networks</h2>
+    <p class="hint">All four lists must have the same number of entries. Changing maxSsids expands or shrinks every list; at least one entry is always required.</p>
+    <label>Number of networks (maxSsids)<input id="maxSsids" type="number" min="1" step="1" value="${defaults.maxSsids}" required></label>
+    <div id="network-fields" class="network-grid"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Optional network settings</h2>
+    <p class="hint">The default server address is emitted only when all four IP segments and the port are filled in. IP segments are padded to three digits and the port to five digits.</p>
+    <div class="grid-5">
+      <label>IP segment 1<input data-ip-part="1" type="number" min="0" max="255" step="1" placeholder="0-255"><span class="field-note">First octet</span></label>
+      <label>IP segment 2<input data-ip-part="2" type="number" min="0" max="255" step="1" placeholder="0-255"><span class="field-note">Second octet</span></label>
+      <label>IP segment 3<input data-ip-part="3" type="number" min="0" max="255" step="1" placeholder="0-255"><span class="field-note">Third octet</span></label>
+      <label>IP segment 4<input data-ip-part="4" type="number" min="0" max="255" step="1" placeholder="0-255"><span class="field-note">Fourth octet</span></label>
+      <label>Port<input data-ip-part="port" type="number" min="0" max="65535" step="1" placeholder="0-65535"><span class="field-note">Five-digit port</span></label>
+    </div>
+    <div class="grid">${optionalFields.map(([name, type, label]) => {
+      if (type === "checkbox") return `<label class="checkbox"><input data-define="${name}" type="checkbox"> ${label}</label>`;
+      if (name === "COUNTRY_CODE") return `<label>${label}<select data-define="${name}">
+        <option value="">Use default: ${defaults[name]}</option>
+        ${["01","AT","AU","BE","BG","BR","CA","CH","CN","CY","CZ","DE","DK","EE","ES","FI","FR","GB","GR","HK","HR","HU","IE","IN","IS","IT","JP","KR","LI","LT","LU","LV","MT","MX","NL","NO","NZ","PL","PT","RO","SE","SI","SK","TW","US"].map(code => `<option value="${code}">${code}</option>`).join("")}
+      </select><span class="field-note">${name} (default: ${defaults[name]})</span></label>`;
+      return `<label>${label}<input data-define="${name}" type="${type}" placeholder="default: ${defaults[name]}"><span class="field-note">${name} (default: ${defaults[name] || "blank"})</span></label>`;
+    }).join("")}</div>
+  </section>`;
+
+  
+  <!-- ------------------------------------------------------------------------------- -->
+
+  function setDefaults() {
+    document.querySelector("#maxSsids").value = defaults.maxSsids;
+    document.querySelectorAll("[data-ip-part]").forEach(field => field.value = "");
+    document.querySelectorAll("[data-define]").forEach(field => {
+      if (field.type === "checkbox") field.checked = defaults[field.dataset.define] === "true";
+      else field.value = "";
+    });
+    renderNetworkFields(true);
+  }
+  function currentValue(field) {
+    if (field.type === "checkbox") return field.checked ? "true" : null;
+    if (field.tagName === "SELECT") return field.value || null;
+    return field.value.trim() || null;
+  }
+  function defaultIpAndPort() {
+    const parts = [...document.querySelectorAll("[data-ip-part]")].map(field => field.value.trim());
+    if (parts.some(value => value === "")) return null;
+    return `${parts.slice(0, 4).map(value => value.padStart(3, "0")).join("")}${parts[4].padStart(5, "0")}`;
+  }
+  function generate() {
+    const count = Math.max(1, Number.parseInt(document.querySelector("#maxSsids").value, 10) || 1);
+    const lines = [
+      "// Generated by the WiTcontroller config_network.h generator",
+      "// Copy this file to your WiTcontroller project folder.",
+      "",
+      `const int maxSsids = ${count};`
+    ];
+    for (const name of ["ssids", "passwords", "turnoutPrefixes", "routePrefixes"]) {
+      const values = [...document.querySelectorAll(`[data-network-list="${name}"]`)].map(field => `"${escapeCpp(field.value)}"`);
+      lines.push(`const String ${name}[maxSsids] = {${values.join(", ")}};`);
+    }
+    let optionalHeaderAdded = false;
+    const ipAndPort = defaultIpAndPort();
+    if (ipAndPort !== null) {
+      lines.push("", "// Optional network settings", `#define DEFAULT_IP_AND_PORT "${ipAndPort}"`);
+      optionalHeaderAdded = true;
+    }
+    document.querySelectorAll("[data-define]").forEach(field => {
+      const value = currentValue(field);
+      if (value === null) return;
+      if (!optionalHeaderAdded) {
+        lines.push("", "// Optional network settings");
+        optionalHeaderAdded = true;
+      }
+      lines.push(`#define ${field.dataset.define} ${field.type === "text" || field.tagName === "SELECT" ? `"${escapeCpp(value)}"` : value}`);
+    });
+    document.querySelector("#output").value = `${lines.join("\n")}\n`;
+  }
+  document.querySelector("#maxSsids").addEventListener("input", () => renderNetworkFields());
+  form.addEventListener("input", event => {
+    if (!event.target.matches("#maxSsids")) generate();
+  });
+  form.addEventListener("change", generate);
+  document.querySelector("#copy").addEventListener("click", async () => {
+    await navigator.clipboard.writeText(document.querySelector("#output").value);
+    document.querySelector("#status").textContent = "Copied to clipboard.";
+  });
+  document.querySelector("#download").addEventListener("click", () => {
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(new Blob([document.querySelector("#output").value], {type:"text/plain"}));
+    link.download = "config_network.h";
+    link.click();
+    URL.revokeObjectURL(link.href);
+    document.querySelector("#status").textContent = "Downloaded config_network.h.";
+  });
+  document.querySelector("#clear").addEventListener("click", () => {
+    setDefaults();
+    document.querySelector("#status").textContent = "Defaults restored.";
+  });
+  setDefaults();
+</script>
+</body>
+</html>
