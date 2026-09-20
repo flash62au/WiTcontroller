@@ -633,6 +633,10 @@ const int glyph_speed_step = 0x00d6;
    #define SPEED_STEP_ADDITIONAL_MULTIPLIER 2
 #endif
 
+#ifndef DEFAULT_SPEED_STEP_MULTIPLIER
+   #define DEFAULT_SPEED_STEP_MULTIPLIER 1
+#endif
+
 
 #ifdef ENCODER_SENSITIVITY
   const int encoderSensitivity = ENCODER_SENSITIVITY;
