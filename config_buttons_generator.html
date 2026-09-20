@@ -157,15 +157,15 @@
 
   const coreEncoderActionsFields = [
     {title:"Important Rotary Encoder Actions", items:[
-      ["ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED","select",bools,"Clockwise Rotation Increases Speed"],
+      ["ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED","select",bools,"Clockwise rotation increases speed"],
     ]},
   ];
 
   const extendedEncoderActionsFields = [
     {title:"Additional Rotary Encoder Actions (Optional)", items:[
-      ["ENCODER_INVERT_ROTATION_WHEN_REVERSED","select",bools,"Invert Rotation When Direction is Reversed"],
-      ["SPEED_STEP","number",null,"Speed Step Increment/Decrement Per Encoder Click"],
-      ["ENCODER_BUTTON_ACTION","select",choices(actions),"Encoder Button Action"],
+      ["ENCODER_INVERT_ROTATION_WHEN_REVERSED","select",bools,"Invert rotation when direction is reversed"],
+      ["SPEED_STEP","number",null,"Speed Step increment/decrement per encoder click"],
+      ["ENCODER_BUTTON_ACTION","select",choices(actions),"Encoder button action"],
       ["TOGGLE_DIRECTION_ON_ENCODER_BUTTON_PRESSED_WHEN_STATIONAY","select",bools,"Toggle direction when stationary"],
     ]},
   ];
@@ -186,6 +186,7 @@
     {title:"General Keypad Actions (Optional)", items:[
       ["SPEED_STEP_MULTIPLIER","number",null,"Fast speed-step multiplier"],
       ["SPEED_STEP_ADDITIONAL_MULTIPLIER","number",null,"Additional speed multiplier"],
+      ["DEFAULT_SPEED_STEP_MULTIPLIER","number",null,"Default speed-step multiplier"],
       ["HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS","select",bools,"# (hash) key opens function labels instead of key definitions"]
     ]}
   ];
@@ -204,10 +205,10 @@
   const displayFields = [
     {title:"Display Options (Optional)", items:[
       ["DISPLAY_LOCO_NAME","flag",null,"Display loco names instead of DCC addresses"],
-      ["CONSIST_SPACE_BETWEEN_LOCOS","text",null,"separator between loco names / addresses (no quotes)"],
-      ["DISPLAY_SPEED_AS_PERCENT","select",bools,"Display Speed as a Percentage"],
+      ["CONSIST_SPACE_BETWEEN_LOCOS","text",null,"Separator between loco names / addresses (no quotes)"],
+      ["DISPLAY_SPEED_AS_PERCENT","select",bools,"Display Speed as a percentage"],
       ["DISPLAY_SPEED_AS_0_TO_28","select",bools,"Display Speed as 0–28"],
-      ["CUSTOM_APPNAME","text",null,"Custom App Name (optional)"]
+      ["CUSTOM_APPNAME","text",null,"Custom app name (optional)"]
     ]}
   ];
 
@@ -215,8 +216,9 @@
     {title:"Other Actions (Optional)", items:[
       ["CONSIST_RELEASE_BY_INDEX","select",bools,"Release Consist/MU Locos by Index"],
       ["DROP_BEFORE_ACQUIRE","select",bools,"Drop existing locos before acquiring the new loco"],
-      ["MAX_THROTTLES","number",null,"Default Maximum Number of Throttles (1–6)"],
-      ["ROSTER_SORT_SEQUENCE","select",choices([["0","Server order"],["1","Name"],["2","DCC address"]]),"Roster Sorting Order"]
+      ["MAX_THROTTLES","number",null,"Default maximum number of Throttles (1–6)"],
+      ["ROSTER_SORT_SEQUENCE","select",choices([["0","Server order"],["1","Name"],["2","DCC address"]]),"Roster Sorting Order"],
+      ["SPEED_ZERO_ON_DIRECTION_CHANGE","select",bools,"Stop the loco if the direction is changed"]
     ]}
   ];
 
@@ -228,7 +230,7 @@
       ["GUEST_MODE_LED_PIN","select",gpiosPlusNone,"Guest mode LED GPIO"],
       ["GUEST_MODE_HOLD_DURATION","number",null,"Guest mode Hold Duration (milliseconds)"], ["GESTURE_PARTNER_WINDOW","number",null,"Guest gesture window (milliseconds)"],
       ["GUEST_MODE_ALLOW_DIRECT_KEYBOARD_COMMANDS","select",bools,"Allow Direct Keypad Commands in guest mode"],
-      ["GUEST_MODE_ALLOW_NEXT_THROTTLE","select",bools,"Allow Changing Throttles in guest mode"]
+      ["GUEST_MODE_ALLOW_NEXT_THROTTLE","select",bools,"Allow changing throttles in guest mode"]
     ]}
   ];
 
@@ -359,6 +361,7 @@
     HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS:"false", 
     MAX_THROTTLES:"2", SPEED_STEP:"4",
     SPEED_STEP_MULTIPLIER:"3", 
+    DEFAULT_SPEED_STEP_MULTIPLIER:"1",
     SPEED_STEP_ADDITIONAL_MULTIPLIER:"2", 
     ENCODER_SENSITIVITY:"85",
     DISPLAY_SPEED_AS_PERCENT:"false", 
