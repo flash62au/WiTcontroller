@@ -156,8 +156,8 @@
   ];
 
   const coreEncoderActionsFields = [
-    {title:"Core Rotary Encoder Actions", items:[
-      ["ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED","select",bools,"Clockwise increases speed"],
+    {title:"Important Rotary Encoder Actions", items:[
+      ["ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED","select",bools,"Clockwise Rotation Increases Speed"],
     ]},
   ];
 
@@ -171,7 +171,7 @@
   ];
 
   const keypadHardwareFields = [
-    {title:"Keypad Hardware", items:[
+    {title:"Keypad Hardware Configuration", items:[
       ["ROW_NUM","select",choices([["4","4"]]),"Keypad row count"], 
       ["COLUMN_NUM","select",choices([["3","3"],["4","4"]]),"Keypad column count"],
       ["KEYPAD_ROW_PINS","text",null,"Keypad row pins (C++ list syntax)"], 
@@ -280,7 +280,7 @@
     FONT_DEFAULT: "Do not change unless using Chinese language",
     FONT_DIRECTION: "Do not change unless using Chinese language",
 
-    ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED: "Defines the rotation direction for the rotary encoder to increase speed\nfalse = Counter clockwise (default)\ntrue = clockwise",
+    ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED: "Defines the rotation direction for the rotary encoder to increase speed\nfalse = Counter clockwise (default)\ntrue = Clockwise",
     ENCODER_BUTTON_ACTION: "Action performed when the rotary encoder button is pressed.\nSee static.h or README.md for details on the allowed functions",
     TOGGLE_DIRECTION_ON_ENCODER_BUTTON_PRESSED_WHEN_STATIONAY: "What the rotary encoder button does when the loco is stationary.\ntrue = if the locos(s) are stationary, clicking the encoder button will toggle the direction\nfalse = does nothing\nThis only takes effect if the ENCODER_BUTTON_ACTION (above) is set to SPEED_STOP_THEN_TOGGLE_DIRECTION",
     ROTARY_ENCODER_STEPS: "If moving the encoder a single click sends more than one speed command, try adjusting this value",
@@ -310,7 +310,7 @@
     CHOSEN_KEYPAD_C_FUNCTION: "4x4 keypad only",
     CHOSEN_KEYPAD_D_FUNCTION: "4x4 keypad only",
 
-    OLED_TYPE: "This is one of the common .9 inch oLED displays and is included by default\nU8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);\n\nThis is one of the common 1.3 inch oLED displays\nU8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);\n\nThis one works with a 2.42 inch SSD1309 based oLED\n U8G2_SSD1309_128X64_NONAME2_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);\n\nIf you have an oLED different to the options above, you will need to find the appropriate constructor from the complete list (see link above).\n\nIf you have used different pins (GPIOs) to connect the oLED you will need to adjust the constructor line.",
+    OLED_TYPE: "This is one of the common .9 inch oLED displays and is included by default\nU8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);\n\nThis is one of the common 1.3 inch oLED displays\nU8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);\n\nThis one works with a 2.42 inch SSD1309 based oLED\n U8G2_SSD1309_128X64_NONAME2_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);",
 
     ROW_NUM: "Only 4x3 and 4x4 keyboards are currently supported",
     COLUMN_NUM: "Only 4x3 and 4x4 keyboards are currently supported",
@@ -527,18 +527,19 @@
   keypadHardwareFields.forEach(group => {
     form.insertAdjacentHTML("beforeend", `<section class="panel">
       <h2>${group.title}</h2>
-      <p class=hint">If you have used the default pins (GPIOs) when installing your keypad, you may not need to alter anything in this section.</p>
+      <p class=hint">If you have used the default pins (GPIOs) when installing a 4x3 keypad, you may not need to alter anything in this section.</p>
         <div class="grid">
           ${group.items.map(renderField).join("")}
         </div>
       </section>`);
   });
 
-  <!-- oLED Hardware Definition -->
+  <!-- oLED Hardware Configuration -->
   form.insertAdjacentHTML("beforeend", `<section class="panel">
-    <h2>oLED Hardware Definition</h2>
-    <p class="hint">Enter the complete constructor expression after <code>oLED_TYPE</code>, including the <code>u8g2(...)</code> instance.<br/>The complete list of constructors is available here: <a href='https://github.com/olikraus/u8g2/wiki/u8g2setupcpp'>https://github.com/olikraus/u8g2/wiki/u8g2setupcpp</a></p>
-    ${renderField(["OLED_TYPE","select",choices([["U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);","common .9 inch"],["U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);","common 1.3 inch"],["U8G2_SSD1309_128X64_NONAME2_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);","2.42 inch SSD1309"]]),"oLED constructor"])}
+    <h2>oLED Hardware Configuration</h2>
+    <p class="hint">Select a constructor expression for the type of oLED you have installed.<p/>
+    <p class="hint">Only three common types are available to select here. If you have an oLED different to the options available, you will need to find the appropriate constructor from the complete list available here: <a href='https://github.com/olikraus/u8g2/wiki/u8g2setupcpp'>https://github.com/olikraus/u8g2/wiki/u8g2setupcpp<br/><br/>Also if you have used different pins (GPIOs) to connect the oLED you will need to adjust the constructor line.</a></p>
+    ${renderField(["OLED_TYPE","select",choices([["U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);","common .9 inch SH1106"],["U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);","common 1.3 inch SSD1309"],["U8G2_SSD1309_128X64_NONAME2_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);","2.42 inch SSD1309"]]),"oLED constructor"])}
   </section>`);
 
   form.insertAdjacentHTML("beforeend", `<section class="panel">
