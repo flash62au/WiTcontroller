@@ -1354,3 +1354,10 @@ const char ssidPasswordBlankChar = 164;
 #ifndef GUEST_MODE_ALLOW_NEXT_THROTTLE
    #define GUEST_MODE_ALLOW_NEXT_THROTTLE true
 #endif
+
+// ***************************************************
+// Set speed to 0 when direction is changed.
+
+#ifndef SPEED_ZERO_ON_DIRECTION_CHANGE
+   #define SPEED_ZERO_ON_DIRECTION_CHANGE false
+#endif
