@@ -155,9 +155,14 @@
     ]},
   ];
 
-  const encoderActionsFields = [
-    {title:"Rotary Encoder Actions", items:[
+  const coreEncoderActionsFields = [
+    {title:"Core Rotary Encoder Actions", items:[
       ["ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED","select",bools,"Clockwise increases speed"],
+    ]},
+  ];
+
+  const extendedEncoderActionsFields = [
+    {title:"Additional Rotary Encoder Actions (Optional)", items:[
       ["ENCODER_INVERT_ROTATION_WHEN_REVERSED","select",bools,"Invert rotation when direction is reversed"],
       ["SPEED_STEP","number",null,"Speed step per encoder click"],
       ["ENCODER_BUTTON_ACTION","select",choices(actions),"Encoder button action"],
@@ -165,8 +170,8 @@
     ]},
   ];
 
-  const keypadFields = [
-    {title:"Keypad Hardware and Actions", items:[
+  const keypadHardwareFields = [
+    {title:"Keypad Hardware", items:[
       ["ROW_NUM","select",choices([["4","4"]]),"Keypad row count"], 
       ["COLUMN_NUM","select",choices([["3","3"],["4","4"]]),"Keypad column count"],
       ["KEYPAD_ROW_PINS","text",null,"Keypad row pins (C++ list syntax)"], 
@@ -174,15 +179,19 @@
       ["KEYPAD_KEYS","select",choices([["{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}, {'*', '0', '#'}","4x3 - {'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}, {'*', '0', '#'}"],["{'1', '2', '3', 'A'}, {'4', '5', '6', 'B'}, {'7', '8', '9', 'C'}, {'*', '0', '#', 'D'}","4x4 - {'1', '2', '3', 'A'}, {'4', '5', '6', 'B'}, {'7', '8', '9', 'C'}, {'*', '0', '#', 'D'}"]]),"Keypad layout"],
       ["KEYPAD_DEBOUNCE_TIME","number",null,"Keypad debounce (milliseconds)"], 
       ["KEYPAD_HOLD_TIME","number",null,"Keypad hold time (milliseconds)"],
+    ]}
+  ];
+
+  const keypadActionsFields = [
+    {title:"General Keypad Actions (Optional)", items:[
       ["SPEED_STEP_MULTIPLIER","number",null,"Fast speed-step multiplier"],
       ["SPEED_STEP_ADDITIONAL_MULTIPLIER","number",null,"Additional speed multiplier"],
       ["HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS","select",bools,"# (hash) key opens function labels instead of key definitions"]
     ]}
   ];
 
-
   const startupFields = [
-    {title:"Startup (Optional)", items:[
+    {title:"WiTcontoller Startup Actions (Optional)", items:[
       ["STARTUP_COMMAND_1","text",null,"Startup command 1 (no quotes)"], 
       ["STARTUP_COMMAND_2","text",null,"Startup command 2 (no quotes)"],
       ["STARTUP_COMMAND_3","text",null,"Startup command 3 (no quotes)"], 
@@ -193,7 +202,7 @@
   ];
 
   const displayFields = [
-    {title:"Display ", items:[
+    {title:"Display Options (Optional)", items:[
       ["DISPLAY_LOCO_NAME","flag",null,"Display loco names instead of DCC addresses"],
       ["CONSIST_SPACE_BETWEEN_LOCOS","text",null,"separator between loco names / addresses (no quotes)"],
       ["DISPLAY_SPEED_AS_PERCENT","select",bools,"Display Speed as a Percentage"],
@@ -203,7 +212,7 @@
   ];
 
   const otherActionsFields = [
-    {title:"Other Actions", items:[
+    {title:"Other Actions (Optional)", items:[
       ["CONSIST_RELEASE_BY_INDEX","select",bools,"Release consist loco by index"],
       ["DROP_BEFORE_ACQUIRE","select",bools,"Drop existing locos before acquiring the new loco"],
       ["MAX_THROTTLES","number",null,"Maximum throttles (1–6)"],
@@ -240,13 +249,15 @@
     ]}
   ];
 
-  const fields = [
-    {title:"Function Labels", items:[
+  const functionLabelFields = [
+    {title:"F0-F2 Function Labels (Optional)", items:[
       ["F0_LABEL","text",null,"F0 label (no quotes)"], 
       ["F1_LABEL","text",null,"F1 label (no quotes)"], 
       ["F2_LABEL","text",null,"F2 label (no quotes)"]
     ]},
+  ];
 
+  const searchFields = [
     {title:"Search Functions for Additional Buttons (Optional)", items:[
       ["FUNCTION_SEARCH_RANDOM_MATCH","select",bools,"Choose a random matching function"],
       ["MAX_FUNCTION_SEARCH","number",null,"Number of function searches"],
@@ -324,7 +335,7 @@
   };
   const form = document.querySelector("#config-form");
   // Add lower-case words here to collapse matching section titles by default.
-  const collapsibleSectionTitleTerms = ["optional"];
+  const collapsibleSectionTitleTerms = ["(optional)"];
   const option = (value, label, selected = false) => `<option value="${value}"${selected ? " selected" : ""}>${label}</option>`;
   const explanationHtml = value => String(value).split(/(<br\s*\/?>|\r?\n|\\n)/gi).map(part =>
     /^<br\s*\/?>$/i.test(part) || part === "\n" || part === "\r\n" || part === "\\n"
@@ -477,6 +488,11 @@
 
   <!-- ------------------------------------------------------------------------------- -->
 
+  form.insertAdjacentHTML("beforeend", `<section class="panel">
+    <h2 style="color:red"><big>Part 1 - Essentials + Basic Hardware Configuration</big></h2>
+      <p class=hint">Defining the basic hardware of your WiTcontroller</p>
+  </section>`);
+
   <!-- Language and Fonts -->
   form.insertAdjacentHTML("beforeend", `<section class="panel">
     <h2>Language and Fonts</h2>
@@ -497,8 +513,8 @@
       </section>`);
   });
 
-  <!-- Encoder Actions -->
-  encoderActionsFields.forEach(group => {
+  <!-- Core Encoder Actions -->
+  coreEncoderActionsFields.forEach(group => {
     form.insertAdjacentHTML("beforeend", `<section class="panel">
       <h2>${group.title}</h2><p class=hint">Adjust these to your personal taste.</p>
         <div class="grid">
@@ -508,7 +524,7 @@
   });
 
   <!-- Keypad Hardware -->
-  keypadFields.forEach(group => {
+  keypadHardwareFields.forEach(group => {
     form.insertAdjacentHTML("beforeend", `<section class="panel">
       <h2>${group.title}</h2>
       <p class=hint">If you have used the default pins (GPIOs) when installing your keypad, you may not need to alter anything in this section.</p>
@@ -525,98 +541,10 @@
     ${renderField(["OLED_TYPE","select",choices([["U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);","common .9 inch"],["U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);","common 1.3 inch"],["U8G2_SSD1309_128X64_NONAME2_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);","2.42 inch SSD1309"]]),"oLED constructor"])}
   </section>`);
 
-  <!-- Display -->
-  displayFields.forEach(group => {
-    form.insertAdjacentHTML("beforeend", `<section class="panel">
-      <h2>${group.title}</h2>
-      <div class="grid">
-        ${group.items.map(renderField).join("")}
-      </div>
-    </section>`);
-  });
-
-  <!-- Consists and commands -->
-  addIndexed3("Consist/MU Function Actions (Optional)", "How functions are sent, or not sent, to other locos ina Consist/MU.", "CONSIST_FUNCTION_FOLLOW_F", 31, "select",choices([["CONSIST_ALL_LOCOS","All locos (CONSIST_ALL_LOCOS)"],["CONSIST_LEAD_LOCO","Lead loco (CONSIST_LEAD_LOCO)"]]), "Consist behaviour F", "");
-
-
-  <!-- Other Actions -->
-  otherActionsFields.forEach(group => {
-    form.insertAdjacentHTML("beforeend", `<section class="panel">
-      <h2>${group.title}</h2>
-      <div class="grid">
-        ${group.items.map(renderField).join("")}
-      </div>
-    </section>`);
-  });
-
-  <!-- Keypad Button Actions -->
-  const keyFunctions = Array.from({length: 14}, (_, i) => [`CHOSEN_KEYPAD_${i < 10 ? i : String.fromCharCode(55 + i)}_FUNCTION`, i < 10 ? `Key ${i}` : `Key ${String.fromCharCode(55 + i)}`]);
   form.insertAdjacentHTML("beforeend", `<section class="panel">
-    <h2>Keypad Button Actions</h2>
-    <p class="hint">This section allows to alter the actions of the keypad buttons, when not inside menu - Direct Actions.<br/>If you alter these, you should alter the corresponding labels in the next section to match.</p>
-    <p class="hint">The <code>*</code> and <code>#</code> keys cannot be remapped. Key A–D require a 4x4 keypad.</p>
-    <div class="key-grid-3">
-      ${keyFunctions.map(([n,l]) => renderField([n,"select",choices(actionsKeypadOnly),l])).join("")}
-    </div>
+    <h2 style="color:red"><big>Part 2 - Optional Additional Button Hardware Configuration</big></h2>
+      <p class=hint">If you have installed the 1-11 Additional Buttons.</p>
   </section>`);
-
-  <!-- Keypad Display Labels -->
-  const labels = Array.from({length:10}, (_, i) => [`CHOSEN_KEYPAD_${i}_DISPLAY_NAME`, `Key ${i} display label (no quotes)`]);
-  form.insertAdjacentHTML("beforeend", `<section class="panel">
-    <h2>Keypad Display Labels</h2>
-    <p class="hint">If you have altered the default mapping of the Direct Keypad Actions in the previous section, you should adjust the labels in this section to match.  Keep labels short / abbreviate a lot.<br/>Note: No labels are shown for the A-D keys of the 4x4 keypad.</p>
-    <div class="key-grid-3">
-      ${labels.map(([n,l]) => renderField([n,"text",null,l])).join("")}
-    </div>
-  </section>`);
-  
-  <!-- Function Labels -->
-  function addIndexed(title, hint, prefix, count, type, values, labelPrefix, labelSuffix, start = 1) {
-    form.insertAdjacentHTML("beforeend", `<section class="panel">
-      <h2>${title}</h2>
-      <p class="hint">${hint}</p>
-      <div class="key-grid-3">
-        ${Array.from({length:count}, (_, i) => renderField([`${prefix}${i + start}`,type,values,`${labelPrefix} ${i + start} ${labelSuffix}`])).join("")}
-      </div>
-    </section>`);
-  }
-
-  function addIndexed3(title, hint, prefix, count, type, values, labelPrefix, labelSuffix, start = 1) {
-    form.insertAdjacentHTML("beforeend", `<section class="panel">
-      <h2>${title}</h2>
-      <p class="hint">${hint}</p>
-      <div class="key-grid-3">
-        ${Array.from({length:count}, (_, i) => renderField([`${prefix}${i + start}`,type,values,`${labelPrefix}${i + start} ${labelSuffix}`])).join("")}
-      </div>
-    </section>`);
-  }
-
-  <!-- Function Labels -->
-  <!-- Search Functions for Additional Buttons -->
-  fields.forEach(group => {
-    form.insertAdjacentHTML("beforeend", `<section class="panel">
-      <h2>${group.title}</h2>
-      <div class="grid">
-        ${group.items.map(renderField).join("")}
-      </div>
-    </section>`);
-  });
-
-  <!-- Startup -->
-  startupFields.forEach(group => {
-    form.insertAdjacentHTML("beforeend", `<section class="panel">
-      <h2>${group.title}</h2>
-      <div class="grid">
-        ${group.items.map(renderField).join("")}
-      </div>
-    </section>`);
-  });
-
-  <!-- Custom WiThrottle Commands -->
-  addIndexed("Custom WiThrottle Commands (Optional)", "You can define custom WiThrottle commands here, that can then be assigned to any Additional Buttons.<br/>These can be any legitimate WiThrottle protocol command enclosed in quotes or double quotes<br/>Refer to the <a href='https://www.jmri.org/help/en/package/jmri/jmrit/withrottle/Protocol.shtml'>JMRI WiThrottle Protocol reference</a>", "CUSTOM_COMMAND_", 11, "text", null, "Command", " (no quotes)");
-  
-  <!-- Custom Menu Select Commands -->
-  addIndexed("Custom Menu Select Commands (Optional)", "You can define custom menu command sequences here, that can then be assigned to any Additional Buttons.<br/>These can be any legitimate menu character sequence.  Each can be multiple commands.<br/>e.g. \"*1\" will open the add loco menu screen.<br/>e.g. \"*1999#\" will select loco 999 and return you to the throttle screen.", "CUSTOM_MENU_SELECT_COMMAND_", 11, "text", null, "Menu sequence", " (no quotes)");
   
   <!-- Additional Buttons -->
   form.insertAdjacentHTML("beforeend", `<section class="panel">
@@ -637,6 +565,164 @@
     </div>
   </section>`);
 
+  form.insertAdjacentHTML("beforeend", `<section class="panel">
+    <h2 style="color:red"><big>Part 3 - Optional Battery Check Hardware Configuration</big></h2>
+      <p class=hint">If you have installed the additional hardware to support the battery check.</p>
+  </section>`);
+
+  <!-- Battery Check (Optional) -->
+  batteryFields.forEach(group => {
+    form.insertAdjacentHTML("beforeend", `<section class="panel">
+      <h2>${group.title}</h2>
+      <p class="hint">Only valid if you have installed the additional hardware to support the battery check.</p>
+      <div class="grid">
+        ${group.items.map(renderField).join("")}
+      </div>
+    </section>`);
+  });
+
+  
+  form.insertAdjacentHTML("beforeend", `<section class="panel">
+    <h2 style="color:red"><big>Part 4 - Keypad and Encoder Options</big></h2>
+      <p class=hint">Optional display and actions.</p>
+  </section>`);
+
+  <!-- Display Options (Optional) -->
+  displayFields.forEach(group => {
+    form.insertAdjacentHTML("beforeend", `<section class="panel">
+      <h2>${group.title}</h2>
+      <div class="grid">
+        ${group.items.map(renderField).join("")}
+      </div>
+    </section>`);
+  });
+
+  <!-- Key Function Labels (F0-F2) (Optional) -->
+  functionLabelFields.forEach(group => {
+    form.insertAdjacentHTML("beforeend", `<section class="panel">
+      <h2>${group.title}</h2>
+      <div class="grid">
+        ${group.items.map(renderField).join("")}
+      </div>
+    </section>`);
+  });
+
+  <!-- Other Actions -->
+  otherActionsFields.forEach(group => {
+    form.insertAdjacentHTML("beforeend", `<section class="panel">
+      <h2>${group.title}</h2>
+      <div class="grid">
+        ${group.items.map(renderField).join("")}
+      </div>
+    </section>`);
+  });
+
+  <!-- Extended Encoder Actions -->
+  extendedEncoderActionsFields.forEach(group => {
+    form.insertAdjacentHTML("beforeend", `<section class="panel">
+      <h2>${group.title}</h2><p class=hint">Adjust these to your personal taste.</p>
+        <div class="grid">
+          ${group.items.map(renderField).join("")}
+        </div>
+      </section>`);
+  });
+
+  <!-- Keypad Actions -->
+  keypadActionsFields.forEach(group => {
+    form.insertAdjacentHTML("beforeend", `<section class="panel">
+      <h2>${group.title}</h2>
+      <p class=hint"></p>
+        <div class="grid">
+          ${group.items.map(renderField).join("")}
+        </div>
+      </section>`);
+  });
+
+  <!-- Keypad Button Actions -->
+  const keyFunctions = Array.from({length: 14}, (_, i) => [`CHOSEN_KEYPAD_${i < 10 ? i : String.fromCharCode(55 + i)}_FUNCTION`, i < 10 ? `Key ${i}` : `Key ${String.fromCharCode(55 + i)}`]);
+  form.insertAdjacentHTML("beforeend", `<section class="panel">
+    <h2>Individual Keypad Key Direct Actions (Optional)</h2>
+    <p class="hint">This section allows to alter the actions of the keypad buttons, when not inside menu - Direct Actions.<br/>If you alter these, you should alter the corresponding labels in the next section to match.</p>
+    <p class="hint">The <code>*</code> and <code>#</code> keys cannot be remapped. Key A–D require a 4x4 keypad.</p>
+    <div class="key-grid-3">
+      ${keyFunctions.map(([n,l]) => renderField([n,"select",choices(actionsKeypadOnly),l])).join("")}
+    </div>
+  </section>`);
+
+  <!-- Keypad Display Labels -->
+  const labels = Array.from({length:10}, (_, i) => [`CHOSEN_KEYPAD_${i}_DISPLAY_NAME`, `Key ${i} display label (no quotes)`]);
+  form.insertAdjacentHTML("beforeend", `<section class="panel">
+    <h2>Individual Keypad Key Direct Action Display Labels (Optional)</h2>
+    <p class="hint">If you have altered the default mapping of the Direct Keypad Actions in the previous section, you should adjust the labels in this section to match.  Keep labels short / abbreviate a lot.<br/>Note: No labels are shown for the A-D keys of the 4x4 keypad.</p>
+    <div class="key-grid-3">
+      ${labels.map(([n,l]) => renderField([n,"text",null,l])).join("")}
+    </div>
+  </section>`);
+  
+  <!-- Consist/MU Function Actions (Optional) -->
+  addIndexed3("Consist/MU Function Behaviours (Optional)", "How functions are sent, or not sent, to other locos ina Consist/MU.", "CONSIST_FUNCTION_FOLLOW_F", 31, "select",choices([["CONSIST_ALL_LOCOS","All locos (CONSIST_ALL_LOCOS)"],["CONSIST_LEAD_LOCO","Lead loco (CONSIST_LEAD_LOCO)"]]), "Consist behaviour F", "");
+
+  function addIndexed(title, hint, prefix, count, type, values, labelPrefix, labelSuffix, start = 1) {
+    form.insertAdjacentHTML("beforeend", `<section class="panel">
+      <h2>${title}</h2>
+      <p class="hint">${hint}</p>
+      <div class="key-grid-3">
+        ${Array.from({length:count}, (_, i) => renderField([`${prefix}${i + start}`,type,values,`${labelPrefix} ${i + start} ${labelSuffix}`])).join("")}
+      </div>
+    </section>`);
+  }
+
+  function addIndexed3(title, hint, prefix, count, type, values, labelPrefix, labelSuffix, start = 1) {
+    form.insertAdjacentHTML("beforeend", `<section class="panel">
+      <h2>${title}</h2>
+      <p class="hint">${hint}</p>
+      <div class="key-grid-3">
+        ${Array.from({length:count}, (_, i) => renderField([`${prefix}${i + start}`,type,values,`${labelPrefix}${i + start} ${labelSuffix}`])).join("")}
+      </div>
+    </section>`);
+  }
+
+  form.insertAdjacentHTML("beforeend", `<section class="panel">
+    <h2 style="color:red"><big>Part 5 - Advanced Options</big></h2>
+  </section>`);
+
+  <!-- Guest Mode -->
+  guestModeFields.forEach(group => {
+    form.insertAdjacentHTML("beforeend", `<section class="panel">
+      <h2>${group.title}</h2>
+      <p class="hint">To use Guest Mode you must have installed at least two Additional Buttons in your build.</p>
+      <div class="grid">
+        ${group.items.map(renderField).join("")}
+      </div>
+    </section>`);
+  });
+
+  <!-- Search Functions for Additional Buttons -->
+  searchFields.forEach(group => {
+    form.insertAdjacentHTML("beforeend", `<section class="panel">
+      <h2>${group.title}</h2>
+      <div class="grid">
+        ${group.items.map(renderField).join("")}
+      </div>
+    </section>`);
+  });
+
+  <!-- Startup -->
+  startupFields.forEach(group => {
+    form.insertAdjacentHTML("beforeend", `<section class="panel">
+      <h2>${group.title}</h2>
+      <div class="grid">
+        ${group.items.map(renderField).join("")}
+      </div>
+    </section>`);
+  });
+
+  <!-- Custom WiThrottle Commands -->
+  addIndexed("Custom WiThrottle Commands (Optional)", "You can define custom WiThrottle commands here, that can then be assigned to any Additional Buttons.<br/>These can be any legitimate WiThrottle protocol command.<br/>Refer to the <a href='https://www.jmri.org/help/en/package/jmri/jmrit/withrottle/Protocol.shtml'>JMRI WiThrottle Protocol reference</a>", "CUSTOM_COMMAND_", 11, "text", null, "Command", " (no quotes)");
+  
+  <!-- Custom Menu Select Commands -->
+  addIndexed("Custom Menu Select Commands (Optional)", "You can define custom menu command sequences here, that can then be assigned to any Additional Buttons.<br/>These can be any legitimate menu character sequence.  Each can be multiple commands.<br/>e.g. \"*1\" will open the add loco menu screen.<br/>e.g. \"*1999#\" will select loco 999 and return you to the throttle screen.", "CUSTOM_MENU_SELECT_COMMAND_", 11, "text", null, "Menu sequence", " (no quotes)");
+  
   const additionalButtonFieldDefinitions = [
     ["NEW_ADDITIONAL_BUTTON_ACTIONS", choices(actions), "Action"],
     ["NEW_ADDITIONAL_BUTTON_LATCHING", bools, "Latching"],
@@ -704,27 +790,10 @@
   //   </div>
   // </section>`);
 
-  <!-- Battery -->
-  batteryFields.forEach(group => {
-    form.insertAdjacentHTML("beforeend", `<section class="panel">
-      <h2>${group.title}</h2>
-      <p class="hint">Only valid if you have installed the additional hardware to support the battery check.</p>
-      <div class="grid">
-        ${group.items.map(renderField).join("")}
-      </div>
-    </section>`);
-  });
-
-  <!-- Guest Mode -->
-  guestModeFields.forEach(group => {
-    form.insertAdjacentHTML("beforeend", `<section class="panel">
-      <h2>${group.title}</h2>
-      <p class="hint">To use Guest Mode you must have installed at least two Additional Buttons in your build.</p>
-      <div class="grid">
-        ${group.items.map(renderField).join("")}
-      </div>
-    </section>`);
-  });
+  form.insertAdjacentHTML("beforeend", `<section class="panel">
+    <h2 style="color:red"><big>Technical Configuration</big></h2>
+      <p class=hint">Only alter any of items here if you are having difficulties and have requested help from the developer.</p>
+  </section>`);
 
   <!-- Heartbeat -->
   heartbeatFields.forEach(group => {
@@ -791,7 +860,7 @@
     return el.value.trim() || null;
   }
   function generate() {
-    const lines = ["// Generated by the WiTcontroller config_buttons.h generator", "// Copy this file to your WiTcontroller project.", ""];
+    const lines = ["// Generated by the WiTcontroller config_buttons.h generator", "// Copy this file to your WiTcontroller project folder.", ""];
     let current = "";
     const generatedButtonLists = new Set();
     document.querySelectorAll("[data-define], [data-button-list]").forEach(el => {
