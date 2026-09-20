@@ -272,6 +272,8 @@ const bool encoderRotationClockwiseIsIncreaseSpeed = ENCODER_ROTATION_CLOCKWISE_
 const bool toggleDirectionOnEncoderButtonPressWhenStationary = TOGGLE_DIRECTION_ON_ENCODER_BUTTON_PRESSED_WHEN_STATIONAY;
 // true = if the locos(s) are stationary, clicking the encoder button will toggle the direction
 
+const bool speedZeroOnDirectionChange = SPEED_ZERO_ON_DIRECTION_CHANGE;
+
 //4x3 keypad only uses 0-9
 //4x4 uses all 14 
 int buttonActions[14] = { CHOSEN_KEYPAD_0_FUNCTION,
@@ -3172,6 +3174,12 @@ void changeDirection(int multiThrottleIndex, Direction direction) {
     if (locoCount == 1) {
       debug_println("changeDirection(): one loco");
       wiThrottleProtocol.setDirection(multiThrottleChar, direction);  // change all
+
+      // Set speed to 0 if configured to do so when changing direction
+      if(speedZeroOnDirectionChange) {
+        debug_println("changeDirection(): speed set to 0 on direction change");
+        speedSet(multiThrottleIndex, 0);
+      }
 
     } else {
       debug_println("changeDirection(): multiple locos");

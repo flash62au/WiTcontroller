@@ -583,6 +583,14 @@
 
 // #define RESTORE_ACQUIRED_LOCOS false
 
+
+// *******************************************************************************************************************
+// Set speed to 0 on direction change
+
+// Uncomment and change if required
+//#define SPEED_ZERO_ON_DIRECTION_CHANGE true
+
+
 // *******************************************************************************************************************
 // Custom App Name
 
