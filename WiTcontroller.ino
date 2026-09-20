@@ -76,7 +76,7 @@ bool oledTextInvert[18] = {false, false, false, false, false, false, false, fals
 
 int currentSpeed[6];   // set to maximum possible (6)
 Direction currentDirection[6];   // set to maximum possible (6)
-int speedStepCurrentMultiplier = 1;
+int speedStepCurrentMultiplier = DEFAULT_SPEED_STEP_MULTIPLIER;
 
 TrackPower trackPower = PowerUnknown;
 String turnoutPrefix = "";
@@ -1953,7 +1953,7 @@ void setup() {
   for (int i=0; i< 6; i++) {
     currentSpeed[i] = 0;
     currentDirection[i] = Forward;
-    currentSpeedStep[i] = speedStep;
+    currentSpeedStep[i] = speedStep * speedStepCurrentMultiplier;
   }
 
   debug_println("Host Name and Country Start"); 
