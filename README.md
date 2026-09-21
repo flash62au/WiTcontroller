@@ -356,7 +356,7 @@ The instructions below are for using the **Arduino IDE** and **GitHub Desktop**.
     * Copy ``config_network_example.h`` to a new file ``config_network.h``
     * Copy ``config_buttons_example.h`` to a new file ``config_buttons.h``
 
-      Alternately, you can use the experimental [configuration generator page](https://flash62au.github.io/WiTcontroller/config_buttons_generator.html) to create the ``config_buttons.h`` for you.
+      Alternately, you can use the experimental [button configuration generator page](https://flash62au.github.io/WiTcontroller/config_buttons_generator.html) to create the ``config_buttons.h`` for you. And the experimental [network configuration generator page](https://flash62au.github.io/WiTcontroller/config_network_generator.html) to create the ``config_network.h`` for you.
 
       Note: <br/> These new files are not included in the download, so that you can personalise your configuration without fear that your configurations will be overridden if you update (download again) the WiTcontoller code.
 
@@ -572,7 +572,6 @@ Pressing the Encoder button while the ESP32 is in Deep Sleep will revive it.
 
 *WiThrottle Server List*<br />
 ![WiThrottle Server List](images/screenshots/wit_server_list.jpg)
-
 
 #### Throttle Screen
 
@@ -1202,7 +1201,7 @@ Je kunt ieder van deze vertalingen individueel overschrijven door het desbetreff
 
 <hr style="height: 1px;">
 
-#### Instructions for Chinese Translations - ###中文翻译说明
+#### Instructions for Chinese Translations - 中文翻译说明
 
 The file [language_chinese.h] contains Chinese translations (by Lin Huiyu).  
 
