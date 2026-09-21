@@ -4,7 +4,8 @@
 
 ### V1.117
 
-- New, experimental, configuration generation page
+- New, experimental, configuration button generation page
+- New, experimental, configuration network generation page
 - New option SPEED_ZERO_ON_DIRECTION_CHANGE from Nico/ocin
 - New option DEFAULT_SPEED_STEP_MULTIPLIER from Nico/ocin
 
