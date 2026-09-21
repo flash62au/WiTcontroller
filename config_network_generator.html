@@ -19,6 +19,7 @@
     .grid-5 { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:.55rem .75rem; }
     label { display:flex; flex-direction:column; gap:.15rem; font-weight:600; }
     label.checkbox { flex-direction:row; align-items:center; font-weight:500; }
+    textarea { min-height:5rem; font:11px/1.3 ui-monospace,SFMono-Regular,Consolas,monospace; resize:vertical; }
     input, select, textarea, button { font:inherit; }
     input, select { width:100%; border:1px solid #aeb8c2; border-radius:4px; padding:.3rem .4rem; background:#fff; color:var(--ink); }
     input[type=checkbox] { width:auto; accent-color:var(--blue); }
@@ -47,12 +48,24 @@
   <form id="config-form"></form>
   <section class="panel output">
     <h2>Generated config_network.h</h2>
-    <div class="actions">
-      <button type="button" id="copy">Copy to clipboard</button>
-      <button type="button" class="secondary" id="download">Download config_network.h</button>
-      <button type="button" class="secondary" id="clear">Restore defaults</button>
-    </div>
-    <textarea id="output" style="width:100%;min-height:12rem" readonly spellcheck="false" aria-label="Generated config_network.h"></textarea>
+    <table style="width:100%;">
+      <tr>
+        <td style="width:30%;">
+          <div class="actions">
+            <button type="button" id="copy">Copy to clipboard</button>
+          </div>
+          <div class="actions">
+            <button type="button" class="secondary" id="download">Download config_network.h</button>
+          </div>
+          <div class="actions">
+            <button type="button" class="secondary" id="clear">Restore defaults</button>
+          </div>
+        </td>
+        <td>
+          <textarea id="output" style="width:100%;min-height:7rem" readonly spellcheck="false" aria-label="Generated config_network.h"></textarea>
+        </td>
+    </tr>
+    </table>
     <div class="status" id="status" role="status"></div>
   </section>
 </main>
@@ -81,18 +94,20 @@
     BYPASS_WIFI_SCAN_ON_STARTUP: "false"
   };
   const optionalFields = [
-    ["USE_WIFI_COUNTRY_CODE", "checkbox", "Use Wi-Fi country code"],
-    ["COUNTRY_CODE", "select", "Wi-Fi country code"],
-    ["ENFORCED_COUNTRY_CODE", "checkbox", "Enforce Wi-Fi country code"],
-    ["SSID_CONNECTION_TIMEOUT", "number", "SSID connection timeout (milliseconds)"],
-    ["AUTO_CONNECT_TO_FIRST_DEFINED_SERVER", "checkbox", "Auto-connect to the first defined server"],
-    ["AUTO_CONNECT_TO_FIRST_WITHROTTLE_SERVER", "checkbox", "Auto-connect to the first WiThrottle server"],
-    ["OUTBOUND_COMMANDS_MINIMUM_DELAY", "number", "Minimum outbound command delay (milliseconds)"],
-    ["SEND_LEADING_CR_LF_FOR_COMMANDS", "checkbox", "Send leading CR+LF for commands"],
-    ["MDNS_WAIT_TIME", "number", "mDNS wait time (milliseconds)"],
-    ["SORT_WIFI_NETWORKS", "checkbox", "Sort Wi-Fi networks by signal strength"],
-    ["USE_FAST_WIFI_SCAN_METHOD", "checkbox", "Use fast Wi-Fi scan method"],
-    ["BYPASS_WIFI_SCAN_ON_STARTUP", "checkbox", "Bypass Wi-Fi scan on startup"]
+    ["USE_WIFI_COUNTRY_CODE", "checkbox", "Use Wi-Fi country code", "fddfgdfg"],
+    ["COUNTRY_CODE", "select", "Wi-Fi country code", ""],
+    ["ENFORCED_COUNTRY_CODE", "checkbox", "Enforce Wi-Fi country code", ""],
+    ["SSID_CONNECTION_TIMEOUT", "number", "SSID connection timeout (milliseconds)", ""],
+    ["OUTBOUND_COMMANDS_MINIMUM_DELAY", "number", "Minimum outbound command delay (milliseconds)", "dfgdfgsdfg"],
+    ["SEND_LEADING_CR_LF_FOR_COMMANDS", "checkbox", "Send leading CR+LF for commands", ""],
+    ["MDNS_WAIT_TIME", "number", "mDNS wait time (milliseconds)", ""],
+    ["SORT_WIFI_NETWORKS", "checkbox", "Sort Wi-Fi networks by signal strength", ""],
+    ["USE_FAST_WIFI_SCAN_METHOD", "checkbox", "Use fast Wi-Fi scan method", ""],
+    ["BYPASS_WIFI_SCAN_ON_STARTUP", "checkbox", "Bypass Wi-Fi scan on startup", ""]
+  ];
+  const wifiConnectionFields = [
+    ["AUTO_CONNECT_TO_FIRST_DEFINED_SERVER", "checkbox", "Auto-connect to the first defined server", ""],
+    ["AUTO_CONNECT_TO_FIRST_WITHROTTLE_SERVER", "checkbox", "Auto-connect to the first discovered WiThrottle server", ""]
   ];
 
   function escapeHtml(value) {
@@ -128,14 +143,15 @@
 
   form.innerHTML = `<section class="panel">
     <h2>Wi-Fi networks</h2>
-    <p class="hint">All four lists must have the same number of entries. Changing maxSsids expands or shrinks every list; at least one entry is always required.</p>
+    <p class="hint">All four lists must have the same number of entries. Changing maxSsids expands or shrinks every list; at least one entry is always required, but it can be blank.</p>
     <label>Number of networks (maxSsids)<input id="maxSsids" type="number" min="1" step="1" value="${defaults.maxSsids}" required></label>
     <div id="network-fields" class="network-grid"></div>
   </section>
 
   <section class="panel">
-    <h2>Optional network settings</h2>
-    <p class="hint">The default server address is emitted only when all four IP segments and the port are filled in. IP segments are padded to three digits and the port to five digits.</p>
+    <h2>Optional default WiThrottle server settings</h2>
+    <p class="hint">This generally only needed if your WiThrottle server can't be automatically discovered.</p>
+    <p class="hint">The default server address is output only when all four IP segments and the port are filled in.</p>
     <div class="grid-5">
       <label>IP segment 1<input data-ip-part="1" type="number" min="0" max="255" step="1" placeholder="0-255"><span class="field-note">First octet</span></label>
       <label>IP segment 2<input data-ip-part="2" type="number" min="0" max="255" step="1" placeholder="0-255"><span class="field-note">Second octet</span></label>
@@ -143,17 +159,24 @@
       <label>IP segment 4<input data-ip-part="4" type="number" min="0" max="255" step="1" placeholder="0-255"><span class="field-note">Fourth octet</span></label>
       <label>Port<input data-ip-part="port" type="number" min="0" max="65535" step="1" placeholder="0-65535"><span class="field-note">Five-digit port</span></label>
     </div>
-    <div class="grid">${optionalFields.map(([name, type, label]) => {
-      if (type === "checkbox") return `<label class="checkbox"><input data-define="${name}" type="checkbox"> ${label}</label>`;
+    <div class="grid">${wifiConnectionFields.map(([name, type, label, hint]) => {
+      if (type === "checkbox") return `<span><label class="checkbox"><input data-define="${name}" type="checkbox"> ${label}</label><span class="field-note">${name}<br/>${hint}</span></span>`;
+      return `<label>${label}<input data-define="${name}" type="${type}" placeholder="default: ${defaults[name]}"><span class="field-note">${name} (default: ${defaults[name] || "blank"})<br/>${hint}</span></label>`;
+    }).join("")}</div>
+  </section>
+
+  <section class="panel">
+    <h2>Optional network settings</h2>
+    <div class="grid">${optionalFields.map(([name, type, label, hint]) => {
+      if (type === "checkbox") return `<span><label class="checkbox"><input data-define="${name}" type="checkbox"> ${label}</label><span class="field-note">${name}<br/>${hint}</span></span>`;
       if (name === "COUNTRY_CODE") return `<label>${label}<select data-define="${name}">
         <option value="">Use default: ${defaults[name]}</option>
         ${["01","AT","AU","BE","BG","BR","CA","CH","CN","CY","CZ","DE","DK","EE","ES","FI","FR","GB","GR","HK","HR","HU","IE","IN","IS","IT","JP","KR","LI","LT","LU","LV","MT","MX","NL","NO","NZ","PL","PT","RO","SE","SI","SK","TW","US"].map(code => `<option value="${code}">${code}</option>`).join("")}
       </select><span class="field-note">${name} (default: ${defaults[name]})</span></label>`;
-      return `<label>${label}<input data-define="${name}" type="${type}" placeholder="default: ${defaults[name]}"><span class="field-note">${name} (default: ${defaults[name] || "blank"})</span></label>`;
+      return `<label>${label}<input data-define="${name}" type="${type}" placeholder="default: ${defaults[name]}"><span class="field-note">${name} (default: ${defaults[name] || "blank"})<br/>${hint}</span></label>`;
     }).join("")}</div>
   </section>`;
 
-  
   <!-- ------------------------------------------------------------------------------- -->
 
   function setDefaults() {
@@ -205,6 +228,7 @@
     document.querySelector("#output").value = `${lines.join("\n")}\n`;
   }
   document.querySelector("#maxSsids").addEventListener("input", () => renderNetworkFields());
+  
   form.addEventListener("input", event => {
     if (!event.target.matches("#maxSsids")) generate();
   });
@@ -226,6 +250,7 @@
     document.querySelector("#status").textContent = "Defaults restored.";
   });
   setDefaults();
+
 </script>
 </body>
 </html>

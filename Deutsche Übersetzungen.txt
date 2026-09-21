@@ -7,7 +7,7 @@
 #define MENU_TEXT_TURNOUT_LIST                        "* Abbrechen 0-9 #Seite"                        // "* Cancel 0-9 #Pg"
 #define MENU_TEXT_ROUTE_LIST                          "* Abbrechen 0-9 #Seite"                        // "* Cancel 0-9 #Pg"
 #define MENU_TEXT_FUNCTION_LIST                       "* Abbrechen 0-9 #Seite"                        // "* Cancel 0-9 #Pg"
-#define MENU_TEXT_SELECT_WIT_SERVICE                  "0-4 # Eintrag E.btn AUS"                       // "0-4 # Entry E.btn OFF"
+#define MENU_TEXT_SELECT_WIT_SERVICE                  "0-4 * ? # Eintrag E.btn AUS"                       // "0-4 * Refrsh # Entry E.btn OFF"
 #define MENU_TEXT_SELECT_WIT_ENTRY                    "0-9 * Zurück # Gehe E.btn AUS"                 // "0-9 * Back # Go E.btn OFF"
 #define MENU_TEXT_SELECT_SSIDS                        "0-9 # Suche E.btn AUS"                         // "0-9 # Search E.btn OFF"
 #define MENU_TEXT_SELECT_SSIDS_FROM_FOUND             "0-4 9 Liste # Pg E.btn AUS"                    // "0-4 9 List # Pg E.btn OFF"

@@ -27,7 +27,7 @@
   #define MENU_TEXT_FUNCTION_LIST                       "* Annuleren    0-9    #Pag."                   // "* Cancel 0-9 #Pg"
 #endif
 #ifndef MENU_TEXT_SELECT_WIT_SERVICE
-  #define MENU_TEXT_SELECT_WIT_SERVICE                  "0-4      # ander IP   E.Knop UIT"              // "0-4 # Entry E.btn OFF"
+  #define MENU_TEXT_SELECT_WIT_SERVICE                  "0-4 * ?  # ander IP E.Knop UIT"              // "0-4 * Refrsh # Entry E.btn OFF"
 #endif
 #ifndef MENU_TEXT_SELECT_WIT_ENTRY
   #define MENU_TEXT_SELECT_WIT_ENTRY                    "0-9 * Annu. # Verb. E.Knop UIT"                // "0-9 * Back # Go E.btn OFF"

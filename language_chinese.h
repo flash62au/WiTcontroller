@@ -26,7 +26,7 @@
   #define MENU_TEXT_FUNCTION_LIST                       "* 取消   0-9             #翻页"                    // "* Cancel 0-9 #Pg"
 #endif
 #ifndef MENU_TEXT_SELECT_WIT_SERVICE
-  #define MENU_TEXT_SELECT_WIT_SERVICE                  "0-4       # 进入， 按下旋钮 关闭"             // "0-4 # Entry E.btn OFF"
+  #define MENU_TEXT_SELECT_WIT_SERVICE                  "0-4  * ?  # 进入， 按下旋钮 关闭"             // "0-4 * Refrsh # Entry E.btn OFF"
 #endif
 #ifndef MENU_TEXT_SELECT_WIT_ENTRY
   #define MENU_TEXT_SELECT_WIT_ENTRY                    "0-9  * 返回  #确认   按下旋钮关闭"                // "0-9 * Back # Go E.btn OFF"
