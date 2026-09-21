@@ -1,4 +1,4 @@
-const String appVersion = "v1.117";
+const String appVersion = "v1.118";
 #ifndef CUSTOM_APPNAME
    const String appName = "WiTcontroller";
 #else
@@ -678,18 +678,36 @@ const char ssidPasswordBlankChar = 164;
 #ifndef FONT_DEFAULT
    #define FONT_DEFAULT u8g2_font_NokiaSmallPlain_te
 #endif
+#ifndef FONT_LARGE_LOCOS
+   #define FONT_LARGE_LOCOS u8g2_font_6x13_tf
+#endif
+
 #define FONT_FUNCTION_INDICATORS u8g2_font_tiny_simon_tr
 #define FONT_THROTTLE_NUMBER u8g2_font_neuecraft_tr
 #ifndef FONT_PASSWORD
    #define FONT_PASSWORD u8g2_font_9x15_tf
 #endif
-#define FONT_SPEED u8g2_font_profont29_mr
+#define FONT_SPEED u8g2_font_profont29_mn
 #ifndef FONT_DIRECTION
    #define FONT_DIRECTION u8g2_font_neuecraft_tr
 #endif
 // #define FONT_TRACK_POWER u8g2_font_profont10_tf
 #define FONT_NEXT_THROTTLE u8g2_font_6x12_m_symbols
 #define FONT_GLYPHS u8g2_font_open_iconic_all_1x_t
+
+#ifndef USE_LARGER_FONT_FOR_LOCOS
+   #define USE_LARGER_FONT_FOR_LOCOS false
+#endif
+
+#if USE_LARGER_FONT_FOR_LOCOS
+   #define BASELINE_FUNCTIONS_Y 15
+   #define BASELINE_SPEED_Y 46
+   #define BASELINE_DIRECTION_Y 38
+#else
+   #define BASELINE_FUNCTIONS_Y 12
+   #define BASELINE_SPEED_Y 45
+   #define BASELINE_DIRECTION_Y 36
+#endif
 
 // *******************************************************************************************************************
 

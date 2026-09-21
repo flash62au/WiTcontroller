@@ -539,6 +539,19 @@
 // #define FONT_DIRECTION u8g2_font_boutique_bitmap_9x9_bold_t_gb2312
 // #define FONT_DIRECTION u8g2_font_wqy13_t_gb2312a
 
+// ******************
+
+// Enable this define if you wish to see slightly larger loco ids on the top row of the Speed screen
+// #define USE_LARGER_FONT_FOR_LOCOS true
+
+// Large loco font
+// Only used if USE_LARGER_FONT_FOR_LOCOS is enabled // default is FONT_LARGE_LOCOS u8g2_font_6x13_tf
+// #define FONT_LARGE_LOCOS u8g2_font_6x13_tf
+
+// Chinese
+// only needs to be changed to a Chinese font if DISPLAY_LOCO_NAME is defined (below)
+// #define FONT_LARGE_LOCOS u8g2_font_wqy12_t_chinese1
+
 // *******************************************************************************************************************
 // Startup Commands
 
@@ -549,7 +562,7 @@
 // will execute before the roster loads.
 
 // e.g. this command will automatically acquire loco with a DCC Address of 222  
-// then set the speed multplier to *3
+// then set the speed multiplier to *3
 // #define STARTUP_COMMAND_1 "*1222#"
 // #define STARTUP_COMMAND_2 "6"
 // #define STARTUP_COMMAND_3 ""

@@ -2,6 +2,10 @@
 
 ## Versions
 
+### V1.118
+
+- New option USE_LARGER_FONT_FOR_LOCOS
+
 ### V1.117
 
 - New, experimental, configuration button generation page

@@ -28,8 +28,8 @@
 #include "Pangodream_18650_CL.h"  // https://github.com/pangodream/18650CL                                     Copyright (c) 2019 Pangodream
 
 // create these files by copying the example files and editing them as needed
-#include "config_network.h"      // LAN networks (SSIDs and passwords)
 #include "config_buttons.h"      // keypad buttons assignments
+#include "config_network.h"      // LAN networks (SSIDs and passwords)
 
 // DO NOT ALTER these files
 #include "static.h"
@@ -3835,14 +3835,12 @@ void writeOledSpeed() {
   bool drawTopLine = false;
 
   if (wiThrottleProtocol.getNumberOfLocomotives(currentThrottleIndexChar) > 0 ) {
-    // oledText[0] = label_locos; oledText[2] = label_speed;
   
+    // generate the loco list for the top of the speed screen
     for (int i=0; i < wiThrottleProtocol.getNumberOfLocomotives(currentThrottleIndexChar); i++) {
-      // sLocos = sLocos + sSpaceBetweenLocos + wiThrottleProtocol.getLocomotiveAtPosition(currentThrottleIndexChar, i);
       sLocos = sLocos + sSpaceBetweenLocos + getDisplayLocoString(currentThrottleIndex, i);
       sSpaceBetweenLocos = CONSIST_SPACE_BETWEEN_LOCOS;
     }
-    // sSpeed = String(currentSpeed[currentThrottleIndex]);
     sSpeed = String(getDisplaySpeed(currentThrottleIndex));
     sDirection = (currentDirection[currentThrottleIndex]==Forward) ? DIRECTION_FORWARD_TEXT : DIRECTION_REVERSE_TEXT;
 
@@ -3870,23 +3868,20 @@ void writeOledSpeed() {
         sNextThrottleNo =  String(nextThrottleIndex+1);
         int speed = getDisplaySpeed(nextThrottleIndex);
         sNextThrottleSpeedAndDirection = String(speed);
-        // if (speed>0) {
-          if (currentDirection[nextThrottleIndex]==Forward) {
-            sNextThrottleSpeedAndDirection = sNextThrottleSpeedAndDirection + DIRECTION_FORWARD_TEXT_SHORT;
-          } else {
-            sNextThrottleSpeedAndDirection = DIRECTION_REVERSE_TEXT_SHORT + sNextThrottleSpeedAndDirection;
-          }
-        // }
-        // + " " + ((currentDirection[nextThrottleIndex]==Forward) ? DIRECTION_FORWARD_TEXT_SHORT : DIRECTION_REVERSE_TEXT_SHORT);
+        if (currentDirection[nextThrottleIndex]==Forward) {
+          sNextThrottleSpeedAndDirection = sNextThrottleSpeedAndDirection + DIRECTION_FORWARD_TEXT_SHORT;
+        } else {
+          sNextThrottleSpeedAndDirection = DIRECTION_REVERSE_TEXT_SHORT + sNextThrottleSpeedAndDirection;
+        }
         sNextThrottleSpeedAndDirection = "     " + sNextThrottleSpeedAndDirection ;
         sNextThrottleSpeedAndDirection = sNextThrottleSpeedAndDirection.substring(sNextThrottleSpeedAndDirection.length()-5);
       }
     }
 
-    oledText[0] = "   "  + sLocos; 
-    //oledText[7] = "     " + sDirection;  // old function state format
-
-    drawTopLine = true;
+    if (!USE_LARGER_FONT_FOR_LOCOS) {
+      oledText[0] = "   "  + sLocos; 
+      drawTopLine = true;
+    } // if USE_LARGER_FONT_FOR_LOCOS is true, then we will use a different way to write these (below)
 
   } else {
     setAppnameForOled();
@@ -3905,8 +3900,21 @@ void writeOledSpeed() {
 
   writeOledArray(false, false, false, drawTopLine);
 
+  // special case for USE_LARGER_FONT_FOR_LOCOS
+  if ( (USE_LARGER_FONT_FOR_LOCOS) && (sLocos.length()>0) ) {
+    u8g2.setDrawColor(1);
+    u8g2.setFont(FONT_LARGE_LOCOS); // medium
+    u8g2.drawStr(6,13, sLocos.c_str());
+  }
+
   if (wiThrottleProtocol.getNumberOfLocomotives(currentThrottleIndexChar) > 0 ) {
     writeOledFunctions();
+
+    // special case for USE_LARGER_FONT_FOR_LOCOS  Draw a lower line after wrting the functions
+    if ( (USE_LARGER_FONT_FOR_LOCOS) && (sLocos.length()>0) ) {
+      u8g2.setDrawColor(1);
+      u8g2.drawHLine(0,14,127);
+    }
 
      // throttle number
     u8g2.setDrawColor(0);
@@ -3944,14 +3952,14 @@ void writeOledSpeed() {
   // direction
   // needed for new function state format
   u8g2.setFont(FONT_DIRECTION); // medium
-  u8g2.drawUTF8(79,36, sDirection.c_str());
+  u8g2.drawUTF8(79,BASELINE_DIRECTION_Y, sDirection.c_str());
 
   // speed
   const char *cSpeed = sSpeed.c_str();
   // u8g2.setFont(u8g2_font_inb21_mn); // big
   u8g2.setFont(FONT_SPEED); // big
   int width = u8g2.getStrWidth(cSpeed);
-  u8g2.drawStr(22+(55-width),45, cSpeed);
+  u8g2.drawStr(22+(55-width),BASELINE_SPEED_Y, cSpeed);
 
   // speed and direction of next throttle
   if ( (maxThrottles > 1) && (foundNextThrottle) ) {
@@ -4021,43 +4029,14 @@ void writeOledFunctions() {
   lastOledScreen = last_oled_screen_speed;
 
   debug_println("writeOledFunctions():");
-  //  int x = 99;
-  // bool anyFunctionsActive = false;
    for (int i=0; i < MAX_FUNCTIONS; i++) {
      if (functionStates[currentThrottleIndex][i]) {
-      // old function state format
-  //     //  debug_print("Fn On "); debug_println(i);
-  //     if (i < 12) {
-  //     int y = (i+2)*10-8;
-  //     if ((i>=4) && (i<8)) { 
-  //       x = 109; 
-  //       y = (i-2)*10-8;
-  //     } else if (i>=8) { 
-  //       x = 119; 
-  //       y = (i-6)*10-8;
-  //     }
-      
-  //     u8g2.drawBox(x,y,8,8);
-  //     u8g2.setDrawColor(0);
-  //     u8g2.setFont(u8g2_font_profont10_tf);
-  //     u8g2.drawStr( x+2, y+7, String( (i<10) ? i : i-10 ).c_str());
-  //     u8g2.setDrawColor(1);
-  //   //  } else {
-  //   //    debug_print("Fn Off "); debug_println(i);
-
-      // new function state format
-      // anyFunctionsActive = true;
-      // u8g2.drawBox(i*4+12,12,5,7);
-      u8g2.drawRBox(i*4+12,12+1,5,7,2);
+      u8g2.drawRBox(i*4+12,BASELINE_FUNCTIONS_Y+1,5,7,2);
       u8g2.setDrawColor(0);
       u8g2.setFont(FONT_FUNCTION_INDICATORS);   
-      u8g2.drawUTF8( i*4+1+12, 18+1, String( (i<10) ? i : ((i<20) ? i-10 : i-20)).c_str());
+      u8g2.drawUTF8( i*4+1+12, BASELINE_FUNCTIONS_Y+7, String( (i<10) ? i : ((i<20) ? i-10 : i-20)).c_str());
       u8g2.setDrawColor(1);
      }
-    //  if (anyFunctionsActive) {
-    //     u8g2.drawStr( 0, 18, (function_states).c_str());
-    // //     u8g2.drawHLine(0,19,128);
-    //  }
    }
   debug_println("writeOledFunctions(): end");
 }
@@ -4105,10 +4084,10 @@ void writeOledArray(bool isThreeColums, bool isPassword, bool sendBuffer, bool d
   }
 
   if (drawTopLine) {
-    u8g2.drawHLine(0,11,128);
+    u8g2.drawHLine(0,11,127);
     writeOledBattery();
   }
-  u8g2.drawHLine(0,51,128);
+  u8g2.drawHLine(0,51,127);
 
   if (sendBuffer) u8g2.sendBuffer();					// transfer internal memory to the display
   // debug_println("writeOledArray(): end ");
