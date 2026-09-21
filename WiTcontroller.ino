@@ -2168,6 +2168,10 @@ void doKeyPress(char key, bool pressed) {
             buildWitEntry();
             enterWitServer();
             break;
+          case '*': // refresh
+            MDNS.begin("WiTcontroller");
+            witConnectionState = CONNECTION_STATE_DISCONNECTED;
+            break;
           default:  // do nothing 
             break;
         }
