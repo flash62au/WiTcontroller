@@ -5,6 +5,7 @@
 ### V1.118
 
 - New option USE_LARGER_FONT_FOR_LOCOS
+- Bug fix. Don't clear the function states when selecting a subsequent loco of a consist
 
 ### V1.117
 

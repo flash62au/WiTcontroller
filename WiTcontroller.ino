@@ -2697,7 +2697,10 @@ void doMenuCommand(char menuItem) {
           wiThrottleProtocol.addLocomotive(currentThrottleIndexChar, loco);
           wiThrottleProtocol.getDirection(currentThrottleIndexChar, loco);
           wiThrottleProtocol.getSpeed(currentThrottleIndexChar);
-          resetFunctionStates(currentThrottleIndex);
+
+          // only reset the functions if this is the first loco
+          if (wiThrottleProtocol.getNumberOfLocomotives(currentThrottleIndexChar)==0)
+            resetFunctionStates(currentThrottleIndex);
           writeOledSpeed();
         } else {
           page = 0;
@@ -3435,7 +3438,9 @@ void selectRoster(int selection) {
     wiThrottleProtocol.addLocomotive(currentThrottleIndexChar, loco);
     wiThrottleProtocol.getDirection(currentThrottleIndexChar, loco);
     wiThrottleProtocol.getSpeed(currentThrottleIndexChar);
-    resetFunctionStates(currentThrottleIndex);
+    // only reset the functions if this is the first loco
+    if (wiThrottleProtocol.getNumberOfLocomotives(currentThrottleIndexChar)==0)
+      resetFunctionStates(currentThrottleIndex);
     writeOledSpeed();
     keypadUseType = KEYPAD_USE_OPERATION;
   }
