@@ -2692,15 +2692,18 @@ void doMenuCommand(char menuItem) {
             wiThrottleProtocol.releaseLocomotive(currentThrottleIndexChar, "*");
           }
           loco = menuCommand.substring(startAt, menuCommand.length());
-          loco = getLocoWithLength(loco);
-          debug_print("add Loco: "); debug_println(loco);
-          wiThrottleProtocol.addLocomotive(currentThrottleIndexChar, loco);
-          wiThrottleProtocol.getDirection(currentThrottleIndexChar, loco);
-          wiThrottleProtocol.getSpeed(currentThrottleIndexChar);
+          int dccAddress = loco.toInt();
+          if ( (dccAddress!=0) && (dccAddress <= MAX_DCC_ADDRESS) ) {
+            loco = getLocoWithLength(loco);
+            debug_print("add Loco: "); debug_println(loco);
+            wiThrottleProtocol.addLocomotive(currentThrottleIndexChar, loco);
+            wiThrottleProtocol.getDirection(currentThrottleIndexChar, loco);
+            wiThrottleProtocol.getSpeed(currentThrottleIndexChar);
 
-          // only reset the functions if this is the first loco
-          if (wiThrottleProtocol.getNumberOfLocomotives(currentThrottleIndexChar)==0)
-            resetFunctionStates(currentThrottleIndex);
+            // only reset the functions if this is the first loco
+            if (wiThrottleProtocol.getNumberOfLocomotives(currentThrottleIndexChar)==0)
+              resetFunctionStates(currentThrottleIndex);
+          }
           writeOledSpeed();
         } else {
           page = 0;

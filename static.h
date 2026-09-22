@@ -1379,3 +1379,7 @@ const char ssidPasswordBlankChar = 164;
 #ifndef SPEED_ZERO_ON_DIRECTION_CHANGE
    #define SPEED_ZERO_ON_DIRECTION_CHANGE false
 #endif
+
+#ifndef MAX_DCC_ADDRESS 
+   #define MAX_DCC_ADDRESS  10239
+#endif

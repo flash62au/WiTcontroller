@@ -6,6 +6,7 @@
 
 - New option USE_LARGER_FONT_FOR_LOCOS
 - Bug fix. Don't clear the function states when selecting a subsequent loco of a consist
+- Ignore entered DCC addresses greater than 10239 or equal to 0
 
 ### V1.117
 
