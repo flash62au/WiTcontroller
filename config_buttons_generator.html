@@ -205,6 +205,7 @@
   const displayFields = [
     {title:"Display Options (Optional)", items:[
       ["DISPLAY_LOCO_NAME","flag",null,"Display loco names instead of DCC addresses"],
+      ["USE_LARGER_FONT_FOR_LOCOS","select",bools,"Use a larger font for the currently selected locos at the top of Speed screen"],
       ["CONSIST_SPACE_BETWEEN_LOCOS","text",null,"Separator between loco names / addresses (no quotes)"],
       ["DISPLAY_SPEED_AS_PERCENT","select",bools,"Display Speed as a percentage"],
       ["DISPLAY_SPEED_AS_0_TO_28","select",bools,"Display Speed as 0–28"],
@@ -280,6 +281,7 @@
   const optionExplanations = {
     LANGUAGE: "If using the Chinese language, the Chinese fonts (next) must also be selected",
     FONT_DEFAULT: "Do not change unless using Chinese language",
+    FONT_LARGE_LOCOS: "Do not change unless using Chinese language, and you have enabled BOTH 'Display loco names instead of DCC addresses' and 'USE_LARGER_FONT_FOR_LOCOS' (below)",
     FONT_DIRECTION: "Do not change unless using Chinese language",
 
     ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED: "Defines the rotation direction for the rotary encoder to increase speed\nfalse = Counter clockwise (default)\ntrue = Clockwise",
@@ -364,6 +366,7 @@
     DEFAULT_SPEED_STEP_MULTIPLIER:"1",
     SPEED_STEP_ADDITIONAL_MULTIPLIER:"2", 
     ENCODER_SENSITIVITY:"85",
+    USE_LARGER_FONT_FOR_LOCOS:"false", 
     DISPLAY_SPEED_AS_PERCENT:"false", 
     DISPLAY_SPEED_AS_0_TO_28:"false",
     CONSIST_FUNCTION_FOLLOW_F0:"CONSIST_ALL_LOCOS", 
@@ -446,6 +449,7 @@
     FUNCTION_SEARCH_RANDOM_MATCH:"false",
     F0_LABEL:"Light", F1_LABEL:"Bell", F2_LABEL:"Horn", 
     FONT_DEFAULT:"u8g2_font_NokiaSmallPlain_te",
+    FONT_LARGE_LOCOS:"u8g2_font_6x13_tf",
     FONT_DIRECTION:"u8g2_font_neuecraft_tr", 
     OLED_TYPE:"U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE, 22, 23)",
     ACQUIRE_ROSTER_ENTRY_IF_ONLY_ONE:"false", 
@@ -506,8 +510,14 @@
       <p class=hint">For English, do not alter anything in this section.</p>
     <div class="grid">
       ${renderField(["LANGUAGE","select",choices([["language_deutsch.h","German"],["language_italiano.h","Italian"],["language_chinese.h","Chinese"]]),"Language"])}
-      ${renderField(["FONT_DEFAULT","select",choices([["u8g2_font_5x8_tf","English (u8g2_font_5x8_tf)"],["u8g2_font_boutique_bitmap_7x7_t_gb2312","Chinese (u8g2_font_boutique_bitmap_7x7_t_gb2312)"]]),"Default Font"])}${renderField(["FONT_DIRECTION","select",choices([["u8g2_font_neuecraft_tr","Default"],["u8g2_font_boutique_bitmap_9x9_bold_t_gb2312","Chinese 1 (recommended)"],["u8g2_font_wqy13_t_gb2312a","Chinese 2"]]),"Font used for the Direction Text (only)"])}
-    </div>
+      
+      ${renderField(["FONT_DEFAULT","select",choices([["u8g2_font_5x8_tf","English (u8g2_font_5x8_tf)"],["u8g2_font_boutique_bitmap_7x7_t_gb2312","Chinese (u8g2_font_boutique_bitmap_7x7_t_gb2312)"]]),"Default Font"])}
+      
+      ${renderField(["FONT_DIRECTION","select",choices([["u8g2_font_neuecraft_tr","Default"],["u8g2_font_boutique_bitmap_9x9_bold_t_gb2312","Chinese 1 (recommended)"],["u8g2_font_wqy13_t_gb2312a","Chinese 2"]]),"Font used for the Direction Text (only)"])}
+
+      ${renderField(["FONT_LARGE_LOCOS","select",choices([["u8g2_font_6x13_tf","Default"],["u8g2_font_wqy12_t_chinese1","Chinese 1 (untested)"],["u8g2_font_wqy12_t_chinese1","Chinese 2"]]),"Font used Locos (only) if Large Loco Fonts is enabled"])}
+
+      </div>
   </section>`);
 
   <!-- Encoder Hardware -->
