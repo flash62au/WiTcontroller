@@ -1,4 +1,4 @@
-const String appVersion = "v1.118";
+const String appVersion = "v1.119";
 #ifndef CUSTOM_APPNAME
    const String appName = "WiTcontroller";
 #else
@@ -890,6 +890,10 @@ const char ssidPasswordBlankChar = 164;
 // other options
 #ifndef HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS
     #define HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS false  // default if not defined in config_buttons.h
+#endif
+
+#ifndef SHOW_LONGER_FUNCTION_LABELS
+    #define SHOW_LONGER_FUNCTION_LABELS false  // default if not defined in config_buttons.h
 #endif
 
 #ifndef MAX_THROTTLES

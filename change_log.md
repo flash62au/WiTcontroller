@@ -2,6 +2,10 @@
 
 ## Versions
 
+### V1.119
+
+- New option SHOW_LONGER_FUNCTION_LABELS
+
 ### V1.118
 
 - New option USE_LARGER_FONT_FOR_LOCOS

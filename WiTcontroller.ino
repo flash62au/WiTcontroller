@@ -174,6 +174,7 @@ int rosterSortedIndex[maxRoster];
 int page = 0;
 int functionPage = 0;
 bool functionHasBeenSelected = false;
+int functionPageSize = SHOW_LONGER_FUNCTION_LABELS ? 5 :10;
 
 // Broadcast msessage
 String broadcastMessageText = "";
@@ -2303,12 +2304,13 @@ void doKeyPress(char key, bool pressed) {
       case KEYPAD_USE_SELECT_FUNCTION:
         debug_print("doKeyPress(): key function... "); debug_println(key);
         switch (key){
-          case '0': case '1': case '2': case '3': case '4': 
           case '5': case '6': case '7': case '8': case '9':
-            selectFunctionList((key - '0')+(functionPage*10));
+            if (SHOW_LONGER_FUNCTION_LABELS) break;
+          case '0': case '1': case '2': case '3': case '4': 
+            selectFunctionList((key - '0')+(functionPage*functionPageSize));
             break;
           case '#':  // next page
-            if ( (functionPage+1)*10 < MAX_FUNCTIONS ) {
+            if ( (functionPage+1)*functionPageSize < MAX_FUNCTIONS ) {
               functionPage++;
               writeOledFunctionList(""); 
             } else {
@@ -2363,7 +2365,7 @@ void doKeyPress(char key, bool pressed) {
       case KEYPAD_USE_SELECT_FUNCTION:
         if (functionHasBeenSelected) {
           debug_println("doKeyPress(): Operation - Process key release KEYPAD_USE_SELECT_FUNCTION");
-          doFunction(currentThrottleIndex, (key - '0')+(functionPage*10), false);
+          doFunction(currentThrottleIndex, (key - '0')+(functionPage*functionPageSize), false);
           keypadUseType = KEYPAD_USE_OPERATION;
           functionHasBeenSelected = false;
         }
@@ -3673,10 +3675,12 @@ void writeOledFunctionList(String soFar) {
     clearOledArray();
     if (wiThrottleProtocol.getNumberOfLocomotives(currentThrottleIndexChar) > 0 ) {
       int j = 0; int k = 0;
-      for (int i=0; i<10; i++) {
-        k = (functionPage*10) + i;
-        if (k < MAX_FUNCTIONS) {
-          j = (i<5) ? i : i+1;
+
+      if (!SHOW_LONGER_FUNCTION_LABELS) { // show 10 functions
+        for (int i=0; i<10; i++) {
+          k = (functionPage*10) + i;
+          if (k < MAX_FUNCTIONS) {
+            j = (i<5) ? i : i+1;
             oledText[j] = String(i) + ": " 
             + ((k<10) ? functionLabels[currentThrottleIndex][k].substring(0,10) : String(k) 
             + "-" + functionLabels[currentThrottleIndex][k].substring(0,7)) ;
@@ -3684,17 +3688,32 @@ void writeOledFunctionList(String soFar) {
             if (functionStates[currentThrottleIndex][k]) {
               oledTextInvert[j] = true;
             }
+          }
+        }
+      } else { // show 5 functions
+        for (int i=0; i<5; i++) {
+          k = (functionPage*5) + i;
+          if (k < MAX_FUNCTIONS) {
+            oledText[i] = String(i) + ": " 
+            + functionLabels[currentThrottleIndex][k];
+              
+            if (functionStates[currentThrottleIndex][k]) {
+              oledTextInvert[i] = true;
+            }
+          }
         }
       }
       oledText[5] = "(" + String(functionPage) +  ") " + menu_text[menu_function_list];
+      writeOledArray(1, false, true, false);
+
     } else {
       oledText[0] = MSG_NO_FUNCTIONS;
       oledText[2] = MSG_THROTTLE_NUMBER + String(currentThrottleIndex+1);
       oledText[3] = MSG_NO_LOCO_SELECTED;
       // oledText[5] = menu_cancel;
       setMenuTextForOled(menu_cancel);
+      writeOledArray(false, false);
     }
-    writeOledArray(false, false);
   // } else {
   //   int cmd = menuCommand.substring(0, 1).toInt();
   }
@@ -4049,27 +4068,35 @@ void writeOledFunctions() {
   debug_println("writeOledFunctions(): end");
 }
 
-void writeOledArray(bool isThreeColums, bool isPassword) {
-  writeOledArray(isThreeColums, isPassword, true, false);
+void writeOledArray(bool isThreeColumns, bool isPassword) {
+  writeOledArray(isThreeColumns, isPassword, true, false);
 }
 
-void writeOledArray(bool isThreeColums, bool isPassword, bool sendBuffer) {
-  writeOledArray(isThreeColums, isPassword, sendBuffer, false);
+void writeOledArray(bool isThreeColumns, bool isPassword, bool sendBuffer) {
+  writeOledArray(isThreeColumns, isPassword, sendBuffer, false);
 }
 
-void writeOledArray(bool isThreeColums, bool isPassword, bool sendBuffer, bool drawTopLine) {
+void writeOledArray(bool isThreeColumns, bool isPassword, bool sendBuffer, bool drawTopLine) {
+  writeOledArray(isThreeColumns ? 3 : 2, isPassword, sendBuffer, false);
+}
+
+void writeOledArray(int numberOfColumns, bool isPassword, bool sendBuffer, bool drawTopLine) {
   // debug_println("Start writeOledArray()");
   u8g2.clearBuffer();					// clear the internal memory
 
   u8g2.setFont(FONT_DEFAULT); // small
   
+  // numberOfColumns assume 2 by default
   int x=0;
   int y=10;
   int xInc = 64; 
   int max = 12;
-  if (isThreeColums) {
+  if (numberOfColumns == 3) {
     xInc = 42;
     max = 18;
+  } else if (numberOfColumns == 1) {
+    xInc = 128;
+    max = 6;
   }
 
   for (int i=0; i < max; i++) {
@@ -4077,7 +4104,7 @@ void writeOledArray(bool isThreeColums, bool isPassword, bool sendBuffer, bool d
     if ((isPassword) && (i==2)) u8g2.setFont(FONT_PASSWORD); 
 
     if (oledTextInvert[i]) {
-      u8g2.drawBox(x,y-8,62,10);
+      u8g2.drawBox(x,y-8,xInc-2,10);
       u8g2.setDrawColor(0);
     }
     u8g2.drawUTF8(x,y, cLine1);

@@ -112,6 +112,13 @@
 
 // #define HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS         false
 
+// By default the Function list will show 10 functions per page, 
+// with a maximum of 10 characters of each label being visible
+// Uncomment this define to show only 5 functions per page with each label using the full width of the screen
+
+// #define SHOW_LONGER_FUNCTION_LABELS    true
+
+
 // *******************************************************************************************************************
 // Maximum number of throttles
 
@@ -144,7 +151,7 @@
 
 // by default, the speed will be displayed as the the DCC speed (0-126)
 // IMPORTANT: only one should be enabled.  If DISPLAY_SPEED_AS_PERCENT is enabled it 
-// will take presidence over DISPLAY_SPEED_AS_0_TO_28
+// will take precedence over DISPLAY_SPEED_AS_0_TO_28
 // Note: there will be rounding errors!
 
 // Encoder sensitivity
