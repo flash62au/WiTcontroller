@@ -287,6 +287,8 @@ Michael Tagg version.
 <img src="images/driverd_variation.png" height="100;"></img> <br/> 
 DriverD's variation of the design. See [YouTube](https://youtu.be/i4kLNncoFLA?si=Nli4HzZWGFATpnhh)
 
+<img src="images/jonathan_sauer_1.jpeg" height="150;"> </img> <img src="images/jonathan_sauer_2.jpeg" height="150;"> </img> <img src="images/jonathan_sauer_3.jpeg" height="150;"> </img> <img src="images/jonathan_sauer_4.jpeg" height="150;"> </img> <br/>Jonathan Sauer's custom PCB version.
+
 
 ---
 
