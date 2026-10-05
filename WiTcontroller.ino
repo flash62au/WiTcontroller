@@ -3682,29 +3682,36 @@ void writeOledFunctionList(String soFar) {
           if (k < MAX_FUNCTIONS) {
             j = (i<5) ? i : i+1;
             oledText[j] = String(i) + ": " 
-            + ((k<10) ? functionLabels[currentThrottleIndex][k].substring(0,10) : String(k) 
-            + "-" + functionLabels[currentThrottleIndex][k].substring(0,7)) ;
+            + ( ((k<10 ) || (HIDE_FUNCTION_NUMBERS_WITH_LABELS))
+              ? functionLabels[currentThrottleIndex][k].substring(0,10) 
+              : String(k) + "-" + functionLabels[currentThrottleIndex][k].substring(0,7)) ;
             
             if (functionStates[currentThrottleIndex][k]) {
               oledTextInvert[j] = true;
             }
           }
         }
+        oledText[5] = "(" + String(functionPage) +  ") " + menu_text[menu_function_list];
+        writeOledArray(2, false, true, false);
+
       } else { // show 5 functions
         for (int i=0; i<5; i++) {
           k = (functionPage*5) + i;
           if (k < MAX_FUNCTIONS) {
             oledText[i] = String(i) + ": " 
-            + functionLabels[currentThrottleIndex][k];
+            + ( ((k<5 ) || (HIDE_FUNCTION_NUMBERS_WITH_LABELS)) 
+              ? "" 
+              : String(k) + "-" ) 
+            + functionLabels[currentThrottleIndex][k] ;
               
             if (functionStates[currentThrottleIndex][k]) {
               oledTextInvert[i] = true;
             }
           }
         }
+        oledText[5] = "(" + String(functionPage) +  ") " + menu_text[menu_function_list];
+        writeOledArray(1, false, true, false);
       }
-      oledText[5] = "(" + String(functionPage) +  ") " + menu_text[menu_function_list];
-      writeOledArray(1, false, true, false);
 
     } else {
       oledText[0] = MSG_NO_FUNCTIONS;

@@ -2,6 +2,10 @@
 
 ## Versions
 
+### V1.120
+
+- New option HIDE_FUNCTION_NUMBERS_WITH_LABELS
+
 ### V1.119
 
 - New option SHOW_LONGER_FUNCTION_LABELS

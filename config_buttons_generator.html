@@ -205,6 +205,7 @@
   const displayFields = [
     {title:"Display Options (Optional)", items:[
       ["SHOW_LONGER_FUNCTION_LABELS","select",bools,"Show Longer Function Labels (optional)"],
+      ["HIDE_FUNCTION_NUMBERS_WITH_LABELS","select",bools,"Hide Function Numbers with Labels (optional)"],
       ["DISPLAY_LOCO_NAME","flag",null,"Display loco names instead of DCC addresses"],
       ["USE_LARGER_FONT_FOR_LOCOS","select",bools,"Use a larger font for the currently selected locos at the top of Speed screen"],
       ["CONSIST_SPACE_BETWEEN_LOCOS","text",null,"Separator between loco names / addresses (no quotes)"],
@@ -300,6 +301,7 @@
     MAX_THROTTLES: "Note that you can temporarily increase or decrease this number via the 'extra' menu at any time",
 
     SHOW_LONGER_FUNCTION_LABELS: "By default the function list shows 10 functions per page, with a maximum of 10 characters of each label being visible. Enable this to show only 5 functions per page with each label using the full width of the screen",
+    HIDE_FUNCTION_NUMBERS_WITH_LABELS: "By default the function list shows both function numbers and labels. Enable this to show only the labels",
     CUSTOM_APPNAME: "Enter a name that will show when the WiTcontroller app starts, instead of the word 'WiTcontroller'",
     DISPLAY_SPEED_AS_PERCENT: "By default the speed will be shown as 0-128. Enable this to show speeds as 0-100 ",
     DISPLAY_SPEED_AS_0_TO_28: "By default the speed will be shown as 0-128. Enable this to show speeds as 0-28 ",
@@ -372,6 +374,7 @@
     DISPLAY_SPEED_AS_PERCENT:"false", 
     DISPLAY_SPEED_AS_0_TO_28:"false",
     SHOW_LONGER_FUNCTION_LABELS:"false",
+    HIDE_FUNCTION_NUMBERS_WITH_LABELS:"false",
     CONSIST_FUNCTION_FOLLOW_F0:"CONSIST_ALL_LOCOS", 
     CONSIST_FUNCTION_FOLLOW_F1:"CONSIST_LEAD_LOCO", 
     CONSIST_FUNCTION_FOLLOW_F2:"CONSIST_LEAD_LOCO", 
