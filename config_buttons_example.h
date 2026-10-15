@@ -247,6 +247,12 @@
 // This one works with a 2.42 inch SSD1309 based oLED
 // #define OLED_TYPE U8G2_SSD1309_128X64_NONAME2_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);
 
+// Rotation Reference
+// • U8G2_R0: No rotation (Landscape)
+// • U8G2_R1: 90 degrees clockwise (Portrait)
+// • U8G2_R2: 180 degrees clockwise (Inverted Landscape)
+//• U8G2_R3: 270 degrees clockwise (Inverted Portrait)
+
 // *******************************************************************************************************************
 // Debugging
 
