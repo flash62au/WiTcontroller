@@ -251,7 +251,7 @@
 // • U8G2_R0: No rotation (Landscape)
 // • U8G2_R1: 90 degrees clockwise (Portrait)
 // • U8G2_R2: 180 degrees clockwise (Inverted Landscape)
-//• U8G2_R3: 270 degrees clockwise (Inverted Portrait)
+// • U8G2_R3: 270 degrees clockwise (Inverted Portrait)
 
 // *******************************************************************************************************************
 // Debugging

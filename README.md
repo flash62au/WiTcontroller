@@ -575,6 +575,15 @@ Pressing the Encoder button while the ESP32 is in Deep Sleep will revive it.
 *WiThrottle Server List*<br />
 ![WiThrottle Server List](images/screenshots/wit_server_list.jpg)
 
+#### Ip Address and Port Entry
+
+If no server is discovered, you will be asker to enter the IP address and port. It is entered as a 17 digit number without the full stop '.' and colon ':' (they will be displayed), and with leading zeros for each segment to make them 3 digits, and with leading zeros for the port to make it 5 digits
+
+e.g. `129.168.1.4:2560` would be entered as `19816800100402560`
+
+*Entering the IP address and Port*<br />
+![Enter Ip address and Port](images/screenshots/enter_ip_and_port.png)
+
 #### Throttle Screen
 
 *Throttle Screen with no loco acquired*<br />
