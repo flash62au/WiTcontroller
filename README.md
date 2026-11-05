@@ -1,6 +1,6 @@
 # WiTcontroller
 
-A WiTcontroller is a simple DIY, handheld controller that talks to a WiThrottle Server (JMRI, DCC-EX EX-CommandStation, Digitrax LnWi and many others) using the WiThrottle protocol to control DCC model trains. 
+A WiTcontroller is a simple DIY, handheld controller that talks to a WiThrottle Server (JMRI, DCC-EX EX-CommandStation, Digitrax LnWi and many others) using the WiThrottle protocol to control DCC model trains.
 
 > [See full change log/ version history](change_log.md)
 
@@ -28,7 +28,7 @@ While the basic form is simple, the design is flexible and you can add several a
 >
 > * 'WiThrottle' is a trademark owned by Brett Hoffman. It is also an iOS app developed by Brett Hoffman.
 > * The 'WiThrottle protocol' is a communications protocol developed by Brett Hoffman.  It is used by **WiTcontroller**, JMRI, Engine Driver, the WiThrottle app plus a number of other apps and DCC Command Stations. References in this document to a 'WiThrottle Server', refer to any server that can communicate using the 'WiThrottle protocol'.
- 
+
 ---
 
 ## Index / Contents
@@ -101,11 +101,10 @@ While the basic form is simple, the design is flexible and you can add several a
 
 5. **Polymer Lithium Ion Battery LiPo** 400mAh (or larger) 3.7V 502535 JST Connector. ([500mAh Example](https://www.ebay.com.au/itm/133708965793?hash=item1f21ace7a1:g:tlwAAOSwfORgYqYK)) 
 
-
     Notes:
 
     * Any capacity battery will work. A 400mAh will give about 6 hours of run time.*
-    
+
 > [!CAUTION]
 > *I have found that some batteries come with the positive and negative leads the other way around to the terminals on the ESP32.* **Check they are correct before plugging it in!** <br/> <br/> The polarity of the battery is easy to swap, by getting a knife blade under the small tabs on the plastic connector and pulling each male socket out. Take extreme care. **DO NOT SHORT THE TERMINALS.**
 
@@ -157,7 +156,7 @@ While the basic form is simple, the design is flexible and you can add several a
 
 <summary>Click to expand to see a table of the default pinouts</summary>
 
-```
+```console
          3x4    4x4    OLED Encoder  Additional   Battery
     Pin Keypad Keypad                  Buttons     Test
      0    C1     C1                             
@@ -288,7 +287,6 @@ Michael Tagg version.
 DriverD's variation of the design. See [YouTube](https://youtu.be/i4kLNncoFLA?si=Nli4HzZWGFATpnhh)
 
 <img src="images/jonathan_sauer_1.jpeg" height="150;"> </img> <img src="images/jonathan_sauer_2.jpeg" height="150;"> </img> <img src="images/jonathan_sauer_3.jpeg" height="150;"> </img> <img src="images/jonathan_sauer_4.jpeg" height="150;"> </img> <br/>Jonathan Sauer's custom PCB version.
-
 
 ---
 
@@ -506,11 +504,7 @@ WiTcontroller:
 
 **ToDo:**
 
-* Speed button repeat (i.e. hold the keypad button down)
-* Deal with unexpected disconnects better
-  * automatic attempt to reconnect
-* Keep a list of IP addresses and ports if mDNS doesn't provide any
-* Additional translation files
+See [change log](change_log.md#todo).
 
 #### Command menu
 
@@ -575,9 +569,9 @@ Pressing the Encoder button while the ESP32 is in Deep Sleep will revive it.
 *WiThrottle Server List*<br />
 ![WiThrottle Server List](images/screenshots/wit_server_list.jpg)
 
-#### Ip Address and Port Entry
+#### IP Address and Port Entry
 
-If no server is discovered, you will be asker to enter the IP address and port. It is entered as a 17 digit number without the full stop '.' and colon ':' (they will be displayed), and with leading zeros for each segment to make them 3 digits, and with leading zeros for the port to make it 5 digits
+If no server is discovered, you will be asked to enter the IP address and port. It is entered as a 17 digit number without the full stops '.' and colon ':' (they will be displayed), and with leading zeros for each segment to make them 3 digits, and with leading zeros for the port to make it 5 digits
 
 e.g. `129.168.1.4:2560` would be entered as `19816800100402560`
 
@@ -592,7 +586,7 @@ e.g. `129.168.1.4:2560` would be entered as `19816800100402560`
 *Throttle Screen - with locos selected on throttle 1 and throttle 2*<br />
 ![Throttle Screen](images/screenshots/throttle.jpg)
 
-```
+```console
 TT LLLL LLLL LLLL               BBBBB
 TT ----------------------------------
 f f f f f f f f f f f f f f f f f f f
@@ -820,7 +814,7 @@ See additional information in [config_button_example.h](config_buttons_example.h
 
 The following example is for 5 additional buttons, one of which requires the external pullup resister.
 
-```
+```c++
 #define USE_NEW_ADDITIONAL_BUTTONS_FORMAT true
 #define NEW_MAX_ADDITIONAL_BUTTONS 5
 #define NEW_ADDITIONAL_BUTTON_ACTIONS {\
@@ -855,7 +849,7 @@ The following example is for 5 additional buttons, one of which requires the ext
 
 Which is exactly the same as...
 
-```
+```c++
 #define USE_NEW_ADDITIONAL_BUTTONS_FORMAT true
 #define NEW_MAX_ADDITIONAL_BUTTONS 5
 #define NEW_ADDITIONAL_BUTTON_ACTIONS {E_STOP,CUSTOM_4,FUNCTION_2,FUNCTION_3,FUNCTION_4}
@@ -973,7 +967,7 @@ If the battery does not show 100% when plugged into the charger, you may need to
   d) Wait. (Don't connect to a WiThrottle server.) <br/>
   You will see lines like...
 
-  ```
+  ```console
   BATTERY TestValue: 100 (10003)
   BATTERY lastAnalogReadValue: 2491 (10003)
   BATTERY If Battery full, BATTERY_CONVERSION_FACTOR should be: 1.69 (10014)

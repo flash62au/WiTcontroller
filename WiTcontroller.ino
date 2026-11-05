@@ -67,6 +67,7 @@ int encoderButtonAction = ENCODER_BUTTON_ACTION;
 bool menuCommandStarted = false;
 String menuCommand = "";
 bool menuIsShowing = false;
+bool menuIsScrollingPossible = false;
 
 String startupCommands[4] = {STARTUP_COMMAND_1, STARTUP_COMMAND_2, STARTUP_COMMAND_3, STARTUP_COMMAND_4};
 
@@ -174,7 +175,7 @@ int rosterSortedIndex[maxRoster];
 int page = 0;
 int functionPage = 0;
 bool functionHasBeenSelected = false;
-int functionPageSize = SHOW_LONGER_FUNCTION_LABELS ? 5 :10;
+int functionPageSize = SHOW_LONGER_FUNCTION_LABELS ? 5 : 10;
 
 // Broadcast msessage
 String broadcastMessageText = "";
@@ -188,12 +189,20 @@ int lastOledIntParameter = 0;
 bool lastOledBoolParameter = false;
 TurnoutAction lastOledTurnoutParameter = TurnoutToggle;
 
+// menu scrolling refresh variables
+const long SCROLLING_MENU_REFRESH_PERIOD = 500; // milliseconds
+const long SCROLLING_MENU_INITIAL_WAIT = -4; // multiplier - times the refresh period - negative number.
+long scrollingMenuLastRefreshTime = 0;
+int scrollingMenuRefreshCounter[18] = {SCROLLING_MENU_INITIAL_WAIT, SCROLLING_MENU_INITIAL_WAIT, SCROLLING_MENU_INITIAL_WAIT, SCROLLING_MENU_INITIAL_WAIT, SCROLLING_MENU_INITIAL_WAIT, SCROLLING_MENU_INITIAL_WAIT, SCROLLING_MENU_INITIAL_WAIT, SCROLLING_MENU_INITIAL_WAIT, SCROLLING_MENU_INITIAL_WAIT, SCROLLING_MENU_INITIAL_WAIT, SCROLLING_MENU_INITIAL_WAIT, SCROLLING_MENU_INITIAL_WAIT, SCROLLING_MENU_INITIAL_WAIT, SCROLLING_MENU_INITIAL_WAIT, SCROLLING_MENU_INITIAL_WAIT, SCROLLING_MENU_INITIAL_WAIT, SCROLLING_MENU_INITIAL_WAIT, SCROLLING_MENU_INITIAL_WAIT};
+int scrollingMenuRefreshCounterMax[18] = {40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40}; // these will change depending on the content
+
 // turnout variables
 int turnoutListSize = 0;
 int turnoutListIndex[maxTurnoutList]; 
 String turnoutListSysName[maxTurnoutList]; 
 String turnoutListUserName[maxTurnoutList];
 int turnoutListState[maxTurnoutList];
+int turnoutPageSize = SHOW_LONGER_ROUTE_AND_TURNOUT_LABELS ? 5 : 10;
 
 // route variables
 int routeListSize = 0;
@@ -201,6 +210,7 @@ int routeListIndex[maxRouteList];
 String routeListSysName[maxRouteList]; 
 String routeListUserName[maxRouteList];
 int routeListState[maxRouteList];
+int routePageSize = SHOW_LONGER_ROUTE_AND_TURNOUT_LABELS ? 5 : 10;
 
 //**************************************************************************************
 // Guest Mode - custom function not included with original code. When two of the additional 
@@ -272,6 +282,8 @@ const bool encoderRotationClockwiseIsIncreaseSpeed = ENCODER_ROTATION_CLOCKWISE_
 
 const bool toggleDirectionOnEncoderButtonPressWhenStationary = TOGGLE_DIRECTION_ON_ENCODER_BUTTON_PRESSED_WHEN_STATIONAY;
 // true = if the locos(s) are stationary, clicking the encoder button will toggle the direction
+
+const bool encoderInvertRotationWhenReversed = ENCODER_INVERT_ROTATION_WHEN_REVERSED;
 
 const bool speedZeroOnDirectionChange = SPEED_ZERO_ON_DIRECTION_CHANGE;
 
@@ -1527,11 +1539,11 @@ void rotary_loop() {
 }
 
 void encoderSpeedChange(bool rotationIsClockwise, int speedChange) {
-    #ifdef ENCODER_INVERT_ROTATION_WHEN_REVERSED
+    if (encoderInvertRotationWhenReversed) {
       if (currentDirection[currentThrottleIndex] == Reverse) {
         rotationIsClockwise = !rotationIsClockwise;
       }
-    #endif
+    }
 
   if (encoderRotationClockwiseIsIncreaseSpeed) {
     if (rotationIsClockwise) {
@@ -2003,7 +2015,30 @@ void loop() {
 
   if (useBatteryTest) { batteryTest_loop(); }
 
-	// debug_println("loop:" );
+//  debug_print("loop(): menuCommandStarted: "); 	debug_println(menuCommandStarted ? "true" : "false");
+//  debug_print("loop(): menuIsShowing: "); 	debug_println(menuIsShowing ? "true" : "false");
+
+  if ((menuIsShowing) && (menuIsScrollingPossible)) { // only refresh specific menu types
+    if ( (millis() - scrollingMenuLastRefreshTime) > SCROLLING_MENU_REFRESH_PERIOD) {
+      scrollingMenuLastRefreshTime = millis();
+      for(int i=0; i<18; i++) {
+        scrollingMenuRefreshCounter[i]++;
+        if (scrollingMenuRefreshCounter[i] >= scrollingMenuRefreshCounterMax[i]) {
+          scrollingMenuRefreshCounter[i] = SCROLLING_MENU_INITIAL_WAIT;
+        }
+      }
+      refreshOled();
+    }
+  } else {
+    resetMenuScrollingRefreshCounters();
+  }
+}
+
+void resetMenuScrollingRefreshCounters() {
+  for(int i=0; i<18; i++) {
+    scrollingMenuRefreshCounter[i] = SCROLLING_MENU_INITIAL_WAIT;
+  }
+  scrollingMenuLastRefreshTime = millis();
 }
 
 // *********************************************************************************
@@ -2252,17 +2287,19 @@ void doKeyPress(char key, bool pressed) {
       case KEYPAD_USE_SELECT_TURNOUTS_CLOSE:
         debug_print("doKeyPress(): key turnouts... "); debug_println(key);
         switch (key){
-          case '0': case '1': case '2': case '3': case '4': 
           case '5': case '6': case '7': case '8': case '9':
-            selectTurnoutList((key - '0')+(page*10), (keypadUseType == KEYPAD_USE_SELECT_TURNOUTS_THROW) ? TurnoutThrow : TurnoutClose);
+            if (SHOW_LONGER_ROUTE_AND_TURNOUT_LABELS) break;
+          case '0': case '1': case '2': case '3': case '4': 
+            selectTurnoutList((key - '0')+(page*turnoutPageSize), (keypadUseType == KEYPAD_USE_SELECT_TURNOUTS_THROW) ? TurnoutThrow : TurnoutClose);
             break;
           case '#':  // next page
-            if ( turnoutListSize > 10 ) {
-              if ( (page+1)*10 < turnoutListSize ) {
+            if ( turnoutListSize > turnoutPageSize ) {
+              if ( (page+1)*turnoutPageSize < turnoutListSize ) {
                 page++;
               } else {
                 page = 0;
               }
+              resetMenuScrollingRefreshCounters();
               writeOledTurnoutList("", (keypadUseType == KEYPAD_USE_SELECT_TURNOUTS_THROW) ? TurnoutThrow : TurnoutClose); 
             }
             break;
@@ -2278,17 +2315,19 @@ void doKeyPress(char key, bool pressed) {
       case KEYPAD_USE_SELECT_ROUTES:
         debug_print("doKeyPress(): key routes... "); debug_println(key);
         switch (key){
-          case '0': case '1': case '2': case '3': case '4': 
           case '5': case '6': case '7': case '8': case '9':
-            selectRouteList((key - '0')+(page*10));
+            if (SHOW_LONGER_ROUTE_AND_TURNOUT_LABELS) break;
+          case '0': case '1': case '2': case '3': case '4': 
+            selectRouteList((key - '0')+(page*routePageSize));
             break;
           case '#':  // next page
-            if ( routeListSize > 10 ) {
-              if ( (page+1)*10 < routeListSize ) {
+            if ( routeListSize > routePageSize ) {
+              if ( (page+1)*routePageSize < routeListSize ) {
                 page++;
               } else {
                 page = 0;
               }
+              resetMenuScrollingRefreshCounters();
               writeOledRouteList(""); 
             }
             break;
@@ -2312,6 +2351,7 @@ void doKeyPress(char key, bool pressed) {
           case '#':  // next page
             if ( (functionPage+1)*functionPageSize < MAX_FUNCTIONS ) {
               functionPage++;
+              resetMenuScrollingRefreshCounters();
               writeOledFunctionList(""); 
             } else {
               functionPage = 0;
@@ -3542,8 +3582,9 @@ void setMenuTextForOled(int menuTextIndex) {
 }
 
 void refreshOled() {
-     debug_print("refreshOled(): ");
-     debug_println(lastOledScreen);
+  debug_print("refreshOled(): ");
+  debug_println(lastOledScreen);
+
   switch (lastOledScreen) {
     case last_oled_screen_speed:
       writeOledSpeed();
@@ -3572,12 +3613,16 @@ void refreshOled() {
     case last_oled_screen_direct_commands:
       writeOledDirectCommands();
       break;
+    case last_oled_screen_roster:
+      writeOledRoster(lastOledStringParameter);
+      break;
   }
 }
 
 
 void writeOledFoundSSids(String soFar) {
   menuIsShowing = true;
+  menuIsScrollingPossible = false;
   keypadUseType = KEYPAD_USE_SELECT_SSID_FROM_FOUND;
   if (soFar == "") { // nothing entered yet
     clearOledArray();
@@ -3598,6 +3643,7 @@ void writeOledRoster(String soFar) {
   lastOledStringParameter = soFar;
 
   menuIsShowing = true;
+  menuIsScrollingPossible = true;
   keypadUseType = KEYPAD_USE_SELECT_ROSTER;
   if (soFar == "") { // nothing entered yet
     clearOledArray();
@@ -3608,7 +3654,8 @@ void writeOledRoster(String soFar) {
       }
     }
     oledText[5] = "(" + String(page+1) +  ") " + menu_text[menu_roster];
-    writeOledArray(false, false);
+    // writeOledArray(false, false);
+    writeOledArray(1, false, true, false, true, true);
   // } else {
   //   int cmd = menuCommand.substring(0, 1).toInt();
   }
@@ -3620,6 +3667,7 @@ void writeOledTurnoutList(String soFar, TurnoutAction action) {
   lastOledTurnoutParameter = action;
 
   menuIsShowing = true;
+  menuIsScrollingPossible = true;
   if (action == TurnoutThrow) {
     keypadUseType = KEYPAD_USE_SELECT_TURNOUTS_THROW;
   } else {
@@ -3628,16 +3676,27 @@ void writeOledTurnoutList(String soFar, TurnoutAction action) {
   if (soFar == "") { // nothing entered yet
     clearOledArray();
     int j = 0;
-    for (int i=0; i<10 && i<turnoutListSize; i++) {
-      j = (i<5) ? i : i+1;
-      if (turnoutListUserName[(page*10)+i].length()>0) {
-        oledText[j] = String(turnoutListIndex[i]) + ": " + turnoutListUserName[(page*10)+i].substring(0,10);
+
+    
+    if (!SHOW_LONGER_ROUTE_AND_TURNOUT_LABELS) { // show 10 
+      for (int i=0; i<10 && i<turnoutListSize; i++) {
+        j = (i<5) ? i : i+1;
+        if (turnoutListUserName[(page*10)+i].length()>0) {          oledText[j] = String(turnoutListIndex[i]) + ": " + turnoutListUserName[(page*10)+i];
+        }
       }
+      oledText[5] = "(" + String(page+1) +  ") " + menu_text[menu_turnout_list];
+      writeOledArray(2, false, true, false, true, true);
+
+    } else { // show 5
+      for (int i=0; i<5 && i<turnoutListSize; i++) {
+        j = i;
+        if (turnoutListUserName[(page*5)+i].length()>0) {
+          oledText[j] = String(turnoutListIndex[i]) + ": " + turnoutListUserName[(page*5)+i];
+        }
+      }
+      oledText[5] = "(" + String(page+1) +  ") " + menu_text[menu_turnout_list];
+      writeOledArray(1, false, true, false, true, true);
     }
-    oledText[5] = "(" + String(page+1) +  ") " + menu_text[menu_turnout_list];
-    writeOledArray(false, false);
-  // } else {
-  //   int cmd = menuCommand.substring(0, 1).toInt();
   }
 }
 
@@ -3646,20 +3705,32 @@ void writeOledRouteList(String soFar) {
   lastOledStringParameter = soFar;
 
   menuIsShowing = true;
+  menuIsScrollingPossible = true;
   keypadUseType = KEYPAD_USE_SELECT_ROUTES;
   if (soFar == "") { // nothing entered yet
     clearOledArray();
     int j = 0;
-    for (int i=0; i<10 && i<routeListSize; i++) {
-      j = (i<5) ? i : i+1;
-      if (routeListUserName[(page*10)+i].length()>0) {
-        oledText[j] = String(routeListIndex[i]) + ": " + routeListUserName[(page*10)+i].substring(0,10);
+
+    if (!SHOW_LONGER_ROUTE_AND_TURNOUT_LABELS) { // show 10 
+      for (int i=0; i<10 && i<routeListSize; i++) {
+        j = (i<5) ? i : i+1;
+        if (routeListUserName[(page*10)+i].length()>0) {
+          oledText[j] = String(routeListIndex[i]) + ": " + routeListUserName[(page*10)+i];
+        }
       }
+      oledText[5] =  "(" + String(page+1) +  ") " + menu_text[menu_route_list];
+      writeOledArray(2, false, true, false, true, true);
+
+    } else { // show 5 
+      for (int i=0; i<5 && i<routeListSize; i++) {
+        j = i;
+        if (routeListUserName[(page*5)+i].length()>0) {
+          oledText[j] = String(routeListIndex[i]) + ": " + routeListUserName[(page*5)+i];
+        }
+      }
+      oledText[5] =  "(" + String(page+1) +  ") " + menu_text[menu_route_list];
+      writeOledArray(1, false, true, false, true, true);
     }
-    oledText[5] =  "(" + String(page+1) +  ") " + menu_text[menu_route_list];
-    writeOledArray(false, false);
-  // } else {
-  //   int cmd = menuCommand.substring(0, 1).toInt();
   }
 }
 
@@ -3668,6 +3739,7 @@ void writeOledFunctionList(String soFar) {
   lastOledStringParameter = soFar;
 
   menuIsShowing = true;
+  menuIsScrollingPossible = true;
   keypadUseType = KEYPAD_USE_SELECT_FUNCTION;
   functionHasBeenSelected = false;
   
@@ -3681,10 +3753,14 @@ void writeOledFunctionList(String soFar) {
           k = (functionPage*10) + i;
           if (k < MAX_FUNCTIONS) {
             j = (i<5) ? i : i+1;
+            // oledText[j] = String(i) + ": " 
+            // + ( ((k<10 ) || (HIDE_FUNCTION_NUMBERS_WITH_LABELS))
+            //   ? functionLabels[currentThrottleIndex][k].substring(0,10) 
+            //   : String(k) + "-" + functionLabels[currentThrottleIndex][k].substring(0,7)) ;
             oledText[j] = String(i) + ": " 
             + ( ((k<10 ) || (HIDE_FUNCTION_NUMBERS_WITH_LABELS))
-              ? functionLabels[currentThrottleIndex][k].substring(0,10) 
-              : String(k) + "-" + functionLabels[currentThrottleIndex][k].substring(0,7)) ;
+              ? functionLabels[currentThrottleIndex][k] 
+              : String(k) + "-" + functionLabels[currentThrottleIndex][k]) ;
             
             if (functionStates[currentThrottleIndex][k]) {
               oledTextInvert[j] = true;
@@ -3692,7 +3768,7 @@ void writeOledFunctionList(String soFar) {
           }
         }
         oledText[5] = "(" + String(functionPage) +  ") " + menu_text[menu_function_list];
-        writeOledArray(2, false, true, false);
+        writeOledArray(2, false, true, false, true, true);
 
       } else { // show 5 functions
         for (int i=0; i<5; i++) {
@@ -3710,7 +3786,7 @@ void writeOledFunctionList(String soFar) {
           }
         }
         oledText[5] = "(" + String(functionPage) +  ") " + menu_text[menu_function_list];
-        writeOledArray(1, false, true, false);
+        writeOledArray(1, false, true, false, true, true);
       }
 
     } else {
@@ -3756,6 +3832,7 @@ void writeOledMenu(String soFar, bool primeMenu) {
   }
 
   menuIsShowing = true;
+  menuIsScrollingPossible = false;
   bool drawTopLine = false;
   if ( (soFar == "")
   || ((!primeMenu) && (soFar.length()==1))) { // nothing entered yet
@@ -3827,6 +3904,7 @@ void writeOledEditConsist() {
   lastOledScreen = last_oled_screen_edit_consist;
 
   menuIsShowing = false;
+  menuIsScrollingPossible = false;
   clearOledArray();
   debug_println("writeOledEditConsist(): ");
   keypadUseType = KEYPAD_USE_EDIT_CONSIST;
@@ -3838,6 +3916,7 @@ void writeOledEditConsist() {
 
 void writeHeartbeatCheck() {
   menuIsShowing = false;
+  menuIsScrollingPossible = false;
   clearOledArray();
   oledText[0] = MENU_ITEM_TEXT_TITLE_HEARTBEAT;
   if (heartbeatCheckEnabled) {
@@ -3855,6 +3934,7 @@ void writeOledSpeed() {
   // debug_println("writeOledSpeed() ");
   
   menuIsShowing = false;
+  menuIsScrollingPossible = false;
   String sLocos = "";
   String sSpeed = "";
   String sDirection = "";
@@ -4088,6 +4168,10 @@ void writeOledArray(bool isThreeColumns, bool isPassword, bool sendBuffer, bool 
 }
 
 void writeOledArray(int numberOfColumns, bool isPassword, bool sendBuffer, bool drawTopLine) {
+  writeOledArray(numberOfColumns, isPassword, sendBuffer, drawTopLine, false, false);
+}
+
+void writeOledArray(int numberOfColumns, bool isPassword, bool sendBuffer, bool drawTopLine, bool scrollItems, bool ScrollTopLine) {
   // debug_println("Start writeOledArray()");
   u8g2.clearBuffer();					// clear the internal memory
 
@@ -4098,16 +4182,48 @@ void writeOledArray(int numberOfColumns, bool isPassword, bool sendBuffer, bool 
   int y=10;
   int xInc = 64; 
   int max = 12;
+  int trimAt = 11;
+  int trimFrom=0;
   if (numberOfColumns == 3) {
     xInc = 42;
     max = 18;
+    trimAt = 8;
   } else if (numberOfColumns == 1) {
     xInc = 128;
     max = 6;
+    trimAt = 26;
+  }
+
+  for(int i=0; i<max; i++) {
+    if (oledText[i].length() > 0) {
+      scrollingMenuRefreshCounterMax[i] = oledText[i].length();
+    }
   }
 
   for (int i=0; i < max; i++) {
-    const char *cLine1 = oledText[i].c_str();
+    // const char *cLine1 = oledText[i].c_str();
+    
+    String line = "";
+    trimFrom = 0;
+    if (scrollItems) {
+      if ( (i!=5) || ((ScrollTopLine) && (i==0)) ) {
+        if (oledText[i].length() > trimAt) {
+          trimFrom = scrollingMenuRefreshCounter[i]<0 ? 0 : scrollingMenuRefreshCounter[i];
+        }
+        line = oledText[i].substring(0,3) +
+        oledText[i].substring(trimFrom+3,trimFrom+3 + trimAt);
+      } else {
+        line = oledText[i];
+      }
+      if(line.length() <= trimAt) {
+        scrollingMenuRefreshCounter[i] = -2;
+      }
+    } else {
+      line = oledText[i];
+    }
+    // debug_println("writeOledArray(): line: " + line);
+    const char *cLine1 = line.c_str();
+
     if ((isPassword) && (i==2)) u8g2.setFont(FONT_PASSWORD); 
 
     if (oledTextInvert[i]) {

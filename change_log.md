@@ -2,6 +2,12 @@
 
 ## Versions
 
+### V1.121
+
+- Added scrolling to the Turnout/Points, Routes and Function Labels menus.
+- New option SHOW_LONGER_ROUTE_AND_TURNOUT_LABELS  defaults to false
+- Fixed a quirk with ENCODER_INVERT_ROTATION_WHEN_REVERSED
+
 ### V1.120
 
 - New option HIDE_FUNCTION_NUMBERS_WITH_LABELS
@@ -393,6 +399,17 @@
 
 - option to auto-connect to first SSID
 
-### prior 
+### prior
 
 - various
+
+----
+
+## TODO
+
+- Use the encoder to select menu items
+- Speed button repeat (i.e. hold the keypad button down)
+- Deal with unexpected disconnects better
+  - automatic attempt to reconnect
+- Keep a list of IP addresses and ports if mDNS doesn't provide any
+- Additional translation files

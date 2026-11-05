@@ -127,6 +127,13 @@
 // #define HIDE_FUNCTION_NUMBERS_WITH_LABELS    true
 
 
+// By default the Routes and Turnouts/Points list will show 10 per page, 
+// with a maximum of 10 characters of each label being visible.
+// Uncomment this define to show only 5 per page with each label using 
+// the full width of the screen.
+
+// #define SHOW_LONGER_ROUTE_AND_TURNOUT_LABELS true
+
 // *******************************************************************************************************************
 // Maximum number of throttles
 

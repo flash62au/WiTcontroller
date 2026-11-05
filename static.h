@@ -1,4 +1,4 @@
-const String appVersion = "v1.120";
+const String appVersion = "v1.121";
 #ifndef CUSTOM_APPNAME
    const String appName = "WiTcontroller";
 #else
@@ -172,6 +172,7 @@ const int last_oled_screen_extra_submenu =    6;
 const int last_oled_screen_all_locos =        7;
 const int last_oled_screen_edit_consist =     8;
 const int last_oled_screen_direct_commands =  9;
+const int last_oled_screen_wit_servers     = 10;
 
 typedef enum ShowBattery {
     NONE = 0,
@@ -612,6 +613,9 @@ const int glyph_speed_step = 0x00d6;
 #ifndef TOGGLE_DIRECTION_ON_ENCODER_BUTTON_PRESSED_WHEN_STATIONAY
    #define TOGGLE_DIRECTION_ON_ENCODER_BUTTON_PRESSED_WHEN_STATIONAY true
 #endif
+#ifndef ENCODER_INVERT_ROTATION_WHEN_REVERSED
+   #define ENCODER_INVERT_ROTATION_WHEN_REVERSED false
+#endif
 // speed increase for each click of the encoder 
 #ifdef SPEED_STEP
   const int speedStep = SPEED_STEP;
@@ -899,6 +903,11 @@ const char ssidPasswordBlankChar = 164;
 #ifndef HIDE_FUNCTION_NUMBERS_WITH_LABELS
     #define HIDE_FUNCTION_NUMBERS_WITH_LABELS false  // default if not defined in config_buttons.h
 #endif
+
+#ifndef SHOW_LONGER_ROUTE_AND_TURNOUT_LABELS
+    #define SHOW_LONGER_ROUTE_AND_TURNOUT_LABELS false  // default if not defined in config_buttons.h
+#endif
+
 
 #ifndef MAX_THROTTLES
     #define MAX_THROTTLES 2  // default if not defined in config_buttons.h

@@ -15,6 +15,7 @@ extern int encoderUseType;
 extern bool menuCommandStarted;
 extern String menuCommand;
 extern bool menuIsShowing;
+extern bool menuIsScrollingPossible;
 
 extern String oledText[];
 extern bool oledTextInvert[];
@@ -209,6 +210,8 @@ void writeOledFunctions(void);
 void writeOledArray(bool, bool);
 void writeOledArray(bool, bool, bool);
 void writeOledArray(bool, bool, bool, bool);
+void writeOledArray(int, bool, bool, bool);
+void writeOledArray(int, bool, bool, bool, bool, bool);
 void clearOledArray();
 void writeOledDirectCommands(void);
 
