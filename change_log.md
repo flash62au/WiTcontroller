@@ -1,75 +1,80 @@
 # Change Log
 
+- [Version Information](#versions)
+- [TODO List](#todo)
+
+----
+
 ## Versions
 
-### V1.121
+### V1.121 (2026-11-06)
 
 - Added scrolling to the Turnout/Points, Routes and Function Labels menus.
 - New option SHOW_LONGER_ROUTE_AND_TURNOUT_LABELS  defaults to false
 - Fixed a quirk with ENCODER_INVERT_ROTATION_WHEN_REVERSED
 
-### V1.120
+### V1.120 (2026-10-05)
 
 - New option HIDE_FUNCTION_NUMBERS_WITH_LABELS
 
-### V1.119
+### V1.119 (2026-09-30)
 
 - New option SHOW_LONGER_FUNCTION_LABELS
 
-### V1.118
+### V1.118 (2026-09-22)
 
 - New option USE_LARGER_FONT_FOR_LOCOS
 - Bug fix. Don't clear the function states when selecting a subsequent loco of a consist
 - Ignore entered DCC addresses greater than 10239 or equal to 0
 
-### V1.117
+### V1.117 (2026-09-22)
 
 - New, experimental, configuration button generation page
 - New, experimental, configuration network generation page
 - New option SPEED_ZERO_ON_DIRECTION_CHANGE from Nico/ocin
 - New option DEFAULT_SPEED_STEP_MULTIPLIER from Nico/ocin
 
-### V1.116
+### V1.116 (2026-09-16)
 
 - Disable all custom menu commands if guest mode is active.
 
-### V1.115
+### V1.115 (2026-09-15)
 
 - Added option to allow the use of the keypad direct commands in guest mode. It is disabled by default.
 - Added separate option for allowing NEXT_THROTTLE in guest mode. It is disabled by default.
 
-### V1.114
+### V1.114 (2026-09-15)
 
 - Added the optional custom menu commands
 
-### V1.113
+### V1.113 (2026-09-08)
 
 - Added Guest Mode - modified from the code from Will Jayne - Coventry Railworks
 - Added Function Search - modified from the code from Will Jayne - Coventry Railworks
 - Moved contents on config_keyboard_etc.h to static.h
 
-### V1.112
+### V1.112 (2026-08-05)
 
 - Increase the number of supported custom commands to 11
 
-### V1.111
+### V1.111 (2026-04-11)
 
 - bug fix for 1.110
 
-### V1.110
+### V1.110 (2026-04-11)
 
 - Now 'guesses' that there will be a server on 192.168.4.1:2650 if the SSID name contains "DCCEX" or "DCC-EX"
 
-### V1.109
+### V1.109 (2026-03-06)
 
 - Added ``#define ENCODER_SENSITIVITY``  Default is now 85 for the encoder acceleration instead of the previously fixed 100, but can be overridden
 - Added feature to automatically store all entered passwords in non-volatile memory.
 
-### V1.108
+### V1.108 (2026-02-23)
 
 - When trying to connect to a DCC-EX EX-CommandStation it will now try the 'guessed' password on the first attempt.  Then, if it fails to connect, it will ask for the password on the second attempt.
 
-### V1.107
+### V1.107 (2026-02-11)
 
 - Dutch translations by Hans Metselaar
 
@@ -111,7 +116,7 @@
 - Addition of two defines for the SSID scan ``SORT_WIFI_NETWORKS`` and ``USE_FAST_WIFI_SCAN_METHOD``
   - Use ``#define SORT_WIFI_NETWORKS true`` to sort the SSIDs
   - Use ``#define USE_FAST_WIFI_SCAN_METHOD true`` to use a faster scanning method
-- Now disconects the WiFi as a precaution on startup
+- Now disconnects the WiFi as a precaution on startup
 - Fixed a bug with use of the WiFi country codes
 - Realised that ``#define ENFORCED_COUNTRY_CODE true`` is not actually used by the code.  I will look into that later
 
@@ -200,10 +205,7 @@
 ### V1.77
 
 - Bug fix for when a DCC-EX EX-CommandStation has the password changed from the default.
-
-### V1.77
-
-- The additional CR+LF are now sent ahead of all commands to all command stations by default. This was originally only sent for WiFiTrax, but other commercial CSs seem to have the same issue that this resolved. This can be disabled if needed with ``#define SEND_LEADING_CR_LF_FOR_COMMANDS false`` in ``confing_network.h``.
+- The additional CR+LF are now sent ahead of all commands to all command stations by default. This was originally only sent for WiFiTrax, but other commercial CSs seem to have the same issue that this resolved. This can be disabled if needed with ``#define SEND_LEADING_CR_LF_FOR_COMMANDS false`` in ``config_network.h``.
 - Added a message when the server has just connected and is caught up receiving the roster etc. and is unable to process commands yet.
 
 ### V1.76
@@ -221,7 +223,7 @@
 - Improvements for non-English language display.
 - Bug fix. Removed duplicated first entry in the Roster (at the end).
 
-### V1.73
+### V1.73 (2026-10-16)
 
 - Add debug level option ``#define DEBUG_LEVEL``
 - A bug in the heartbeat send in the protocol library was fixed at the same time as this release.
@@ -230,9 +232,10 @@
 ### V1.72
 
 - add the ability to sort the roster with the new define ``ROSTER_SORT_SEQUENCE``
-   - 0 = no sorting.  As it comes from the server
-   - 1 = sort by name (first 10 chars only)  - Default
-   - 2 = sort by DCC Address
+
+  - 0 = no sorting.  As it comes from the server
+  - 1 = sort by name (first 10 chars only)  - Default
+  - 2 = sort by DCC Address
 
 ### V1.71
 
@@ -304,7 +307,7 @@
 
 ### V1.54
 
-- minor format change 
+- minor format change
 
 ### V1.53
 
@@ -352,25 +355,22 @@
 ### V1.43
 
 - bug fix
-
-### V1.43
-
- - text, button and display PIN configurations moved to defines that can be overridden in personal config_buttons_etc.h files
- - no functional changes
+- text, button and display PIN configurations moved to defines that can be overridden in personal config_buttons_etc.h files
+- no functional changes
 
 ### V1.42
 
- - minor bug fix
- 
+- minor bug fix
+
 ### V1.41
 
-  - support for broadcast messages. Requires WiThrottleProtocol version 1.1.12 or later.
+- support for broadcast messages. Requires WiThrottleProtocol version 1.1.12 or later.
 
 ### V1.40
 
- - fix for the debounce of the rotary encoder button. Will now ignore rotations when the button is pressed for (default) 200ms.  The #define for the debounce has been moved from config_keypad_etc.h to config_buttons as: #define ROTARY_ENCODER_DEBOUNCE_TIME 200
+- fix for the debounce of the rotary encoder button. Will now ignore rotations when the button is pressed for (default) 200ms.  The #define for the debounce has been moved from config_keypad_etc.h to config_buttons as: #define ROTARY_ENCODER_DEBOUNCE_TIME 200
 
-### V1.38 & V1.39 
+### V1.38 & V1.39
 
 - fix problem with wifiTrax
 
@@ -403,6 +403,10 @@
 
 - various
 
+### Initial commit (2022-04-25)
+
+- Initial commit
+
 ----
 
 ## TODO
@@ -413,3 +417,5 @@
   - automatic attempt to reconnect
 - Keep a list of IP addresses and ports if mDNS doesn't provide any
 - Additional translation files
+
+----
