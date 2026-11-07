@@ -1,6 +1,6 @@
 # WiTcontroller
 
-![WiTcontroller icon](./images/witcontroller_icon.png)
+<img src="images/witcontroller_icon.png" width="50" style="float:right;" />
 
 A WiTcontroller is a simple DIY, handheld controller that talks to a WiThrottle Server (JMRI, DCC-EX EX-CommandStation, Digitrax LnWi and many others) using the WiThrottle protocol to control DCC model trains.
 
