@@ -83,6 +83,10 @@
     <div class="status" id="status" role="status"></div>
   </section>
 </main>
+
+  <!-- ------------------------------------------------------------------------------- -->
+  <!-- ------------------------------------------------------------------------------- -->
+
 <script>
   const actions = [
     ["FUNCTION_NULL", "Do nothing"], 
@@ -143,6 +147,9 @@
   const gpios = choices([[0,"GPIO0"],[1,"GPIO1"],[2,"GPIO2"],[3,"GPIO3"],[4,"GPIO4"],[5,"GPIO5"],[6,"GPIO6"],[7,"GPIO7"],[8,"GPIO8"],[9,"GPIO9"],[10,"GPIO10"],[11,"GPIO11"],[12,"GPIO12"],[13,"GPIO13"],[14,"GPIO14"],[15,"GPIO15"],[16,"GPIO16"],[17,"GPIO17"],[18,"GPIO18"],[19,"GPIO19"],[21,"GPIO21"],[22,"GPIO22"],[23,"GPIO23"],[25,"GPIO25"],[26,"GPIO26"],[27,"GPIO27"],[32,"GPIO32"],[33,"GPIO33"],[34,"GPIO34"],[35,"GPIO35"],[36,"GPIO36"],[37,"GPIO37"],[38,"GPIO38"],[39,"GPIO39"]]);
   const gpiosPlusV = choices([[-1,"-1 = 3.3v"],[0,"GPIO0"],[1,"GPIO1"],[2,"GPIO2"],[3,"GPIO3"],[4,"GPIO4"],[5,"GPIO5"],[6,"GPIO6"],[7,"GPIO7"],[8,"GPIO8"],[9,"GPIO9"],[10,"GPIO10"],[11,"GPIO11"],[12,"GPIO12"],[13,"GPIO13"],[14,"GPIO14"],[15,"GPIO15"],[16,"GPIO16"],[17,"GPIO17"],[18,"GPIO18"],[19,"GPIO19"],[21,"GPIO21"],[22,"GPIO22"],[23,"GPIO23"],[25,"GPIO25"],[26,"GPIO26"],[27,"GPIO27"],[32,"GPIO32"],[33,"GPIO33"],[34,"GPIO34"],[35,"GPIO35"],[36,"GPIO36"],[37,"GPIO37"],[38,"GPIO38"],[39,"GPIO39"]]);
   const gpiosPlusNone = choices([[-1,"-1 = disabled"],[0,"GPIO0"],[1,"GPIO1"],[2,"GPIO2"],[3,"GPIO3"],[4,"GPIO4"],[5,"GPIO5"],[6,"GPIO6"],[7,"GPIO7"],[8,"GPIO8"],[9,"GPIO9"],[10,"GPIO10"],[11,"GPIO11"],[12,"GPIO12"],[13,"GPIO13"],[14,"GPIO14"],[15,"GPIO15"],[16,"GPIO16"],[17,"GPIO17"],[18,"GPIO18"],[19,"GPIO19"],[21,"GPIO21"],[22,"GPIO22"],[23,"GPIO23"],[25,"GPIO25"],[26,"GPIO26"],[27,"GPIO27"],[32,"GPIO32"],[33,"GPIO33"],[34,"GPIO34"],[35,"GPIO35"],[36,"GPIO36"],[37,"GPIO37"],[38,"GPIO38"],[39,"GPIO39"]]);
+ 
+  <!-- ------------------------------------------------------------------------------- -->
+  <!-- ------------------------------------------------------------------------------- -->
 
   const encoderFields = [
     {title:"Rotary Encoder Hardware (changes not recommended)", items:[
@@ -229,7 +236,6 @@
     ]}
   ];
 
-
   const displayFields = [
     {title:"Display Options (Optional)", items:[
       ["SHOW_LONGER_FUNCTION_LABELS","select",bools,"Show Longer Function Labels (optional)"],
@@ -307,6 +313,9 @@
       ["DEBUG_LEVEL","select",choices([[0,"0 = Errors only"],[1,"1 = Default level"],[2,"2 = Verbose"],[3,"3 = Extreme"],[4,"4 = Everything"]]),"Debug level (0–3)"]
     ]}
   ];
+  
+  <!-- ------------------------------------------------------------------------------- -->
+  <!-- ------------------------------------------------------------------------------- -->
 
   // Add entries here to show extra guidance below matching configuration options.
   const optionExplanations = {
@@ -359,6 +368,8 @@
     KEYPAD_DEBOUNCE_TIME: "Play with this value and KEYPAD_HOLD_TIME if you see the keys bounce (activate twice on a single press)\nTimes are in milliseconds",
     KEYPAD_HOLD_TIME: "Play with this value and KEYPAD_DEBOUNCE_TIME if you see the keys bounce (activate twice on a single press)\nTimes are in milliseconds",
 
+    USE_NEW_ADDITIONAL_BUTTONS_FORMAT: "Warning: Setting this to 'false' will disable the additional buttons",
+    NEW_MAX_ADDITIONAL_BUTTONS: "Waring: reducing this number will disable some of the additional buttons",
     // NEW_ADDITIONAL_BUTTON_ACTIONS: "{val0, val1, .. val10, up-to-val11}\ne.g. for all additional buttons might look like:\n{FUNCTION_0, FUNCTION_1, FUNCTION_2, SPEED_STOP, DIRECTION_TOGGLE, POWER_TOGGLE, NEXT_THROTTLE, CUSTOM_0, CUSTOM2, CUSTOM_MENU_SELECT_0, FUNCTION_NULL }",
     // NEW_ADDITIONAL_BUTTON_LATCHING: "{val0, val1, .. val10, up-to-val11}\nNote these are are only relevant for FUNCTION_ assignments\n e.g. for the 11 button example above it might look like:\n{true, false, true, true, true, true, true, true, true, true, true}",
     // NEW_ADDITIONAL_BUTTON_PIN: "{val0, val1, .. val10, up-to-val11}\nSet the pin value to -1 to skip that value.\n e.g. for the 11 button example above it might look like:\n{5, 15, 25, 26, 27, 32, 33, 34, 35, 36, 39 }",
@@ -386,6 +397,9 @@
         "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
       }[character]))
   ).join("");
+  
+  <!-- ------------------------------------------------------------------------------- -->
+  <!-- ------------------------------------------------------------------------------- -->
 
   const defaultValues = {
     CHOSEN_KEYPAD_0_FUNCTION: "FUNCTION_0",
@@ -525,6 +539,8 @@
     GUEST_MODE_ALLOW_NEXT_THROTTLE:"true"
   };
 
+  <!-- ------------------------------------------------------------------------------- -->
+  <!-- ------------------------------------------------------------------------------- -->
 
   const alwaysWriteDefines = [
     "CUSTOM_APPNAME",
@@ -599,6 +615,10 @@
     "USE_BATTERY_PERCENT_AS_WELL_AS_ICON",
     "USE_BATTERY_SLEEP_AT_PERCENT"
   ];
+ 
+  <!-- ------------------------------------------------------------------------------- -->
+  <!-- ------------------------------------------------------------------------------- -->
+  <!-- ------------------------------------------------------------------------------- -->
 
   // for (let i = 0; i < 10; i++) {
   //   defaultValues[`CHOSEN_KEYPAD_${i}_DISPLAY_NAME`] = `${i} ${["Lights","Bell","Horn","F3","F4","Nxt Ttl","X Spd","Rev","Estop","Fwd"][i]}`;
@@ -709,19 +729,19 @@
 
   form.insertAdjacentHTML("beforeend", `<section class="panel">
     <h2 style="color:red"><big>Part 2 - Optional Additional Button Hardware Configuration</big></h2>
-      <p class=hint">If you have installed the 1-11 Additional Buttons.</p>
+      <p class=hint">Configuration options for the non-keypad buttons. (The 6 Additional KitCab Buttons)</p>
   </section>`);
   
   <!-- Additional Buttons -->
   form.insertAdjacentHTML("beforeend", `<section class="panel">
     <h2>Additional Buttons (optional)</h2>
     <p class="hint">Unless you have physically altered your Kit<span style="font-weight:700">Cab</span> there is probably no need to modify these settings.</p>
-    <p class="hint">Modify this section if you have installed the 1-11 Additional Buttons<br/><br/><code>USE_NEW_ADDITIONAL_BUTTONS_FORMAT</code> must be set to 'true' and <code>NEW_MAX_ADDITIONAL_BUTTONS</code> must be set to the number you have installed.<br/>
+    <p class="hint"><code>USE_NEW_ADDITIONAL_BUTTONS_FORMAT</code> must be set to 'true' and <code>NEW_MAX_ADDITIONAL_BUTTONS</code> must be set to the number of buttons installed.<br/>
     Then the following lists MUST have the same number of elements:<br/><small> - <code>NEW_ADDITIONAL_BUTTON_ACTIONS</code><br/> - <code>NEW_ADDITIONAL_BUTTON_LATCHING</code><br/> - <code>NEW_ADDITIONAL_BUTTON_PIN</code><br/> - <code>NEW_ADDITIONAL_BUTTON_TYPE</code></small>
     </p>
     <div class="grid">
       ${renderField(["USE_NEW_ADDITIONAL_BUTTONS_FORMAT","select",bools,"Use new additional-button format"])}
-      ${renderField(["NEW_MAX_ADDITIONAL_BUTTONS","number",null,"Number of buttons (1-11)"])}
+      ${renderField(["NEW_MAX_ADDITIONAL_BUTTONS","number",null,"Number of buttons (1-6)"])}
     </div>
     <br/>
     <div id="additional-button-fields" class="additional-button-grid"></div>
@@ -733,11 +753,11 @@
   </section>`);
 
   form.insertAdjacentHTML("beforeend", `<section class="panel">
-    <h2 style="color:red"><big>Part 3 - Optional Battery Check Hardware Configuration</big></h2>
-      <p class=hint">If you have installed the additional hardware to support the battery check.</p>
+    <h2 style="color:red"><big>Part 3 - Optional LiPo Battery Hardware Configuration</big></h2>
+      <p class=hint">If you have installed the LiPo battery and additional hardware to support the LiPo battery check.</p>
   </section>`);
 
-  <!-- Battery Check (Optional) -->
+  <!-- LiPo Battery Check (Optional) -->
   batteryFields.forEach(group => {
     form.insertAdjacentHTML("beforeend", `<section class="panel">
       <h2>${group.title}</h2>
@@ -924,7 +944,7 @@
 
   function renderAdditionalButtonFields() {
     const countValue = additionalButtonCount.value || defaultValues.NEW_MAX_ADDITIONAL_BUTTONS;
-    const count = Math.max(0, Math.min(11, Number.parseInt(countValue, 10) || 0));
+    const count = Math.max(0, Math.min(6, Number.parseInt(countValue, 10) || 0));
     if (additionalButtonCount.value && additionalButtonCount.value !== String(count)) additionalButtonCount.value = String(count);
     const previousValues = {};
     additionalButtonFields.querySelectorAll("[data-button-list]").forEach(field => {
@@ -977,7 +997,9 @@
     </section>`);
   });
 
-<!-- ------------------------------------------------------------------------------- -->
+  <!-- ------------------------------------------------------------------------------- -->
+  <!-- ------------------------------------------------------------------------------- -->
+  <!-- ------------------------------------------------------------------------------- -->
 
   function makeOptionalSectionsCollapsible() {
     const terms = collapsibleSectionTitleTerms
@@ -1003,6 +1025,8 @@
 
   makeOptionalSectionsCollapsible();
 
+  <!-- ------------------------------------------------------------------------------- -->
+  <!-- ------------------------------------------------------------------------------- -->
   <!-- ------------------------------------------------------------------------------- -->
 
   const output = document.querySelector("#output"), status = document.querySelector("#status");
