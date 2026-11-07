@@ -10,7 +10,7 @@ A WiTcontroller is a simple DIY, handheld controller that talks to a WiThrottle 
 
 ## Why WiTcontroller?
 
-<img src="images/petegsx_version.png" width="150" style="float:right;"></img>
+<img src="images/petegsx_version.png" width="150" style="float:right;" />
 
 There are a number of excellent DIY DCC controllers available, but most require a lot of components and a lot of soldering.  I wanted to create the simplest possible controller so that it would be as easy (as possible) to make one.
 
@@ -81,7 +81,7 @@ While the basic form is simple, the design is flexible and you can add several a
 > [!CAUTION]
 > I have reports of some of the versions of this board with the USB-C connectors having problems with the WiFi.  Some are clearly fine, but others are not. I am still investigating this, but I would recommend avoiding the USB-C version for now.
 
-2. **3x4 Keypad**  ([Example](https://www.jaycar.com.au/12-key-numeric-keypad/p/SP0770?pos=2&queryId=20aedf107668ad42c6fe1f8b7f7a9ca7)) 
+2. **3x4 Keypad**  ([Example](https://www.jaycar.com.au/12-key-numeric-keypad/p/SP0770?pos=2&queryId=20aedf107668ad42c6fe1f8b7f7a9ca7))
 
     Notes:
 
@@ -241,7 +241,7 @@ correctly identified and adjusted as needed.
 
 ### Case
 
-<img src="images/witcontroller1.jpg" width="300;"></img> <img src="images/witcontroller2.jpg" width="300;"></img>
+<img src="images/witcontroller1.jpg" width="300;" /> <img src="images/witcontroller2.jpg" width="300;" />
 
 My case was 3D Printed for me by peteGSX (See the [Thingiverse.](https://www.thingiverse.com/thing:5440351) )
 
@@ -252,43 +252,46 @@ My case was 3D Printed for me by peteGSX (See the [Thingiverse.](https://www.thi
 
 ### Variations
 
-<img src="images/sumner_version.png" width="300;"></img> <br/>
+<img src="images/sumner_version.png" width="300;" /> <br/>
 See [*sumner* version](https://1fatgmc.com/RailRoad/DCC/WiTcontroller-Index.html).
 
-<img src="images/syurev_case.png" height="300;"></img> <br/>
+<img src="images/syurev_case.png" height="300;" /> <br/>
 syurev version. See [Thingiverse](https://www.thingiverse.com/thing:6541187) or [cults3d](https://cults3d.com/en/3d-model/gadget/case-for-dccexcontroller-witcontroller?srsltid=AfmBOor1vJFxJRlUXj0FpI2E6JM4anwHzLv4IxYo9wwbWouIjegVqiMr)
 
-<img src="images/railsnail_case.png" height="240;"></img> <br/>
+<img src="images/railsnail_case.png" height="240;" /> <br/>
 Railsnail version. See [RMweb](https://www.rmweb.co.uk/forums/topic/186297-project-a-witcontroller-wireless-throttle-to-control-my-dcc-ex-commandstation/).
 
-<img src="images/kees_case.png" height="300;"></img> <br/>
+<img src="images/kees_case.png" height="300;" /> <br/>
 kees version. See [printables](https://www.printables.com/model/907658-dccexcontroller-witcontroller).
 
-<img src="images/case_uknown.png" height="300;"></img> <br/>
+<img src="images/case_uknown.png" height="300;" /> <br/>
 Unknown author. See [Thingiverse](https://makerworld.com/en/models/819825).
 
-<img src="images/gingerangles_version.png" height="300;"></img> <br/>
+<img src="images/gingerangles_version.png" height="300;" /> <br/>
 *gingerangles* version with 2.4 inch screen...
 gingerangels can be contacted on the DCC-EX Discord server.
 [Discord Invite](https://discord.gg/8ghsjsBup8) - 
 [specific message](https://discord.com/channels/713189617066836079/735156882511102033/1316646832297742380)
 
-<img src="images/rdbnogueira_version.png" height="250;"></img> <br/> 
+<img src="images/rdbnogueira_version.png" height="250;" /> <br/> 
 rdbnogueira version. See [Thingiverse](https://www.thingiverse.com/thing:6956982)
 
-<img src="https://github.com/dvirgo62/Printed-case-for-witcontroller/blob/main/PXL_20250910_022436424.jpg?raw=true" height="300;"></img> <br/>
+<img src="https://github.com/dvirgo62/Printed-case-for-witcontroller/blob/main/PXL_20250910_022436424.jpg?raw=true" height="300;" /> <br/>
 David Virgo's version using the EC11 encoder. See [GitHub](https://github.com/dvirgo62/Printed-case-for-witcontroller?fbclid=IwY2xjawMyNLNleHRuA2FlbQIxMABicmlkETFTZ3RWbmRYck9MRENISVczAR7I770O70-brr0UWQ1O463MGa91Kf7WoZwbx85NPC72q69bG04gduhkIRDuFg_aem_znuhLVk6PxQxmlZntuLdAA)
 
-<img src="images/markwtech_case.jpg" height="200;"></img> <br/> 
+<img src="images/markwtech_case.jpg" height="200;" /> <br/> 
 markwtech version. See [Thingiverse](https://www.thingiverse.com/thing:7029069)
 
-<img src="images/michael_tagg.png" height="200;"></img> <br/> 
+<img src="images/michael_tagg.png" height="200;" /> <br/> 
 Michael Tagg version.
 
-<img src="images/driverd_variation.png" height="100;"></img> <br/> 
+<img src="images/driverd_variation.png" height="100;" /> <br/> 
 DriverD's variation of the design. See [YouTube](https://youtu.be/i4kLNncoFLA?si=Nli4HzZWGFATpnhh)
 
 <img src="images/jonathan_sauer_1.jpeg" height="150;"> </img> <img src="images/jonathan_sauer_2.jpeg" height="150;"> </img> <img src="images/jonathan_sauer_3.jpeg" height="150;"> </img> <img src="images/jonathan_sauer_4.jpeg" height="150;"> </img> <br/>Jonathan Sauer's custom PCB version.
+
+<img src="images/kitcab.png" height="250;" /> <br/> 
+Kit**Cab** version. Soon to be sold as a kit by [Beacon Models Ltd.](https://www.beacon-models.com)
 
 ---
 
