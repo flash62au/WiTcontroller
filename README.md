@@ -45,6 +45,10 @@ While the basic form is simple, the design is flexible and you can add several a
 * [Modifying the code](#modifying-the-code)
 * [Change Log](#change-log)
 
+## Donations
+
+[Donations are gratefully accepted](https://ko-fi.com/flash62au) though Ko-Fi.
+
 <br/>
 <hr style="border: none; height: 4px; background-color: #007bff; border-radius: 2px;">
 
