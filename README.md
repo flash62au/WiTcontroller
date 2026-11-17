@@ -92,11 +92,13 @@ While the basic form is simple, the design is flexible and you can add several a
     * Alternately a 4x4 keypad can also be used (see optional components below)
     * Different keypad manufacturers may arrange the pins on the base of the keypad differently.*** See notes in the [Default Pins for the keypads](#default-pins-for-the-keypads) section below.
 
-3. **KY-040 Rotary Encoder Module** ([Example](https://www.aliexpress.com/item/1005003946689694.html?albagn=888888&&src=google&albch=search&acnt=479-062-3723&isdl=y&aff_short_key=UneMJZVf&albcp=21520181724&albag=168529973707&slnk=&trgt=dsa-1464330247393&plac=&crea=707854323770&netw=g&device=c&mtctp=&memo1=&albbt=Google_7_search&aff_platform=google&gad_source=1&gclid=Cj0KCQjwiOy1BhDCARIsADGvQnBPdlEVLYbYnLoOnN1p2bdjte0jYmInrgFD0WG16aF3GZtvrWTb6o0aAo8VEALw_wcB&gclsrc=aw.ds)) 
+3. **KY-040 Rotary Encoder Module** ([Example](https://www.aliexpress.com/item/1005003946689694.html?albagn=888888&&src=google&albch=search&acnt=479-062-3723&isdl=y&aff_short_key=UneMJZVf&albcp=21520181724&albag=168529973707&slnk=&trgt=dsa-1464330247393&plac=&crea=707854323770&netw=g&device=c&mtctp=&memo1=&albbt=Google_7_search&aff_platform=google&gad_source=1&gclid=Cj0KCQjwiOy1BhDCARIsADGvQnBPdlEVLYbYnLoOnN1p2bdjte0jYmInrgFD0WG16aF3GZtvrWTb6o0aAo8VEALw_wcB&gclsrc=aw.ds))
 
     Notes:
 
     *The **EC11 rotary encoder** will also work, but requires a small configuration change in ``config_buttons.h`` (see below)*
+
+    **Optional** The boards that combine an oLED with a rotary encoder can be used instead of the two individual components. ([Example](https://www.temu.com/au/0-96-1-3-inch-oled-display-driver-module--with-ec11-rotary--module-iic-interface-g-605791377543962.html?_oak_mp_inf=EJqm997s3okBGiA0MDQ2YmZmYzkxYWM0ZTA4OTBiZTk5ZmE1NWVlY2E3YSCJgM35mjQ%3D&top_gallery_url=https%3A%2F%2Fimg.kwcdn.com%2Fproduct%2Ffancy%2Ff06379d1-0b45-45a8-9264-10699608a2d5.jpg&spec_gallery_id=605791377543962&refer_page_sn=10009&freesia_scene=2&_oak_freesia_scene=2&_oak_rec_ext_1=NTYw&search_key=OLED%20Display%20Module%20With%20encoder&refer_page_el_sn=200049&ab_scene=1&refer_page_name=search_result&refer_page_id=10009_1793940410469_t5yf76ln96&_x_sessn_id=y3lai9j7l9))
 
 4. **OLED Display** 0.96" 128x64 I2C IIC SSD1306 ([Example](https://www.ebay.com.au/itm/273746192621?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2060353.m2749.l2649))
 
@@ -105,7 +107,9 @@ While the basic form is simple, the design is flexible and you can add several a
     * *The code for the one of the common 1.3" displays is also included (see below).*
     * *Some OLED displays up to 2.4 inch will also work (see below)*
 
-5. **Polymer Lithium Ion Battery LiPo** 400mAh (or larger) 3.7V 502535 JST Connector. ([500mAh Example](https://www.ebay.com.au/itm/133708965793?hash=item1f21ace7a1:g:tlwAAOSwfORgYqYK)) 
+    **Optional** The boards that combine an oLED with a rotary encoder can be used instead of the two individual components. ([Example](https://www.temu.com/au/0-96-1-3-inch-oled-display-driver-module--with-ec11-rotary--module-iic-interface-g-605791377543962.html?_oak_mp_inf=EJqm997s3okBGiA0MDQ2YmZmYzkxYWM0ZTA4OTBiZTk5ZmE1NWVlY2E3YSCJgM35mjQ%3D&top_gallery_url=https%3A%2F%2Fimg.kwcdn.com%2Fproduct%2Ffancy%2Ff06379d1-0b45-45a8-9264-10699608a2d5.jpg&spec_gallery_id=605791377543962&refer_page_sn=10009&freesia_scene=2&_oak_freesia_scene=2&_oak_rec_ext_1=NTYw&search_key=OLED%20Display%20Module%20With%20encoder&refer_page_el_sn=200049&ab_scene=1&refer_page_name=search_result&refer_page_id=10009_1793940410469_t5yf76ln96&_x_sessn_id=y3lai9j7l9))
+
+5. **Polymer Lithium Ion Battery LiPo** 400mAh (or larger) 3.7V 502535 JST Connector. ([500mAh Example](https://www.ebay.com.au/itm/133708965793?hash=item1f21ace7a1:g:tlwAAOSwfORgYqYK))
 
     Notes:
 
@@ -130,7 +134,9 @@ While the basic form is simple, the design is flexible and you can add several a
 
 12. *Optional:* **A 1.3" or 2.4" OLED Display** (128x64) can be used instead of the 0.96" OLED Display 128x64 ([Example](https://www.aliexpress.com/item/32683094040.html?spm=a2g0o.order_list.order_list_main.110.25621802jRBB7y)) Note: You will need to make a minor change in the config file for this to work correctly.
 
-13. *Optional:* Though not recommended, it is possible to use a **Potentiometer** instead of the Rotary Encoder for throttle control.  The code supports it if you make the appropriate configuration changes in ``config_buttons.h``.   However this has had only limited testing. <br/> This is documented to some degree in [config_buttons_example.h](config_buttons_example.h) if you wish to try it.
+13. *Optional* The boards that combine an oLED with a rotary encoder can be used instead of the two individual components. ([Example](https://www.temu.com/au/0-96-1-3-inch-oled-display-driver-module--with-ec11-rotary--module-iic-interface-g-605791377543962.html?_oak_mp_inf=EJqm997s3okBGiA0MDQ2YmZmYzkxYWM0ZTA4OTBiZTk5ZmE1NWVlY2E3YSCJgM35mjQ%3D&top_gallery_url=https%3A%2F%2Fimg.kwcdn.com%2Fproduct%2Ffancy%2Ff06379d1-0b45-45a8-9264-10699608a2d5.jpg&spec_gallery_id=605791377543962&refer_page_sn=10009&freesia_scene=2&_oak_freesia_scene=2&_oak_rec_ext_1=NTYw&search_key=OLED%20Display%20Module%20With%20encoder&refer_page_el_sn=200049&ab_scene=1&refer_page_name=search_result&refer_page_id=10009_1793940410469_t5yf76ln96&_x_sessn_id=y3lai9j7l9)) These also have the advantage of including two buttons that can make use of the 'Optional Additional buttons' feature of WiTcontroller.
+
+14. *Optional:* Though not recommended, it is possible to use a **Potentiometer** instead of the Rotary Encoder for throttle control.  The code supports it if you make the appropriate configuration changes in ``config_buttons.h``.   However this has had only limited testing. <br/> This is documented to some degree in [config_buttons_example.h](config_buttons_example.h) if you wish to try it.
 
 ### Pinouts
 
@@ -148,6 +154,9 @@ While the basic form is simple, the design is flexible and you can add several a
 
 *Pinouts for Optional Battery Monitor and Additional Buttons*
 ![Assembly diagram - Optional Battery Monitor and Additional Buttons](images/WiTcontroller%20-%20Optional%20battery%20monitor.png)
+
+*Pinouts for the Rotary Encoder + oLED combo board*
+![Assembly diagram - Rotary Encoder + oLED combo board](images/WiTcontroller%20-%20encoder%20oled%20combo.png)
 
 > [!WARNING]
 > *Different keypad manufacturers may arrange the pins on the base of the keypad differently to the examples above.* <br/> See notes in the [Default Pins for the keypads](#default-pins-for-the-keypads)  section below.
@@ -294,27 +303,27 @@ The instructions below are for using the **Arduino IDE** and **GitHub Desktop**.
     * Available from  https://support.arduino.cc/hc/en-us/articles/360019833020-Download-and-install-Arduino-IDE
 
 2. Download the **esp32** *boards* in the Arduino IDE.
-    * Add the esp322 support with the following instructions:  (See here for detailed instructions:  https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/)
+    * Add the esp322 support with the following instructions:  (See here for detailed instructions: [https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/](https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/ )
         * In the Arduino IDE, go to *File* > *Preferences*
-        * Enter the following into the 'Additional Board Manager URLs' field:  https://dl.espressif.com/dl/package_esp32_index.json
+        * Enter the following into the 'Additional Board Manager URLs' field:  [https://dl.espressif.com/dl/package_esp32_index.json](https://dl.espressif.com/dl/package_esp32_index.json
     * Then Use the *Boards Manager* in the *Arduino IDE* to install the esp32 board support
         * *Tools* > *Board* > *Boards Manager*
         * Search for "esp32" by Expressive Systems.  Install version 3.2.0 or later. Version 3.3.0 is recommended.  (Later versions work, but go back to this 3.2.0 if you have problems.) (Eralier versions work, but 3.2.0 or later is required if you want to use 2.4gHz WiFi channels greater than 10. See notes below. )
 
 3. Download or clone *this* repository. <br/> (Note: if you 'clone' initially, it is easier to receive updates to the code by doing a 'fetch' subsequently.  See Notes below.)
     * Option - Clone - **First Time**  ***Recommended***
-       * Install *GitHub Desktop* from https://desktop.github.com/
+       * Install *GitHub Desktop* from [https://desktop.github.com/](https://desktop.github.com/)
        * Create a free account on GitHub and authorise the app to allow it to connect top GitHub
        * Select *file* -> *Clone Repository* - or 'Clone an repository from the internet' from the welcome page then select the 'URL' tab
-       * Enter *https://github.com/flash62au/WiTcontroller* as the URL
-       * Select a local folder to install it.  The default folder for the Arduino usually looks like "...<username>\Documents\Arduino\". (This is a good but not essential place to put it.)
+       * Enter *[https://github.com/flash62au/WiTcontroller](https://github.com/flash62au/WiTcontroller)* as the URL
+       * Select a local folder to install it.  The default folder for the Arduino usually looks like `...<username>\Documents\Arduino\`. (This is a good but not essential place to put it.)
        * Click *Clone*
        * **Subsequently**  (Anytime after the first 'clone')
          * click *Fetch Origin* and any changes to the code will be bought down to you PC, but your `config_buttons.h` and `config_network.h` will not be touched.
     * Option - Download ***Not Recommended***
-       * Open *https://github.com/flash62au/WiTcontroller*
+       * Open *[https://github.com/flash62au/WiTcontroller](https://github.com/flash62au/WiTcontroller)*
        * Click the green "Code" button and select download zip
-       * Extract the zip file to a local folder.  The default folder for the Arduino usually looks like "...<username>\Documents\Arduino\". This is a good, but not essential, place to put it.
+       * Extract the zip file to a local folder.  The default folder for the Arduino usually looks like `...<username>\Documents\Arduino\`. This is a good, but not essential, place to put it.
 
 4. Load the needed libraries to your PC. <br/> These *MUST BE* loaded from the *Library Manager* in the *Arduino IDE*. 
     * *U8g2lib.h* -  Search for "U8g2".   Install version 2.35.30 or later. <br/> (later versions should work, but go back to this 2.35.30 if you have problems.)
@@ -325,8 +334,8 @@ The instructions below are for using the **Arduino IDE** and **GitHub Desktop**.
       Note: <br/> **DO NOT** download these libraries *directly*. Use the *Library Manager*. <br/> **DO NOT** put them in the WiTcontroller folder.
 
 5. These should have been automatically installed when you downloaded the esp32 boards. <br/> *YOU SHOULD NOT NEED TO DO ANYTHING SPECIFIC TO GET THESE*
-    * *WiFi.h*  - https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi
-    * *ESPmDNS.h* - https://github.com/espressif/arduino-esp32/blob/master/libraries/ESPmDNS
+    * *WiFi.h*  - [https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi](https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi)
+    * *ESPmDNS.h* - [https://github.com/espressif/arduino-esp32/blob/master/libraries/ESPmDNS](https://github.com/espressif/arduino-esp32/blob/master/libraries/ESPmDNS)
     * *Preferences.h*
 
       Notes: <br/> **DO NOT** download these libraries *directly*. Use the *Boards Manager*. <br/> **DO NOT** put them in the WiTcontroller folder. <br/> These libraries do not appear in your list of libraries, but will be available to use regardless. (The files are actually buried away in a subfolder of the ESP32 Boards library.)
