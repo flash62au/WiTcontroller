@@ -85,7 +85,7 @@ While the basic form is simple, the design is flexible and you can add several a
     Note: *Any ESP32 will work but the pinouts may need to be adjusted, and a separate LiPo charger may be required*
 
 > [!CAUTION]
-> I have reports of some of the versions of this board with the USB-C connectors having problems with the WiFi.  Some are clearly fine, but others are not. I am still investigating this, but I would recommend avoiding the USB-C version for now.
+> I have reports of some of the versions of this board with the USB-C connectors having problems with the WiFi.  Some are clearly fine, but others are not.
 
 2. **3x4 Keypad**  ([Example](https://www.jaycar.com.au/12-key-numeric-keypad/p/SP0770?pos=2&queryId=20aedf107668ad42c6fe1f8b7f7a9ca7))
 
@@ -275,7 +275,7 @@ My case was 3D Printed for me by peteGSX (See the [Thingiverse.](https://www.thi
 [specific message](https://discord.com/channels/713189617066836079/735156882511102033/1316646832297742380) |
 | <img src="images/rdbnogueira_version.png" height="250;" /> <br/> rdbnogueira version. See [Thingiverse](https://www.thingiverse.com/thing:6956982) | <img src="https://github.com/dvirgo62/Printed-case-for-witcontroller/blob/main/PXL_20250910_022436424.jpg?raw=true" height="250;" /> <br/> David Virgo's version using the EC11 encoder. See [GitHub](https://github.com/dvirgo62/Printed-case-for-witcontroller?fbclid=IwY2xjawMyNLNleHRuA2FlbQIxMABicmlkETFTZ3RWbmRYck9MRENISVczAR7I770O70-brr0UWQ1O463MGa91Kf7WoZwbx85NPC72q69bG04gduhkIRDuFg_aem_znuhLVk6PxQxmlZntuLdAA) |
 | <img src="images/markwtech_case.png" height="200;" /> <br/> markwtech version. See [Thingiverse](https://www.thingiverse.com/thing:7029069) | <img src="images/michael_tagg.png" height="200;" /> <br/> Michael Tagg version |
-| <img src="images/driverd_variation.png" height="100;" /> <br/> DriverD's variation of the design. See [YouTube](https://youtu.be/i4kLNncoFLA?si=Nli4HzZWGFATpnhh) | <img src="images/kitcab.png" height="250;" /> <br/> Kit**Cab** version. Soon to be sold as a kit by [Beacon Models Ltd.](https://www.beacon-models.com) |
+| <img src="images/driverd_variation.png" height="100;" /> <br/> DriverD's variation of the design. See [YouTube](https://youtu.be/i4kLNncoFLA?si=Nli4HzZWGFATpnhh) | <img src="images/kitcab.png" height="250;" /> <br/> Kit**Cab** version. Soon to be sold as a kit by [Beacon Models Ltd.](https://www.beacon-models.com/kitcab) |
 | <img src="images/jonathan_sauer_1.jpeg" height="150;" /> <img src="images/jonathan_sauer_2.png" height="150;" /> <br/>Jonathan Sauer's custom PCB version | <img src="images/jonathan_sauer_3.png" height="150;" /> <img src="images/jonathan_sauer_4.png" height="150;" /> <br/> <br/> |
 
 ---
