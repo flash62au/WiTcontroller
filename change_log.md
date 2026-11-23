@@ -7,6 +7,10 @@
 
 ## Versions
 
+### V1.122 (2026-11-23)
+
+- change GUEST_MODE_ALLOW_NEXT_THROTTLE to default to false
+
 ### V1.121 (2026-11-06)
 
 - Added scrolling to the Turnout/Points, Routes and Function Labels menus.

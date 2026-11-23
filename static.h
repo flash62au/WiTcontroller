@@ -1,4 +1,4 @@
-const String appVersion = "v1.121";
+const String appVersion = "v1.122";
 #ifndef CUSTOM_APPNAME
    const String appName = "WiTcontroller";
 #else
@@ -1387,7 +1387,7 @@ const char ssidPasswordBlankChar = 164;
 #endif
 
 #ifndef GUEST_MODE_ALLOW_NEXT_THROTTLE
-   #define GUEST_MODE_ALLOW_NEXT_THROTTLE true
+   #define GUEST_MODE_ALLOW_NEXT_THROTTLE false
 #endif
 
 // ***************************************************
