@@ -7,6 +7,10 @@
 
 ## Versions
 
+### V1.123 (2026-11-24)
+
+- don't show the direct action list at the end of the function list.
+
 ### V1.122 (2026-11-23)
 
 - change GUEST_MODE_ALLOW_NEXT_THROTTLE to default to false

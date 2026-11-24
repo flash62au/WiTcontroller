@@ -2351,13 +2351,16 @@ void doKeyPress(char key, bool pressed) {
           case '#':  // next page
             if ( (functionPage+1)*functionPageSize < MAX_FUNCTIONS ) {
               functionPage++;
-              resetMenuScrollingRefreshCounters();
-              writeOledFunctionList(""); 
             } else {
               functionPage = 0;
-              keypadUseType = KEYPAD_USE_OPERATION;
-              writeOledDirectCommands();
             }
+            resetMenuScrollingRefreshCounters();
+            writeOledFunctionList(""); 
+            // } else {
+            //   functionPage = 0;
+            //   keypadUseType = KEYPAD_USE_OPERATION;
+            //   writeOledDirectCommands();
+            // }
             break;
           case '*':  // cancel
             resetMenu();
